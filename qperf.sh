@@ -7,21 +7,28 @@ begin "$script"
 
 progress "$script" 0
 
-itemdisp "Install XanMod Kernel..."
+itemdisp "Install Optimized Kernel..."
 echo
 echo "> Current Kernel version:"
+echo -e "${ORANGE}"
 cat /proc/version
+echo -e "${NOCOLOR}"
 echo
-echo "> Xanmod kernel version supported:"
-echo -e "${ORANGE}//////////////////${NOCOLOR}"
+echo -e "Xanmod kernel version supported:"
 ./perfs/check_x86-64_psabi.sh
-echo -e "${ORANGE}//////////////////${NOCOLOR}"
 echo
 echo -e "${RED}█ ${ORANGE}Please select option:${NOCOLOR}"
-options=("install linux-xanmod-x64v1" "install linux-xanmod-x64v2" "install linux-xanmod-x64v3" "install linux-xanmod-x64v4" "Skip kernel install")
+options=("install Liquorix Kernel" "install linux-xanmod-x64v1" "install linux-xanmod-x64v2" "install linux-xanmod-x64v3" "install linux-xanmod-x64v4" "Skip kernel install")
 select opt in "${options[@]}"
 do
     case $opt in
+        "install Liquorix Kernel")
+            echo -e "  \e[35m░▒▓█\033[0m Installing Liquorix Kernel"
+            echo -e "${YELLOW}"
+            curl -s 'https://liquorix.net/install-liquorix.sh' | sudo bash
+            echo -e "${NOCOLOR}"
+            break
+            ;;
         "install linux-xanmod-x64v1")
             echo -e "  \e[35m░▒▓█\033[0m Installing linux-xanmod-x64v1"
             ./perfs/repository.sh
@@ -64,15 +71,14 @@ sep
 echo
 echo
 echo
-progress "$script" 10
+progress "$script" 5
 
 sudo \cp /etc/default/grub "/etc/default/grub_$(date +"%Y-%m-%d_%I-%M%p").bkp"
 sudo \cp /etc/default/grub "backups/grub_$(date +"%Y-%m-%d_%I-%M%p").bkp"
 cd perfs
 sudo ./perfgrub
 cd ..
-progress "$script" 15
-
+progress "$script" 10
 
 itemdisp "Installing preload..."
 echo -e "${YELLOW}"
@@ -82,7 +88,7 @@ sep
 echo
 echo
 echo
-progress "$script" 20
+progress "$script" 15
 
 itemdisp "Disabling ModemManager service..."
 echo
@@ -93,7 +99,7 @@ sep
 echo
 echo
 echo
-progress "$script" 25
+progress "$script" 20
 
 itemdisp "Disabling NetworkManager-wait-online service..."
 echo
@@ -104,7 +110,7 @@ sep
 echo
 echo
 echo
-progress "$script" 30
+progress "$script" 25
 
 
 itemdisp "Disabling rsyslog service..."
@@ -116,7 +122,7 @@ sep
 echo
 echo
 echo
-progress "$script" 35
+progress "$script" 30
 
 itemdisp "Disabling avahi-daemon service..."
 echo
@@ -127,7 +133,7 @@ sep
 echo
 echo
 echo
-progress "$script" 40
+progress "$script" 35
 
 itemdisp "Disabling smbd service..."
 echo
@@ -138,7 +144,7 @@ sep
 echo
 echo
 echo
-progress "$script" 45
+progress "$script" 40
 
 itemdisp "Disabling nmbd service..."
 echo
@@ -149,7 +155,7 @@ sep
 echo
 echo
 echo
-progress "$script" 50
+progress "$script" 45
 
 
 itemdisp "Removing ufw..."
@@ -159,7 +165,20 @@ sep
 echo
 echo
 echo
+progress "$script" 50
+
+
+itemdisp "Removing unwanted fonts..."
+echo
+sudo apt-get remove -y "fonts-kacst" "fonts-khmeros" fonts-lklug-sinhala fonts-guru-extra "fonts-nanum" fonts-noto-cjk "fonts-takao" fonts-tibetan-machine fonts-lao fonts-sil-padauk fonts-sil-abyssinica fonts-beng-extra fonts-gargi fonts-gubbi fonts-gujr-extra fonts-kalapi "fonts-samyak" fonts-navilu fonts-nakula fonts-orya-extra fonts-pagul fonts-sarai "fonts-telu" "fonts-smc*" fonts-deva-extra fonts-sahadeva
+sudo dpkg-reconfigure fontconfig
+sep
+echo
+echo
+echo
 progress "$script" 55
+
+
 
 itemdisp "Applying sysctl tweaks..."
 echo
