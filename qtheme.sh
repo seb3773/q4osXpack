@@ -23,12 +23,12 @@ while [ : ]; do
         ;;
   esac
 done
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ÉÉÉ
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 script="Qtheme script"
 source common/begin
 source common/progress
 begin "$script"
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 progress "$script" 0
 #CREATE BACKUP FOLDER & backup files to be modified
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
@@ -155,10 +155,6 @@ cd ..
 
 
 itemdisp "Configuring start screen..."
-#tar -xzf Blacktux-TDE-Classic.tar.gz -C /opt/trinity/share/apps/ksplash/Themes
-#kdialog --msgbox "Ksplashthememgr will open now, \n Select Black-tux-TDE-Classic" --caption "Start screen" --title "Qtheme"
-#tdecmshell ksplashthememgr > /dev/null 2>&1
-#kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme Blacktux-TDE-Classic
 kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme None
 sep
 echo
@@ -168,8 +164,6 @@ progress "$script" 40
 
 
 itemdisp "Configuring pointers & set acceleration to 1"
-#kdialog --msgbox "TDE manager will open now, \n On the second page, select Windows10Light or Windows10Dark" --caption "Pointers" --title "Qtheme"
-#tdecmshell mouse > /dev/null 2>&1
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key Acceleration 1
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
@@ -208,8 +202,6 @@ progress "$script" 50
 
 
 itemdisp "Configuring start menu..."
-#kdialog --msgbox "TDE config module will open now, \n On the third page, select [change menu icon], \n then [other icons] and select StartHere.png"  --caption "Start menu image" --title "Qtheme"
-#tdecmshell panel > /dev/null 2>&1
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key CustomSize 32
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BourbonMenu false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key LegacyKMenu true
@@ -271,8 +263,6 @@ progress "$script" 55
 
 
 itemdisp "Configuring style..."
-#kdialog --msgbox "Style manager will open now, \n On the first page, select ''Plastik'' style"  --caption "Style" --title "Qtheme"
-#tdecmshell style > /dev/null 2>&1
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key widgetStyle qtcurve
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectsEnabled false
@@ -290,8 +280,6 @@ progress "$script" 60
 
 
 itemdisp "Configuring windows decoration & windows management..."
-#kdialog --msgbox "TDE manager will open now, \n On the first page, select ''Plastik''"  --caption "Windows decorations" --title "Qtheme"
-#tdecmshell twindecoration > /dev/null 2>&1
 echo
 echo -e "  \e[35m░▒▓█\033[0m installing Dekorator for trinity..."
 echo -e "${YELLOW}"
@@ -498,8 +486,6 @@ progress "$script" 65
 
 
 itemdisp "Configuring bouncing start indicator"
-#kdialog --msgbox "TDE manager will open now, \n Select Bouncing pointer ;)" --caption "temoin démarrage" --title "Qtheme"
-#tdecmshell kcmlaunch > /dev/null 2>&1
 kwriteconfig --file $TDEHOME/share/config/tdelaunchrc --group BusyCursorSettings --key Blinking false
 kwriteconfig --file $TDEHOME/share/config/tdelaunchrc --group BusyCursorSettings --key Bouncing true
 kwriteconfig --file $TDEHOME/share/config/tdelaunchrc --group BusyCursorSettings --key Timeout 12
@@ -751,7 +737,6 @@ progress "$script" 75
 
 
 itemdisp "Configuring taskbar..."
-#sudo sed -i "/Buttons=/c\Buttons=htop.desktop,q4os_startmenu_konsole.desktop,tde-krusader_root-mode.desktop" $USER_HOME/.trinity/share/config/launcher_panelapplet_modernui_rc
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ActiveTaskTextColor "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key InactiveTaskTextColor "195,195,195"
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key TaskBackgroundColor "255,255,255"
@@ -826,8 +811,6 @@ progress "$script" 85
 
 
 itemdisp "Configuring fonts"
-#kdialog --msgbox "TDE manager will open now, \n Select Bouncing pointer ;)" --caption "temoin démarrage" --title "Qtheme"
-#tdecmshell kcmlaunch > /dev/null 2>&1
 kwriteconfig --file $TDEHOME/share/config/kcmfonts --group General --key dontChangeAASettings true
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key fixed "Droid Sans Mono,9,-1,5,50,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key font "Segoe UI,10,-1,5,50,0,0,0,0,0"
@@ -898,14 +881,11 @@ progress "$script" 95
 
 
 
-itemdisp "Cleaning directories..."
-echo
-#cd theme
-#sudo rm -R We10X-icon-theme
-#cd ..
-sep
-echo
-echo
+#itemdisp "Cleaning directories..."
+#echo
+#sep
+#echo
+#echo
 echo
 progress "$script" 100
 alldone

@@ -115,7 +115,7 @@ xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/brightness-on-batter
 xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/brightness-switch -s 1
 xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/brightness-switch-restore-on-exit -s 1
 xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/critical-power-action -s 4
-#à reconfigurer si swap file activé plus loin:
+#to reconfigure if swap file activated later...
 #xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/critical-power-action -s 2
 xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/dpms-enabled -s true
 xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/dpms-on-ac-off -s 0
@@ -159,8 +159,8 @@ echo "**  resume function seems to be already activated, skipping this part."
 else 
 if ! grep -q "/swap" "/etc/fstab"; then
 echo "**  /swap already exist, skipping this part."
-#TO DO
-#test if resume fonction présente, et dans ce cas proposer d'ajuster les parametres pour l'hibernation 
+#TO DO:
+#test if resume fonction exist,and in this case propose to adjust parameters for hibernation 
 #
 else
 phymem=$(LANG=C free|awk '/^Mem:/{print $2}')
