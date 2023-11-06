@@ -6,6 +6,37 @@ begin "$script"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 progress "$script" 0
+#CREATE BACKUP FOLDER & backup files to be modified
+echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
+now=$(date +"%Y-%m-%d_%I-%M%p")
+mkdir "backups/$now" > /dev/null 2>&1
+sudo tar -zcvf "backups/$now/grub.tar.gz" /etc/default/grub > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/system.conf.tar.gz" /etc/systemd/system.conf > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/limits.conf.tar.gz" /etc/security/limits.conf > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/fstab.tar.gz" /etc/fstab > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/Xsession.tar.gz" /etc/X11/Xsession > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/klipperrc.tar.gz" $USER_HOME/.trinity/share/config/klipperrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/initramfs.conf.tar.gz" /etc/initramfs-tools/initramfs.conf > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/getty.tar.gz" /sbin/getty > /dev/null 2>&1
+rota
+
+\cp common/restore "backups/restore_$now"
+sudo sed -i "s/XxXxXxXxX/$now/g" "backups/restore_$now"
+sudo chmod +x "backups/restore_$now"
+rota
+echo
+printf '\e[A\e[K'
+echo
+echo
+
+
 
 itemdisp "Install Optimized Kernel..."
 echo
@@ -73,8 +104,6 @@ echo
 echo
 progress "$script" 5
 
-sudo \cp /etc/default/grub "/etc/default/grub_$(date +"%Y-%m-%d_%I-%M%p").bkp"
-sudo \cp /etc/default/grub "backups/grub_$(date +"%Y-%m-%d_%I-%M%p").bkp"
 cd perfs
 sudo ./perfgrub
 cd ..
@@ -90,64 +119,31 @@ echo
 echo
 progress "$script" 15
 
-itemdisp "Disabling ModemManager service..."
+itemdisp "Disabling some services..."
 echo
+echo -e "  \e[35m░▒▓█\033[0m ModemManager.service"
 sudo systemctl stop ModemManager.service
 sudo systemctl disable ModemManager.service
 sudo systemctl mask ModemManager.service
-sep
-echo
-echo
-echo
-progress "$script" 20
-
-itemdisp "Disabling NetworkManager-wait-online service..."
-echo
+echo -e "  \e[35m░▒▓█\033[0m NetworkManager-wait-online service"
 sudo systemctl stop NetworkManager-wait-online.service
 sudo systemctl disable NetworkManager-wait-online.service
 sudo systemctl mask NetworkManager-wait-online.service
-sep
-echo
-echo
-echo
-progress "$script" 25
-
-
-itemdisp "Disabling rsyslog service..."
-echo
+progress "$script" 20
+echo -e "  \e[35m░▒▓█\033[0m rsyslog.service"
 sudo systemctl stop rsyslog
 sudo systemctl disable rsyslog
 sudo systemctl mask rsyslog
-sep
-echo
-echo
-echo
-progress "$script" 30
-
-itemdisp "Disabling avahi-daemon service..."
-echo
+echo -e "  \e[35m░▒▓█\033[0m avahi-daemon service"
 sudo systemctl stop avahi-daemon
 sudo systemctl disable avahi-daemon
 sudo systemctl mask avahi-daemon
-sep
-echo
-echo
-echo
-progress "$script" 35
-
-itemdisp "Disabling smbd service..."
-echo
+progress "$script" 25
+echo -e "  \e[35m░▒▓█\033[0m smbd service"
 sudo systemctl stop smbd.service
 sudo systemctl disable smbd.service
 sudo systemctl mask smbd.service
-sep
-echo
-echo
-echo
-progress "$script" 40
-
-itemdisp "Disabling nmbd service..."
-echo
+echo -e "  \e[35m░▒▓█\033[0m nmbd service"
 sudo systemctl stop nmbd.service
 sudo systemctl disable nmbd.service
 sudo systemctl mask nmbd.service
@@ -155,7 +151,22 @@ sep
 echo
 echo
 echo
-progress "$script" 45
+progress "$script" 30
+
+
+itemdisp "Replacing agetty by ngetty..."
+echo
+echo -e "  \e[35m░▒▓█\033[0m installing ngetty..."
+echo -e "${YELLOW}"
+sudo apt install -y ngetty
+echo -e "${NOCOLOR}"
+sudo rm /sbin/getty
+sudo ln -s /sbin/ngetty /sbin/getty
+sep
+echo
+echo
+echo
+progress "$script" 40
 
 
 itemdisp "Removing ufw..."
@@ -165,7 +176,7 @@ sep
 echo
 echo
 echo
-progress "$script" 50
+progress "$script" 45
 
 
 itemdisp "Removing unwanted fonts..."
@@ -176,7 +187,7 @@ sep
 echo
 echo
 echo
-progress "$script" 55
+progress "$script" 50
 
 
 
@@ -189,12 +200,11 @@ sep
 echo
 echo
 echo
-progress "$script" 60
+progress "$script" 55
 
 
 itemdisp "Tweaking  shutdown time..."
 echo
-sudo \cp /etc/systemd/system.conf "backups/system_conf_$(date +"%Y-%m-%d_%I-%M%p").bkp"
 sudo sed -i "/DefaultTimeoutStopSec=/c\DefaultTimeoutStopSec=10" /etc/systemd/system.conf
 if ! grep -q "DefaultTimeoutStopSec=10" "/etc/systemd/system.conf"; then
 echo "DefaultTimeoutStopSec=10" | sudo tee -a /etc/systemd/system.conf
@@ -203,13 +213,12 @@ sep
 echo
 echo
 echo
-progress "$script" 65
+progress "$script" 60
 
 
 
 itemdisp "Disabling core dumps"
 echo
-sudo \cp /etc/security/limits.conf "backups/limits_conf_$(date +"%Y-%m-%d_%I-%M%p").bkp"
 if ! grep -q "* hard core 0" "/etc/security/limits.conf"; then
 echo "* hard core 0" | sudo tee -a /etc/security/limits.conf
 fi
@@ -224,12 +233,11 @@ sep
 echo
 echo
 echo
-progress "$script" 70
+progress "$script" 65
 
 
 itemdisp "temp directories as tmps"
 echo
-sudo \cp /etc/fstab "backups/fstab_$(date +"%Y-%m-%d_%I-%M%p").bkp"
 if ! grep -q "/var/tmp" "/etc/fstab"; then
 echo "tmpfs                                     /var/tmp       tmpfs   defaults,noatime,mode=1777 0 0" | sudo tee -a /etc/fstab
 fi
@@ -240,19 +248,18 @@ sep
 echo
 echo
 echo
-progress "$script" 75
+progress "$script" 70
 
 
 
 itemdisp "Redirecting .xsession-errors to /dev/null"
-sudo \cp /etc/X11/Xsession "backups/Xsession_$(date +"%Y-%m-%d_%I-%M%p").bkp"
 echo
 sudo sed -i '/exec >>"$ERRFILE"/c\exec >> /dev/null 2>&1' /etc/X11/Xsession
 sep
 echo
 echo
 echo
-progress "$script" 80
+progress "$script" 75
 
 
 
@@ -264,7 +271,7 @@ sep
 echo
 echo
 echo
-progress "$script" 85
+progress "$script" 80
 
 
 itemdisp "testing if i915 modules firmwares missing..."
@@ -305,7 +312,7 @@ sep
 echo
 echo
 echo
-progress "$script" 90
+progress "$script" 85
 
 
 
@@ -338,7 +345,43 @@ sep
 echo
 echo
 echo
+progress "$script" 90
+
+
+itemdisp "Trim initramfs"
+echo
+echo -e "${RED}█ ${ORANGE}Trim initramfs ?"
+echo -e "( xxxx xxx xx xx )${NOCOLOR}"
+optionz=("Trim initramfs" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Trim initramfs")
+            echo -e "  \e[35m░▒▓█\033[0m Trimming initramfs..."
+            sudo sed -i "/MODULES=/c\MODULES=dep" /etc/initramfs-tools/initramfs.conf
+            sudo sed -i "/COMPRESS=/c\COMPRESS=zstd" /etc/initramfs-tools/initramfs.conf
+            sudo sed -i "/COMPRESSLEVEL=/c\COMPRESSLEVEL=12" /etc/initramfs-tools/initramfs.conf
+            #sudo update-initramfs -c -k $(uname -r)
+            sudo update-initramfs -c -k all
+            break
+            ;;
+        "Skip")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+sep
+echo
+echo
+echo
 progress "$script" 95
+
+
+
+
+
+
 
 itemdisp "Cleaning system..."
 echo

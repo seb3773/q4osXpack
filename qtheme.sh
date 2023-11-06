@@ -205,8 +205,11 @@ itemdisp "Configuring start menu..."
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key CustomSize 32
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BourbonMenu false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key LegacyKMenu true
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Locked true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key AutoHidePanel false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key AutoHideSwitch false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key MenubarPanelBlurred false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key MenubarPanelTransparent false
 rota
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BackgroundHide false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BourbonBoldFolders true
@@ -262,7 +265,7 @@ progress "$script" 55
 
 
 
-itemdisp "Configuring style..."
+itemdisp "Configuring windows style..."
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key widgetStyle qtcurve
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectsEnabled false
@@ -372,6 +375,7 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key WindowSna
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveMode Opaque
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Desktops --key Number 1
 kwriteconfig --file $TDEHOME/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
 rota
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key InactiveShadowColour "0,0,0"
@@ -452,6 +456,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --ke
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveMode Opaque
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Desktops --key Number 1
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
+sudo kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
 rota
 echo
 printf '\e[A\e[K'
@@ -542,6 +547,9 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveHa
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveTitleBtnBg "240,240,240"
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key NormalTextColor "0,0,0"
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Settings --key BgColor "255,255,255"
+
+
+
 rota
 kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kate - Normal" --key "Color Background" "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kate - Normal" --key "Color Highlighted Line" "255,255,255"
