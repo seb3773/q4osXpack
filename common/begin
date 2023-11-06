@@ -70,10 +70,10 @@ echo -e "             ██${REDL}▒▒▒${GRAY}██                       
 echo -e "             ██${REDL}▒▒▒${GRAY}██                                                      "      
 echo -e "        ███████${REDL}▒▒▒${GRAY}███████     "
 echo -e "        █${REDL}▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒${GRAY}█     "
-echo -e "        ███████${REDL}▒▒▒${GRAY}███████      "
-echo -e "             ██${REDL}▒▒▒${GRAY}██         ${LIGHTGREEN}^-^                                               "          
-echo -e "             ${GRAY}██${REDL}▒▒▒${GRAY}██        ${LIGHTGREEN}(o o)${GRAY}                                                   "         
-echo -e "              ${GRAY}█████   ══${LIGHTGREEN}ooO${GRAY}══${LIGHTGREEN}(_)${GRAY}══${LIGHTGREEN}Ooo${GRAY}══════ ${NOCOLOR}Ready :-) ${GRAY}════════${NOCOLOR}    "
+echo -e "        ███████${REDL}▒▒▒${GRAY}███████    ${WHITE}___${GRAY}"
+echo -e "             ██${REDL}▒▒▒${GRAY}██        ${WHITE}<_${REDL}╋${WHITE}_>                                               "          
+echo -e "             ${GRAY}██${REDL}▒▒▒${GRAY}██        ${WHITE}(o o)${GRAY}                                                   "         
+echo -e "              ${GRAY}█████   ══${WHITE}ooO${GRAY}══${WHITE}(_)${GRAY}══${WHITE}Ooo${GRAY}══════ ${NOCOLOR}Ready :-) ${GRAY}════════${NOCOLOR}    "
 echo
 fi
 echo -en "\e[5m   Press enter to start . . .\e[25m"
