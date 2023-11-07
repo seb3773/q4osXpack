@@ -2,7 +2,7 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dark=0
 interact=0
-VALID_ARGS=$(getopt -o di --long dark,interactive -- "$@")
+VALID_ARGS=$(getopt -o dL --long dark,light -- "$@")
 if [[ $? -ne 0 ]]; then
     exit 1;
 fi
@@ -14,8 +14,8 @@ while [ : ]; do
         dark=1
         shift
         ;;
-    -i | --interactive)
-        interact=1
+    -L | --light)
+        dark=0
         shift
         ;;
      --) shift; 
@@ -33,7 +33,7 @@ progress "$script" 0
 #CREATE BACKUP FOLDER & backup files to be modified
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")
-mkdir "backups/$now" > /dev/null 2>&1
+sudo mkdir "backups/$now" > /dev/null 2>&1
 sudo tar -zcvf "backups/$now/shutimg.tar.gz" /opt/trinity/share/apps/ksmserver/pics/shutdownkonq2.png > /dev/null 2>&1
 rota
 sudo tar -zcvf "backups/$now/grub.tar.gz" /etc/default/grub > /dev/null 2>&1
@@ -115,6 +115,9 @@ rota
 sudo tar -zcvf "backups/$now/gtkrc-q4os.tar.gz" $USER_HOME/.gtkrc-q4os > /dev/null 2>&1
 rota
 sudo tar -zcvf "backups/$now/gtkrc-q4os_root.tar.gz" /root/.gtkrc-q4os > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/launcher_panelapplet_rc.tar.gz" $TDEHOME/share/config/launcher_panelapplet_modernui_rc > /dev/null 2>&1
+rota
 #
 #.trinity/share/config/ksmserverrc
 #
@@ -126,7 +129,7 @@ sudo tar -zcvf "backups/$now/gtkrc-q4os_root.tar.gz" /root/.gtkrc-q4os > /dev/nu
 #.trinity/share/config/katerc
 #.config/fontconfig/fonts.conf
 rota
-\cp common/restore "backups/restore_$now"
+sudo \cp common/restore "backups/restore_$now"
 sudo sed -i "s/XxXxXxXxX/$now/g" "backups/restore_$now"
 sudo chmod +x "backups/restore_$now"
 rota
@@ -230,7 +233,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowLef
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRightHideButton false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key UseSidePixmap true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key SearchShortcut "/"
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key CustomIcon "/usr/share/pixmaps/StartHere.png"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key CustomIcon "/usr/share/pixmaps/StartHere2.png"
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableBrowserTiles false
 rota
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableDesktopButtonTiles false
@@ -745,17 +748,30 @@ progress "$script" 75
 
 
 itemdisp "Configuring taskbar..."
+               if [[ $dark -eq 1 ]]
+               then
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ActiveTaskTextColor "235,235,235"
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key InactiveTaskTextColor "93,93,93"
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key TaskBackgroundColor "119,119,119"
+               else
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ActiveTaskTextColor "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key InactiveTaskTextColor "195,195,195"
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key TaskBackgroundColor "255,255,255"
+               fi
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key HaloText true
-kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key IconSize 41
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key IconSize 22
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key Q4ButtonFrameType 1
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key UseCustomColors true
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ShowButtonOnHover ""
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key HaloText true
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key CycleWheel false
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key DisplayIconsNText DisplayIconsOnly
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key MinimumButtonHeight 38
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key MinimumButtonWidth 80
+sed -i "/ShowButtonOnHover=/d" $TDEHOME/share/config/ktaskbarrc
+kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key ConserveSpace true
+kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key DragEnabled true
+kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key IconDim 32
 #echo -e ">> Wait for kicker to restart..."
 #dcop kicker kicker restart
 #sleep 10

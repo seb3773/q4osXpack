@@ -9,7 +9,7 @@ progress "$script" 0
 #CREATE BACKUP FOLDER & backup files to be modified
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")
-mkdir "backups/$now" > /dev/null 2>&1
+sudo mkdir "backups/$now" > /dev/null 2>&1
 sudo tar -zcvf "backups/$now/60-libinput.conf.tar.gz" /etc/X11/xorg.conf.d/60-libinput.conf > /dev/null 2>&1
 rota
 sudo tar -zcvf "backups/$now/logind.conf.tar.gz" /etc/systemd/logind.conf > /dev/null 2>&1
@@ -22,7 +22,7 @@ sudo tar -zcvf "backups/$now/systemd-suspend.service.tar.gz" /lib/systemd/system
 rota
 sudo tar -zcvf "backups/$now/logind.tar.gz" /etc/systemd/logind.conf > /dev/null 2>&1
 rota
-\cp common/restore "backups/restore_$now"
+sudo \cp common/restore "backups/restore_$now"
 sudo sed -i "s/XxXxXxXxX/$now/g" "backups/restore_$now"
 sudo chmod +x "backups/restore_$now"
 rota

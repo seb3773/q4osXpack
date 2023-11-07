@@ -9,7 +9,7 @@ progress "$script" 0
 #CREATE BACKUP FOLDER & backup files to be modified
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")
-mkdir "backups/$now" > /dev/null 2>&1
+sudo mkdir "backups/$now" > /dev/null 2>&1
 sudo tar -zcvf "backups/$now/grub.tar.gz" /etc/default/grub > /dev/null 2>&1
 rota
 sudo tar -zcvf "backups/$now/system.conf.tar.gz" /etc/systemd/system.conf > /dev/null 2>&1
@@ -27,7 +27,7 @@ rota
 sudo tar -zcvf "backups/$now/getty.tar.gz" /sbin/getty > /dev/null 2>&1
 rota
 
-\cp common/restore "backups/restore_$now"
+sudo \cp common/restore "backups/restore_$now"
 sudo sed -i "s/XxXxXxXxX/$now/g" "backups/restore_$now"
 sudo chmod +x "backups/restore_$now"
 rota
