@@ -28,6 +28,11 @@ begin "$script"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 progress "$script" 0
+#set perms
+sudo chmod +x perfs/check_x86-64_psabi.sh
+sudo chmod +x perfs/perfgrub
+sudo chmod +x perfs/repository.sh
+
 #CREATE BACKUP FOLDER & backup files to be modified
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")

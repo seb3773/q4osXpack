@@ -38,6 +38,14 @@ source common/progress
 begin "$script"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 progress "$script" 0
+#set perms
+sudo chmod +x theme/plyminst
+sudo chmod +x theme/plymthinst
+sudo chmod +x theme/grubthinst
+sudo chmod +x theme/shutimg
+sudo chmod +x theme/grubscripts
+sudo chmod +x theme/themegrub
+sudo chmod +x theme/copyfiles
 #CREATE BACKUP FOLDER & backup files to be modified
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")
