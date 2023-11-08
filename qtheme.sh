@@ -1,0 +1,998 @@
+#!/bin/bash
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+dark=0
+helpdoc=0
+VALID_ARGS=$(getopt -o hdL --long help,dark,light -- "$@")
+if [[ $? -ne 0 ]]; then
+    exit 1;
+fi
+
+eval set -- "$VALID_ARGS"
+while [ : ]; do
+  case "$1" in
+    -d | --dark)
+        dark=1
+        shift
+        ;;
+    -L | --light)
+        dark=0
+        shift
+        ;;
+    -h | --help)
+        helpdoc=1
+        shift
+        ;;
+     --) shift; 
+        break 
+        ;;
+  esac
+done
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if [ $helpdoc -eq 1 ]; then
+script="Help Qtheme"
+else
+script="Qtheme script"
+fi
+source common/begin
+source common/progress
+begin "$script"
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+progress "$script" 0
+#CREATE BACKUP FOLDER & backup files to be modified
+echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
+now=$(date +"%Y-%m-%d_%I-%M%p")
+sudo mkdir "backups/$now" > /dev/null 2>&1
+sudo tar -zcvf "backups/$now/shutimg.tar.gz" /opt/trinity/share/apps/ksmserver/pics/shutdownkonq2.png > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/grub.tar.gz" /etc/default/grub > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/konq_fm_entries.tar.gz" $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/ > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/ksides.tar.gz" /opt/trinity/share/apps/kicker/pics/kside*.* > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/qtcurve_stylerc.tar.gz" $USER_HOME/.configtde/qtcurve/stylerc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/tde_stylerc_qt.tar.gz" $USER_HOME/.qt/tdestylerc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/tde_stylerc_tqt3.tar.gz" /etc/tqt3/tdestylerc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/qtrc_qt.tar.gz" $USER_HOME/.qt/qtrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/qtrc_tqt3.tar.gz" /etc/tqt3/qtrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/ksplashrc.tar.gz" $USER_HOME/.trinity/share/config/ksplashrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/kcminputrc.tar.gz" $TDEHOME/share/config/kcminputrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/kcminputrc_root.tar.gz" /root/.config/kcminputrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/gtk3_settings_tde.tar.gz" $USER_HOME/.configtde/gtk-3.0/settings.ini > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/gtk3_settings.tar.gz" $USER_HOME/.config/gtk-3.0/settings.ini > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/gtk3_settings_tde_root.tar.gz" /root/.configtde/gtk-3.0/settings.ini > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/gtk3_settings_root.tar.gz" /root/.config/gtk-3.0/settings.ini > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/tdmrc.tar.gz" /etc/trinity/tdm/tdmrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/backgroundrc.tar.gz" /etc/trinity/tdm/backgroundrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/ksmserverrc.tar.gz" $TDEHOME/share/config/ksmserverrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/kickerrc.tar.gz" $TDEHOME/share/config/kickerrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/configtde_menu.tar.gz" $USER_HOME/.configtde/menus/ > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/kdeglobals.tar.gz" $TDEHOME/share/config/kdeglobals > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/kdeglobals_root.tar.gz" /root/.trinity/share/config/kdeglobals > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/twindeKoratorrc.tar.gz" $USER_HOME/.trinity/share/config/twindeKoratorrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/twinrc.tar.gz" $TDEHOME/share/config/twinrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/twinrc_root.tar.gz" /root/.trinity/share/config/twinrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/GTK3-Q4OS02.tar.gz" /usr/share/themes/Q4OS02/gtk-3.0 > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/xcompmgrrc.tar.gz" $USER_HOME/.xcompmgrrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/compton-tde.tar.gz" $USER_HOME/.compton-tde.conf > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/compton-tde_root.tar.gz" /root/.compton-tde.conf > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/kdesktoprc.tar.gz" $TDEHOME/share/config/kdesktoprc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/tdelaunchrc.tar.gz" $TDEHOME/share/config/tdelaunchrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/kateschemarc.tar.gz" $TDEHOME/share/config/kateschemarc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/kateschemarc_root.tar.gz" /root/.trinity/share/config/kateschemarc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/konquerorrc_config.tar.gz" $TDEHOME/share/config/konquerorrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/konquerorrc_apps.tar.gz" $TDEHOME/share/apps/konqueror/ > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/konquerorrc_root.tar.gz" /root/.trinity/share/config/konquerorrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/ktaskbarrc.tar.gz" $TDEHOME/share/config/ktaskbarrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/clock_panelapplet_rc.tar.gz" $TDEHOME/share/config/clock_panelapplet_rc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/kcmfonts.tar.gz" $USER_HOME/.trinity/share/config/kcmfonts > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/gtkrc-q4os.tar.gz" $USER_HOME/.gtkrc-q4os > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/gtkrc-q4os_root.tar.gz" /root/.gtkrc-q4os > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/launcher_panelapplet_rc.tar.gz" $TDEHOME/share/config/launcher_panelapplet_modernui_rc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/Xresources.tar.gz" $USER_HOME/.Xresources > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/x-cursor-theme.tar.gz"  /etc/alternatives/x-cursor-theme > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/knotify.eventsrc.tar.gz" $TDEHOME/share/config/knotify.eventsrc > /dev/null 2>&1
+rota
+sudo tar -zcvf "backups/$now/sounds.tar.gz" /opt/trinity/share/sounds/ > /dev/null 2>&1
+rota
+#
+#.trinity/share/config/ksmserverrc
+#
+#.trinity/share/config/ksplashrc    (Theme=None)
+#
+#.Xresources
+#.trinity/share/config/gtkrc
+#.trinity/share/config/kateschemarc
+#.trinity/share/config/katerc
+#.config/fontconfig/fonts.conf
+rota
+sudo \cp common/restore "backups/restore_$now"
+sudo sed -i "s/XxXxXxXxX/$now/g" "backups/restore_$now"
+sudo chmod +x "backups/restore_$now"
+rota
+echo
+printf '\e[A\e[K'
+echo
+echo
+
+
+cd theme
+sudo ./plyminst
+progress "$script" 5
+sudo ./plymthinst
+progress "$script" 10
+sudo ./grubthinst
+progress "$script" 15
+sudo ./shutimg
+progress "$script" 20
+sudo ./grubscripts
+progress "$script" 25
+sudo ./themegrub
+progress "$script" 30
+sudo ./copyfiles $dark
+progress "$script" 35
+cd ..
+
+
+itemdisp "Configuring start screen..."
+kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme None
+sep
+echo
+echo
+echo
+progress "$script" 40
+
+
+itemdisp "Configuring pointers & set acceleration to 1"
+#pointer size
+if ! grep -q "Xcursor.size" "$USER_HOME/.Xresources"; then
+echo "Xcursor.size: 40" | sudo tee -a $USER_HOME/.Xresources
+fi
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: 40" $USER_HOME/.Xresources
+#
+kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key Acceleration 1
+kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+#root
+sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key Acceleration 1
+sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+sudo kwriteconfig --file /root/.trinity/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+#cursor theme for x
+sudo \cp /usr/share/icons/Windows10Light/cursor.theme /etc/X11/cursors/Windows10Light_cursor.theme
+sudo ln -nfs /etc/X11/cursors/Windows10Light_cursor.theme /etc/alternatives/x-cursor-theme
+sep
+echo
+echo
+echo
+progress "$script" 45
+
+
+
+itemdisp "Configuring login style..."
+sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoPixmap "/opt/trinity/share/apps/tdm/pics/tuxlogo.png"
+sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoArea Logo
+sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key GUIStyle QtCurve
+sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key BackgroundMode Flat
+sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key WallpaperMode NoWallpaper
+sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key Color1 "0,0,0"
+sudo kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFadeaway false
+sudo kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFancyLogout false
+#root ?
+sep
+echo
+echo
+echo
+progress "$script" 50
+
+
+
+
+
+itemdisp "Configuring start menu..."
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key CustomSize 32
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BourbonMenu false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key LegacyKMenu true
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Locked true
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key AutoHidePanel false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key AutoHideSwitch false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key MenubarPanelBlurred false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key MenubarPanelTransparent false
+rota
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BackgroundHide false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BourbonBoldFolders true
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ColorizeBackground true
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ExpandSize true
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowLeftHideButton false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRightHideButton false
+rota
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Size 4
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key SizePercentage 100
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintValue 99
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Transparent true
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key panelIconWidth 48
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowDeepButtons false
+rota
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowIconActivationEffect false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowLeftHideButton false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRightHideButton false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key UseSidePixmap true
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key SearchShortcut "/"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key CustomIcon "/usr/share/pixmaps/StartHere2.png"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableBrowserTiles false
+rota
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableDesktopButtonTiles false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableKMenuTiles false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableURLTiles false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableWindowListTiles false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key KMenuTile Colorize
+rota
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group buttons --key EnableIconZoom true
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group buttons --key EnableTileBackground false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group menus --key MenuEntryHeight 28
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group menus --key ShowMenuTitles false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key KMenuTileColor "218,83,34"
+if [[ $dark -eq 1 ]]
+then
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintColor "36,36,36"
+else
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintColor "255,255,255"
+fi
+#menu with categories (& kmenuedit available)
+rm -f $USER_HOME/.configtde/menus/tde-applications.menu
+rota
+echo
+printf '\e[A\e[K'
+sep
+echo
+echo
+echo
+progress "$script" 55
+
+
+
+
+
+itemdisp "Configuring windows style..."
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key widgetStyle qtcurve
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectsEnabled false
+#root
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key widgetStyle qtcurve
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectsEnabled false
+sep
+echo
+echo
+echo
+progress "$script" 60
+
+
+
+
+itemdisp "Configuring windows decoration & windows management..."
+echo
+echo -e "  \e[35m░▒▓█\033[0m installing Dekorator for trinity..."
+echo -e "${YELLOW}"
+sudo apt install -y twin-style-dekorator-trinity
+echo -e "${NOCOLOR}"
+cd theme
+if [[ $dark -eq 1 ]]
+then
+sudo tar -xzf WinTen-seb-theme-dark.tar.gz -C /opt/trinity/share/apps/deKorator/themes
+sudo tar -xzf twindeKoratorrc-dark.tar.gz -C $USER_HOME/.trinity/share/config/
+else
+sudo tar -xzf WinTen-seb-theme.tar.gz -C /opt/trinity/share/apps/deKorator/themes
+sudo tar -xzf twindeKoratorrc.tar.gz -C $USER_HOME/.trinity/share/config/
+fi
+cd ..
+echo
+echo -e "  \e[35m░▒▓█\033[0m configuring style..."
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key InactiveShadowColour "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key ShadowColour "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key PluginLib twin3_deKorator
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key BorderSize 2
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key ButtonsOnLeft "M_"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key ButtonsOnRight "IAX"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key CustomButtonPositions true
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key InactiveShadowEnabled false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key InactiveShadowOpacity 0.7
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key InactiveShadowThickness 5
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key InactiveShadowXOffset 0
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key InactiveShadowYOffset 5
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key ShadowDocks false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key ShadowEnabled false
+rota
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key ShadowOpacity 0.7
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key ShadowOverrides false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key ShadowThickness 10
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key ShadowTopMenus false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key ShadowXOffset 0
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key ShadowYOffset 10
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key ShowToolTips false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group ThirdPartyWM --key WMExecutable twin
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key ActiveWindowOpacity 90
+rota
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key ActiveWindowShadowSize 300
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key DockOpacity 80
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key DockShadowSize 0
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key InactiveWindowOpacity 85
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key InactiveWindowShadowSize 100
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key MenuShadowSize 0
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key MovingWindowOpacity 70
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key OnlyDecoTranslucent false
+rota
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key RemoveShadowsOnMove true
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key RemoveShadowsOnResize true
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key ResetKompmgr false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key TranslucentActiveWindows false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key TranslucentDocks false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key TranslucentInactiveWindows false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key TranslucentMovingWindows false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key TreatKeepAboveAsActive true
+rota
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveBorderDelay 150
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveBorders 4
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveMouseScreen false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key AltTabStyle KDE
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key AnimateMinimize false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key AnimateMinimizeSpeed 5
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key AnimateShade false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key AutoRaise off
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key BorderSnapZone 10
+rota
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ClickRaise on
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key DelayFocus off
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key DelayFocusInterval 750
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key FocusPolicy ClickToFocus
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key FocusStealingPreventionLevel 1
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key GeometryTip false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key HideUtilityWindowsForInactive true
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MaximizeButtonLeftClickCommand Maximize
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveResizeMaximizedWindows false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key Placement Smart
+rota
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ResetMaximizedWindowGeometry false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ResizeMode Transparent
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key RollOverDesktops true
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key SeparateScreenFocus false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ShadeHover off
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key SnapOnlyWhenOverlapping true
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key TitlebarDoubleClickCommand Maximize
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key WindowSnapZone 10
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveMode Opaque
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Desktops --key Number 1
+kwriteconfig --file $TDEHOME/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
+rota
+#root
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key InactiveShadowColour "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowColour "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key PluginLib twin3_deKorator
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key BorderSize 2
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ButtonsOnLeft "M_"
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ButtonsOnRight "IAX"
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key CustomButtonPositions true
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key InactiveShadowEnabled false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key InactiveShadowOpacity 0.7
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key InactiveShadowThickness 5
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key InactiveShadowXOffset 0
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key InactiveShadowYOffset 5
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowDocks false
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowEnabled false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowOpacity 0.7
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowOverrides false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowThickness 10
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowTopMenus false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowXOffset 0
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowYOffset 10
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShowToolTips false
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group ThirdPartyWM --key WMExecutable twin
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key ActiveWindowOpacity 90
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key ActiveWindowShadowSize 300
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key DockOpacity 80
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key DockShadowSize 0
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key InactiveWindowOpacity 85
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key InactiveWindowShadowSize 100
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key MenuShadowSize 0
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key MovingWindowOpacity 70
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key OnlyDecoTranslucent false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key RemoveShadowsOnMove true
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key RemoveShadowsOnResize true
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key ResetKompmgr false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key TranslucentActiveWindows false
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key TranslucentDocks false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key TranslucentInactiveWindows false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key TranslucentMovingWindows false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key TreatKeepAboveAsActive true
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveBorderDelay 150
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveBorders 4
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveMouseScreen false
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key AltTabStyle KDE
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key AnimateMinimize false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key AnimateMinimizeSpeed 5
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key AnimateShade false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key AutoRaise off
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key BorderSnapZone 10
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ClickRaise on
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key DelayFocus off
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key DelayFocusInterval 750
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key FocusPolicy ClickToFocus
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key FocusStealingPreventionLevel 1
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key GeometryTip false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key HideUtilityWindowsForInactive true
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MaximizeButtonLeftClickCommand Maximize
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveResizeMaximizedWindows false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key Placement Smart
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ResetMaximizedWindowGeometry false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ResizeMode Transparent
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key RollOverDesktops true
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key SeparateScreenFocus false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ShadeHover off
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key SnapOnlyWhenOverlapping true
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key TitlebarDoubleClickCommand Maximize
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key WindowSnapZone 10
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveMode Opaque
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Desktops --key Number 1
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
+sudo kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
+rota
+echo
+printf '\e[A\e[K'
+echo -e "  \e[35m░▒▓█\033[0m configuring GTK3 style..."
+sudo rm -rf /usr/share/themes/Q4OS02/gtk-3.0/{*,.[!.]*}
+cd theme
+if [[ $dark -eq 1 ]]
+then
+sudo tar -xzf gtk3winten-dark.tar.gz -C  /usr/share/themes/Q4OS02/gtk-3.0/
+else
+sudo tar -xzf gtk3winten.tar.gz -C  /usr/share/themes/Q4OS02/gtk-3.0/
+fi
+cd ..
+echo -e "  \e[35m░▒▓█\033[0m configuring xcompmgr..."
+cd theme
+#sudo kwriteconfig --file $USER_HOME/.xcompmgrrc --group xcompmgr --key useOpenGL true
+sudo tar -xzf xcompmgrrc.tar.gz -C $USER_HOME/
+echo -e "  \e[35m░▒▓█\033[0m configuring compton-tde..."
+sudo tar -xzf compton-tde.conf.tar.gz -C $USER_HOME/
+sudo tar -xzf compton-tde.conf.tar.gz -C /root
+cd ..
+echo -e "  \e[35m░▒▓█\033[0m disable screensaver & lock after suspend..."
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group ScreenSaver --key Enabled false
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group ScreenSaver --key Lock false
+echo -e "  \e[35m░▒▓█\033[0m Configuring Konqueror ui..."
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key AlwaysNewWin false
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key DisplayFileSizeInBytes false
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key DoubleClickMoveToParent false
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key HoverCloseButton true
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key MMBOpensTab true
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowFileTips true
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowPreviewsInFileTips true
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+rota
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key TabCloseActivatePrevious true
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key TextHeight 2
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key UnderlineLinks false
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Trash --key ConfirmDelete true
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Trash --key ConfirmTrash false
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KFileDialog Settings" --key "Automatic Preview" true
+rota
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key IconText IconOnly
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key Index 4
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Hidden true
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key IconText IconTextRight
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Index 1
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key IconText IconOnly
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key Index 2
+rota
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key IconText IconOnly
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key Index 3
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconSize 32
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconText IconTextBottom
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key Index 0
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key Offset 19
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key IconText IconTextRight
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key Index 2
+rota
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key IconText IconOnly
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key Index 4
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Hidden true
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key IconText IconTextRight
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Index 5
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Hidden true
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key IconText IconTextRight
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Index 6
+rota
+echo
+printf '\e[A\e[K'
+sep
+echo
+echo
+echo
+progress "$script" 65
+
+
+
+
+itemdisp "Configuring bouncing start indicator"
+kwriteconfig --file $TDEHOME/share/config/tdelaunchrc --group BusyCursorSettings --key Blinking false
+kwriteconfig --file $TDEHOME/share/config/tdelaunchrc --group BusyCursorSettings --key Bouncing true
+kwriteconfig --file $TDEHOME/share/config/tdelaunchrc --group BusyCursorSettings --key Timeout 12
+kwriteconfig --file $TDEHOME/share/config/tdelaunchrc --group FeedbackStyle --key BusyCursor true
+kwriteconfig --file $TDEHOME/share/config/tdelaunchrc --group FeedbackStyle --key TaskbarButton false
+sep
+echo
+echo
+echo
+progress "$script" 70
+
+
+
+
+
+
+itemdisp "Applying color scheme & wallpaper..."
+dcop kdesktop KBackgroundIface setWallpaper /opt/trinity/share/wallpapers/q4seb_hd_img22.jpg 6
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key alternateBackground "244,244,244"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key background "244,244,244"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key buttonBackground "240,240,240"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key linkColor "0,0,192"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectBackground "61,174,233"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key visitedLinkColor "128,0,128"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key windowBackground "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key buttonForeground "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key foreground "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key windowForeground "0,0,0"
+rota
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key ActiveColor "169,156,255"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key ActiveColor2 "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key DefaultColor "144,128,248"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key DefaultColor2 "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key DisabledColor "34,202,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key DisabledColor2 "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DefaultColor "144,128,248"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DefaultColor2 "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DisabledColor "34,202,0"
+rota
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DisabledColor2 "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBackground "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBlend "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeForeground "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeTitleBtnBg "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key alternateBackground "240,240,240"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key frame "240,240,240"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key handle "240,240,240"
+rota
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveBackground "239,239,239"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveBlend "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveForeground "142,142,142"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveFrame "240,240,240"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveHandle "240,240,240"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveTitleBtnBg "240,240,240"
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key NormalTextColor "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Settings --key BgColor "255,255,255"
+
+
+
+rota
+kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kate - Normal" --key "Color Background" "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kate - Normal" --key "Color Highlighted Line" "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kwrite - Normal" --key "Color Background" "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kwrite - Normal" --key "Color Highlighted Line" "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key colorScheme q4seb-color-scheme.kcsrc
+               if [[ $dark -eq 1 ]]
+               then
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key alternateBackground "32,33,34"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key background "39,41,42"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key buttonBackground "30,31,32"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key linkColor "90,130,180"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectBackground "50,70,120"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key visitedLinkColor "90,60,120"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key windowBackground "30,31,32"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key buttonForeground "180,180,180"
+rota
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key foreground "240,240,240"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key windowForeground "215,215,215"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBackground "40,40,40"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBlend "39,41,42"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeForeground "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeTitleBtnBg "40,40,40"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key alternateBackground "240,240,240"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key frame "237,249,255"
+rota
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key handle "39,41,42"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveBackground "39,41,42"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveBlend "39,41,42"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveForeground "94,104,114"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveFrame "39,41,42"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveHandle "39,41,42"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveTitleBtnBg "39,41,42"
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key NormalTextColor "255,255,255"
+rota
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Settings --key BgColor "0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key colorScheme q4seb-dark-color-scheme.kcsrc
+               fi
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key shadeSortColumn true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectsEnabled false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectFadeMenu false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectFadeTooltip false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key OpaqueResize false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key contrast 5
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key macStyle false
+rota
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key ActiveEffect none
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key ActiveSemiTransparent false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key ActiveValue 1
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key Animated false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key DefaultEffect none
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key DefaultSemiTransparent false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key DefaultValue 1
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key DisabledEffect togray
+rota
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key DisabledSemiTransparent true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key ActiveColor invalid
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key ActiveColor2 invalid
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key ActiveEffect none
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key ActiveSemiTransparent false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key ActiveValue 0
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key Animated false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DefaultEffect none
+rota
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DefaultSemiTransparent false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DefaultValue 1
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DisabledEffect togray
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DisabledSemiTransparent true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DisabledValue 1
+#root
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key alternateBackground "244,244,244"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key background "244,244,244"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key buttonBackground "240,240,240"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key linkColor "0,0,192"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key selectBackground "61,174,233"
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key visitedLinkColor "128,0,128"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key windowBackground "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key buttonForeground "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key foreground "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key windowForeground "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key Foreground "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key ActiveColor "169,156,255"
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key ActiveColor2 "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key DefaultColor "144,128,248"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key DefaultColor2 "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key DisabledColor "34,202,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key DisabledColor2 "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DefaultColor "144,128,248"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DefaultColor2 "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DisabledColor "34,202,0"
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DisabledColor2 "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeBackground "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeBlend "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeForeground "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeTitleBtnBg "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key alternateBackground "240,240,240"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key frame "240,240,240"
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key handle "240,240,240"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveBackground "239,239,239"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveBlend "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveForeground "142,142,142"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveFrame "240,240,240"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveHandle "240,240,240"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveTitleBtnBg "240,240,240"
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key NormalTextColor "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group Settings --key BgColor "255,255,255"
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kate - Normal" --key "Color Background" "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kate - Normal" --key "Color Highlighted Line" "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kwrite - Normal" --key "Color Background" "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kwrite - Normal" --key "Color Highlighted Line" "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key colorScheme q4seb-color-scheme.kcsrc
+               if [[ $dark -eq 1 ]]
+               then
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key alternateBackground "32,33,34"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key background "39,41,42"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key buttonBackground "30,31,32"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key linkColor "90,130,180"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key selectBackground "50,70,120"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key visitedLinkColor "90,60,120"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key windowBackground "30,31,32"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key buttonForeground "180,180,180"
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key foreground "240,240,240"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key windowForeground "215,215,215"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeBackground "40,40,40"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeBlend "39,41,42"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeForeground "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeTitleBtnBg "40,40,40"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key alternateBackground "240,240,240"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key frame "237,249,255"
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key handle "39,41,42"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveBackground "39,41,42"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveBlend "39,41,42"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveForeground "94,104,114"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveFrame "39,41,42"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveHandle "39,41,42"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveTitleBtnBg "39,41,42"
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key NormalTextColor "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group Settings --key BgColor "0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key colorScheme q4seb-dark-color-scheme.kcsrc
+               fi
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key shadeSortColumn true
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectsEnabled false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectFadeMenu false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectFadeTooltip false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key OpaqueResize false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key contrast 5
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key macStyle false
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key ActiveEffect none
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key ActiveSemiTransparent false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key ActiveValue 1
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key Animated false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key DefaultEffect none
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key DefaultSemiTransparent false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key DefaultValue 1
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key DisabledEffect togray
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key DisabledSemiTransparent true
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key ActiveColor invalid
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key ActiveColor2 invalid
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key ActiveEffect none
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key ActiveSemiTransparent false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key ActiveValue 0
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key Animated false
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DefaultEffect none
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DefaultSemiTransparent false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DefaultValue 1
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DisabledEffect togray
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DisabledSemiTransparent true
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DisabledValue 1
+rota
+echo
+printf '\e[A\e[K'
+sep
+echo
+echo
+echo
+progress "$script" 75
+
+
+
+
+
+
+
+itemdisp "Configuring taskbar..."
+               if [[ $dark -eq 1 ]]
+               then
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ActiveTaskTextColor "235,235,235"
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key InactiveTaskTextColor "93,93,93"
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key TaskBackgroundColor "119,119,119"
+               else
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ActiveTaskTextColor "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key InactiveTaskTextColor "195,195,195"
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key TaskBackgroundColor "255,255,255"
+               fi
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key HaloText true
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key IconSize 22
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key Q4ButtonFrameType 1
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key UseCustomColors true
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ShowButtonOnHover ""
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key HaloText true
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key CycleWheel false
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key DisplayIconsNText DisplayIconsOnly
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key MinimumButtonHeight 38
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key MinimumButtonWidth 80
+sed -i "/ShowButtonOnHover=/d" $TDEHOME/share/config/ktaskbarrc
+kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key ConserveSpace true
+kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key DragEnabled true
+kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key IconDim 32
+#echo -e ">> Wait for kicker to restart..."
+#dcop kicker kicker restart
+#sleep 10
+sep
+echo
+echo
+echo
+progress "$script" 80
+
+
+
+
+
+
+
+itemdisp "Configuring systray clock..."
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Foreground_Color "220,220,220"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Shadow_Color "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Background_Color "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Background_Color "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Font "Segoe UI,8,-1,5,63,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Foreground_Color "33,33,33"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Foreground_Color "195,195,195"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Shadow_Color "240,240,240"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Background_Color "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Foreground_Color "228,228,228"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Background_Color "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Font "Segoe UI,10,-1,5,63,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Background_Color "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Foreground_Color "1,0,0"
+if [[ $dark -eq 1 ]]
+then
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Foreground_Color "215,215,215"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Background_Color "39,41,42"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Background_Color "39,41,42"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Foreground_Color "215,215,215"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Background_Color "39,41,42"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Foreground_Color "215,215,215"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Foreground_Color "215,215,215"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Background_Color "39,41,42"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Foreground_Color "215,215,215"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Background_Color "39,41,42"
+fi
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Antialias 2
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key LCD_Style false
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Show_Seconds false
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Show_Date false
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Show_Date true
+sudo sed -i '/Type=/d' $USER_HOME/.trinity/share/config/clock_panelapplet_rc
+sudo sed -i '/Use_Shadow=/d' $USER_HOME/.trinity/share/config/clock_panelapplet_rc
+sep
+echo
+echo
+echo
+progress "$script" 85
+
+
+
+
+
+
+
+itemdisp "Configuring fonts"
+kwriteconfig --file $TDEHOME/share/config/kcmfonts --group General --key dontChangeAASettings true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key fixed "Droid Sans Mono,9,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key font "Segoe UI,10,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key menuFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key taskbarFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key toolBarFont "Segoe UI,9,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
+kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-font-name "Segoe UI 10"
+kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-font-name "Segoe UI 10"
+sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
+sed -i '/font_name="/c\font_name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
+sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "/root/.config/xsettingsd/xsettingsd.conf"
+sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key FailFont "Segoe UI,9,-1,5,75,0,0,0,0,0"
+sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key StdFont "Segoe UI,9,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key GreetFont=Segoe UI,12,-1,5,75,0,0,0,0,0
+#root
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key fixed "Droid Sans Mono,9,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key font "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key menuFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key taskbarFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key toolBarFont "Segoe UI,9,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdesktoprc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
+sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-font-name "Segoe UI 10"
+sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-font-name "Segoe UI 10"
+sudo sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' /root/.gtkrc-q4os > /dev/null 2>&1
+sudo sed -i '/font_name="/c\font_name="Segoe UI 10"' /root/.gtkrc-q4os > /dev/null 2>&1
+sep
+echo
+echo
+echo
+progress "$script" 90
+
+
+
+itemdisp "Configuring icons..."
+if [[ $dark -eq 1 ]]
+then
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme kdeten_dark
+kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
+kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
+sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="Windows10Light"' $USER_HOME/.gtkrc-q4os
+#root
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group Icons --key Theme kdeten_dark
+sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
+sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
+sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="Windows10Light"' /root/.gtkrc-q4os
+else
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme kdeten_light
+kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
+kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
+sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="Windows10Light"' $USER_HOME/.gtkrc-q4os
+#root
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group Icons --key Theme kdeten_light
+sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
+sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
+sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="Windows10Light"' /root/.gtkrc-q4os
+fi
+
+sep
+echo
+echo
+echo
+progress "$script" 95
+
+
+
+
+#itemdisp "Cleaning directories..."
+#echo
+#sep
+#echo
+#echo
+echo
+progress "$script" 100
+alldone
+
+echo
+echo -e "\e[5m~~ reboot is required ~~\e[25m"
+echo
+echo " > Do you want to reboot right now ? (y/n)" && read x && [[ "$x" == "y" ]] && sudo /sbin/reboot;
+echo
+
+wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
+
+
