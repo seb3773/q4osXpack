@@ -12,10 +12,6 @@ BLUE='\033[0;96m'
 SEPL="${ORANGE}════════════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
 echo "${RED}== ${BLUE}\e[1m\e[4mTuning kernel command line..\e[21m"
 echo "${SEPL}"
-\cp /etc/default/grub "/etc/default/grub_$(date +"%Y-%m-%d_%I-%M%p").bkp"
-cd ..
-\cp /etc/default/grub "backups/grub_$(date +"%Y-%m-%d_%I-%M%p").bkp"
-cd perfs
 #GRUB_TIMEOUT
 if ! grep -q "GRUB_TIMEOUT=" "/etc/default/grub"; then
 echo 'GRUB_TIMEOUT="4"' | sudo tee -a /etc/default/grub
