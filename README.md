@@ -26,6 +26,30 @@ You will have the option to create a swap file for hibernation, and it will then
 
 ¤¤ Please note that these scripts were designed for my own usage, never thought of sharing them at the first place, but it may be of interest for some other people... But they reflects my choices, so maybe not yours. Please take a look a the source of the scripts before trying them, and you're welcome to modify or improve them for you :)    ¤¤¤
 
+______________________________________________________________________________________________________________________________________
+Installation:
+
+Clone the repository:
+git clone https://github.com/seb3773/Q4OSseb
+
+Then go to the new folder:
+cd q4seb/
+
+Make the scripts executables:
+sudo chmod +x *.sh
+
+And then launch the script you want, for example Qtheme:
+./qtheme.sh
+ 
+
+Parameters for all apps:  -h   (display a little description of the script)
+
+Parameters for Qtheme:
+                          -L (light theme, default if nothing specified)
+                          -d (dark theme)
+
+
+
 
 
 
