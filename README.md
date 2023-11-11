@@ -21,7 +21,7 @@ You will have the option to create a swap file for hibernation, and it will then
 
 -Apps installed by default: GIT, Ark (archive manager), Dolphin trinity, Baobab (disk usage), system-config-printer, flashfetch (fast cli system info), Stacer, Bleachbit, vlc, Kolourpaint,KCharSelect,Ksnapshot,knote. [some of them could be already installed, depending of your Q4os profile choice at install]
 
--Apps with choice to install: qbittorent, spotify, gparted, S4 Snapshot, remmina ? (rdp / vnc / ssh remote desktop client), free office, bpytop (improved htop).
+-Apps with choice to install: qbittorent, spotify, gparted, S4 Snapshot, remmina (rdp / vnc / ssh remote desktop client), free office, bpytop (improved htop).
 
 
 ¤¤ Please note that these scripts were designed for my own usage, and only for Q4OS, never thought of sharing them at the first place, but it may be of interest for some other people... Please be aware that they reflects my choices, so maybe not yours. Please take a look a the sources of the scripts before trying them, you're welcome to modify or improve them for you :)    ¤¤¤
