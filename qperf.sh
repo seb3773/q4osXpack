@@ -29,30 +29,27 @@ begin "$script"
 
 progress "$script" 0
 #set perms
-sudo chmod +x perfs/check_x86-64_psabi.sh
-sudo chmod +x perfs/perfgrub
-sudo chmod +x perfs/repository.sh
+sudo chmod +x perfs/check_x86-64_psabi.sh perfs/perfgrub perfs/repository.sh
+
+create_backup() {
+    local backup_path="backups/$now/$1.tar.gz"
+    sudo tar -zcvf "$backup_path" "$2" > /dev/null 2>&1
+    rota
+}
 
 #CREATE BACKUP FOLDER & backup files to be modified
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")
-sudo mkdir "backups/$now" > /dev/null 2>&1
-sudo tar -zcvf "backups/$now/grub.tar.gz" /etc/default/grub > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/system.conf.tar.gz" /etc/systemd/system.conf > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/limits.conf.tar.gz" /etc/security/limits.conf > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/fstab.tar.gz" /etc/fstab > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/Xsession.tar.gz" /etc/X11/Xsession > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/klipperrc.tar.gz" $USER_HOME/.trinity/share/config/klipperrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/initramfs.conf.tar.gz" /etc/initramfs-tools/initramfs.conf > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/getty.tar.gz" /sbin/getty > /dev/null 2>&1
-rota
+sudo mkdir -p "backups/$now" > /dev/null 2>&1
+create_backup "grub" "/etc/default/grub"
+create_backup "system.conf" "/etc/systemd/system.conf"
+create_backup "limits.conf" "/etc/security/limits.conf"
+create_backup "fstab" "/etc/fstab"
+create_backup "Xsession" "/etc/X11/Xsession"
+create_backup "klipperrc" "$USER_HOME/.trinity/share/config/klipperrc"
+create_backup "initramfs.conf" "/etc/initramfs-tools/initramfs.conf"
+create_backup "getty" "/sbin/getty"
+
 
 sudo \cp common/restore "backups/restore_$now"
 sudo sed -i "s/XxXxXxXxX/$now/g" "backups/restore_$now"
