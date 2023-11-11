@@ -833,6 +833,13 @@ sudo rm -f /opt/trinity/share/apps/ksmserver/pics/shutdown.jpg
 #tdmtheme
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key UseTheme true
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key Theme "/opt/trinity/share/apps/tdm/themes/windows"
+
+Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
+if (( $Xres < 1920 )); then
+cd theme
+tar -xzf tdm_windows_lowres.tar.gz -C /opt/trinity/share/apps/tdm/themes/windows/
+cd ..
+fi
 sep
 echo
 echo
