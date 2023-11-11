@@ -29,22 +29,25 @@ begin "$script"
 progress "$script" 0
 #set perms
 sudo chmod +x laptop/tlpui_setup.sh
+
+create_backup() {
+    local backup_path="backups/$now/$1.tar.gz"
+    sudo tar -zcvf "$backup_path" "$2" > /dev/null 2>&1
+    rota
+}
+
 #CREATE BACKUP FOLDER & backup files to be modified
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")
-sudo mkdir "backups/$now" > /dev/null 2>&1
-sudo tar -zcvf "backups/$now/60-libinput.conf.tar.gz" /etc/X11/xorg.conf.d/60-libinput.conf > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/logind.conf.tar.gz" /etc/systemd/logind.conf > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/grub.tar.gz" /etc/default/grub > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/sleep.conf.tar.gz" /etc/systemd/sleep.conf > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/systemd-suspend.service.tar.gz" /lib/systemd/system/systemd-suspend.service > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/logind.tar.gz" /etc/systemd/logind.conf > /dev/null 2>&1
-rota
+sudo mkdir -p "backups/$now" > /dev/null 2>&1
+
+create_backup "60-libinput.conf" "/etc/X11/xorg.conf.d/60-libinput.conf"
+create_backup "logind.conf" "/etc/systemd/logind.conf"
+create_backup "grub" "/etc/default/grub"
+create_backup "sleep.conf" "/etc/systemd/sleep.conf"
+create_backup "systemd-suspend.service" "/lib/systemd/system/systemd-suspend.service"
+create_backup "logind" "/etc/systemd/logind.conf"
+
 sudo \cp common/restore "backups/restore_$now"
 sudo sed -i "s/XxXxXxXxX/$now/g" "backups/restore_$now"
 sudo chmod +x "backups/restore_$now"
