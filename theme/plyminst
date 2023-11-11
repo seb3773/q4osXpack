@@ -1,0 +1,27 @@
+#!/bin/sh
+#check root
+if [ "$(id -u)" -ne 0 ]; then
+        echo 'This script must be run by root' >&2
+        exit 1
+fi
+#
+NOCOLOR='\033[0m'
+RED='\033[0;31m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;96m'
+YELLOW='\033[0;93m'
+SEPL="${ORANGE}════════════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
+echo "${RED}== ${BLUE}\e[1m\e[4mInstall plymouth...\e[21m"
+echo "${SEPL}"
+if ! (cat packages_list.tmp | grep -q tdmtheme-trinity); then
+echo "${YELLOW}"
+sudo apt-get -y install plymouth plymouth-themes
+echo "${NOCOLOR}"
+else
+echo "${ORANGE}      ¤ Already installed."
+fi
+echo "${BLUE}----------------------------------------------------------------"
+echo "----------------------------------------------------------------${NOCOLOR}"
+echo
+echo
+echo
