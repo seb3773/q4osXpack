@@ -39,7 +39,7 @@ begin "$script"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 progress "$script" 0
 #set perms
-sudo chmod +x theme/plyminst theme/plymthinst theme/grubthinst theme/shutimg theme/grubscripts theme/themegrub theme/copyfiles
+sudo chmod +x theme/plyminst theme/plymthinst theme/grubthinst theme/shutimg theme/grubscripts theme/themegrub theme/copyfiles theme/pklist
 
 create_backup() {
     local backup_path="backups/$now/$1.tar.gz"
