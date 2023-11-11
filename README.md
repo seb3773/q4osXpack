@@ -1,6 +1,5 @@
 # Q4OSseb
 
-
 Scripts to reconfigure a bit Q4OS Trinity to fit my needs. (theming, performances, laptop configuration and 'defaults' applications selected by me).
 They were designed for Q4OS Aquarius 64bits, but I think nothing prevents the main parts to work with a 32bits version. Please report to me if there are problems.
 I don't think it will work 'as is' on another distribution using Trinity, but you can try :p
