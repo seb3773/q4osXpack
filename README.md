@@ -33,7 +33,7 @@ Clone the repository:
 git clone https://github.com/seb3773/Q4OSseb
 
 Then go to the new folder:
-cd q4seb/
+cd Q4OSseb/
 
 Make the scripts executables:
 sudo chmod +x *.sh
