@@ -144,6 +144,8 @@ sudo tar -zcvf "backups/$now/knotify.eventsrc.tar.gz" $TDEHOME/share/config/knot
 rota
 sudo tar -zcvf "backups/$now/sounds.tar.gz" /opt/trinity/share/sounds/ > /dev/null 2>&1
 rota
+sudo tar -zcvf "backups/$now/shutdown_img.tar.gz" /opt/trinity/share/apps/tdm/pics/shutdown.jpg > /dev/null 2>&1
+rota
 #
 #.trinity/share/config/ksmserverrc
 #
@@ -164,8 +166,12 @@ printf '\e[A\e[K'
 echo
 echo
 
-
+echo -e "    ${ORANGE}░▒▓█\033[0m Retrieve packages list..."
+echo
 cd theme
+sudo ./pklist
+#---------------------------------------**********************************************************************************
+#****************************************************************************************************************************
 sudo ./plyminst
 progress "$script" 5
 sudo ./plymthinst
@@ -184,23 +190,26 @@ cd ..
 
 
 itemdisp "Configuring start screen..."
-kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme None
+kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme Unified
 sep
 echo
 echo
 echo
 progress "$script" 40
 
-
 itemdisp "Configuring pointers & set acceleration to 1"
 #pointer size
 if ! grep -q "Xcursor.size" "$USER_HOME/.Xresources"; then
-echo "Xcursor.size: 40" | sudo tee -a $USER_HOME/.Xresources
+echo "Xcursor.size: 32" | sudo tee -a $USER_HOME/.Xresources
 fi
-sudo sed -i "/Xcursor.size:/c\Xcursor.size: 40" $USER_HOME/.Xresources
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: 32" $USER_HOME/.Xresources
+#Xcursor.theme: Windows10Light ?
 #
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key Acceleration 1
+kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key Acceleration 1
+
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 #root
@@ -221,21 +230,7 @@ progress "$script" 45
 
 
 
-itemdisp "Configuring login style..."
-sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoPixmap "/opt/trinity/share/apps/tdm/pics/tuxlogo.png"
-sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoArea Logo
-sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key GUIStyle QtCurve
-sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key BackgroundMode Flat
-sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key WallpaperMode NoWallpaper
-sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key Color1 "0,0,0"
-sudo kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFadeaway false
-sudo kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFancyLogout false
-#root ?
-sep
-echo
-echo
-echo
-progress "$script" 50
+
 
 
 
@@ -279,6 +274,9 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key En
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableWindowListTiles false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key KMenuTile Colorize
 rota
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key UseSearchBar true
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group menus --key RecentVsOften true
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group menus --key NumVisibleEntries 5
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group buttons --key EnableIconZoom true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group buttons --key EnableTileBackground false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group menus --key MenuEntryHeight 28
@@ -288,7 +286,7 @@ if [[ $dark -eq 1 ]]
 then
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintColor "36,36,36"
 else
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintColor "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintColor "248,248,248"
 fi
 #menu with categories (& kmenuedit available)
 rm -f $USER_HOME/.configtde/menus/tde-applications.menu
@@ -299,7 +297,7 @@ sep
 echo
 echo
 echo
-progress "$script" 55
+progress "$script" 50
 
 
 
@@ -317,7 +315,7 @@ sep
 echo
 echo
 echo
-progress "$script" 60
+progress "$script" 55
 
 
 
@@ -325,9 +323,13 @@ progress "$script" 60
 itemdisp "Configuring windows decoration & windows management..."
 echo
 echo -e "  \e[35m░▒▓█\033[0m installing Dekorator for trinity..."
+if ! (cat theme/packages_list.tmp | grep -q twin-style-dekorator-trinity); then
 echo -e "${YELLOW}"
 sudo apt install -y twin-style-dekorator-trinity
 echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed."
+fi
 cd theme
 if [[ $dark -eq 1 ]]
 then
@@ -570,7 +572,7 @@ sep
 echo
 echo
 echo
-progress "$script" 65
+progress "$script" 60
 
 
 
@@ -585,7 +587,7 @@ sep
 echo
 echo
 echo
-progress "$script" 70
+progress "$script" 65
 
 
 
@@ -593,7 +595,15 @@ progress "$script" 70
 
 
 itemdisp "Applying color scheme & wallpaper..."
-dcop kdesktop KBackgroundIface setWallpaper /opt/trinity/share/wallpapers/q4seb_hd_img22.jpg 6
+wallpw=$(( $RANDOM % 2 ));wallpn=$(( $RANDOM % 4 + 1 ))
+if [ $wallpw -eq 1 ]; then
+winn=11
+else
+winn=10
+fi
+swps="_"
+rwallp=q4seb_4k_win$winn$swps$wallpn.jpg
+dcop kdesktop KBackgroundIface setWallpaper /opt/trinity/share/wallpapers/$rwallp 6
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key alternateBackground "244,244,244"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key background "244,244,244"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key buttonBackground "240,240,240"
@@ -821,6 +831,59 @@ sep
 echo
 echo
 echo
+progress "$script" 70
+
+
+
+
+
+
+
+itemdisp "Configuring login style..."
+echo
+echo -e "  \e[35m░▒▓█\033[0m installing tdmtheme-trinity..."
+if ! (cat theme/packages_list.tmp | grep -q tdmtheme-trinity ); then
+echo -e "${YELLOW}"
+sudo apt install -y tdmtheme-trinity
+echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed."
+fi
+echo -e "  \e[35m░▒▓█\033[0m installing imagemagick..."
+if ! (cat theme/packages_list.tmp | grep -q imagemagick ); then
+echo -e "${YELLOW}"
+sudo apt install -y imagemagick
+echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed."
+fi
+echo -e "  \e[35m░▒▓█\033[0m configuring wallpaper for login"
+sudo convert /opt/trinity/share/wallpapers/$rwallp -filter Gaussian -blur 0x55 /opt/trinity/share/apps/tdm/themes/windows/background.jpg
+#test dark or light
+#lightamount=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -threshold 50% -format "%[fx:100*image.mean]" info:)
+#if (( $(echo "$lightamount > 50" | bc -l) )); then
+#sudo sed -i '/<normal font="Segoe UI 58" color=/c\<normal font="Segoe UI 58" color="#000000"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+#sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#000000" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+#fi
+#sudo \cp /opt/trinity/share/wallpapers/$rwallp /opt/trinity/share/apps/ksplash/Themes/Redmond10/Background.png
+sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoPixmap "/opt/trinity/share/apps/tdm/pics/tuxlogo.png"
+sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoArea Logo
+sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key GUIStyle QtCurve
+sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key BackgroundMode Flat
+sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key WallpaperMode NoWallpaper
+sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key Color1 "0,0,0"
+sudo kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFadeaway false
+sudo kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFancyLogout false
+
+sudo rm -f /opt/trinity/share/apps/tdm/pics/shutdown.jpg
+sudo rm -f /opt/trinity/share/apps/ksmserver/pics/shutdown.jpg
+#tdmtheme
+sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key UseTheme true
+sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key Theme "/opt/trinity/share/apps/tdm/themes/windows"
+sep
+echo
+echo
+echo
 progress "$script" 75
 
 
@@ -854,6 +917,26 @@ sed -i "/ShowButtonOnHover=/d" $TDEHOME/share/config/ktaskbarrc
 kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key ConserveSpace true
 kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key DragEnabled true
 kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key IconDim 32
+####kwriteconfig --file $TDEHOME/share/config/kickerrc --group Applet_1 --key 'ConfigFile[$e]' taskbar_panelapplet_rc
+#..
+sed -i '/^ConfigFile\[/d' $TDEHOME/share/config/kickerrc
+sed -i '/^DesktopFile\[/d' $TDEHOME/share/config/kickerrc
+sed -i '/^FreeSpace2=/d' $TDEHOME/share/config/kickerrc
+sed -i '/^WidthForHeightHint=/d' $TDEHOME/share/config/kickerrc
+sed -i '/^\[KMenuButton_1\]/d' $TDEHOME/share/config/kickerrc
+sed -i '/^\[WindowListButton_1\]/d' $TDEHOME/share/config/kickerrc
+sed -i '/^\[ExtensionButton_1\]/d' $TDEHOME/share/config/kickerrc
+sed -i '/^\[Applet_1\]/d' $TDEHOME/share/config/kickerrc
+sed -i '/^\[Applet_2\]/d' $TDEHOME/share/config/kickerrc
+sed -i '/^\[Applet_3\]/d' $TDEHOME/share/config/kickerrc
+sed -i '/^\[Applet_4\]/d' $TDEHOME/share/config/kickerrc
+sed -i '/^\[Applet_5\]/d' $TDEHOME/share/config/kickerrc
+sed -i '/^\[Applet_6\]/d' $TDEHOME/share/config/kickerrc
+sed -i '/^\[Applet_7\]/d' $TDEHOME/share/config/kickerrc
+sed -i '/^\[Applet_8\]/d' $TDEHOME/share/config/kickerrc
+sed -i '/^\[Applet_9\]/d' $TDEHOME/share/config/kickerrc
+cat theme/kickpart >> $TDEHOME/share/config/kickerrc
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Applets2 "KMenuButton_1,ExtensionButton_1,WindowListButton_1,Applet_4,Applet_1,Applet_2,Applet_3,Applet_5"
 #echo -e ">> Wait for kicker to restart..."
 #dcop kicker kicker restart
 #sleep 10
@@ -872,30 +955,30 @@ progress "$script" 80
 itemdisp "Configuring systray clock..."
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Foreground_Color "220,220,220"
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Shadow_Color "255,255,255"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Background_Color "255,255,255"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Background_Color "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Background_Color invalid
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Background_Color invalid
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Font "Segoe UI,8,-1,5,63,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Foreground_Color "33,33,33"
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Foreground_Color "195,195,195"
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Shadow_Color "240,240,240"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Background_Color "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Background_Color invalid
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Foreground_Color "228,228,228"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Background_Color "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Background_Color invalid
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Font "Segoe UI,10,-1,5,63,0,0,0,0,0"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Background_Color "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Background_Color invalid
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Foreground_Color "1,0,0"
 if [[ $dark -eq 1 ]]
 then
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Foreground_Color "215,215,215"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Background_Color "39,41,42"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Background_Color "39,41,42"
+#kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Background_Color "39,41,42"
+#kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Background_Color "39,41,42"
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Foreground_Color "215,215,215"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Background_Color "39,41,42"
+#kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Background_Color "39,41,42"
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Foreground_Color "215,215,215"
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Foreground_Color "215,215,215"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Background_Color "39,41,42"
+#kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Background_Color "39,41,42"
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Foreground_Color "215,215,215"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Background_Color "39,41,42"
+#kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Background_Color "39,41,42"
 fi
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Antialias 2
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key LCD_Style false
@@ -931,7 +1014,7 @@ sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sed -i '/font_name="/c\font_name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "/root/.config/xsettingsd/xsettingsd.conf"
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key FailFont "Segoe UI,9,-1,5,75,0,0,0,0,0"
-sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key StdFont "Segoe UI,9,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key StdFont "Segoe UI,18,-1,5,50,0,0,0,0,0"
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key GreetFont=Segoe UI,12,-1,5,75,0,0,0,0,0
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key fixed "Droid Sans Mono,9,-1,5,50,0,0,0,0,0"
@@ -986,11 +1069,12 @@ progress "$script" 95
 
 
 
-#itemdisp "Cleaning directories..."
-#echo
-#sep
-#echo
-#echo
+itemdisp "Cleaning directories..."
+rm -f theme/packages_list.tmp
+echo
+sep
+echo
+echo
 echo
 progress "$script" 100
 alldone
