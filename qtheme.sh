@@ -39,113 +39,66 @@ begin "$script"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 progress "$script" 0
 #set perms
-sudo chmod +x theme/plyminst
-sudo chmod +x theme/plymthinst
-sudo chmod +x theme/grubthinst
-sudo chmod +x theme/shutimg
-sudo chmod +x theme/grubscripts
-sudo chmod +x theme/themegrub
-sudo chmod +x theme/copyfiles
+sudo chmod +x theme/plyminst theme/plymthinst theme/grubthinst theme/shutimg theme/grubscripts theme/themegrub theme/copyfiles
+
+create_backup() {
+    local backup_path="backups/$now/$1.tar.gz"
+    sudo tar -zcvf "$backup_path" "$2" > /dev/null 2>&1
+    rota
+}
+
 #CREATE BACKUP FOLDER & backup files to be modified
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")
-sudo mkdir "backups/$now" > /dev/null 2>&1
-sudo tar -zcvf "backups/$now/shutimg.tar.gz" /opt/trinity/share/apps/ksmserver/pics/shutdownkonq2.png > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/grub.tar.gz" /etc/default/grub > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/konq_fm_entries.tar.gz" $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/ > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/ksides.tar.gz" /opt/trinity/share/apps/kicker/pics/kside*.* > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/qtcurve_stylerc.tar.gz" $USER_HOME/.configtde/qtcurve/stylerc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/tde_stylerc_qt.tar.gz" $USER_HOME/.qt/tdestylerc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/tde_stylerc_tqt3.tar.gz" /etc/tqt3/tdestylerc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/qtrc_qt.tar.gz" $USER_HOME/.qt/qtrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/qtrc_tqt3.tar.gz" /etc/tqt3/qtrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/ksplashrc.tar.gz" $USER_HOME/.trinity/share/config/ksplashrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/kcminputrc.tar.gz" $TDEHOME/share/config/kcminputrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/kcminputrc_root.tar.gz" /root/.config/kcminputrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/gtk3_settings_tde.tar.gz" $USER_HOME/.configtde/gtk-3.0/settings.ini > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/gtk3_settings.tar.gz" $USER_HOME/.config/gtk-3.0/settings.ini > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/gtk3_settings_tde_root.tar.gz" /root/.configtde/gtk-3.0/settings.ini > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/gtk3_settings_root.tar.gz" /root/.config/gtk-3.0/settings.ini > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/tdmrc.tar.gz" /etc/trinity/tdm/tdmrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/backgroundrc.tar.gz" /etc/trinity/tdm/backgroundrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/ksmserverrc.tar.gz" $TDEHOME/share/config/ksmserverrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/kickerrc.tar.gz" $TDEHOME/share/config/kickerrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/configtde_menu.tar.gz" $USER_HOME/.configtde/menus/ > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/kdeglobals.tar.gz" $TDEHOME/share/config/kdeglobals > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/kdeglobals_root.tar.gz" /root/.trinity/share/config/kdeglobals > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/twindeKoratorrc.tar.gz" $USER_HOME/.trinity/share/config/twindeKoratorrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/twinrc.tar.gz" $TDEHOME/share/config/twinrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/twinrc_root.tar.gz" /root/.trinity/share/config/twinrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/GTK3-Q4OS02.tar.gz" /usr/share/themes/Q4OS02/gtk-3.0 > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/xcompmgrrc.tar.gz" $USER_HOME/.xcompmgrrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/compton-tde.tar.gz" $USER_HOME/.compton-tde.conf > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/compton-tde_root.tar.gz" /root/.compton-tde.conf > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/kdesktoprc.tar.gz" $TDEHOME/share/config/kdesktoprc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/tdelaunchrc.tar.gz" $TDEHOME/share/config/tdelaunchrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/kateschemarc.tar.gz" $TDEHOME/share/config/kateschemarc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/kateschemarc_root.tar.gz" /root/.trinity/share/config/kateschemarc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/konquerorrc_config.tar.gz" $TDEHOME/share/config/konquerorrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/konquerorrc_apps.tar.gz" $TDEHOME/share/apps/konqueror/ > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/konquerorrc_root.tar.gz" /root/.trinity/share/config/konquerorrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/ktaskbarrc.tar.gz" $TDEHOME/share/config/ktaskbarrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/clock_panelapplet_rc.tar.gz" $TDEHOME/share/config/clock_panelapplet_rc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/kcmfonts.tar.gz" $USER_HOME/.trinity/share/config/kcmfonts > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/gtkrc-q4os.tar.gz" $USER_HOME/.gtkrc-q4os > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/gtkrc-q4os_root.tar.gz" /root/.gtkrc-q4os > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/launcher_panelapplet_rc.tar.gz" $TDEHOME/share/config/launcher_panelapplet_modernui_rc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/Xresources.tar.gz" $USER_HOME/.Xresources > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/x-cursor-theme.tar.gz"  /etc/alternatives/x-cursor-theme > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/knotify.eventsrc.tar.gz" $TDEHOME/share/config/knotify.eventsrc > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/sounds.tar.gz" /opt/trinity/share/sounds/ > /dev/null 2>&1
-rota
-sudo tar -zcvf "backups/$now/shutdown_img.tar.gz" /opt/trinity/share/apps/tdm/pics/shutdown.jpg > /dev/null 2>&1
-rota
+sudo mkdir -p "backups/$now" > /dev/null 2>&1
+create_backup "shutimg" "/opt/trinity/share/apps/ksmserver/pics/shutdownkonq2.png"
+create_backup "grub" "/etc/default/grub"
+create_backup "konq_fm_entries" "$USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/"
+create_backup "ksides_pics" "/opt/trinity/share/apps/kicker/pics/kside*.*"
+create_backup "qtcurve_stylerc" "$USER_HOME/.configtde/qtcurve/stylerc"
+create_backup "tde_stylerc_qt" "$USER_HOME/.qt/tdestylerc"
+create_backup "tde_stylerc_tqt3" "/etc/tqt3/tdestyler"
+create_backup "qtrc_qt" "$USER_HOME/.qt/qtrc"
+create_backup "qtrc_tqt3" "/etc/tqt3/qtrc"
+create_backup "ksplashrc" "$USER_HOME/.trinity/share/config/ksplashrc"
+create_backup "kcminputrc" "$TDEHOME/share/config/kcminputrc"
+create_backup "kcminputrc_root" "/root/.config/kcminputrc"
+create_backup "gtk3_settings_tde" "$USER_HOME/.configtde/gtk-3.0/settings.ini"
+create_backup "gtk3_settings" "$USER_HOME/.config/gtk-3.0/settings.ini"
+create_backup "gtk3_settings_tde_root" "/root/.configtde/gtk-3.0/settings.ini"
+create_backup "gtk3_settings_root" "/root/.config/gtk-3.0/settings.ini"
+create_backup "tdmrc" "/etc/trinity/tdm/tdmrc"
+create_backup "backgroundrc" "/etc/trinity/tdm/backgroundrc"
+create_backup "ksmserverrc" "$TDEHOME/share/config/ksmserverrc"
+create_backup "kickerrc" "$TDEHOME/share/config/kickerrc"
+create_backup "configtde_menu" "$USER_HOME/.configtde/menus/"
+create_backup "kdeglobals" "$TDEHOME/share/config/kdeglobals"
+create_backup "kdeglobals_root" "/root/.trinity/share/config/kdeglobals"
+create_backup "twindeKoratorrc" "$USER_HOME/.trinity/share/config/twindeKoratorrc"
+create_backup "twinrc" "$TDEHOME/share/config/twinrc"
+create_backup "twinrc_root" "/root/.trinity/share/config/twinrc"
+create_backup "GTK3-Q4OS02" "/usr/share/themes/Q4OS02/gtk-3.0"
+create_backup "xcompmgrrc" "$USER_HOME/.xcompmgrrc"
+create_backup "compton-tde" "$USER_HOME/.compton-tde.conf"
+create_backup "compton-tde_root" "/root/.compton-tde.conf"
+create_backup "kdesktoprc" "$TDEHOME/share/config/kdesktoprc"
+create_backup "tdelaunchrc" "$TDEHOME/share/config/tdelaunchrc"
+create_backup "kateschemarc" "$TDEHOME/share/config/kateschemarc"
+create_backup "kateschemarc_root" "/root/.trinity/share/config/kateschemarc"
+create_backup "konquerorrc_config" "$TDEHOME/share/config/konquerorrc"
+create_backup "konquerorrc_apps" "$TDEHOME/share/apps/konqueror/"
+create_backup "konquerorrc_root" "/root/.trinity/share/config/konquerorrc"
+create_backup "ktaskbarrc" "$TDEHOME/share/config/ktaskbarrc"
+create_backup "clock_panelapplet_rc" "$TDEHOME/share/config/clock_panelapplet_rc"
+create_backup "kcmfonts" "$USER_HOME/.trinity/share/config/kcmfonts"
+create_backup "gtkrc-q4os" "$USER_HOME/.gtkrc-q4os"
+create_backup "gtkrc-q4os_root" "/root/.gtkrc-q4os"
+create_backup "launcher_panelapplet_rc" "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
+create_backup "Xresources" "$USER_HOME/.Xresources"
+create_backup "x-cursor-theme" "/etc/alternatives/x-cursor-theme"
+create_backup "knotify.eventsrc" "$TDEHOME/share/config/knotify.eventsrc"
+create_backup "sounds" "/opt/trinity/share/sounds/"
+create_backup "shutdown_img" "/opt/trinity/share/apps/tdm/pics/shutdown.jpg"
 #
 #.trinity/share/config/ksmserverrc
 #
@@ -1070,7 +1023,7 @@ progress "$script" 95
 
 
 itemdisp "Cleaning directories..."
-rm -f theme/packages_list.tmp
+sudo rm -f theme/packages_list.tmp
 echo
 sep
 echo
