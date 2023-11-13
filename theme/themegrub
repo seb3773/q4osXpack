@@ -30,9 +30,9 @@ fi
 sudo sed -i '/GRUB_TIMEOUT=/c\GRUB_TIMEOUT="5"' /etc/default/grub
 #GRUB_BACKGROUND
 if ! grep -q "GRUB_BACKGROUND=" "/etc/default/grub"; then
-echo 'GRUB_BACKGROUND="/usr/share/grub/themes/Xenlism-Debian/background.png"' | sudo tee -a /etc/default/grub
+echo 'GRUB_BACKGROUND="/usr/share/grub/themes/q4os_seb/background.png"' | sudo tee -a /etc/default/grub
 fi
-sudo sed -i '/GRUB_BACKGROUND=/c\GRUB_BACKGROUND="/usr/share/grub/themes/Xenlism-Debian/background.png"' /etc/default/grub
+sudo sed -i '/GRUB_BACKGROUND=/c\GRUB_BACKGROUND="/usr/share/grub/themes/q4os_seb/background.png"' /etc/default/grub
 #GRUB_TERMINAL
 sudo sed -i '/GRUB_TERMINAL=/c\#GRUB_TERMINAL="console"' /etc/default/grub
 #GRUB_GFXMODE
@@ -47,9 +47,9 @@ fi
 sudo sed -i '/GRUB_DISABLE_RECOVERY=/c\GRUB_DISABLE_RECOVERY="true"' /etc/default/grub
 #GRUB_THEME
 if ! grep -q "GRUB_THEME=" "/etc/default/grub"; then
-echo 'GRUB_THEME="/usr/share/grub/themes/Xenlism-Debian/theme.txt"' | sudo tee -a /etc/default/grub
+echo 'GRUB_THEME="/usr/share/grub/themes/q4os_seb/theme.txt"' | sudo tee -a /etc/default/grub
 fi
-sudo sed -i '/GRUB_THEME=/c\GRUB_THEME="/usr/share/grub/themes/Xenlism-Debian/theme.txt"' /etc/default/grub
+sudo sed -i '/GRUB_THEME=/c\GRUB_THEME="/usr/share/grub/themes/q4os_seb/theme.txt"' /etc/default/grub
 
 
 #GRUB_CMDLINE_LINUX_DEFAULT

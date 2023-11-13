@@ -45,10 +45,14 @@ if [ -d "/opt/program_files/q4os-update-manager" ]; then
 if [ $1 -eq 1 ]
 then
 tar -xzf update_manager-dark.tar.gz -C /opt/program_files/q4os-update-manager/share/icons/hicolor/
+if [ -d "/usr/share/icons/Adwaita" ]; then
 tar -xzf updatemanager_adwaita-dark.tar.gz -C /usr/share/icons/Adwaita/
+fi
 else
 tar -xzf update_manager.tar.gz -C /opt/program_files/q4os-update-manager/share/icons/hicolor/
+if [ -d "/usr/share/icons/Adwaita" ]; then
 tar -xzf updatemanager_adwaita.tar.gz -C /usr/share/icons/Adwaita/
+fi
 fi
 fi
 
