@@ -1,0 +1,35 @@
+#!/bin/bash
+backupfold="XxXxXxXxX"
+script="Restoring backup"
+cd ..
+source common/begin
+source common/progress
+begin "$script" backup
+cd backups
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+itemdisp "Restoring backup $backupfold ..."
+echo -e "${BLUE}"
+cd "$backupfold"
+for file in *.tar.gz; do sudo tar -zxf "$file" -C /;rota;done
+echo
+printf '\e[A\e[K'
+echo
+echo -e "${NOCOLOR}"
+echo done.
+echo
+echo
+echo -e "\e[5m~~ reboot is required ~~\e[25m"
+echo
+echo " > Do you want to reboot right now ? (y/n)" && read x && [[ "$x" == "y" ]] && sudo /sbin/reboot;
+echo
+
+
+
+
+
+
+
+
+
+
+
