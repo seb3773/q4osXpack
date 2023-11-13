@@ -184,7 +184,13 @@ progress "$script" 15
 
 
 itemdisp "Copying shutdown image..."
+if [[ $dark -eq 1 ]]
+then
+sudo \cp theme/shutdownkonq2-dark.png /opt/trinity/share/apps/ksmserver/pics/shutdownkonq2.png
+else
 sudo \cp theme/shutdownkonq2.png /opt/trinity/share/apps/ksmserver/pics/shutdownkonq2.png
+fi
+
 sep
 echo
 echo
