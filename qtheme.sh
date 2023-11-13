@@ -175,7 +175,14 @@ progress "$script" 10
 
 
 itemdisp "Install grub theme..."
-sudo tar -xzf theme/Xenlism-Debian.tar.gz -C /usr/share/grub/themes
+sudo tar -xzf theme/q4os_seb.tar.gz -C /usr/share/grub/themes
+if locale|grep -q "LANG=fr_FR."; then
+sudo sed -i '/text = "Booting in %d s"/c\text = "Démarrage dans %d s"' /usr/share/grub/themes/q4os_seb/theme.txt
+fi
+#if someone can help me for the german term :)
+#if locale|grep -q "LANG=de_DE."; then
+#sudo sed -i '/text = "Booting in %d s"/c\text = "xxxxxx xx %d s"' /usr/share/grub/themes/q4os_seb/theme.txt
+#fi
 sep
 echo
 echo
@@ -864,7 +871,7 @@ else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
 echo -e "  \e[35m░▒▓█\033[0m installing imagemagick..."
-if ! (cat common/packages_list.tmp | grep -q imagemagick ); then
+if ! (cat common/packages_list.tmp | grep -q "imagemagick/stable" ); then
 echo -e "${YELLOW}"
 sudo apt install -y imagemagick
 echo -e "${NOCOLOR}"
@@ -874,11 +881,15 @@ fi
 echo -e "  \e[35m░▒▓█\033[0m configuring wallpaper for login"
 echo "       (please be patient this could take some time...)"
 sudo convert /opt/trinity/share/wallpapers/$rwallp -filter Gaussian -blur 0x55 /opt/trinity/share/apps/tdm/themes/windows/background.jpg
+Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
+if (( $Xres < 1920 )); then
+sudo tar -xzf theme/tdmwin_lowres.tar.gz -C /opt/trinity/share/apps/tdm/themes/windows/
+fi
 #test dark or light
 lightamount=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -threshold 50% -format "%[fx:100*image.mean]" info:)
-if (( $(echo "$lightamount > 50" | bc -l) )); then
+if (( $(echo "$lightamount > 60" | bc -l) )); then
 sudo sed -i '/<normal font="Segoe UI 58" color=/c\<normal font="Segoe UI 58" color="#000000"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
-sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 58" color="#000000"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" color="#000000"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 #sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#000000" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 fi
 #sudo \cp /opt/trinity/share/wallpapers/$rwallp /opt/trinity/share/apps/ksplash/Themes/Redmond10/Background.png
@@ -890,17 +901,13 @@ sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key Wa
 sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key Color1 "0,0,0"
 sudo kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFadeaway false
 sudo kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFancyLogout false
-
 sudo rm -f /opt/trinity/share/apps/tdm/pics/shutdown.jpg
 sudo rm -f /opt/trinity/share/apps/ksmserver/pics/shutdown.jpg
 #tdmtheme
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key UseTheme true
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key Theme "/opt/trinity/share/apps/tdm/themes/windows"
 
-Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
-if (( $Xres < 1920 )); then
-sudo tar -xzf theme/tdmwin_lowres.tar.gz -C /opt/trinity/share/apps/tdm/themes/windows/
-fi
+
 sep
 echo
 echo
