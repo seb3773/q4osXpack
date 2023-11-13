@@ -29,6 +29,7 @@ begin "$script"
 progress "$script" 0
 
 itemdisp "Installing GIT..."
+#git/stable
 echo -e "${YELLOW}"
 sudo apt install -y git
 echo -e "${NOCOLOR}"
@@ -39,8 +40,11 @@ echo
 progress "$script" 5
 
 
+#sudo apt install -y locate
+
 
 itemdisp "Installing Ark..."
+#ark/stable
 echo -e "${YELLOW}"
 sudo apt install -y ark
 echo -e "${NOCOLOR}"
@@ -52,6 +56,7 @@ progress "$script" 10
 
 
 itemdisp "Installing Dolphin..."
+#dolphin-trinity
 echo -e "${YELLOW}"
 sudo apt install -y dolphin-trinity
 echo -e "${NOCOLOR}"
@@ -64,6 +69,7 @@ progress "$script" 15
 
 
 itemdisp "Installing Baobab..."
+#baobab/stable
 echo -e "${YELLOW}"
 sudo apt install -y baobab
 echo -e "${NOCOLOR}"
@@ -74,6 +80,7 @@ echo
 progress "$script" 20
 
 itemdisp "Installing system-config-printer..."
+
 echo -e "${YELLOW}"
 sudo apt install -y system-config-printer
 echo -e "${NOCOLOR}"
@@ -100,6 +107,7 @@ progress "$script" 30
 
 
 itemdisp "Installing Stacer..."
+#stacer
 echo -e "${YELLOW}"
 sudo apt install -y stacer
 echo -e "${NOCOLOR}"
@@ -112,6 +120,7 @@ progress "$script" 35
 
 
 itemdisp "Installing bleachbit..."
+#bleachbit
 echo -e "${YELLOW}"
 sudo apt install -y bleachbit
 echo -e "${NOCOLOR}"
@@ -124,6 +133,7 @@ progress "$script" 40
 
 
 itemdisp "Installing vlc..."
+#vlc
 echo -e "${YELLOW}"
 sudo apt install -y vlc
 echo -e "${NOCOLOR}"
@@ -161,6 +171,7 @@ progress "$script" 50
 
 
 itemdisp "Installing qbittorent"
+#qbittorrent
 echo
 echo -e "${RED}█ ${ORANGE}Install qbittorrent ?${NOCOLOR}"
 optionz=("Install qbittorrent" "Skip")
@@ -189,6 +200,7 @@ progress "$script" 55
 
 
 itemdisp "Installing spotify"
+#spotify
 echo
 echo -e "${RED}█ ${ORANGE}Install spotify ?${NOCOLOR}"
 optionz=("Install spotify" "Skip")
@@ -221,6 +233,7 @@ progress "$script" 60
 
 
 itemdisp "Installing gparted"
+#gparted
 echo
 echo -e "${RED}█ ${ORANGE}Install gparted ? (partitions manager)${NOCOLOR}"
 optionz=("Install gparted" "Skip")
@@ -250,6 +263,7 @@ progress "$script" 65
 
 
 itemdisp "Installing S4 Snapshot"
+#q4os-s4-snapshot
 echo
 echo -e "${RED}█ ${ORANGE}Install S4 Snapshot ? (create an bootable iso of a running system)${NOCOLOR}"
 optionz=("Install S4 Snapshot" "Skip")
@@ -282,6 +296,7 @@ progress "$script" 70
 
 
 itemdisp "Installing remmina"
+#remmina
 echo
 echo -e "${RED}█ ${ORANGE}Install remmina ? (rdp / vnc / ssh remote desktop client)${NOCOLOR}"
 optionz=("Install remmina" "Skip")
@@ -311,6 +326,7 @@ progress "$script" 75
 
 
 itemdisp "Installing free office"
+#softmaker-freeoffice-2021
 echo
 echo -e "${RED}█ ${ORANGE}Install free office (a word/excel/ppoint clone) ?${NOCOLOR}"
 optionz=("Install free office" "Skip")
@@ -343,6 +359,7 @@ progress "$script" 80
 
 
 itemdisp "Installing bpytop"
+#bpytop
 echo
 echo -e "${RED}█ ${ORANGE}Install bpytop ? (CLI htop alternative)${NOCOLOR}"
 optionz=("Install bpytop" "Skip")

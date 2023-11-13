@@ -29,7 +29,7 @@ begin "$script"
 
 progress "$script" 0
 #set perms
-sudo chmod +x perfs/check_x86-64_psabi.sh perfs/perfgrub perfs/repository.sh
+sudo chmod +x perfs/check_x86-64_psabi.sh perfs/perfgrub perfs/repository.sh common/pklist
 
 create_backup() {
     local backup_path="backups/$now/$1.tar.gz"
@@ -49,6 +49,7 @@ create_backup "Xsession" "/etc/X11/Xsession"
 create_backup "klipperrc" "$USER_HOME/.trinity/share/config/klipperrc"
 create_backup "initramfs.conf" "/etc/initramfs-tools/initramfs.conf"
 create_backup "getty" "/sbin/getty"
+#create_backup "agetty" "/sbin/agetty"
 
 
 sudo \cp common/restore "backups/restore_$now"
@@ -204,19 +205,21 @@ progress "$script" 35
 
 
 
-itemdisp "Replacing agetty by ngetty..."
-echo
-echo -e "  \e[35m░▒▓█\033[0m installing ngetty..."
-echo -e "${YELLOW}"
-sudo apt install -y ngetty
-echo -e "${NOCOLOR}"
-sudo rm /sbin/getty
-sudo ln -s /sbin/ngetty /sbin/getty
-sep
-echo
-echo
-echo
-progress "$script" 40
+# itemdisp "Replacing agetty by ngetty..."
+# echo
+# echo -e "  \e[35m░▒▓█\033[0m installing ngetty..."
+# echo -e "${YELLOW}"
+# sudo apt install -y ngetty
+# echo -e "${NOCOLOR}"
+# sudo rm /sbin/getty
+# sudo ln -s /sbin/ngetty /sbin/getty
+# sudo rm /sbin/agetty
+# sudo ln -s /sbin/ngetty /sbin/agetty
+# sep
+# echo
+# echo
+# echo
+# progress "$script" 40
 
 
 
@@ -228,7 +231,7 @@ sep
 echo
 echo
 echo
-progress "$script" 45
+progress "$script" 40
 
 
 itemdisp "Removing unwanted fonts..."
