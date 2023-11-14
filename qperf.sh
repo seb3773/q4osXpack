@@ -48,7 +48,8 @@ create_backup "fstab" "/etc/fstab"
 create_backup "Xsession" "/etc/X11/Xsession"
 create_backup "klipperrc" "$USER_HOME/.trinity/share/config/klipperrc"
 create_backup "initramfs.conf" "/etc/initramfs-tools/initramfs.conf"
-create_backup "getty" "/sbin/getty"
+create_backup "tdecryptocardwatcher" "/opt/trinity/bin/tdecryptocardwatcher"
+#create_backup "getty" "/sbin/getty"
 #create_backup "agetty" "/sbin/agetty"
 
 
@@ -171,6 +172,11 @@ echo -e "  \e[35m░▒▓█\033[0m nmbd service"
 sudo systemctl stop nmbd.service
 sudo systemctl disable nmbd.service
 sudo systemctl mask nmbd.service
+echo -e "  \e[35m░▒▓█\033[0m apparmor service"
+sudo systemctl stop apparmor
+sudo systemctl disable apparmor
+sudo systemctl mask apparmor
+
 sep
 echo
 echo
@@ -232,6 +238,18 @@ echo
 echo
 echo
 progress "$script" 40
+
+
+itemdisp "tdecryptocardwatcher binary..."
+echo
+sudo rm -f /opt/trinity/bin/tdecryptocardwatcher
+sep
+echo
+echo
+echo
+progress "$script" 40
+
+
 
 
 itemdisp "Removing unwanted fonts..."
@@ -432,6 +450,36 @@ echo
 echo
 echo
 progress "$script" 95
+
+
+
+
+itemdisp "Disabling bluetooth service"
+echo
+echo -e "${RED}█ ${ORANGE}Disable bluetooth ? (if you don't need it :p)${NOCOLOR}"
+optionz=("Disable bluetooth" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Disable bluetooth")
+            echo -e "  \e[35m░▒▓█\033[0m Disabling bluetooth..."
+            sudo systemctl stop bluetooth.service
+            sudo systemctl disable bluetooth.service
+            sudo systemctl mask bluetooth.service
+            break
+            ;;
+        "Skip")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+sep
+echo
+echo
+echo
+progress "$script" 90
+
 
 
 

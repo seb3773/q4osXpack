@@ -2,6 +2,7 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dark=0
 helpdoc=0
+lowres=0
 VALID_ARGS=$(getopt -o hdL --long help,dark,light -- "$@")
 if [[ $? -ne 0 ]]; then
     exit 1;
@@ -41,6 +42,12 @@ progress "$script" 0
 #set perms
 sudo chmod +x theme/grubscripts theme/themegrub theme/copyfiles common/pklist
 
+Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
+if (( $Xres < 1920 )); then
+lowres=1
+fi
+
+
 create_backup() {
     local backup_path="backups/$now/$1.tar.gz"
     sudo tar -zcvf "$backup_path" "$2" > /dev/null 2>&1
@@ -60,6 +67,7 @@ create_backup "tde_stylerc_qt" "$USER_HOME/.qt/tdestylerc"
 create_backup "tde_stylerc_tqt3" "/etc/tqt3/tdestyler"
 create_backup "qtrc_qt" "$USER_HOME/.qt/qtrc"
 create_backup "qtrc_tqt3" "/etc/tqt3/qtrc"
+create_backup "qtrc" "/root/.qt/qtrc"
 create_backup "ksplashrc" "$USER_HOME/.trinity/share/config/ksplashrc"
 create_backup "kcminputrc" "$TDEHOME/share/config/kcminputrc"
 create_backup "kcminputrc_root" "/root/.config/kcminputrc"
@@ -79,6 +87,7 @@ create_backup "twinrc" "$TDEHOME/share/config/twinrc"
 create_backup "twinrc_root" "/root/.trinity/share/config/twinrc"
 create_backup "GTK3-Q4OS02" "/usr/share/themes/Q4OS02/gtk-3.0"
 create_backup "xcompmgrrc" "$USER_HOME/.xcompmgrrc"
+create_backup "xcompmgrrc_root" "/root/.xcompmgrrc"
 create_backup "compton-tde" "$USER_HOME/.compton-tde.conf"
 create_backup "compton-tde_root" "/root/.compton-tde.conf"
 create_backup "kdesktoprc" "$TDEHOME/share/config/kdesktoprc"
@@ -95,6 +104,7 @@ create_backup "gtkrc-q4os" "$USER_HOME/.gtkrc-q4os"
 create_backup "gtkrc-q4os_root" "/root/.gtkrc-q4os"
 create_backup "launcher_panelapplet_rc" "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
 create_backup "Xresources" "$USER_HOME/.Xresources"
+create_backup "Xresources_root" "/root/.Xresources"
 create_backup "x-cursor-theme" "/etc/alternatives/x-cursor-theme"
 create_backup "knotify.eventsrc" "$TDEHOME/share/config/knotify.eventsrc"
 create_backup "sounds" "/opt/trinity/share/sounds/"
@@ -103,7 +113,14 @@ create_backup "keditrc" "$TDEHOME/share/config/keditrc"
 if [ -d "/opt/program_files/q4os-update-manager" ]; then
 create_backup "update-manager_icons" "/opt/program_files/q4os-update-manager/share/icons"
 fi
-#create_backup "konsolerc" "$TDEHOME/share/config/konsolerc"
+create_backup "konsolerc" "$TDEHOME/share/config/konsolerc"
+create_backup "systemtray_panelappletrc" "$TDEHOME/share/config/systemtray_panelappletrc"
+if [ -f "/root/xsettingsd.conf" ]; then
+create_backup "root_xsettingsd.conf" "/root/xsettingsd.conf"
+create_backup "root_config_xsettingsd.conf" "/root/.config/xsettingsd/xsettingsd.conf"
+fi
+create_backup "Trolltech.conf" "$USER_HOME/.config/Trolltech.conf"
+
 #
 #.trinity/share/config/ksmserverrc
 #
@@ -129,13 +146,23 @@ cd common
 sudo ./pklist
 cd ..
 echo
+
+#check if 7z is available
+if ! (cat common/packages_list.tmp | grep -q "p7zip-full/stable"); then
+echo -e "    ${BLUE}░▒▓█\033[0m Installing 7z..."
+echo -e "${YELLOW}"
+sudo apt install -y p7zip-full
+echo -e "${NOCOLOR}"
+fi
+
+
 #---------------------------------------**********************************************************************************
 #****************************************************************************************************************************
 itemdisp "Install plymouth..."
 if ! (cat common/packages_list.tmp | grep -q "plymouth/stable"); then
-echo "${YELLOW}"
+echo -e "${YELLOW}"
 sudo apt-get -y install plymouth
-echo "${NOCOLOR}"
+echo -e "${NOCOLOR}"
 else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
@@ -147,9 +174,9 @@ echo
 #not sure if really needed, maybe only creating the theme folder is ok ?
 itemdisp "Install plymouth-themes..." 
 if ! (cat common/packages_list.tmp | grep -q "plymouth-themes/stable"); then
-echo "${YELLOW}"
+echo -e "${YELLOW}"
 sudo apt-get -y install plymouth-themes
-echo "${NOCOLOR}"
+echo -e "${NOCOLOR}"
 else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
@@ -176,10 +203,15 @@ progress "$script" 10
 
 itemdisp "Install grub theme..."
 sudo tar -xzf theme/q4os_seb.tar.gz -C /usr/share/grub/themes
+if [[ $lowres -eq 1 ]]; then
+sudo tar -xzf theme/segoebold.pf2_lowres.tar.gz -C /usr/share/grub/themes/q4os_seb/
+sudo sed -i '/item_font =/c\item_font = "Segoe UI Bold 18"' /usr/share/grub/themes/q4os_seb/theme.txt
+sudo sed -i '/font = "Segoe UI Bold 24"/c\font = "Segoe UI Bold 18"' /usr/share/grub/themes/q4os_seb/theme.txt
+fi
 if locale|grep -q "LANG=fr_FR."; then
 sudo sed -i '/text = "Booting in %d s"/c\text = "Démarrage dans %d s"' /usr/share/grub/themes/q4os_seb/theme.txt
 fi
-#if someone can help me for the german term :)
+### if someone can help me for the german term ?
 #if locale|grep -q "LANG=de_DE."; then
 #sudo sed -i '/text = "Booting in %d s"/c\text = "xxxxxx xx %d s"' /usr/share/grub/themes/q4os_seb/theme.txt
 #fi
@@ -197,7 +229,8 @@ sudo \cp theme/shutdownkonq2-dark.png /opt/trinity/share/apps/ksmserver/pics/shu
 else
 sudo \cp theme/shutdownkonq2.png /opt/trinity/share/apps/ksmserver/pics/shutdownkonq2.png
 fi
-
+#tdm can use a png image for this dialog, but we have to change extension to .jpg
+sudo \cp theme/shutdownkonq2.png /opt/trinity/share/apps/tdm/pics/shutdown.jpg
 sep
 echo
 echo
@@ -230,35 +263,40 @@ if ! grep -q "Xcursor.size" "$USER_HOME/.Xresources"; then
 echo "Xcursor.size: 32" | sudo tee -a $USER_HOME/.Xresources
 fi
 sudo sed -i "/Xcursor.size:/c\Xcursor.size: 32" $USER_HOME/.Xresources
+
+if ! grep -q "Xcursor.size" "/root/.Xresources"; then
+echo "Xcursor.size: 32" | sudo tee -a /root/.Xresources
+fi
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: 32" /root/.Xresources
 #Xcursor.theme: Windows10Light ?
 #
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key Acceleration 1
 kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key Acceleration 1
-
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+kwriteconfig --file $USER_HOME/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 #root
 sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key Acceleration 1
 sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+sudo kwriteconfig --file /root/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 sudo kwriteconfig --file /root/.trinity/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 #cursor theme for x
 sudo \cp /usr/share/icons/Windows10Light/cursor.theme /etc/X11/cursors/Windows10Light_cursor.theme
 sudo ln -nfs /etc/X11/cursors/Windows10Light_cursor.theme /etc/alternatives/x-cursor-theme
+if [ -f "/root/xsettingsd.conf" ]; then
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.config/xsettingsd/xsettingsd.conf"
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "/root/xsettingsd.conf"
+fi
 sep
 echo
 echo
 echo
 progress "$script" 45
-
-
-
-
-
 
 
 
@@ -538,6 +576,7 @@ fi
 echo -e "  \e[35m░▒▓█\033[0m configuring xcompmgr..."
 #sudo kwriteconfig --file $USER_HOME/.xcompmgrrc --group xcompmgr --key useOpenGL true
 sudo tar -xzf theme/xcompmgrrc.tar.gz -C $USER_HOME/
+sudo tar -xzf theme/xcompmgrrc.tar.gz -C /root/
 echo -e "  \e[35m░▒▓█\033[0m configuring compton-tde..."
 sudo tar -xzf theme/compton-tde.conf.tar.gz -C $USER_HOME/
 sudo tar -xzf theme/compton-tde.conf.tar.gz -C /root
@@ -671,6 +710,9 @@ kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kate - Normal" -
 kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kate - Normal" --key "Color Highlighted Line" "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kwrite - Normal" --key "Color Background" "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kwrite - Normal" --key "Color Highlighted Line" "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "krusader - Normal" --key "Color Background" "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "krusader - Normal" --key "Color Highlighted Line" "255,255,255"
+
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key colorScheme q4seb-color-scheme.kcsrc
                if [[ $dark -eq 1 ]]
                then
@@ -781,6 +823,8 @@ sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kate 
 sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kate - Normal" --key "Color Highlighted Line" "255,255,255"
 sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kwrite - Normal" --key "Color Background" "255,255,255"
 sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kwrite - Normal" --key "Color Highlighted Line" "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "krusader - Normal" --key "Color Background" "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "krusader - Normal" --key "Color Highlighted Line" "255,255,255"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key colorScheme q4seb-color-scheme.kcsrc
                if [[ $dark -eq 1 ]]
                then
@@ -858,8 +902,6 @@ progress "$script" 70
 
 
 
-
-
 itemdisp "Configuring login style..."
 echo
 echo -e "  \e[35m░▒▓█\033[0m installing tdmtheme-trinity..."
@@ -881,15 +923,15 @@ fi
 echo -e "  \e[35m░▒▓█\033[0m configuring wallpaper for login"
 echo "       (please be patient this could take some time...)"
 sudo convert /opt/trinity/share/wallpapers/$rwallp -filter Gaussian -blur 0x55 /opt/trinity/share/apps/tdm/themes/windows/background.jpg
-Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
-if (( $Xres < 1920 )); then
+if [[ $lowres -eq 1 ]]; then
 sudo tar -xzf theme/tdmwin_lowres.tar.gz -C /opt/trinity/share/apps/tdm/themes/windows/
 fi
 #test dark or light
 lightamount=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -threshold 50% -format "%[fx:100*image.mean]" info:)
 if (( $(echo "$lightamount > 60" | bc -l) )); then
-sudo sed -i '/<normal font="Segoe UI 58" color=/c\<normal font="Segoe UI 58" color="#000000"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
-sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" color="#000000"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo sed -i '/<normal font="Segoe UI 58" color=/c\<normal font="Segoe UI 58" color="#555555"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" color="#555555"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#555555" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 #sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#000000" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 fi
 #sudo \cp /opt/trinity/share/wallpapers/$rwallp /opt/trinity/share/apps/ksplash/Themes/Redmond10/Background.png
@@ -901,7 +943,6 @@ sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key Wa
 sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key Color1 "0,0,0"
 sudo kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFadeaway false
 sudo kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFancyLogout false
-sudo rm -f /opt/trinity/share/apps/tdm/pics/shutdown.jpg
 sudo rm -f /opt/trinity/share/apps/ksmserver/pics/shutdown.jpg
 #tdmtheme
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key UseTheme true
@@ -1040,19 +1081,45 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeFont
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Consolas,11,-1,5,50,0,0,0,0,0"
 #kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Cascadia Code,10,-1,5,50,0,0,0,0,0"
+if [[ $dark -eq 1 ]]
+then
+kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key TabColor "255,255,255"
+else
+kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key TabColor "0,0,0"
+fi
 kwriteconfig --file $TDEHOME/share/config/keditrc --group "Text Font" --key KEditFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/krusaderrc --group "Look&Feel" --key "Filelist Font" "Segoe UI,10,-1,5,63,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/krusaderrc --group UserActions --key "Fixed Font" "Consolas,11,-1,5,50,0,0,0,0,0"
 #kwriteconfig --file $TDEHOME/share/config/krusaderrc --group UserActions --key "Fixed Font" "Cascadia Code,11,-1,5,50,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/krusaderrc --group UserActions --key "Normal Font" "Segoe UI,11,-1,5,63,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kate - Normal" --key Font "Segoe UI,10,-1,5,63,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "krusader - Normal" --key Font "Segoe UI,10,-1,5,63,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kwrite - Normal" --key Font "Segoe UI,10,-1,5,63,0,0,0,0,0"
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-font-name "Segoe UI 10"
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-font-name "Segoe UI 10"
 sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sed -i '/font_name="/c\font_name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "/root/.config/xsettingsd/xsettingsd.conf"
+if [ -f "/root/xsettingsd.conf" ]; then
+sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "/root/xsettingsd.conf"
+sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "$USER_HOME/.config/xsettingsd/xsettingsd.conf"
+fi
+
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key FailFont "Segoe UI,9,-1,5,75,0,0,0,0,0"
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key StdFont "Segoe UI,18,-1,5,50,0,0,0,0,0"
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key GreetFont=Segoe UI,12,-1,5,75,0,0,0,0,0
+kwriteconfig --file $USER_HOME/.tderc --group General --key StandardFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
+kwriteconfig --file $USER_HOME/.tderc --group General --key activeFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $USER_HOME/.tderc --group General --key desktopFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
+kwriteconfig --file $USER_HOME/.tderc --group General --key fixed "Consolas,11,-1,5,75,0,0,0,0,0"
+kwriteconfig --file $USER_HOME/.tderc --group General --key font "Segoe UI,10,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $USER_HOME/.tderc --group General --key menuFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $USER_HOME/.tderc --group General --key taskbarFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $USER_HOME/.tderc --group General --key toolBarFont "Segoe UI,9,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Plain --key Font "Segoe UI,10,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $USER_HOME/.config/Trolltech.conf --group qt --key font "Segoe UI,10,-1,0,50,0,0,0,0,0"
+
+
 #root
 #sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key fixed "Droid Sans Mono,9,-1,5,50,0,0,0,0,0"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key fixed "Consolas,11,-1,5,50,0,0,0,0,0"
@@ -1065,15 +1132,34 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key
 sudo kwriteconfig --file /root/.trinity/share/config/kdesktoprc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
 kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Consolas,11,-1,5,50,0,0,0,0,0"
 #kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Cascadia Code,10,-1,5,50,0,0,0,0,0"
-kwriteconfig --file /root/.trinity/share/config/keditrc --group "Text Font" --key KEditFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
-kwriteconfig --file /root/.trinity/share/config/krusaderrc --group "Look&Feel" --key "Filelist Font" "Segoe UI,10,-1,5,63,0,0,0,0,0"
-kwriteconfig --file /root/.trinity/share/config/krusaderrc --group UserActions --key "Fixed Font" "Consolas,11,-1,5,50,0,0,0,0,0"
+if [[ $dark -eq 1 ]]
+then
+sudo kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key TabColor "255,255,255"
+else
+sudo kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key TabColor "0,0,0"
+fi
+sudo kwriteconfig --file /root/.trinity/share/config/keditrc --group "Text Font" --key KEditFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/krusaderrc --group "Look&Feel" --key "Filelist Font" "Segoe UI,10,-1,5,63,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/krusaderrc --group UserActions --key "Fixed Font" "Consolas,11,-1,5,50,0,0,0,0,0"
 #kwriteconfig --file /root/.trinity/share/config/krusaderrc --group UserActions --key "Fixed Font" "Cascadia Code,11,-1,5,50,0,0,0,0,0"
-kwriteconfig --file /root/.trinity/share/config/krusaderrc --group UserActions --key "Normal Font" "Segoe UI,11,-1,5,63,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/krusaderrc --group UserActions --key "Normal Font" "Segoe UI,11,-1,5,63,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kate - Normal" --key Font "Segoe UI,10,-1,5,63,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "krusader - Normal" --key Font "Segoe UI,10,-1,5,63,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kateschemarcc --group "kwrite - Normal" --key Font "Segoe UI,10,-1,5,63,0,0,0,0,0"
 sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-font-name "Segoe UI 10"
 sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-font-name "Segoe UI 10"
 sudo sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' /root/.gtkrc-q4os > /dev/null 2>&1
 sudo sed -i '/font_name="/c\font_name="Segoe UI 10"' /root/.gtkrc-q4os > /dev/null 2>&1
+sudo kwriteconfig --file $USER_HOME/.tderc --group General --key StandardFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
+sudo kwriteconfig --file $USER_HOME/.tderc --group General --key activeFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file $USER_HOME/.tderc --group General --key desktopFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
+sudo kwriteconfig --file $USER_HOME/.tderc --group General --key fixed "Consolas,11,-1,5,75,0,0,0,0,0"
+sudo kwriteconfig --file $USER_HOME/.tderc --group General --key font "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file $USER_HOME/.tderc --group General --key menuFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file $USER_HOME/.tderc --group General --key taskbarFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file $USER_HOME/.tderc --group General --key toolBarFont "Segoe UI,9,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/systemtray_panelappletrc --group Plain --key Font "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.qt/qtrc --group General --key font "Segoe UI,9,-1,5,50,0,0,0,0,0"
 sep
 echo
 echo
@@ -1115,7 +1201,7 @@ progress "$script" 95
 
 
 
-itemdisp "Cleaning directories..."
+itemdisp "Cleaning temp files..."
 sudo rm -f common/packages_list.tmp
 echo
 sep
