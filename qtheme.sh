@@ -104,6 +104,7 @@ create_backup "ktaskbarrc" "$TDEHOME/share/config/ktaskbarrc"
 create_backup "clock_panelapplet_rc" "$TDEHOME/share/config/clock_panelapplet_rc"
 create_backup "kcmfonts" "$USER_HOME/.trinity/share/config/kcmfonts"
 create_backup "gtkrc-q4os" "$USER_HOME/.gtkrc-q4os"
+create_backup "gtkrc-q4os" "$USER_HOME/.gtkrc-2.0"
 create_backup "gtkrc-q4os_root" "/root/.gtkrc-q4os"
 create_backup "launcher_panelapplet_rc" "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
 create_backup "Xresources" "$USER_HOME/.Xresources"
@@ -118,6 +119,7 @@ create_backup "update-manager_icons" "/opt/program_files/q4os-update-manager/sha
 fi
 create_backup "konsolerc" "$TDEHOME/share/config/konsolerc"
 create_backup "systemtray_panelappletrc" "$TDEHOME/share/config/systemtray_panelappletrc"
+create_backup  "tde_xsettingsd.conf" "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
 if [ -f "/root/xsettingsd.conf" ]; then
 create_backup "root_xsettingsd.conf" "/root/xsettingsd.conf"
 create_backup "root_config_xsettingsd.conf" "/root/.config/xsettingsd/xsettingsd.conf"
@@ -313,12 +315,12 @@ itemdisp "Configuring pointers & set acceleration to 1"
 if ! grep -q "Xcursor.size" "$USER_HOME/.Xresources"; then
 echo "Xcursor.size: 32" | sudo tee -a $USER_HOME/.Xresources
 fi
-sudo sed -i "/Xcursor.size:/c\Xcursor.size: 32" $USER_HOME/.Xresources
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: 24" $USER_HOME/.Xresources
 
 if ! grep -q "Xcursor.size" "/root/.Xresources"; then
 echo "Xcursor.size: 32" | sudo tee -a /root/.Xresources
 fi
-sudo sed -i "/Xcursor.size:/c\Xcursor.size: 32" /root/.Xresources
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: 24" /root/.Xresources
 #Xcursor.theme: Windows10Light ?
 #
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
@@ -328,6 +330,7 @@ kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 kwriteconfig --file $USER_HOME/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' $USER_HOME/.gtkrc-2.0
 #root
 sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key Acceleration 1
@@ -339,6 +342,7 @@ sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse
 #cursor theme for x
 sudo \cp /usr/share/icons/Windows10Light/cursor.theme /etc/X11/cursors/Windows10Light_cursor.theme
 sudo ln -nfs /etc/X11/cursors/Windows10Light_cursor.theme /etc/alternatives/x-cursor-theme
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
 if [ -f "/root/xsettingsd.conf" ]; then
 sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.config/xsettingsd/xsettingsd.conf"
 sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "/root/xsettingsd.conf"
@@ -427,6 +431,8 @@ itemdisp "Configuring windows style..."
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key widgetStyle qtcurve
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectsEnabled false
+sed -i '/gtk-button-images="/c\gtk-button-images=0' $USER_HOME/.gtkrc-2.0
+sed -i '/gtk-button-images="/c\gtk-button-images=0' $USER_HOME/.gtkrc-q4os
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key widgetStyle qtcurve
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
@@ -993,7 +999,7 @@ lightamount=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background
 if (( $(echo "$lightamount > 60" | bc -l) )); then
 sudo sed -i '/<normal font="Segoe UI 58" color=/c\<normal font="Segoe UI 58" color="#555555"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" color="#555555"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
-sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#555555" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#333333" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 #sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#000000" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 fi
 #sudo \cp /opt/trinity/share/wallpapers/$rwallp /opt/trinity/share/apps/ksplash/Themes/Redmond10/Background.png
@@ -1161,7 +1167,9 @@ kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kwrite - Normal"
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-font-name "Segoe UI 10"
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-font-name "Segoe UI 10"
 sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
+sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sed -i '/font_name="/c\font_name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
+sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"'"$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "/root/.config/xsettingsd/xsettingsd.conf"
 if [ -f "/root/xsettingsd.conf" ]; then
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "/root/xsettingsd.conf"
@@ -1235,22 +1243,24 @@ if [[ $dark -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme kdeten_dark
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
-sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="Windows10Light"' $USER_HOME/.gtkrc-q4os
+sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' $USER_HOME/.gtkrc-q4os
+sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' $USER_HOME/.gtkrc-2.0
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group Icons --key Theme kdeten_dark
 sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
 sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
-sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="Windows10Light"' /root/.gtkrc-q4os
+sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' /root/.gtkrc-q4os
 else
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme kdeten_light
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
-sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="Windows10Light"' $USER_HOME/.gtkrc-q4os
+sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' $USER_HOME/.gtkrc-q4os
+sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' $USER_HOME/.gtkrc-2.0
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group Icons --key Theme kdeten_light
 sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
 sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
-sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="Windows10Light"' /root/.gtkrc-q4os
+sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' /root/.gtkrc-q4os
 fi
 sep
 echo
