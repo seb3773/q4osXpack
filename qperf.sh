@@ -160,6 +160,11 @@ echo -e "  \e[35m░▒▓█\033[0m apparmor service"
 sudo systemctl stop apparmor
 sudo systemctl disable apparmor
 sudo systemctl mask apparmor
+echo -e "  \e[35m░▒▓█\033[0m serial-getty service"
+sudo systemctl stop serial-getty@ttyS0.service
+sudo systemctl disable serial-getty@ttyS0.service
+sudo systemctl mask serial-getty@ttyS0.service
+
 echo -e "${RED}█ ${ORANGE}Disable bluetooth ? (if you don't need it :p)${NOCOLOR}"
 optionz=("Disable bluetooth" "Skip")
 select optz in "${optionz[@]}"
