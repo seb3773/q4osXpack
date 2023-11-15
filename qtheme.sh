@@ -1,5 +1,4 @@
 #!/bin/bash
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dark=0
 helpdoc=0
 lowres=0
@@ -7,7 +6,6 @@ VALID_ARGS=$(getopt -o hdL --long help,dark,light -- "$@")
 if [[ $? -ne 0 ]]; then
     exit 1;
 fi
-
 eval set -- "$VALID_ARGS"
 while [ : ]; do
   case "$1" in
@@ -28,7 +26,6 @@ while [ : ]; do
         ;;
   esac
 done
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if [ $helpdoc -eq 1 ]; then
 script="Help Qtheme"
 else
@@ -37,24 +34,30 @@ fi
 source common/begin
 source common/progress
 begin "$script"
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#================================================================================================================
+
+
+
+#========== set subscripts perms ================================================================================
 progress "$script" 0
-#set perms
 sudo chmod +x theme/grubscripts theme/themegrub theme/copyfiles common/pklist
 
+
+#========== Retrieve resolution for res dependent elements ======================================================
 Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
 if (( $Xres < 1920 )); then
 lowres=1
 fi
 
 
+
+
+#========== CREATE BACKUP FOLDER & backup files to be modified ==================================================
 create_backup() {
     local backup_path="backups/$now/$1.tar.gz"
     sudo tar -zcvf "$backup_path" "$2" > /dev/null 2>&1
     rota
 }
-
-#CREATE BACKUP FOLDER & backup files to be modified
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")
 sudo mkdir -p "backups/$now" > /dev/null 2>&1
@@ -120,13 +123,9 @@ create_backup "root_xsettingsd.conf" "/root/xsettingsd.conf"
 create_backup "root_config_xsettingsd.conf" "/root/.config/xsettingsd/xsettingsd.conf"
 fi
 create_backup "Trolltech.conf" "$USER_HOME/.config/Trolltech.conf"
-
 #
 #.trinity/share/config/ksmserverrc
-#
-#.trinity/share/config/ksplashrc    (Theme=None)
-#
-#.Xresources
+#.trinity/share/config/ksplashrc
 #.trinity/share/config/gtkrc
 #.trinity/share/config/kateschemarc
 #.trinity/share/config/katerc
@@ -140,6 +139,11 @@ echo
 printf '\e[A\e[K'
 echo
 
+
+
+
+
+#========== retrieve packages list ==============================================================================
 echo -e "    ${ORANGE}░▒▓█\033[0m Retrieve packages list..."
 echo
 cd common
@@ -147,7 +151,9 @@ sudo ./pklist
 cd ..
 echo
 
-#check if 7z is available
+
+
+#========== Check if 7z is available, else install it ===========================================================
 if ! (cat common/packages_list.tmp | grep -q "p7zip-full/stable"); then
 echo -e "    ${BLUE}░▒▓█\033[0m Installing 7z..."
 echo -e "${YELLOW}"
@@ -156,8 +162,10 @@ echo -e "${NOCOLOR}"
 fi
 
 
-#---------------------------------------**********************************************************************************
-#****************************************************************************************************************************
+
+
+
+#========== Installing plymouth =================================================================================
 itemdisp "Install plymouth..."
 if ! (cat common/packages_list.tmp | grep -q "plymouth/stable"); then
 echo -e "${YELLOW}"
@@ -171,7 +179,11 @@ echo
 echo
 echo
 
-#not sure if really needed, maybe only creating the theme folder is ok ?
+
+
+
+#========== Installing plymouth themes ==========================================================================
+#not sure if really needed, maybe only creating the theme folder is ok ? Anyway it doesn't take too much disk space...
 itemdisp "Install plymouth-themes..." 
 if ! (cat common/packages_list.tmp | grep -q "plymouth-themes/stable"); then
 echo -e "${YELLOW}"
@@ -187,6 +199,9 @@ echo
 progress "$script" 5
 
 
+
+
+#========== Installing plymouth theme ala windows10 =============================================================
 itemdisp "Install Q4Win10 plymouth theme..."
 sudo tar -xzf theme/q4win10.tar.gz -C /usr/share/plymouth/themes
 if ! (/usr/sbin/plymouth-set-default-theme)|grep -q "q4win10" ; then
@@ -201,6 +216,11 @@ echo
 progress "$script" 10
 
 
+
+
+
+
+#========== Installing grub theme ===============================================================================
 itemdisp "Install grub theme..."
 sudo tar -xzf theme/q4os_seb.tar.gz -C /usr/share/grub/themes
 if [[ $lowres -eq 1 ]]; then
@@ -222,6 +242,10 @@ echo
 progress "$script" 15
 
 
+
+
+
+#========== Shutdown images =====================================================================================
 itemdisp "Copying shutdown image..."
 if [[ $dark -eq 1 ]]
 then
@@ -239,17 +263,37 @@ progress "$script" 20
 
 
 
+
+
+#========== quiet printk & grub scripts =========================================================================
+# - quiet printk
+# - modifications of '10_linux' & '30_uefi-firmware' to have nice icons in boot menu (classes added)
+#   add shutdown option to grub menu
 cd theme
 sudo ./grubscripts
 progress "$script" 25
+
+
+
+#========== tuning grub for a quiet boot process ================================================================
 sudo ./themegrub
 progress "$script" 30
+
+
+
+
+#========== copying all files needed ============================================================================
 sudo ./copyfiles $dark
 progress "$script" 35
 cd ..
 
 
-itemdisp "Configuring start screen..."
+
+
+
+
+#========== splash screen =======================================================================================
+itemdisp "Configuring splash screen at desktop loading..."
 kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme Unified
 sep
 echo
@@ -257,6 +301,13 @@ echo
 echo
 progress "$script" 40
 
+
+
+
+
+
+
+#========== Pointers ============================================================================================
 itemdisp "Configuring pointers & set acceleration to 1"
 #pointer size
 if ! grep -q "Xcursor.size" "$USER_HOME/.Xresources"; then
@@ -301,6 +352,9 @@ progress "$script" 45
 
 
 
+
+
+#========== Start menu configuration ============================================================================
 itemdisp "Configuring start menu..."
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key CustomSize 34
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BourbonMenu false
@@ -368,6 +422,7 @@ progress "$script" 50
 
 
 
+#========== windows style with qtcurve ==========================================================================
 itemdisp "Configuring windows style..."
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key widgetStyle qtcurve
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
@@ -385,6 +440,8 @@ progress "$script" 55
 
 
 
+
+#========== windows decorations & management ====================================================================
 itemdisp "Configuring windows decoration & windows management..."
 echo
 echo -e "  \e[35m░▒▓█\033[0m installing Dekorator for trinity..."
@@ -395,8 +452,7 @@ echo -e "${NOCOLOR}"
 else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
-if [[ $dark -eq 1 ]]
-then
+if [[ $dark -eq 1 ]]; then
 sudo tar -xzf theme/WinTen-seb-theme-dark.tar.gz -C /opt/trinity/share/apps/deKorator/themes
 sudo tar -xzf theme/twindeKoratorrc-dark.tar.gz -C $USER_HOME/.trinity/share/config/
 else
@@ -567,8 +623,7 @@ echo
 printf '\e[A\e[K'
 echo -e "  \e[35m░▒▓█\033[0m configuring GTK3 style..."
 sudo rm -rf /usr/share/themes/Q4OS02/gtk-3.0/{*,.[!.]*}
-if [[ $dark -eq 1 ]]
-then
+if [[ $dark -eq 1 ]]; then
 sudo tar -xzf theme/gtk3winten-dark.tar.gz -C  /usr/share/themes/Q4OS02/gtk-3.0/
 else
 sudo tar -xzf theme/gtk3winten.tar.gz -C  /usr/share/themes/Q4OS02/gtk-3.0/
@@ -637,6 +692,9 @@ progress "$script" 60
 
 
 
+
+
+#========== No start indicator (no cpu cycles wasting ;) ) ======================================================
 itemdisp "Disabling start indicator"
 kwriteconfig --file $TDEHOME/share/config/tdelaunchrc --group BusyCursorSettings --key Blinking false
 kwriteconfig --file $TDEHOME/share/config/tdelaunchrc --group BusyCursorSettings --key Bouncing false
@@ -654,6 +712,8 @@ progress "$script" 65
 
 
 
+
+#========== Color scheme & win10 & 11 wallpapers ================================================================
 itemdisp "Applying color scheme & wallpaper..."
 wallpw=$(( $RANDOM % 2 ));wallpn=$(( $RANDOM % 4 + 1 ))
 if [ $wallpw -eq 1 ]; then
@@ -702,9 +762,6 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveHa
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveTitleBtnBg "240,240,240"
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key NormalTextColor "0,0,0"
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Settings --key BgColor "255,255,255"
-
-
-
 rota
 kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kate - Normal" --key "Color Background" "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kate - Normal" --key "Color Highlighted Line" "255,255,255"
@@ -712,10 +769,9 @@ kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kwrite - Normal"
 kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kwrite - Normal" --key "Color Highlighted Line" "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "krusader - Normal" --key "Color Background" "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "krusader - Normal" --key "Color Highlighted Line" "255,255,255"
-
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key colorScheme q4seb-color-scheme.kcsrc
-               if [[ $dark -eq 1 ]]
-               then
+#~~~~~~~~~~~~~ dark mods ~~~~~~~~~~~~~~~~~
+               if [[ $dark -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key alternateBackground "32,33,34"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key background "39,41,42"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key buttonBackground "30,31,32"
@@ -746,6 +802,7 @@ rota
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Settings --key BgColor "0,0,0"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key colorScheme q4seb-dark-color-scheme.kcsrc
                fi
+#~~~~~~~~~~~~~ end dark mods ~~~~~~~~~~~~~
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key shadeSortColumn true
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectsEnabled false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectFadeMenu false
@@ -826,8 +883,8 @@ sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kwrit
 sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "krusader - Normal" --key "Color Background" "255,255,255"
 sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "krusader - Normal" --key "Color Highlighted Line" "255,255,255"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key colorScheme q4seb-color-scheme.kcsrc
-               if [[ $dark -eq 1 ]]
-               then
+#~~~~~~~~~~~~~ dark mods ~~~~~~~~~~~~~~~~~
+               if [[ $dark -eq 1 ]]; then
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key alternateBackground "32,33,34"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key background "39,41,42"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key buttonBackground "30,31,32"
@@ -858,6 +915,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSetti
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group Settings --key BgColor "0,0,0"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key colorScheme q4seb-dark-color-scheme.kcsrc
                fi
+#~~~~~~~~~~~~~ end dark mods ~~~~~~~~~~~~~
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key shadeSortColumn true
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectsEnabled false
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectFadeMenu false
@@ -902,6 +960,10 @@ progress "$script" 70
 
 
 
+
+
+
+#========== Login style ala windows10 ===========================================================================
 itemdisp "Configuring login style..."
 echo
 echo -e "  \e[35m░▒▓█\033[0m installing tdmtheme-trinity..."
@@ -947,8 +1009,6 @@ sudo rm -f /opt/trinity/share/apps/ksmserver/pics/shutdown.jpg
 #tdmtheme
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key UseTheme true
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key Theme "/opt/trinity/share/apps/tdm/themes/windows"
-
-
 sep
 echo
 echo
@@ -961,9 +1021,11 @@ progress "$script" 75
 
 
 
+
+
+#========== Configuring taskbar =================================================================================
 itemdisp "Configuring taskbar..."
-               if [[ $dark -eq 1 ]]
-               then
+               if [[ $dark -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ActiveTaskTextColor "235,235,235"
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key InactiveTaskTextColor "93,93,93"
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key TaskBackgroundColor "119,119,119"
@@ -987,7 +1049,6 @@ kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --gro
 kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key DragEnabled true
 kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key IconDim 32
 ####kwriteconfig --file $TDEHOME/share/config/kickerrc --group Applet_1 --key 'ConfigFile[$e]' taskbar_panelapplet_rc
-#..
 sed -i '/^ConfigFile\[/d' $TDEHOME/share/config/kickerrc
 sed -i '/^DesktopFile\[/d' $TDEHOME/share/config/kickerrc
 sed -i '/^FreeSpace2=/d' $TDEHOME/share/config/kickerrc
@@ -1021,6 +1082,8 @@ progress "$script" 80
 
 
 
+
+#========== Configuring systray clock ===========================================================================
 itemdisp "Configuring systray clock..."
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Foreground_Color "220,220,220"
 kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Shadow_Color "255,255,255"
@@ -1068,6 +1131,7 @@ progress "$script" 85
 
 
 
+#========== Fonts. Mostly Segoe UI & conslas for Konsole ========================================================
 itemdisp "Configuring fonts"
 kwriteconfig --file $TDEHOME/share/config/kcmfonts --group General --key dontChangeAASettings true
 #kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key fixed "Droid Sans Mono,9,-1,5,50,0,0,0,0,0"
@@ -1081,8 +1145,7 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeFont
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Consolas,11,-1,5,50,0,0,0,0,0"
 #kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Cascadia Code,10,-1,5,50,0,0,0,0,0"
-if [[ $dark -eq 1 ]]
-then
+if [[ $dark -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key TabColor "255,255,255"
 else
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key TabColor "0,0,0"
@@ -1104,7 +1167,6 @@ if [ -f "/root/xsettingsd.conf" ]; then
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "/root/xsettingsd.conf"
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "$USER_HOME/.config/xsettingsd/xsettingsd.conf"
 fi
-
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key FailFont "Segoe UI,9,-1,5,75,0,0,0,0,0"
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key StdFont "Segoe UI,18,-1,5,50,0,0,0,0,0"
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key GreetFont=Segoe UI,12,-1,5,75,0,0,0,0,0
@@ -1118,8 +1180,6 @@ kwriteconfig --file $USER_HOME/.tderc --group General --key taskbarFont "Segoe U
 kwriteconfig --file $USER_HOME/.tderc --group General --key toolBarFont "Segoe UI,9,-1,5,50,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Plain --key Font "Segoe UI,10,-1,5,50,0,0,0,0,0"
 kwriteconfig --file $USER_HOME/.config/Trolltech.conf --group qt --key font "Segoe UI,10,-1,0,50,0,0,0,0,0"
-
-
 #root
 #sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key fixed "Droid Sans Mono,9,-1,5,50,0,0,0,0,0"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key fixed "Consolas,11,-1,5,50,0,0,0,0,0"
@@ -1132,8 +1192,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key
 sudo kwriteconfig --file /root/.trinity/share/config/kdesktoprc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
 kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Consolas,11,-1,5,50,0,0,0,0,0"
 #kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Cascadia Code,10,-1,5,50,0,0,0,0,0"
-if [[ $dark -eq 1 ]]
-then
+if [[ $dark -eq 1 ]]; then
 sudo kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key TabColor "255,255,255"
 else
 sudo kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key TabColor "0,0,0"
@@ -1168,9 +1227,11 @@ progress "$script" 90
 
 
 
+
+#========== Configuring icons ===================================================================================
+# based on kdeten from Q4os Plasma edition :p with some modifications
 itemdisp "Configuring icons..."
-if [[ $dark -eq 1 ]]
-then
+if [[ $dark -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme kdeten_dark
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
@@ -1191,7 +1252,6 @@ sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings 
 sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
 sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="Windows10Light"' /root/.gtkrc-q4os
 fi
-
 sep
 echo
 echo
@@ -1201,6 +1261,7 @@ progress "$script" 95
 
 
 
+#========== Cleaning ============================================================================================
 itemdisp "Cleaning temp files..."
 sudo rm -f common/packages_list.tmp
 echo
@@ -1209,6 +1270,9 @@ echo
 echo
 echo
 progress "$script" 100
+
+
+#========== DONE. ==================================================================================================
 alldone
 
 echo
@@ -1216,6 +1280,5 @@ echo -e "\e[5m~~ reboot is required ~~\e[25m"
 echo
 echo " > Do you want to reboot right now ? (y/n)" && read x && [[ "$x" == "y" ]] && sudo /sbin/reboot;
 echo
-
 wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
 

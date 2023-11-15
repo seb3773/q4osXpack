@@ -25,29 +25,31 @@ fi
 source common/begin
 source common/progress
 begin "$script"
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#================================================================================================================
+
+
+
+#========== set subscripts perms ================================================================================
 progress "$script" 0
-#set perms
 sudo chmod +x laptop/tlpui_setup.sh
 
+
+
+#========== CREATE BACKUP FOLDER & backup files to be modified ==================================================
 create_backup() {
     local backup_path="backups/$now/$1.tar.gz"
     sudo tar -zcvf "$backup_path" "$2" > /dev/null 2>&1
     rota
 }
-
-#CREATE BACKUP FOLDER & backup files to be modified
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")
 sudo mkdir -p "backups/$now" > /dev/null 2>&1
-
 create_backup "60-libinput.conf" "/etc/X11/xorg.conf.d/60-libinput.conf"
 create_backup "logind.conf" "/etc/systemd/logind.conf"
 create_backup "grub" "/etc/default/grub"
 create_backup "sleep.conf" "/etc/systemd/sleep.conf"
 create_backup "systemd-suspend.service" "/lib/systemd/system/systemd-suspend.service"
 create_backup "logind" "/etc/systemd/logind.conf"
-
 sudo \cp common/restore "backups/restore_$now"
 sudo sed -i "s/XxXxXxXxX/$now/g" "backups/restore_$now"
 sudo chmod +x "backups/restore_$now"
@@ -58,6 +60,11 @@ echo
 echo
 
 
+
+
+#========== Touchpad config =====================================================================================
+# I want two fingers scroll !!
+# I dislike the pad middle click, it's annoying on large pads
 itemdisp "Configuring touchpad..."
 echo
 echo -e "  \e[35m░▒▓█\033[0m Enabling two fingers scrolling & disabling middle click..."
@@ -82,6 +89,9 @@ echo
 progress "$script" 20
 
 
+
+#========== Touchpad config =====================================================================================
+#too much crash with TDEpowersave on some laptops...
 itemdisp "Removing TDE powersave..."
 echo
 sudo apt remove -y tdepowersave-trinity
@@ -92,6 +102,10 @@ echo
 progress "$script" 30
 
 
+
+
+#========== Uninstall powertop ==================================================================================
+#avoid conflicts with TLP
 itemdisp "Removing powertop..."
 echo
 sudo apt remove -y powertop
@@ -102,6 +116,9 @@ echo
 progress "$script" 40
 
 
+
+#========== Install TLP =========================================================================================
+#fine battery saver :)
 itemdisp "Installing TLP + TLP gui..."
 echo
 echo -e "  \e[35m░▒▓█\033[0m Installing TLP..."
@@ -121,6 +138,8 @@ echo
 progress "$script" 60
 
 
+
+#========== xfce4 power manager =================================================================================
 itemdisp "Installing xfce4 power manager..."
 echo
 echo -e "${YELLOW}"
@@ -132,6 +151,10 @@ echo
 echo
 progress "$script" 70
 
+
+
+
+#========== xfce4 power manager config ==========================================================================
 itemdisp "Configuring xfce4 power manager base settings"
 echo
 xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/blank-on-ac -s 0
@@ -163,7 +186,6 @@ xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/sleep-button-action 
 xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/show-tray-icon -s true
 xfconf-query -c xfce4-session -p /general/LockCommand -s "dcop kdesktop KScreensaverIface lock" --create -t string
 # modify logind.conf
-
 if ! grep -q "HandleLidSwitch=" "/etc/systemd/logind.conf"; then
 echo "HandleLidSwitch=suspend" | sudo tee -a /etc/systemd/logind.conf
 fi
@@ -178,6 +200,11 @@ progress "$script" 80
 
 
 
+
+
+
+
+#========== swap file for hibernation ===========================================================================
 itemdisp "Installing swap file for hibernation"
 echo
 if (grep "GRUB_CMDLINE_LINUX_DEFAULT" "/etc/default/grub")|grep -q "resume_offset="; then
@@ -257,7 +284,11 @@ echo
 progress "$script" 90
 
 
+
+
 progress "$script" 100
+
+#========== DONE. ==================================================================================================
 alldone
 
 wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz

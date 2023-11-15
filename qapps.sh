@@ -1,15 +1,19 @@
 #!/bin/bash
 helpdoc=0
-VALID_ARGS=$(getopt -o h --long help -- "$@")
+installall=0
+VALID_ARGS=$(getopt -o ha --long help,all -- "$@")
 if [[ $? -ne 0 ]]; then
     exit 1;
 fi
-
 eval set -- "$VALID_ARGS"
 while [ : ]; do
   case "$1" in
     -h | --help)
         helpdoc=1
+        shift
+        ;;
+    -a | --all)
+        installall=1
         shift
         ;;
      --) shift; 
@@ -25,18 +29,53 @@ fi
 source common/begin
 source common/progress
 begin "$script"
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-progress "$script" 0
+#================================================================================================================
 
-itemdisp "Installing GIT..."
-#git/stable
+
+
+#=================== functions ==================================================================================
+function isinstalled() {
+local string="$1"
+local file="$2"
+if grep -q "$string" "$file"; then
+return 0
+else
+return 1
+fi
+}
+
+
+function installApp() {
+local appName="$1"
+local packageString="$2"
+if ! isinstalled "$packageString" "common/packages_list.tmp"; then
 echo -e "${YELLOW}"
-sudo apt install -y git
+sudo apt install -y "$appName"
 echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+if ! [[ -v $3 ]]; then
 sep
 echo
 echo
 echo
+fi
+}
+
+#========== retrieve packages list ==============================================================================
+progress "$script" 0
+echo -e "    ${ORANGE}░▒▓█\033[0m Retrieve packages list...${NOCOLOR}"
+echo
+cd common
+sudo ./pklist
+cd ..
+echo
+
+
+#============== Install Apps (automatic) ========================================================================
+itemdisp "Installing GIT..."
+installApp "git" "git/stable"
 progress "$script" 5
 
 
@@ -44,51 +83,33 @@ progress "$script" 5
 
 
 itemdisp "Installing Ark..."
-#ark/stable
-echo -e "${YELLOW}"
-sudo apt install -y ark
-echo -e "${NOCOLOR}"
-sep
-echo
-echo
-echo
-progress "$script" 10
+installApp "ark" "ark/stable"
+progress "$script" 5
 
 
-itemdisp "Installing Dolphin..."
-#dolphin-trinity
-echo -e "${YELLOW}"
-sudo apt install -y dolphin-trinity
-echo -e "${NOCOLOR}"
-sep
-echo
-echo
-echo
+
+itemdisp "Installing 7zip..."
+installApp "7z" "p7zip-full/stable"
 progress "$script" 15
 
 
 
-itemdisp "Installing Baobab..."
-#baobab/stable
-echo -e "${YELLOW}"
-sudo apt install -y baobab
-echo -e "${NOCOLOR}"
-sep
-echo
-echo
-echo
+itemdisp "Installing Dolphin..."
+installApp "dolphin-trinity" "dolphin-trinity/"
 progress "$script" 20
 
-itemdisp "Installing system-config-printer..."
 
-echo -e "${YELLOW}"
-sudo apt install -y system-config-printer
-echo -e "${NOCOLOR}"
-sep
-echo
-echo
-echo
+itemdisp "Installing Baobab..."
+installApp "baobab" "baobab/stable"
 progress "$script" 25
+
+
+
+itemdisp "Installing system-config-printer..."
+installApp "system-config-printer" "system-config-printer/stable"
+progress "$script" 30
+
+
 
 itemdisp "Installing flashfetch"
 cd apps
@@ -97,20 +118,7 @@ sudo tar -xzf flashfetch.tar.gz -C /usr/bin/
 echo "flashfetch binary copied in /usr/bin/"
 cd ..
 echo -e "${NOCOLOR}"
-flashfetch
-sep
-echo
-echo
-echo
-progress "$script" 30
-
-
-
-itemdisp "Installing Stacer..."
-#stacer
-echo -e "${YELLOW}"
-sudo apt install -y stacer
-echo -e "${NOCOLOR}"
+#flashfetch
 sep
 echo
 echo
@@ -119,59 +127,48 @@ progress "$script" 35
 
 
 
-itemdisp "Installing bleachbit..."
-#bleachbit
-echo -e "${YELLOW}"
-sudo apt install -y bleachbit
-echo -e "${NOCOLOR}"
-sep
-echo
-echo
-echo
+itemdisp "Installing Stacer..."
+installApp "stacer" "stacer/stable"
 progress "$script" 40
 
 
 
-itemdisp "Installing vlc..."
-#vlc
-echo -e "${YELLOW}"
-sudo apt install -y vlc
-echo -e "${NOCOLOR}"
-sep
-echo
-echo
-echo
+itemdisp "Installing bleachbit..."
+installApp "bleachbit" "bleachbit/stable"
 progress "$script" 45
+
+
+
+itemdisp "Installing vlc..."
+installApp "vlc" "vlc/stable"
+progress "$script" 50
+
+
 
 #classics tools, may be already installed with desktop version
 itemdisp "Installing Kolourpaint,KCharSelect,Ksnapshot,knotes..."
 echo
 echo -e "  \e[35m░▒▓█\033[0m Installing Kolourpaint..."
-echo -e "${YELLOW}"
-sudo apt install -y kolourpaint-trinity
-echo -e "${NOCOLOR}"
+installApp "kolourpaint-trinity" "kolourpaint-trinity" 0
 echo -e "  \e[35m░▒▓█\033[0m Installing KCharSelect..."
-echo -e "${YELLOW}"
-sudo apt install -y kcharselect-trinity
-echo -e "${NOCOLOR}"
+installApp "kcharselect-trinity" "kcharselect-trinity" 0
 echo -e " \e[35m░▒▓█\033[0m Installing Ksnapshot..."
-echo -e "${YELLOW}"
-sudo apt install -y ksnapshot-trinity
-echo -e "${NOCOLOR}"
+installApp "ksnapshot-trinity" "ksnapshot-trinity" 0
 echo -e " \e[35m░▒▓█\033[0m Installing Knotes..."
-echo -e "${YELLOW}"
-sudo apt install -y knotes-trinity
-echo -e "${NOCOLOR}"
-sep
-echo
-echo
-echo
-progress "$script" 50
+installApp "knotes-trinity" "knotes-trinity"
+progress "$script" 55
 
 
+
+
+
+#============== Install Apps (interactive) ======================================================================
 
 itemdisp "Installing qbittorent"
 #qbittorrent
+if [ "$installall" -eq 1 ]; then
+    installApp "qbittorrent" "qbittorrent/stable"
+else
 echo
 echo -e "${RED}█ ${ORANGE}Install qbittorrent ?${NOCOLOR}"
 optionz=("Install qbittorrent" "Skip")
@@ -180,27 +177,47 @@ do
     case $optz in
         "Install qbittorrent")
             echo -e "  \e[35m░▒▓█\033[0m Installing qbittorrent..."
-            echo -e "${YELLOW}"
-            sudo apt-get install -y qbittorrent
-            echo -e "${NOCOLOR}"
+            installApp "qbittorrent" "qbittorrent/stable"
             break
             ;;
         "Skip")
+            sep
+            echo
+            echo
+            echo
             break
             ;;
         *) echo "invalid option $REPLY";;
     esac
 done
-sep
-echo
-echo
-echo
-progress "$script" 55
+fi
+progress "$script" 60
+
+
+
+
+
+
 
 
 
 itemdisp "Installing spotify"
 #spotify
+installSpoty () {
+            if ! isinstalled "spotify-client/stable" "common/packages_list.tmp"; then
+            echo -e "${YELLOW}"
+            curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+            echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+            sudo apt-get update
+            sudo apt-get install -y spotify-client
+            echo -e "${NOCOLOR}"
+            else
+            echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+            fi
+}
+if [ "$installall" -eq 1 ]; then
+    installSpoty
+else
 echo
 echo -e "${RED}█ ${ORANGE}Install spotify ?${NOCOLOR}"
 optionz=("Install spotify" "Skip")
@@ -209,12 +226,7 @@ do
     case $optz in
         "Install spotify")
             echo -e "  \e[35m░▒▓█\033[0m Installing spotify..."
-            echo -e "${YELLOW}"
-            curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
-            echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-            sudo apt-get update
-            sudo apt-get install -y spotify-client
-            echo -e "${NOCOLOR}"
+            installSpoty
             break
             ;;
         "Skip")
@@ -223,36 +235,7 @@ do
         *) echo "invalid option $REPLY";;
     esac
 done
-sep
-echo
-echo
-echo
-progress "$script" 60
-
-
-
-
-itemdisp "Installing gparted"
-#gparted
-echo
-echo -e "${RED}█ ${ORANGE}Install gparted ? (partitions manager)${NOCOLOR}"
-optionz=("Install gparted" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install gparted")
-            echo -e "  \e[35m░▒▓█\033[0m Installing gparted..."
-            echo -e "${YELLOW}"
-            sudo apt install -y gparted
-            echo -e "${NOCOLOR}"
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
+fi
 sep
 echo
 echo
@@ -262,8 +245,52 @@ progress "$script" 65
 
 
 
+
+
+itemdisp "Installing gparted"
+if [ "$installall" -eq 1 ]; then
+    installApp "gparted" "gparted/stable"
+else
+#gparted
+echo
+echo -e "${RED}█ ${ORANGE}Install gparted ? (partitions manager)${NOCOLOR}"
+optionz=("Install gparted" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install gparted")
+            echo -e "  \e[35m░▒▓█\033[0m Installing gparted..."
+            installApp "gparted" "gparted/stable"
+            break
+            ;;
+        "Skip")
+            sep
+            echo
+            echo
+            echo
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+progress "$script" 70
+
+
+
+
+
+
+
 itemdisp "Installing S4 Snapshot"
 #q4os-s4-snapshot
+if [ "$installall" -eq 1 ]; then
+            echo -e "${YELLOW}"
+            cd apps
+            sudo qsinst setup_q4os-s4-snapshot_4.1-a1_amd64.qsi
+            cd ..
+            echo -e "${NOCOLOR}"
+else
 echo
 echo -e "${RED}█ ${ORANGE}Install S4 Snapshot ? (create an bootable iso of a running system)${NOCOLOR}"
 optionz=("Install S4 Snapshot" "Skip")
@@ -285,37 +312,7 @@ do
         *) echo "invalid option $REPLY";;
     esac
 done
-sep
-echo
-echo
-echo
-progress "$script" 70
-
-
-
-
-
-itemdisp "Installing remmina"
-#remmina
-echo
-echo -e "${RED}█ ${ORANGE}Install remmina ? (rdp / vnc / ssh remote desktop client)${NOCOLOR}"
-optionz=("Install remmina" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install remmina")
-            echo -e "  \e[35m░▒▓█\033[0m Installing remmina..."
-            echo -e "${YELLOW}"
-            sudo apt install -y remmina
-            echo -e "${NOCOLOR}"
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
+fi
 sep
 echo
 echo
@@ -325,15 +322,46 @@ progress "$script" 75
 
 
 
-itemdisp "Installing free office"
-#softmaker-freeoffice-2021
+
+
+itemdisp "Installing remmina"
+#remmina
+if [ "$installall" -eq 1 ]; then
+    installApp "remmina" "remmina/stable"
+else
 echo
-echo -e "${RED}█ ${ORANGE}Install free office (a word/excel/ppoint clone) ?${NOCOLOR}"
-optionz=("Install free office" "Skip")
+echo -e "${RED}█ ${ORANGE}Install remmina ? (rdp / vnc / ssh remote desktop client)${NOCOLOR}"
+optionz=("Install remmina" "Skip")
 select optz in "${optionz[@]}"
 do
     case $optz in
-        "Install free office")
+        "Install remmina")
+            echo -e "  \e[35m░▒▓█\033[0m Installing remmina..."
+            installApp "remmina" "remmina/stable"
+            break
+            ;;
+        "Skip")
+            sep
+            echo
+            echo
+            echo
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+progress "$script" 80
+
+
+
+
+
+
+
+itemdisp "Installing free office"
+function installFreeO() {
+           if ! isinstalled "softmaker-freeoffice-" "common/packages_list.tmp"; then
             echo -e "  \e[35m░▒▓█\033[0m Installing free office..."
             echo -e "${YELLOW}"
             mkdir -p /etc/apt/keyrings
@@ -342,36 +370,23 @@ do
             sudo apt update
             sudo apt install -y softmaker-freeoffice-2021
             echo -e "${NOCOLOR}"
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-sep
+            else
+            echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+            fi
+}
+#softmaker-freeoffice-2021
+if [ "$installall" -eq 1 ]; then
+installFreeO
+else
 echo
-echo
-echo
-progress "$script" 80
-
-
-
-itemdisp "Installing bpytop"
-#bpytop
-echo
-echo -e "${RED}█ ${ORANGE}Install bpytop ? (CLI htop alternative)${NOCOLOR}"
-optionz=("Install bpytop" "Skip")
+echo -e "${RED}█ ${ORANGE}Install free office (a word/excel/ppoint clone) ?${NOCOLOR}"
+optionz=("Install free office" "Skip")
 select optz in "${optionz[@]}"
 do
     case $optz in
-        "Install bpytop")
-            echo -e "  \e[35m░▒▓█\033[0m Installing bpytop"
-            echo -e "${YELLOW}"
-            #sudo qsinst setup_q4os-skype_3.2-a1_amd64.esh
-            sudo apt install -y bpytop
-            echo -e "${NOCOLOR}"
+        "Install free office")
+            echo -e "  \e[35m░▒▓█\033[0m Installing free office..."
+            installFreeO
             break
             ;;
         "Skip")
@@ -380,6 +395,7 @@ do
         *) echo "invalid option $REPLY";;
     esac
 done
+fi
 sep
 echo
 echo
@@ -392,8 +408,49 @@ progress "$script" 85
 
 
 
+
+itemdisp "Installing bpytop"
+#bpytop
+if [ "$installall" -eq 1 ]; then
+installApp "bpytop" "bpytop/stable"
+else
+echo
+echo -e "${RED}█ ${ORANGE}Install bpytop ? (CLI htop alternative)${NOCOLOR}"
+optionz=("Install bpytop" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install bpytop")
+            echo -e "  \e[35m░▒▓█\033[0m Installing bpytop"
+            installApp "bpytop" "bpytop/stable"
+            break
+            ;;
+        "Skip")
+            sep
+            echo
+            echo
+            echo
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+sep
+echo
+echo
+echo
+progress "$script" 90
+
+
+
+
+
+
+
 itemdisp "Cleaning files..."
 echo
+sudo rm -f common/packages_list.tmp
 sudo apt clean
 sudo apt autoremove -y
 sep
