@@ -13,7 +13,7 @@ This is my attempt to have the responsivness of Q4OS Trinity and the windows 10 
 You can choose between a 'light' theme and a 'dark' one. It's somekind of a full theme with icons, pointers, windows decorations, widgets style, color schemes, sounds, taskbar setup, konqueror profiles,boot splash, gtk theme, etc...
 
 ## ▓▓ Qperf script:
-This one is designed to try to improve performances of your system. If you have a very recent computer, you maybe don't need it. But my testing on differents systems shows that even modern computers can gain some benefits from it. You can install a new optimized kernel (choice between xanmod & liquorix), optional of course. It will install preload, disabling some services not really needed for classic desktop usage, disable javascript in libre office (if installed), replace agetty by ngetty, removes ufw & some fonts, do some sysctl tweaks, disable core dump, setup temp directories as tmps, disabling some loggin, install zram, trim initramfs size and some cleaning.
+This one is designed to try to improve performances of your system. If you have a very recent computer, you maybe don't need it. But my testing on differents systems shows that even modern computers can gain some benefits from it. You can install a new optimized kernel (choice between xanmod & liquorix), optional of course. It will install preload, disabling some services not really needed for classic desktop usage, disable javascript in libre office (if installed),tune compton-tde conf, removes ufw & some fonts, do some sysctl tweaks, disable core dump, setup temp directories as tmps, disabling some loggin, install zram, trim initramfs size and finally some cleaning.
 I tested it a lot, but if something horrible happens, you can restore the backup created in the folder backup/ , by simply launching the restore script.
 
 ## ▒▒ Qlaptop:
@@ -29,6 +29,7 @@ Designed to install a set of apps I consider usefull for the usage I have. This 
 
 
 ¤¤ Please note that these scripts were designed for my own usage, and only for Q4OS, never thought of sharing them at the first place, but it may be of interest for some other people... Please be aware that they reflects my choices, so maybe not yours. Please take a look a the sources of the scripts before trying them, you're welcome to modify or improve them for you :)    ¤¤¤
+¤¤ Nearly everything was coded on an old laptop, a celeron N3060 with 4gb of non upgradable ram, so it's a good system to see what impacts or not performances. It's nearly unusable on windows 10, even with considerable tweaking, but works very good with Q4os, even without tweaking by the way :) So thanks again to the Q4OS team for this gem :) ¤¤
 
 ______________________________________________________________________________________________________________________________________
 Installation:
@@ -51,6 +52,9 @@ Parameters for all apps:  -h   (display a little description of the script)
 Parameters for Qtheme:
                           -L (light theme, default if nothing specified)
                           -d (dark theme)
+
+Parameters for Qapps:
+                          -a (install everything whithout asking)
 
 
 
