@@ -1,0 +1,10 @@
+ \e[39m    Qapps script is designed to install a set of apps I consider usefull for 
+     the usage I have. The complete list is the main read.me file.
+     This is a very simple script, nothing special about it ^^
+ \e[39m 
+
+\e[97m Options availables:
+
+ -a       install everything without asking
+ -h       this help ^^
+\e[0m
