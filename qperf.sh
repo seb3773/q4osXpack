@@ -164,7 +164,8 @@ echo -e "  \e[35m░▒▓█\033[0m serial-getty service"
 sudo systemctl stop serial-getty@ttyS0.service
 sudo systemctl disable serial-getty@ttyS0.service
 sudo systemctl mask serial-getty@ttyS0.service
-
+#--nosyslog for dbus.service
+sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/system/dbus.service
 echo -e "${RED}█ ${ORANGE}Disable bluetooth ? (if you don't need it :p)${NOCOLOR}"
 optionz=("Disable bluetooth" "Skip")
 select optz in "${optionz[@]}"

@@ -1,3 +1,4 @@
+
 #!/bin/bash
 dark=0
 helpdoc=0
@@ -72,6 +73,8 @@ create_backup "qtrc_qt" "$USER_HOME/.qt/qtrc"
 create_backup "qtrc_tqt3" "/etc/tqt3/qtrc"
 create_backup "qtrc" "/root/.qt/qtrc"
 create_backup "ksplashrc" "$USER_HOME/.trinity/share/config/ksplashrc"
+create_backup "d3lphinrc" "$USER_HOME/.trinity/share/config/d3lphinrc"
+create_backup "d3lphinrc_profiles" "$USER_HOME/.trinity/share/apps/d3lphin/"
 create_backup "kcminputrc" "$TDEHOME/share/config/kcminputrc"
 create_backup "kcminputrc_root" "/root/.config/kcminputrc"
 create_backup "gtk3_settings_tde" "$USER_HOME/.configtde/gtk-3.0/settings.ini"
@@ -114,9 +117,6 @@ create_backup "knotify.eventsrc" "$TDEHOME/share/config/knotify.eventsrc"
 create_backup "sounds" "/opt/trinity/share/sounds/"
 create_backup "shutdown_img" "/opt/trinity/share/apps/tdm/pics/shutdown.jpg"
 create_backup "keditrc" "$TDEHOME/share/config/keditrc"
-if [ -d "/opt/program_files/q4os-update-manager" ]; then
-create_backup "update-manager_icons" "/opt/program_files/q4os-update-manager/share/icons"
-fi
 create_backup "konsolerc" "$TDEHOME/share/config/konsolerc"
 create_backup "systemtray_panelappletrc" "$TDEHOME/share/config/systemtray_panelappletrc"
 create_backup  "tde_xsettingsd.conf" "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
@@ -542,7 +542,10 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key WindowSna
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveMode Opaque
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Desktops --key Number 1
 kwriteconfig --file $TDEHOME/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
+#******** dont' know why desktop flickering with true (when click on a windows then click on desktop )?
+#too bad it's more readeable with shadows on the texts...
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
+sudo kwriteconfig --file /root/.trinity/share/config --group FMSettings --key ShadowEnabled false
 rota
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key InactiveShadowColour "0,0,0"
@@ -623,7 +626,6 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --ke
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveMode Opaque
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Desktops --key Number 1
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
-sudo kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
 rota
 echo
 printf '\e[A\e[K'
@@ -639,8 +641,13 @@ echo -e "  \e[35m░▒▓█\033[0m configuring xcompmgr..."
 sudo tar -xzf theme/xcompmgrrc.tar.gz -C $USER_HOME/
 sudo tar -xzf theme/xcompmgrrc.tar.gz -C /root/
 echo -e "  \e[35m░▒▓█\033[0m configuring compton-tde..."
+if [[ $dark -eq 1 ]]; then
+sudo tar -xzf theme/compton-tde.conf-dark.tar.gz -C $USER_HOME/
+sudo tar -xzf theme/compton-tde.conf-dark.tar.gz -C /root
+else
 sudo tar -xzf theme/compton-tde.conf.tar.gz -C $USER_HOME/
 sudo tar -xzf theme/compton-tde.conf.tar.gz -C /root
+fi
 echo -e "  \e[35m░▒▓█\033[0m disable screensaver & lock after suspend..."
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group ScreenSaver --key Enabled false
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group ScreenSaver --key Lock false
@@ -686,6 +693,110 @@ sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWind
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Hidden true
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key IconText IconTextRight
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Index 6
+deskfold=$(xdg-user-dir DESKTOP)
+picfold=$(xdg-user-dir PICTURES)
+docfold=$(xdg-user-dir DOCUMENTS)
+musicfold=$(xdg-user-dir MUSIC)
+vidfold=$(xdg-user-dir VIDEOS)
+downlfold=$(xdg-user-dir DOWNLOAD)
+usrfold=$(xdg-user-dir USER)
+downlfoldroot=$(sudo xdg-user-dir DOWNLOAD)
+#~~~~~~~~~~~~~~~~~~~~~ if dolphin is installed
+if [[ -f "$TDEHOME/share/config/d3lphinrc" ]]; then
+echo -e "  \e[35m░▒▓█\033[0m Configuring Dolphin ui..."
+sudo tar -xzf theme/d3lphinui.rc.tar.gz -C $TDEHOME/share/apps/d3lphin/
+kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "D3lphin Toolbar style" --key IconSize 32
+kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "Details Mode" --key "Font Family" "Segoe UI"
+kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "Details Mode" --key "Font Size" 10
+kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "Icons Mode" --key Arrangement "Left to Right"
+kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "Icons Mode" --key "Font Family" "Segoe UI"
+kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "Icons Mode" --key "Font Size" 10
+kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "MainWindow Toolbar mainToolBar" --key IconSize 32
+kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "MainWindow Toolbar mainToolBar" --key IconText IconTextBottom
+#root
+sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "D3lphin Toolbar style" --key IconSize 32
+sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "Details Mode" --key "Font Family" "Segoe UI"
+sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "Details Mode" --key "Font Size" 10
+sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "Icons Mode" --key Arrangement "Left to Right"
+sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "Icons Mode" --key "Font Family" "Segoe UI"
+sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "Icons Mode" --key "Font Size" 10
+sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "MainWindow Toolbar mainToolBar" --key IconSize 32
+sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "MainWindow Toolbar mainToolBar" --key IconText IconTextBottom
+rota
+cat << EOF > $TDEHOME/share/apps/d3lphin/bookmarks.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xbel>
+<xbel>
+ <bookmark icon="computer" href="system:/" >
+<title>Systeme</title>
+<info>
+<metadata owner="http://www.kde.org" />
+</info>
+</bookmark>
+<bookmark icon="desktop" href="file://$deskfold" >
+<title>Bureau</title>
+<info>
+<metadata owner="http://www.kde.org" />
+</info>
+</bookmark>
+<bookmark icon="folder_doc_q4os_startmenu" href="file://$docfold" >
+<title>Documents</title>
+<info>
+<metadata owner="http://www.kde.org" />
+</info>
+</bookmark>
+<bookmark icon="folder-pictures" href="file://$picfold" >
+<title>Images</title>
+<info>
+<metadata owner="http://www.kde.org" />
+</info>
+</bookmark>
+<bookmark icon="folder-music" href="file://$musicfold" >
+<title>Musique</title>
+<info>
+<metadata owner="http://www.kde.org" />
+</info>
+</bookmark>
+<bookmark icon="folder-download" href="file://$downlfold" >
+<title>Téléchargements</title>
+<info>
+<metadata owner="http://www.kde.org" />
+</info>
+</bookmark>
+<bookmark icon="folder_video" href="file://$vidfold" >
+<title>Vidéos</title>
+<info>
+<metadata owner="http://www.kde.org" />
+</info>
+</bookmark>
+<bookmark icon="folder_home" href="file://$usrfold" >
+<title>Dossier personnel</title>
+<info>
+<metadata owner="http://www.kde.org" />
+</info>
+</bookmark>
+<bookmark icon="network_local" href="remote:/" >
+<title>Réseau</title>
+<info>
+<metadata owner="http://www.kde.org" />
+</info>
+</bookmark>
+</xbel>
+EOF
+fi
+#~~~~~~~~~~~~~~~~~~~~~ end if dolphin
+echo -e "  \e[35m░▒▓█\033[0m Adjusting folders icons"
+cat << EOF > $downlfold/.directory
+[Desktop Entry]
+Icon=folder-download
+EOF
+sudo \cp $downlfold/.directory $downlfoldroot/.directory
+vidfold=$(xdg-user-dir DOWNLOAD)
+vidfoldroot=$(sudo xdg-user-dir DOWNLOAD)
+cat << EOF > $vidfold/.directory
+[Desktop Entry]
+Icon=folder-videos
+EOF
 rota
 echo
 printf '\e[A\e[K'
@@ -1169,7 +1280,7 @@ kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --k
 sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sed -i '/font_name="/c\font_name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
-sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"'"$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
+sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "/root/.config/xsettingsd/xsettingsd.conf"
 if [ -f "/root/xsettingsd.conf" ]; then
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "/root/xsettingsd.conf"
