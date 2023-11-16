@@ -85,10 +85,6 @@ else
                then
                 echo -e "  ${BLUE}█${NOCOLOR} Dark theme selected"
                fi
-               if [[ $interact -eq 1 ]]
-               then
-                echo -e "  ${LIGHTGREEN}█${NOCOLOR} Interactive Mode"
-               fi
                if [[ $installall -eq 1 ]]
                then
                 echo -e "  ${LIGHTGREEN}█${NOCOLOR} Install everything whithout asking"
@@ -110,8 +106,12 @@ echo -e "             ${GRAY}██${REDL}▒▒▒${GRAY}██        ${WHITE}
 echo -e "              ${GRAY}█████   ══${WHITE}ooO${GRAY}══${WHITE}(_)${GRAY}══${WHITE}Ooo${GRAY}══════ ${NOCOLOR}Ready :-) ${GRAY}════════${NOCOLOR}    "
 echo
 fi
-echo -en "\e[5m   Press enter to start . . .\e[25m"
-read -p " "
+echo -en "\e[5m   Press enter to start (or esc to quit) \e[25m"
+read -s -n1 key
+ case $key in
+     $'\e') echo;printf '\e[A\e[K';echo;wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz;exit;;
+ esac
+echo
 printf '\e[A\e[K'
 echo
 echo
