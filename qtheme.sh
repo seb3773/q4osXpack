@@ -360,7 +360,7 @@ progress "$script" 45
 
 #========== Start menu configuration ============================================================================
 itemdisp "Configuring start menu..."
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key CustomSize 34
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key CustomSize 36
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BourbonMenu false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key LegacyKMenu true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Locked true
