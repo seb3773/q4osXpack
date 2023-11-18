@@ -642,6 +642,9 @@ sudo tar -xzf theme/xcompmgrrc.tar.gz -C $USER_HOME/
 sudo tar -xzf theme/xcompmgrrc.tar.gz -C /root/
 echo -e "  \e[35m░▒▓█\033[0m configuring compton-tde..."
 if [[ $dark -eq 1 ]]; then
+#sudo is needed for this extraction as we want the root user owner for this file, this is is
+#because without that, the configuration (especially the exclude part) is destroyed by trinity if we want to adjust something
+#from the cli configuration panel. We don't want that. But by doing this, the configuration panel can't be used to ajust settings.
 sudo tar -xzf theme/compton-tde.conf-dark.tar.gz -C $USER_HOME/
 sudo tar -xzf theme/compton-tde.conf-dark.tar.gz -C /root
 else
@@ -1152,7 +1155,7 @@ kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key In
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key TaskBackgroundColor "255,255,255"
                fi
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key HaloText true
-kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key IconSize 22
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key IconSize 24
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key Q4ButtonFrameType 1
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key UseCustomColors true
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ShowButtonOnHover ""
@@ -1164,7 +1167,7 @@ kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key Minim
 sed -i "/ShowButtonOnHover=/d" $TDEHOME/share/config/ktaskbarrc
 kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key ConserveSpace true
 kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key DragEnabled true
-kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key IconDim 32
+kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key IconDim 30
 ####kwriteconfig --file $TDEHOME/share/config/kickerrc --group Applet_1 --key 'ConfigFile[$e]' taskbar_panelapplet_rc
 sed -i '/^ConfigFile\[/d' $TDEHOME/share/config/kickerrc
 sed -i '/^DesktopFile\[/d' $TDEHOME/share/config/kickerrc
