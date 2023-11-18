@@ -107,7 +107,9 @@ create_backup "ktaskbarrc" "$TDEHOME/share/config/ktaskbarrc"
 create_backup "clock_panelapplet_rc" "$TDEHOME/share/config/clock_panelapplet_rc"
 create_backup "kcmfonts" "$USER_HOME/.trinity/share/config/kcmfonts"
 create_backup "gtkrc-q4os" "$USER_HOME/.gtkrc-q4os"
+if [ -f "$USER_HOME/.gtkrc-2.0" ]; then
 create_backup "gtkrc-q4os" "$USER_HOME/.gtkrc-2.0"
+fi
 create_backup "gtkrc-q4os_root" "/root/.gtkrc-q4os"
 create_backup "launcher_panelapplet_rc" "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
 create_backup "Xresources" "$USER_HOME/.Xresources"
@@ -330,7 +332,7 @@ kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 kwriteconfig --file $USER_HOME/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' $USER_HOME/.gtkrc-2.0
+sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
 #root
 sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key Acceleration 1
@@ -431,12 +433,14 @@ itemdisp "Configuring windows style..."
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key widgetStyle qtcurve
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectsEnabled false
-sed -i '/gtk-button-images="/c\gtk-button-images=0' $USER_HOME/.gtkrc-2.0
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowKonqIconActivationEffect false
+sed -i '/gtk-button-images="/c\gtk-button-images=0' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
 sed -i '/gtk-button-images="/c\gtk-button-images=0' $USER_HOME/.gtkrc-q4os
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key widgetStyle qtcurve
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectsEnabled false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowKonqIconActivationEffect false
 sep
 echo
 echo
@@ -1155,7 +1159,7 @@ kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key In
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key TaskBackgroundColor "255,255,255"
                fi
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key HaloText true
-kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key IconSize 24
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key IconSize 20
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key Q4ButtonFrameType 1
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key UseCustomColors true
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ShowButtonOnHover ""
@@ -1358,7 +1362,7 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme k
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
 sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' $USER_HOME/.gtkrc-q4os
-sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' $USER_HOME/.gtkrc-2.0
+sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' $USER_HOME/.gtkrc-2.0 > /dev/null 2>&1
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group Icons --key Theme kdeten_dark
 sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
@@ -1369,7 +1373,7 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme k
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
 sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' $USER_HOME/.gtkrc-q4os
-sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' $USER_HOME/.gtkrc-2.0
+sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' $USER_HOME/.gtkrc-2.0 > /dev/null 2>&1
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group Icons --key Theme kdeten_light
 sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
