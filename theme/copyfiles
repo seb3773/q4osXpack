@@ -1,0 +1,225 @@
+#!/bin/sh
+
+#check root
+if [ "$(id -u)" -ne 0 ]; then
+        echo 'This script must be run by root' >&2
+        exit 1
+fi
+#
+
+
+USER_HOME=$(eval echo ~${SUDO_USER})
+
+
+NOCOLOR='\033[0m'
+RED='\033[0;31m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;96m'
+SEPL="${ORANGE}════════════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
+echo "${RED}== ${BLUE}\e[1m\e[4mCopying various files...\e[21m"
+echo "${SEPL}"
+#echo "  \e[35m░▒▓█\033[0m copying start screen image"
+#tar -xzf Blacktux-TDE-Classic.tar.gz -C /opt/trinity/share/apps/ksplash/Themes
+echo "  \e[35m░▒▓█\033[0m copying icons"
+#tar -xzf We10X-icon-theme.tar.gz
+#cd We10X-icon-theme/
+#./install.sh
+#cd ..
+if [ $1 -eq 1 ]
+then
+iconth="dark"
+else
+iconth="light"
+fi
+rm -fr /usr/share/icons/kdeten_$iconth
+mkdir -p /usr/share/icons/kdeten_$iconth
+#tar -xzf kdeten_icons.tar.gz -C /usr/share/icons/kdeten_light/
+7z x -so kdeten_icons.tar.7z | tar xf - -C /usr/share/icons/kdeten_$iconth/
+#links
+cd /usr/share/icons/kdeten_$iconth/
+ln -s kde1.png 16x16/actions/kde2.png
+ln -s kde1.png 16x16/actions/kde3.png
+ln -s kde1.png 16x16/actions/kde4.png
+ln -s kde1.png 16x16/actions/kde5.png
+ln -s kde1.png 16x16/actions/kde6.png
+ln -s kde1.png 22x22/actions/kde2.png
+ln -s kde1.png 22x22/actions/kde3.png
+ln -s kde1.png 22x22/actions/kde4.png
+ln -s kde1.png 22x22/actions/kde5.png
+ln -s kde1.png 22x22/actions/kde6.png
+ln -s kde1.png 24x24/actions/kde2.png
+ln -s kde1.png 24x24/actions/kde3.png
+ln -s kde1.png 24x24/actions/kde4.png
+ln -s kde1.png 24x24/actions/kde5.png
+ln -s kde1.png 24x24/actions/kde6.png
+ln -s kde1.png 32x32/actions/kde2.png
+ln -s kde1.png 32x32/actions/kde3.png
+ln -s kde1.png 32x32/actions/kde4.png
+ln -s kde1.png 32x32/actions/kde5.png
+ln -s kde1.png 32x32/actions/kde6.png
+ln -s kde1.png 48x48/actions/kde2.png
+ln -s kde1.png 48x48/actions/kde3.png
+ln -s kde1.png 48x48/actions/kde4.png
+ln -s kde1.png 48x48/actions/kde5.png
+ln -s kde1.png 48x48/actions/kde6.png
+ln -s kde1.png 64x64/actions/kde2.png
+ln -s kde1.png 64x64/actions/kde3.png
+ln -s kde1.png 64x64/actions/kde4.png
+ln -s kde1.png 64x64/actions/kde5.png
+ln -s kde1.png 64x64/actions/kde6.png
+ln -s text-x-generic.png 16x16/mimetypes/text-x-log.png
+ln -s text-x-generic.png 22x22/mimetypes/text-x-log.png
+ln -s text-x-generic.png 24x24/mimetypes/text-x-log.png
+ln -s text-x-generic.png 32x32/mimetypes/text-x-log.png
+ln -s text-x-generic.png 48x48/mimetypes/text-x-log.png
+ln -s text-x-generic.png 64x64/mimetypes/text-x-log.png
+ln -s edit-select-all.png 16x16/actions/kr_selectall.png
+ln -s edit-select-all.png 22x22/actions/kr_selectall.png
+ln -s edit-select-all.png 24x24/actions/kr_selectall.png
+ln -s edit-select-all.png 32x32/actions/kr_selectall.png
+ln -s edit-select-all.png 48x48/actions/kr_selectall.png
+ln -s edit-select-all.png 64x64/actions/kr_selectall.png
+ln -s edit-select-none.png 16x16/actions/kr_unselectall.png
+ln -s edit-select-none.png 22x22/actions/kr_unselectall.png
+ln -s edit-select-none.png 24x24/actions/kr_unselectall.png
+ln -s edit-select-none.png 32x32/actions/kr_unselectall.png
+ln -s edit-select-none.png 48x48/actions/kr_unselectall.png
+ln -s edit-select-none.png 64x64/actions/kr_unselectall.png
+ln -s edit-select.png 16x16/actions/kr_select.png
+ln -s edit-select.png 22x22/actions/kr_select.png
+ln -s edit-select.png 24x24/actions/kr_select.png
+ln -s edit-select.png 32x32/actions/kr_select.png
+ln -s edit-select.png 48x48/actions/kr_select.png
+ln -s edit-select.png 64x64/actions/kr_select.png
+ln -s edit-select-invert.png 16x16/actions/kr_invert.png
+ln -s edit-select-invert.png 22x22/actions/kr_invert.png
+ln -s edit-select-invert.png 24x24/actions/kr_invert.png
+ln -s edit-select-invert.png 32x32/actions/kr_invert.png
+ln -s edit-select-invert.png 48x48/actions/kr_invert.png
+ln -s edit-select-invert.png 64x64/actions/kr_invert.png
+cd - > /dev/null 2>&1
+#
+tar -xzf kdeten_mods_$iconth.tar.gz -C /usr/share/icons/kdeten_$iconth/
+sudo sed -i '/Name=kde_ten/c\Name=kde_ten_$iconth' /usr/share/icons/kdeten_$iconth/index.theme
+gtk-update-icon-cache /usr/share/icons/kdeten_$iconth/
+echo "  \e[35m░▒▓█\033[0m copying cursors"
+tar -xzf Windows10Light.tar.gz -C /usr/share/icons/
+tar -xzf Windows10Dark.tar.gz -C /usr/share/icons/
+create_links() {
+cd $1
+ln -s progress 00000000000000020006000e7e9ffc3f > /dev/null 2>&1
+ln -s size_ver 00008160000006810000408080010102 > /dev/null 2>&1
+ln -s circle 03b6e0fcb3499374a867c041f52298f0 > /dev/null 2>&1
+ln -s progress 08e8e1c95fe2fc01f976f1e063a24ccd > /dev/null 2>&1
+ln -s copy 1081e37283d90000800003c07f3ef6bf > /dev/null 2>&1
+ln -s alias 3085a0e285430894940527032f8b26df > /dev/null 2>&1
+ln -s progress 3ecb610c1bf2410f44200f48c40d3599 > /dev/null 2>&1
+ln -s dnd-move 4498f0e0c1937ffe01fd06f973665830 > /dev/null 2>&1
+ln -s help 5c6cd98b3f3ebcb1f9c7f1c204630408 > /dev/null 2>&1
+ln -s copy 6407b0e94181790501fd1e167b474872 > /dev/null 2>&1
+ln -s alias 640fb0e74195791501fd1ed57b41487f > /dev/null 2>&1
+ln -s dnd-move 9081237383d90e509aa00f00170e968f > /dev/null 2>&1
+ln -s pointer 9d800788f1b08800ae810202380a0822 > /dev/null 2>&1
+ln -s alias a2a266d0498c3104214a47bd64ab0fc8 > /dev/null 2>&1
+ln -s copy b66166c04f8c3109214a4fbd64a50fc8 > /dev/null 2>&1
+ln -s help d9ce0ab605698f320427677b458ad60b > /dev/null 2>&1
+ln -s pointer e29285e634086352946a0e7090d73106 > /dev/null 2>&1
+ln -s dnd-move fcf21c00b30f7e3f83fe0dfd12e71cff > /dev/null 2>&1
+ln -s left_ptr arrow > /dev/null 2>&1
+ln -s copy dnd-copy > /dev/null 2>&1
+cd - > /dev/null 2>&1
+}
+create_links /usr/share/icons/Windows10Light/cursors
+create_links /usr/share/icons/Windows10Dark/cursors
+echo "  \e[35m░▒▓█\033[0m copying login icon"
+\cp tuxlogo.png /opt/trinity/share/apps/tdm/pics/tuxlogo.png
+
+echo "  \e[35m░▒▓█\033[0m copying start menu images"
+if [ $1 -eq 1 ]
+then
+tar -xzf StartHere.png-dark.tar.gz -C /usr/share/pixmaps/
+else
+tar -xzf StartHere.png.tar.gz -C /usr/share/pixmaps/
+fi
+tar -xzf StartHere.png-color.tar.gz -C /usr/share/pixmaps/
+
+echo "  \e[35m░▒▓█\033[0m copying kmenu side image"
+if [ $1 -eq 1 ]
+then
+tar -xzf kside_tile_dark.png.tar.gz -C /opt/trinity/share/apps/kicker/pics/
+else
+tar -xzf kside_tile.png.tar.gz -C /opt/trinity/share/apps/kicker/pics/
+fi
+
+echo "  \e[35m░▒▓█\033[0m copying wallpapers"
+tar -xzf q4seb_wallpapers.tar.gz -C /opt/trinity/share/wallpapers/
+
+echo "  \e[35m░▒▓█\033[0m copying font"
+#tar -xzf Segoe_UI.tar.gz -C /usr/share/fonts/truetype/
+#tar -xzf consolas.tar.gz -C /usr/share/fonts/truetype/
+7z x -so Segoe_UI.tar.7z | tar xf - -C /usr/share/fonts/truetype/
+7z x -so consolas.tar.7z | tar xf - -C /usr/share/fonts/truetype/
+tar -xzf cascadia.tar.gz -C /usr/share/fonts/truetype/
+
+echo "  \e[35m░▒▓█\033[0m copying konqueror profiles & entries"
+tar -xzf konqueror.profiles.tar.gz -C $USER_HOME/.trinity/share/apps/
+mv $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/.version .version  > /dev/null 2>&1
+rm -f $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/*
+mv .version $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/.version  > /dev/null 2>&1
+tar -xzf konq_fm_entries.tar.gz -C $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/
+tar -xzf konqueror.profiles.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/
+sudo tar -xzf konqueror.profiles.tar.gz -C /root/.trinity/share/apps/konqueror/
+
+
+
+#theme files
+echo "  \e[35m░▒▓█\033[0m copying color scheme"
+mkdir -p $USER_HOME/.trinity/share/apps/tdedisplay/color-schemes/
+if [ $1 -eq 1 ]
+then
+tar -xzf color-scheme-dark.tar.gz -C $USER_HOME/.trinity/share/apps/tdedisplay/color-schemes/
+tar -xzf color-scheme-dark.tar.gz -C /root/.trinity/share/apps/tdedisplay/color-schemes/
+else
+tar -xzf color-scheme.tar.gz -C $USER_HOME/.trinity/share/apps/tdedisplay/color-schemes/
+tar -xzf color-scheme.tar.gz -C /root/.trinity/share/apps/tdedisplay/color-schemes/
+fi
+
+echo "  \e[35m░▒▓█\033[0m copying style files"
+#\cp twinplastikrc $USER_HOME/.trinity/share/config/twinplastikrc
+if [ $1 -eq 1 ]
+then
+tar -xzf qtcurve_stylerc_dark.tar.gz -C $USER_HOME/.configtde/qtcurve/
+tar -xzf qtcurve_stylerc_dark.tar.gz -C /root/.config/qtcurve/
+else
+tar -xzf qtcurve_stylerc.tar.gz -C $USER_HOME/.configtde/qtcurve/
+tar -xzf qtcurve_stylerc.tar.gz -C /root/.config/qtcurve/
+fi
+tar -xzf tdestylerc.tar.gz -C $USER_HOME/.qt/
+tar -xzf tdestylerc.tar.gz -C /etc/tqt3/
+tar -xzf qtrc.tar.gz -C $USER_HOME/.qt/
+tar -xzf qtrc.tar.gz -C /etc/tqt3/
+
+echo "  \e[35m░▒▓█\033[0m copying sounds"
+tar -xzf sounds.tar.gz -C /opt/trinity/share/sounds/
+tar -xzf knotify.eventsrc.tar.gz -C $USER_HOME/.trinity/share/config/
+#as I don't know yet to modify root apps sound scheme, I delete KDE_Error_x.ogg, because
+#sound doesn't seem to work right in root mode (awfull sounding with cracks)
+rm -f /opt/trinity/share/sounds/KDE_Error_1.ogg
+rm -f /opt/trinity/share/sounds/KDE_Error_2.ogg
+rm -f /opt/trinity/share/sounds/KDE_Error_3.ogg
+
+echo "  \e[35m░▒▓█\033[0m copying tdm windows theme..."
+tar -xzf tdmwin.tar.gz -C /opt/trinity/share/apps/tdm/themes/
+echo "  \e[35m░▒▓█\033[0m copying ksplash theme..."
+tar -xzf Redmond10.tar.gz -C /opt/trinity/share/apps/ksplash/Themes/
+
+#hide some login msg
+touch ~/.hushlogin
+echo
+echo "${BLUE}----------------------------------------------------------------"
+echo "----------------------------------------------------------------${NOCOLOR}"
+echo
+echo
+echo
+
+
