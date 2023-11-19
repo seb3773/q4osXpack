@@ -226,7 +226,8 @@ progress "$script" 10
 
 #========== Installing grub theme ===============================================================================
 itemdisp "Install grub theme..."
-sudo tar -xzf theme/q4os_seb.tar.gz -C /usr/share/grub/themes
+sudo mkdir -p /usr/share/grub/themes
+sudo tar -xzf theme/q4os_seb.tar.gz -C /usr/share/grub/themes/
 if [[ $lowres -eq 1 ]]; then
 sudo tar -xzf theme/segoebold.pf2_lowres.tar.gz -C /usr/share/grub/themes/q4os_seb/
 sudo sed -i '/item_font =/c\item_font = "Segoe UI Bold 18"' /usr/share/grub/themes/q4os_seb/theme.txt
@@ -342,6 +343,7 @@ sudo kwriteconfig --file /root/.config/gtk-4.0/settings.ini --group Settings --k
 sudo kwriteconfig --file /root/.trinity/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 #cursor theme for x
+sudo mkdir -p  /etc/X11/cursors
 sudo \cp /usr/share/icons/Windows10Light/cursor.theme /etc/X11/cursors/Windows10Light_cursor.theme
 sudo ln -nfs /etc/X11/cursors/Windows10Light_cursor.theme /etc/alternatives/x-cursor-theme
 sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
@@ -711,6 +713,7 @@ downlfoldroot=$(sudo xdg-user-dir DOWNLOAD)
 #~~~~~~~~~~~~~~~~~~~~~ if dolphin is installed
 if [[ -f "$TDEHOME/share/config/d3lphinrc" ]]; then
 echo -e "  \e[35m░▒▓█\033[0m Configuring Dolphin ui..."
+mkdir -p $TDEHOME/share/apps/d3lphin/
 sudo tar -xzf theme/d3lphinui.rc.tar.gz -C $TDEHOME/share/apps/d3lphin/
 kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "D3lphin Toolbar style" --key IconSize 32
 kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "Details Mode" --key "Font Family" "Segoe UI"
@@ -1159,7 +1162,7 @@ kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key In
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key TaskBackgroundColor "255,255,255"
                fi
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key HaloText true
-kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key IconSize 20
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key IconSize 24
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key Q4ButtonFrameType 1
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key UseCustomColors true
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ShowButtonOnHover ""
