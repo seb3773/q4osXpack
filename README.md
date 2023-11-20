@@ -28,8 +28,10 @@ Designed to install a set of apps I consider usefull for the usage I have. This 
 -Apps with choice to install: qbittorent, spotify, gparted, S4 Snapshot, remmina (rdp / vnc / ssh remote desktop client), free office, bpytop (improved htop).
 
 
-¤¤ Please note that these scripts were designed for my own usage, and only for Q4OS, never thought of sharing them at the first place, but it may be of interest for some other people... Please be aware that they reflects my choices, so maybe not yours. Please take a look a the sources of the scripts before trying them, you're welcome to modify or improve them for you :)    ¤¤¤
+¤¤ Please note that these scripts were initially designed for my own usage, and only for Q4OS, never thought of sharing them at the first place, but it may be of interest for some other people... Be aware that they reflects my choices, so maybe not yours. Please take a look a the sources of the scripts before trying them, you're welcome to modify or improve them for you :)    ¤¤¤
 ¤¤ Nearly everything was coded on an old laptop, a celeron N3060 with 4gb of non upgradable ram, so it's a good system to see what impacts or not performances. It's nearly unusable on windows 10, even with considerable tweaking, but works very good with Q4os, even without tweaking by the way :) So thanks again to the Q4OS team for this gem :) ¤¤
+
+One last note: This is a "work in progress", it's usable (I work with this theme on my laptop :p ) but I'm still improving it (tuning some icons or some other ui parts...), so don't hesitate to always retrieve the last version :)
 
 ______________________________________________________________________________________________________________________________________
 Installation:
@@ -48,6 +50,7 @@ And then launch the main menu:
 
 You can launch directly the script you want too, for example Qtheme:
 ./qtheme.sh
+
  
 
 Parameters for all scripts:  -h  (display a little description of the script)
@@ -58,7 +61,7 @@ Parameters for Qtheme:
 
 Parameters for Qapps:
                              -a  (install everything whithout asking)
-
+______________________________________________________________________________________________________________________________________
 
 
 
