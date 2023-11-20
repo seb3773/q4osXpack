@@ -13,10 +13,6 @@ SEPL="${ORANGE}═════════════════════�
 
 
 begin () {
-Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
-Yres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
-xpos=$((($Xres-1024)/2));ypos=$((($Yres-700)/2))
-wmctrl -r :ACTIVE: -e 0,$xpos,$ypos,1024,700
 wmctrl -r :ACTIVE: -N "$1"
 echo -e "${LIGHTGRAY} "
 echo -e "$(cat common/title)"
