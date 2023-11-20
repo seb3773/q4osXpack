@@ -13,7 +13,10 @@ SEPL="${ORANGE}═════════════════════�
 
 
 begin () {
-wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
+Yres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
+xpos=$((($Xres-1024)/2));ypos=$((($Yres-700)/2))
+wmctrl -r :ACTIVE: -e 0,$xpos,$ypos,1024,700
 wmctrl -r :ACTIVE: -N "$1"
 echo -e "${LIGHTGRAY} "
 echo -e "$(cat common/title)"
@@ -76,7 +79,6 @@ then
       echo
       read -p "Press enter..."
       echo
-      wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
       exit
 else
       echo -e "  ${LIGHTGRAY}█${NOCOLOR} User Home is ${ORANGE}$USER_HOME ${NOCOLOR}"
@@ -109,7 +111,7 @@ fi
 echo -en "\e[5m   Press enter to start (or esc to quit) \e[25m"
 read -s -n1 key
  case $key in
-     $'\e') echo;printf '\e[A\e[K';echo;wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz;exit;;
+     $'\e') echo;printf '\e[A\e[K';echo;wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz;exit 2;;
  esac
 echo
 printf '\e[A\e[K'
