@@ -21,6 +21,7 @@ script="Help Qperfs"
 else
 script="Qperfs script"
 fi
+source common/resizecons
 source common/begin
 source common/progress
 begin "$script"

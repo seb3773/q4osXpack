@@ -32,6 +32,7 @@ script="Help Qtheme"
 else
 script="Qtheme script"
 fi
+source common/resizecons
 source common/begin
 source common/progress
 begin "$script"
@@ -128,6 +129,7 @@ create_backup "root_config_xsettingsd.conf" "/root/.config/xsettingsd/xsettingsd
 fi
 create_backup "Trolltech.conf" "$USER_HOME/.config/Trolltech.conf"
 create_backup "desktop-directories" "$USER_HOME/.local/share/desktop-directories/"
+create_backup "desktop-directories_opt" "/opt/trinity/share/desktop-directories/"
 #
 #.trinity/share/config/ksmserverrc
 #.trinity/share/config/ksplashrc
@@ -392,7 +394,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowIco
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowLeftHideButton false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRightHideButton false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key UseSidePixmap true
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key SearchShortcut "²"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key SearchShortcut ""
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key CustomIcon "/usr/share/pixmaps/StartHere4.png"
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableBrowserTiles false
 rota
@@ -419,19 +421,72 @@ fi
 #menu with categories (& kmenuedit available)
 rm -f $USER_HOME/.configtde/menus/tde-applications.menu
 rota
-echo "folders in menu ala windows10"
 pathfold="$USER_HOME/.local/share/desktop-directories/"
 cd $pathfold
 for FILE in *;
 do
-if [ "$FILE" != "tde-utilities.directory" ] && [ "$FILE" != "tde-system.directory" ] && [ "$FILE" != "tde-settingsmenu.directory" ];
-then
-sed -i '/Icon=/c\Icon=bookmarks' $pathfold$FILE
+sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+if [ "$FILE" = "tde-settingsmenu.directory" ]; then
+sed -i '/Icon=/c\Icon=systemsettings' "$pathfold$FILE"
+fi
+if [ "$FILE" = "chrome-apps.directory" ]; then
+sed -i '/Icon=/c\Icon=folder-html' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-multimedia.directory" ]; then
+sed -i '/Icon=/c\Icon=default-folder-video' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-internet.directory" ]; then
+sed -i '/Icon=/c\Icon=folder-html' "$pathfold$FILE"
 fi
 done
 cd - > /dev/null 2>&1
 
+pathfold="/opt/trinity/share/desktop-directories/"
+cd $pathfold
+for FILE in *;
+do
+if [ "$FILE" = "tde-settingsmenu.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=systemsettings' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-multimedia.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=default-folder-video' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-utilities.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-graphics.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-internet.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=folder-html' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-development.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-editors.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-games.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-office.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-science.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-toys.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+fi
+if [ "$FILE" = "tde-edutainment.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+fi
 
+
+
+done
+cd - > /dev/null 2>&1
+rota
 echo
 printf '\e[A\e[K'
 sep

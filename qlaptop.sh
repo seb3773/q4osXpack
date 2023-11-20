@@ -22,6 +22,7 @@ script="Help Qlaptop"
 else
 script="Qlaptop script"
 fi
+source common/resizecons
 source common/begin
 source common/progress
 begin "$script"

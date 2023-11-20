@@ -26,6 +26,7 @@ script="Help Qapps"
 else
 script="Qapps script"
 fi
+source common/resizecons
 source common/begin
 source common/progress
 begin "$script"
