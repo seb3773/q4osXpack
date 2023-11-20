@@ -41,20 +41,23 @@ Then go to the new folder:
 cd Q4OSseb/
 
 Make the scripts executables:
-sudo chmod +x *.sh
+sudo chmod +x *
 
-And then launch the script you want, for example Qtheme:
+And then launch the main menu:
+./qmenu
+
+You can launch directly the script you want too, for example Qtheme:
 ./qtheme.sh
  
 
-Parameters for all apps:  -h   (display a little description of the script)
+Parameters for all scripts:  -h  (display a little description of the script)
 
 Parameters for Qtheme:
-                          -L (light theme, default if nothing specified)
-                          -d (dark theme)
+                             -L  (light theme, default if nothing specified)
+                             -d  (dark theme)
 
 Parameters for Qapps:
-                          -a (install everything whithout asking)
+                             -a  (install everything whithout asking)
 
 
 
