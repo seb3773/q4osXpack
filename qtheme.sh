@@ -127,6 +127,7 @@ create_backup "root_xsettingsd.conf" "/root/xsettingsd.conf"
 create_backup "root_config_xsettingsd.conf" "/root/.config/xsettingsd/xsettingsd.conf"
 fi
 create_backup "Trolltech.conf" "$USER_HOME/.config/Trolltech.conf"
+create_backup "desktop-directories" "$USER_HOME/.local/share/desktop-directories/"
 #
 #.trinity/share/config/ksmserverrc
 #.trinity/share/config/ksplashrc
@@ -230,8 +231,8 @@ sudo mkdir -p /usr/share/grub/themes
 sudo tar -xzf theme/q4os_seb.tar.gz -C /usr/share/grub/themes/
 if [[ $lowres -eq 1 ]]; then
 sudo tar -xzf theme/segoebold.pf2_lowres.tar.gz -C /usr/share/grub/themes/q4os_seb/
-sudo sed -i '/item_font =/c\item_font = "Segoe UI Bold 18"' /usr/share/grub/themes/q4os_seb/theme.txt
-sudo sed -i '/font = "Segoe UI Bold 24"/c\font = "Segoe UI Bold 18"' /usr/share/grub/themes/q4os_seb/theme.txt
+sudo sed -i '/item_font =/c\item_font = "Segoe UI Regular 18"' /usr/share/grub/themes/q4os_seb/theme.txt
+sudo sed -i '/font = "Segoe UI Regular 24"/c\font = "Segoe UI Regular 18"' /usr/share/grub/themes/q4os_seb/theme.txt
 fi
 if locale|grep -q "LANG=fr_FR."; then
 sudo sed -i '/text = "Booting in %d s"/c\text = "Démarrage dans %d s"' /usr/share/grub/themes/q4os_seb/theme.txt
@@ -391,7 +392,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowIco
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowLeftHideButton false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRightHideButton false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key UseSidePixmap true
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key SearchShortcut "/"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key SearchShortcut "²"
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key CustomIcon "/usr/share/pixmaps/StartHere4.png"
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableBrowserTiles false
 rota
@@ -403,7 +404,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key KM
 rota
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key UseSearchBar true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group menus --key RecentVsOften true
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group menus --key NumVisibleEntries 5
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group menus --key NumVisibleEntries 0
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group buttons --key EnableIconZoom true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group buttons --key EnableTileBackground false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group menus --key MenuEntryHeight 28
@@ -418,6 +419,19 @@ fi
 #menu with categories (& kmenuedit available)
 rm -f $USER_HOME/.configtde/menus/tde-applications.menu
 rota
+echo "folders in menu ala windows10"
+pathfold="$USER_HOME/.local/share/desktop-directories/"
+cd $pathfold
+for FILE in *;
+do
+if [ "$FILE" != "tde-utilities.directory" ] && [ "$FILE" != "tde-system.directory" ] && [ "$FILE" != "tde-settingsmenu.directory" ];
+then
+sed -i '/Icon=/c\Icon=bookmarks' $pathfold$FILE
+fi
+done
+cd - > /dev/null 2>&1
+
+
 echo
 printf '\e[A\e[K'
 sep
