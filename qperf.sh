@@ -567,5 +567,6 @@ echo -e "\e[5m~~ a reboot is recommended ~~\e[25m"
 echo
 echo " > Do you want to reboot right now ? (y/n)" && read x && [[ "$x" == "y" ]] && sudo /sbin/reboot;
 echo
-wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
+exit 2
+
 

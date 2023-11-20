@@ -1,0 +1,66 @@
+#!/bin/bash
+export NEWT_COLORS='
+root=,brown
+window=,lightgray
+border=white,lightgray
+textbox=white,blue
+button=black,white
+actbutton=black,white
+title=black,lightgray
+'
+qmenuentry () {
+qmenu=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "                Qtheme Script - choose an option:" 25 70 15 " Light" "   [     Classic windows 10 theme    ]" " Dark" "   [       Dark windows 10 theme     ]" " return" "   [    <- return to previous menu   ]" 3>&1 1>&2 2>&3)
+case $qmenu in
+	" Light")   
+		clear
+                ./qtheme.sh
+                if [ $? -eq 2 ]; then return 0; else exit
+                fi
+	;;
+	" Dark")   
+		clear
+                ./qtheme.sh -d
+                if [ $? -eq 2 ]; then return 0; else exit
+                fi
+        ;;
+
+	" return") return 0
+        ;;
+esac
+}
+
+Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
+Yres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
+xpos=$((($Xres-1024)/2));ypos=$((($Yres-700)/2))
+wmctrl -r :ACTIVE: -e 0,$xpos,$ypos,1024,700
+
+while [ 1 ]
+do
+ret=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "                    Choose a script to launch:" 25 70 15 " Qtheme" "   [     Theming ala windows 10    ]" " Qperf" "   [      Improve performances     ]" " Qlaptop" "   [ Laptop specific configuration ]" " Qapps" "   [ Install selected applications ]" " Qtools" "   [         Various tools         ]" " exit" "   [     <- quit this menu         ]" 3>&1 1>&2 2>&3)
+
+echo
+case $ret in
+	" Qtheme")   
+		qmenuentry
+	;;
+	" Qperf")   
+                clear
+		./qperf.sh
+                if [ $? -eq 2 ]; then return 0; else exit
+                fi
+        ;;
+	" Qlaptop")   
+                clear
+		./qlaptop.sh
+                if [ $? -eq 2 ]; then return 0; else exit
+                fi
+        ;;
+	" Qapps")   
+                clear
+		./qapps.sh
+                return 0
+        ;;
+	" exit") exit
+        ;;
+esac
+done

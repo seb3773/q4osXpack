@@ -461,6 +461,4 @@ progress "$script" 100
 
 
 alldone
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
+exit 2
