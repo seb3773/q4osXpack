@@ -36,7 +36,7 @@ wmctrl -r :ACTIVE: -e 0,$xpos,$ypos,1024,700
 
 while [ 1 ]
 do
-ret=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "                    Choose a script to launch:" 25 70 15 " Qtheme" "   [     Theming ala windows 10    ]" " Qperf" "   [      Improve performances     ]" " Qlaptop" "   [ Laptop specific configuration ]" " Qapps" "   [ Install selected applications ]" " Qtools" "   [         Various tools         ]" " exit" "   [     <- quit this menu         ]" 3>&1 1>&2 2>&3)
+ret=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "                    Choose a script to launch:" 25 70 15 " Qtheme" "   [     Theming ala windows 10    ]" " Qperf" "   [      Improve performances     ]" " Qlaptop" "   [ Laptop specific configuration ]" " Qapps" "   [ Install selected applications ]" " exit" "   [     <- quit this menu         ]" 3>&1 1>&2 2>&3)
 
 echo
 case $ret in
