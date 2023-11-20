@@ -21,7 +21,7 @@ WidthForHeightHint=43
 ConfigFile[$e]=launcher_panelapplet_modernui_rc
 DesktopFile[$e]=quicklauncher.desktop
 FreeSpace2=0.0157303
-WidthForHeightHint=41
+WidthForHeightHint=80
 
 [Applet_5]
 ConfigFile[$e]=clock_panelapplet_rc
