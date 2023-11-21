@@ -97,6 +97,18 @@ ln -s edit-select-invert.png 24x24/actions/kr_invert.png
 ln -s edit-select-invert.png 32x32/actions/kr_invert.png
 ln -s edit-select-invert.png 48x48/actions/kr_invert.png
 ln -s edit-select-invert.png 64x64/actions/kr_invert.png
+ln -s nm_device_wired.png 16x16/actions/connect_creating.png
+ln -s nm_device_wired.png 16x16/actions/connect_established.png
+ln -s nm_device_wired.png 22x22/actions/connect_creating.png
+ln -s nm_device_wired.png 22x22/actions/connect_established.png
+ln -s nm_device_wired.png 24x24/actions/connect_creating.png
+ln -s nm_device_wired.png 24x24/actions/connect_established.png
+ln -s nm_device_wired.png 32x32/actions/connect_creating.png
+ln -s nm_device_wired.png 32x32/actions/connect_established.png
+ln -s nm_device_wired.png 48x48/actions/connect_creating.png
+ln -s nm_device_wired.png 48x48/actions/connect_established.png
+ln -s nm_device_wired.png 64x64/actions/connect_creating.png
+ln -s nm_device_wired.png 64x64/actions/connect_established.png
 cd - > /dev/null 2>&1
 #
 tar -xzf kdeten_mods_$iconth.tar.gz -C /usr/share/icons/kdeten_$iconth/
