@@ -18,13 +18,7 @@ BLUE='\033[0;96m'
 SEPL="${ORANGE}════════════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
 echo "${RED}== ${BLUE}\e[1m\e[4mCopying various files...\e[21m"
 echo "${SEPL}"
-#echo "  \e[35m░▒▓█\033[0m copying start screen image"
-#tar -xzf Blacktux-TDE-Classic.tar.gz -C /opt/trinity/share/apps/ksplash/Themes
 echo "  \e[35m░▒▓█\033[0m copying icons"
-#tar -xzf We10X-icon-theme.tar.gz
-#cd We10X-icon-theme/
-#./install.sh
-#cd ..
 if [ $1 -eq 1 ]
 then
 iconth="dark"
