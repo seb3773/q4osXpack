@@ -64,11 +64,18 @@ Parameters for Qapps:
 ______________________________________________________________________________________________________________________________________
 
 Some screenshots:
+Dark theme
 ![Alt text](/screenshots/q4os_seb_screenshot_dark1.jpg?raw=true "dark theme")
 ![Alt text](/screenshots/q4os_seb_screenshot_dark2.jpg?raw=true "dark theme")
+
+Classic light theme
 ![Alt text](/screenshots/q4os_seb_screenshot_light.jpg?raw=true "light theme")
 ![Alt text](/screenshots/q4os_seb_screenshot_light2.jpg?raw=true "light theme")
+
+Login screen (sorry for the bad quality)
 ![Alt text](/screenshots/q5os_seb_screenshot_login.jpg?raw=true "login screen")
+
+Scripts command line interface
 ![Alt text](/screenshots/q5os_seb_screenshot_scripts.jpg?raw=true "dark theme")
 ![Alt text](/screenshots/q5os_seb_screenshot_scripts_2.jpg?raw=true "dark theme")
 
