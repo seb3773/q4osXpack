@@ -63,6 +63,12 @@ Parameters for Qapps:
                              -a  (install everything whithout asking)
 ______________________________________________________________________________________________________________________________________
 
+screenshots:
+![Alt text](/screenshots/q4os_seb_screenshot_dark1.jpg?raw=true "dark theme")
+![Alt text](/screenshots/q4os_seb_screenshot_dark2.jpg?raw=true "dark theme")
+![Alt text](/screenshots/q4os_seb_screenshot_light.jpg?raw=true "light theme")
+![Alt text](/screenshots/q4os_seb_screenshot_light2.jpg?raw=true "light theme")
+![Alt text](/screenshots/q5os_seb_screenshot_scripts.jpg?raw=true "dark theme")
 
 
 
