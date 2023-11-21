@@ -491,6 +491,38 @@ progress "$script" 90
 
 
 
+#========== install kexec for blazing fast reboots :p  =========================================================================
+itemdisp "Installing kexec (much faster reboot)"
+echo
+echo -e "${RED}█ ${ORANGE}Install kexec ?"
+echo -e "(faster reboot, use coldreboot command to access grub menu without shutdown)${NOCOLOR}"
+optionz=("Install kexec" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install kexec")
+            echo -e "  \e[35m░▒▓█\033[0m Installing kexec..."
+            echo -e "${YELLOW}"
+            sudo apt install -y kexec-tools
+            echo -e "${NOCOLOR}"
+            echo -e "  \e[35m░▒▓█\033[0m configuring kexec..."
+            sudo sed -i "/USE_GRUB_CONFIG=/c\USE_GRUB_CONFIG=true" /etc/default/kexec
+            break
+            ;;
+        "Skip")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+sep
+echo
+echo
+echo
+progress "$script" 95
+
+
+
 
 
 

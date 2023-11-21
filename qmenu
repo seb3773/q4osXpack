@@ -11,22 +11,22 @@ title=black,lightgray
 '
 qmenuentry () {
 qmenu=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "                Qtheme Script - choose an option:" 25 70 15 " Light" "   [     Classic windows 10 theme    ]" " Dark" "   [       Dark windows 10 theme     ]" " return" "   [    <- return to previous menu   ]" 3>&1 1>&2 2>&3)
-case $qmenu in
-	" Light")   
-		clear
-                ./qtheme.sh
-                if [ $? -eq 2 ]; then return 0; else exit
-                fi
-	;;
-	" Dark")   
-		clear
-                ./qtheme.sh -d
-                if [ $? -eq 2 ]; then return 0; else exit
-                fi
-        ;;
 
-	" return") return 0
-        ;;
+case $qmenu in
+" Light")   
+clear
+./qtheme.sh
+if [ $? -eq 2 ]; then return 0; else exit
+fi
+;;
+" Dark")   
+clear
+./qtheme.sh -d
+if [ $? -eq 2 ]; then return 0; else exit
+fi
+;;
+" return") return 0
+;;
 esac
 }
 
@@ -36,27 +36,27 @@ ret=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "            
 
 echo
 case $ret in
-	" Qtheme")   
-		qmenuentry
-	;;
-	" Qperf")   
-                clear
-		./qperf.sh
-                if [ $? -eq 2 ]; then return 0; else exit
-                fi
-        ;;
-	" Qlaptop")   
-                clear
-		./qlaptop.sh
-                if [ $? -eq 2 ]; then return 0; else exit
-                fi
-        ;;
-	" Qapps")   
-                clear
-		./qapps.sh
-                return 0
-        ;;
-	" exit") exit
-        ;;
+" Qtheme")   
+	qmenuentry
+;;
+" Qperf")   
+	clear
+	./qperf.sh
+	if [ $? -eq 2 ]; then return 0; else exit
+	fi
+;;
+" Qlaptop")   
+	clear
+	./qlaptop.sh
+	if [ $? -eq 2 ]; then return 0; else exit
+	fi
+;;
+" Qapps")   
+	clear
+	./qapps.sh
+	return 0
+;;
+" exit") exit
+;;
 esac
 done

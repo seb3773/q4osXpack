@@ -445,6 +445,9 @@ pathfold="/opt/trinity/share/desktop-directories/"
 cd $pathfold
 for FILE in *;
 do
+if [ "$FILE" = "tde-system.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+fi
 if [ "$FILE" = "tde-settingsmenu.directory" ]; then
 sudo sed -i '/Icon=/c\Icon=systemsettings' "$pathfold$FILE"
 fi

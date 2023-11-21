@@ -448,6 +448,51 @@ progress "$script" 90
 
 
 
+itemdisp "Installing virtualbox 7"
+#spotify
+installVbox () {
+            if ! isinstalled "virtualbox-7.0/" "common/packages_list.tmp"; then
+            echo -e "${YELLOW}"
+            wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
+            echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
+            sudo apt update
+            sudo apt install virtualbox-7.0
+            sudo usermod -G vboxusers -a $USER
+            echo -e "${NOCOLOR}"
+            else
+            echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+            fi
+}
+if [ "$installall" -eq 1 ]; then
+    installVbox
+else
+echo
+echo -e "${RED}█ ${ORANGE}Install virtualbox 7 ?${NOCOLOR}"
+optionz=("Install virtualbox" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install virtualbox")
+            echo -e "  \e[35m░▒▓█\033[0m Installing virtualbox 7..."
+            installVbox
+            break
+            ;;
+        "Skip")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+sep
+echo
+echo
+echo
+progress "$script" 95
+
+
+
+
 
 itemdisp "Cleaning files..."
 echo
