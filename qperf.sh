@@ -521,6 +521,18 @@ progress "$script" 90
 # echo
 # progress "$script" 95
 
+#========== disabling iwl-debug-yoyo.bin =====================================================================================
+itemdisp "Disabling iwl-debug-yoyo.bin"
+cd perfs
+sudo tar -xzf iwlwifi.conf.tar.gz -C /etc/modprobe.d/
+cd ..
+sep
+echo
+echo
+echo
+progress "$script" 95
+
+
 
 
 #========== tuning compton tde =====================================================================================

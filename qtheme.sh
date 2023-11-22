@@ -620,7 +620,7 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key WindowSna
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveMode Opaque
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Desktops --key Number 1
 kwriteconfig --file $TDEHOME/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
-#******** dont' know why desktop flickering with true (when click on a windows then click on desktop )?
+#******** dont' know why desktop icons are flickering with true (when click on a windows then click on desktop )?
 #too bad it's more readeable with shadows on the texts...
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
 sudo kwriteconfig --file /root/.trinity/share/config --group FMSettings --key ShadowEnabled false
