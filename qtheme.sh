@@ -1234,7 +1234,7 @@ kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key In
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key TaskBackgroundColor "255,255,255"
                fi
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key HaloText true
-kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key IconSize 24
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key IconSize 22
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key Q4ButtonFrameType 1
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key UseCustomColors true
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ShowButtonOnHover ""
