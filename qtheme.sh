@@ -737,9 +737,9 @@ sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key DisplayFileSizeInBytes false
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key DoubleClickMoveToParent false
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key HoverCloseButton true
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key MMBOpensTab true
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key MMBOpensTab false
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowFileTips true
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowPreviewsInFileTips true
+sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowPreviewsInFileTips false
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
 rota
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key TabCloseActivatePrevious true

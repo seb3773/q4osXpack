@@ -75,6 +75,7 @@ echo -e "${NOCOLOR}"
 # check Xanmod kernel version supported
 xanver=$(./perfs/check_x86-64_psabi.sh)
 vnum="${xanver: -2}"
+kerninst=0
 echo
 echo -e "${RED}█ ${ORANGE}Please select option:${NOCOLOR}"
 options=("install Liquorix Kernel" "install linux-xanmod-x64$vnum" "Skip kernel install")
@@ -86,6 +87,7 @@ do
             echo -e "${YELLOW}"
             curl -s 'https://liquorix.net/install-liquorix.sh' | sudo bash
             echo -e "${NOCOLOR}"
+            kerninst=1
             break
             ;;
         "install linux-xanmod-x64$vnum")
@@ -94,6 +96,7 @@ do
             echo -e "${YELLOW}"
             sudo apt update && sudo apt install -y linux-xanmod-x64$vnum
             echo -e "${NOCOLOR}"
+            kerninst=1
             break
             ;;
         "Skip kernel install")
@@ -102,6 +105,15 @@ do
         *) echo "invalid option $REPLY";;
     esac
 done
+#if kerninst=1 then propose reboot
+if [[ $kerninst -eq 1 ]]
+then
+echo
+echo 
+echo -e "${RED}█${NOCOLOR} As you installed a new kernel, it is recommanded to reboot right now, before ${RED}█${NOCOLOR}"
+echo -e "${RED}█${NOCOLOR} trying to optimize further, and relaunch the script after rebooting.         ${RED}█${NOCOLOR}"
+echo " > Do you want to reboot now ? (y/n)" && read x && [[ "$x" == "y" ]] && sudo /sbin/reboot;
+fi
 sep
 echo
 echo
