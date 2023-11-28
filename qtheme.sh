@@ -232,9 +232,9 @@ itemdisp "Install grub theme..."
 sudo mkdir -p /usr/share/grub/themes
 sudo tar -xzf theme/q4os_seb.tar.gz -C /usr/share/grub/themes/
 if [[ $lowres -eq 1 ]]; then
-sudo tar -xzf theme/segoebold.pf2_lowres.tar.gz -C /usr/share/grub/themes/q4os_seb/
-sudo sed -i '/item_font =/c\item_font = "Segoe UI Regular 18"' /usr/share/grub/themes/q4os_seb/theme.txt
-sudo sed -i '/font = "Segoe UI Regular 24"/c\font = "Segoe UI Regular 18"' /usr/share/grub/themes/q4os_seb/theme.txt
+sudo tar -xzf theme/msboot.pf2_lowres.tar.gz -C /usr/share/grub/themes/q4os_seb/
+sudo sed -i '/item_font =/c\item_font = "Microsoft YaHei Boot Regular 16"' /usr/share/grub/themes/q4os_seb/theme.txt
+sudo sed -i '/font = "Microsoft YaHei Boot Regular 24"/c\font = "Microsoft YaHei Boot Regular 16"' /usr/share/grub/themes/q4os_seb/theme.txt
 fi
 if locale|grep -q "LANG=fr_FR."; then
 sudo sed -i '/text = "Booting in %d s"/c\text = "Démarrage dans %d s"' /usr/share/grub/themes/q4os_seb/theme.txt
@@ -914,14 +914,8 @@ progress "$script" 65
 
 #========== Color scheme & win10 & 11 wallpapers ================================================================
 itemdisp "Applying color scheme & wallpaper..."
-wallpw=$(( $RANDOM % 2 ));wallpn=$(( $RANDOM % 4 + 1 ))
-if [ $wallpw -eq 1 ]; then
-winn=11
-else
-winn=10
-fi
-swps="_"
-rwallp=q4seb_hd_win$winn$swps$wallpn.jpg
+wallpn=$(( $RANDOM % 10 + 1 ))
+rwallp=q4seb_hd_win_$wallpn.jpg
 dcop kdesktop KBackgroundIface setWallpaper /opt/trinity/share/wallpapers/$rwallp 6
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key alternateBackground "244,244,244"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key background "244,244,244"

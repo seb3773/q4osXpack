@@ -177,15 +177,24 @@ echo -e "  \e[35m░▒▓█\033[0m serial-getty service"
 sudo systemctl stop serial-getty@ttyS0.service
 sudo systemctl disable serial-getty@ttyS0.service
 sudo systemctl mask serial-getty@ttyS0.service
+echo -e "  \e[35m░▒▓█\033[0m logrotate service"
+sudo systemctl stop logrotate.service
+sudo systemctl disable logrotate.service
+sudo systemctl mask logrotate.service
+sudo systemctl stop logrotate.timer
+sudo systemctl disable logrotate.timer
+sudo systemctl mask logrotate.timer
 #--nosyslog for dbus.service
 sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/system/dbus.service
-echo -e "${RED}█ ${ORANGE}Disable bluetooth ? (if you don't need it :p)${NOCOLOR}"
+sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/user/dbus.service
+echo
+echo -e "${RED}█ ${ORANGE}Disable bluetooth service ? (if you don't need it :p)${NOCOLOR}"
 optionz=("Disable bluetooth" "Skip")
 select optz in "${optionz[@]}"
 do
     case $optz in
         "Disable bluetooth")
-            echo -e "  \e[35m░▒▓█\033[0m Disabling bluetooth..."
+            echo -e "  \e[35m░▒▓█\033[0m Disabling bluetooth service..."
             sudo systemctl stop bluetooth.service
             sudo systemctl disable bluetooth.service
             sudo systemctl mask bluetooth.service
@@ -279,7 +288,7 @@ progress "$script" 40
 #========== Removing uneeded fonts ==============================================================================
 itemdisp "Removing unwanted fonts..."
 echo
-sudo apt-get remove -y "fonts-kacst" "fonts-khmeros" fonts-lklug-sinhala fonts-guru-extra "fonts-nanum" fonts-noto-cjk "fonts-takao" fonts-tibetan-machine fonts-lao fonts-sil-padauk fonts-sil-abyssinica fonts-beng-extra fonts-gargi fonts-gubbi fonts-gujr-extra fonts-kalapi "fonts-samyak" fonts-navilu fonts-nakula fonts-orya-extra fonts-pagul fonts-sarai "fonts-telu" "fonts-smc*" fonts-deva-extra fonts-sahadeva
+sudo apt-get remove -y "fonts-kacst" "fonts-khmeros" fonts-lklug-sinhala fonts-guru-extra "fonts-nanum" fonts-noto-cjk "fonts-takao" fonts-tibetan-machine fonts-lao fonts-sil-padauk fonts-sil-abyssinica fonts-beng-extra fonts-gargi fonts-gubbi fonts-gujr-extra fonts-kalapi "fonts-samyak" fonts-navilu fonts-nakula fonts-orya-extra fonts-pagul fonts-sarai "fonts-telu" "fonts-smc*" fonts-deva-extra fonts-sahadeva > /dev/null 2>&1
 sudo dpkg-reconfigure fontconfig
 sep
 echo
