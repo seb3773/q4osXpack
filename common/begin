@@ -1,16 +1,10 @@
 #!/bin/bash
-LIGHTGRAY='\033[0;37m'
-GRAY='\033[0;90m'
-NOCOLOR='\033[0m'
-RED='\033[0;31m'
-REDL='\033[0;91m'
-ORANGE='\033[0;33m'
-BLUE='\033[0;96m'
-LIGHTGREEN='\033[1;32m'
-YELLOW='\033[0;93m'
-WHITE='\033[0;97m'
-SEPL="${ORANGE}════════════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
-
+LIGHTGRAY='\033[0;37m';GRAY='\033[0;90m'
+NOCOLOR='\033[0m';RED='\033[0;31m'
+REDL='\033[0;91m';ORANGE='\033[0;33m'
+BLUE='\033[0;96m';LIGHTGREEN='\033[1;32m'
+YELLOW='\033[0;93m';WHITE='\033[0;97m'
+SEPL="${ORANGE}";for ((i = 0; i < 80; i++)); do  SEPL+="═";done;SEPL+="${NOCOLOR}"
 
 begin () {
 wmctrl -r :ACTIVE: -N "$1"
@@ -24,36 +18,16 @@ for i in {16..21} {21..16} ; do echo -en "\e[48;5;${i}m \e[0m\e[48;5;${i}m \e[0m
 echo -e "${NOCOLOR}"
 echo
 
-if [ "$1" = "Help Qtheme" ]; then
-echo -e "$(cat common/doc.qtheme)"
-echo -e "$(cat common/atyourownrisk)"
-exit
-fi
+case "$1" in
+  "Help Qtheme") echo -e "$(cat common/doc.qtheme)"; echo -e "$(cat common/atyourownrisk)";;
+  "Help Qapps") echo -e "$(cat common/doc.qapps)" ;;
+  "Help Qperfs") echo -e "$(cat common/doc.qperfs)";echo -e "$(cat common/atyourownrisk)" ;;
+  "Help Qlaptop") echo -e "$(cat common/doc.qlaptop)";echo -e "$(cat common/atyourownrisk)";;
+  "Help Qkids") ;;
+  *) ;;
+esac
 
-if [ "$1" = "Help Qapps" ]; then
-echo -e "$(cat common/doc.qapps)"
-exit
-fi
-
-if [ "$1" = "Help Qperfs" ]; then
-echo -e "$(cat common/doc.qperfs)"
-echo -e "$(cat common/atyourownrisk)"
-exit
-fi
-
-if [ "$1" = "Help Qlaptop" ]; then
-echo -e "$(cat common/doc.qlaptop)"
-echo -e "$(cat common/atyourownrisk)"
-exit
-fi
-
-if [ "$1" = "Help Qkids" ]; then
-#display help qtheme
-exit
-fi
-
-
-if [ -z "$2" ]; then
+if [ -z "$2" ]; then 
 opt=0
 else
 if [ $2 = "backup" ]; then
@@ -61,9 +35,13 @@ opt=1
 fi
 fi
 
-if [ $opt -eq 0 ]; then
 #user home
 USER_HOME=$(eval echo ~${SUDO_USER})
+if ( getconf LONG_BIT | grep -q 64 ); then
+bits="64bits system";
+else  bits="32bits system"; fi
+
+if [ $opt -eq 0 ]; then
 #test $TDEHOME
 if [ -z "$TDEHOME" ]
 then
@@ -78,7 +56,7 @@ then
       exit
 else
       echo -e "  ${LIGHTGRAY}█${NOCOLOR} User Home is ${ORANGE}$USER_HOME ${NOCOLOR}"
-      echo -e "  ${GRAY}█${NOCOLOR} TDEHOME is ${ORANGE}$TDEHOME ${NOCOLOR}"
+      echo -e "  ${GRAY}█${NOCOLOR} TDEHOME is ${ORANGE}$TDEHOME ${NOCOLOR} / ${BLUE}▒ $bits${NOCOLOR}"
                if [[ $dark -eq 1 ]]
                then
                 echo -e "  ${BLUE}█${NOCOLOR} Dark theme selected"
