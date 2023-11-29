@@ -78,7 +78,7 @@ vnum="${xanver: -2}"
 kerninst=0
 echo
 echo -e "${RED}█ ${ORANGE}Please select option:${NOCOLOR}"
-options=("install Liquorix Kernel" "install linux-xanmod-x64$vnum" "Skip kernel install")
+options=("install Liquorix Kernel" "install linux-xanmod-x64$vnum [MAIN]" "install linux-xanmod-x64$vnum [LTS]" "Skip kernel install")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -90,11 +90,20 @@ do
             kerninst=1
             break
             ;;
-        "install linux-xanmod-x64$vnum")
-            echo -e "  \e[35m░▒▓█\033[0m Installing linux-xanmod-x64$vnum"
+        "install linux-xanmod-x64$vnum [MAIN]")
+            echo -e "  \e[35m░▒▓█\033[0m Installing linux-xanmod-x64$vnum [MAIN]"
             ./perfs/repository.sh
             echo -e "${YELLOW}"
             sudo apt update && sudo apt install -y linux-xanmod-x64$vnum
+            echo -e "${NOCOLOR}"
+            kerninst=1
+            break
+            ;;
+        "install linux-xanmod-x64$vnum [LTS]")
+            echo -e "  \e[35m░▒▓█\033[0m Installing linux-xanmod-lts-x64$vnum [LTS]"
+            ./perfs/repository.sh
+            echo -e "${YELLOW}"
+            sudo apt update && sudo apt install -y linux-xanmod-lts-x64$vnum
             echo -e "${NOCOLOR}"
             kerninst=1
             break
@@ -108,6 +117,7 @@ done
 #if kerninst=1 then propose reboot
 if [[ $kerninst -eq 1 ]]
 then
+sudo sed -i 's/echo/#ech~o/g' /boot/grub/grub.cfg
 echo
 echo 
 echo -e "${RED}█${NOCOLOR} As you installed a new kernel, it is recommanded to reboot right now, before ${RED}█${NOCOLOR}"
