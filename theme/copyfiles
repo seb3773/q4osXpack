@@ -115,6 +115,8 @@ tar -xzf kdeten_mods_$iconth.tar.gz -C /usr/share/icons/kdeten_$iconth/
 sudo sed -i '/Name=kde_ten/c\Name=kde_ten_$iconth' /usr/share/icons/kdeten_$iconth/index.theme
 gtk-update-icon-cache /usr/share/icons/kdeten_$iconth/
 echo "  \e[35m░▒▓█\033[0m copying cursors"
+rm -fr /usr/share/icons/Windows10Dark
+rm -fr /usr/share/icons/Windows10Light
 tar -xzf Windows10Light.tar.gz -C /usr/share/icons/
 tar -xzf Windows10Dark.tar.gz -C /usr/share/icons/
 create_links() {
