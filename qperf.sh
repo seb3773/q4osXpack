@@ -19,7 +19,7 @@ done
 if [ $helpdoc -eq 1 ]; then
 script="Help Qperfs"
 else
-script="Qperfs script"
+script="   Qperfs script   "
 fi
 source common/resizecons
 source common/begin
@@ -57,6 +57,7 @@ create_backup "tdecryptocardwatcher" "/opt/trinity/bin/tdecryptocardwatcher"
 
 sudo \cp common/restore "backups/restore_$now"
 sudo sed -i "s/XxXxXxXxX/$now/g" "backups/restore_$now"
+sudo sed -i "s/YyYyYyYyY/Restoring backup created by qperf script/g" "backups/restore_$now"
 sudo chmod +x "backups/restore_$now"
 rota
 echo

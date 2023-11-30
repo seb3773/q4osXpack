@@ -20,7 +20,7 @@ done
 if [ $helpdoc -eq 1 ]; then
 script="Help Qlaptop"
 else
-script="Qlaptop script"
+script="  Qlaptop script  "
 fi
 source common/resizecons
 source common/begin
@@ -53,6 +53,7 @@ create_backup "systemd-suspend.service" "/lib/systemd/system/systemd-suspend.ser
 create_backup "logind" "/etc/systemd/logind.conf"
 sudo \cp common/restore "backups/restore_$now"
 sudo sed -i "s/XxXxXxXxX/$now/g" "backups/restore_$now"
+sudo sed -i "s/YyYyYyYyY/Restoring backup created by qlaptop script/g" "backups/restore_$now"
 sudo chmod +x "backups/restore_$now"
 rota
 echo

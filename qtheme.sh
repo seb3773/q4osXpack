@@ -35,7 +35,7 @@ fi
 source common/resizecons
 source common/begin
 source common/progress
-begin "$script"
+begin "   $script   "
 #================================================================================================================
 
 
@@ -140,6 +140,7 @@ create_backup "desktop-directories_opt" "/opt/trinity/share/desktop-directories/
 rota
 sudo \cp common/restore "backups/restore_$now"
 sudo sed -i "s/XxXxXxXxX/$now/g" "backups/restore_$now"
+sudo sed -i "s/YyYyYyYyY/Restoring backup created by qtheme script/g" "backups/restore_$now"
 sudo chmod +x "backups/restore_$now"
 rota
 echo
@@ -318,15 +319,17 @@ progress "$script" 40
 #========== Pointers ============================================================================================
 itemdisp "Configuring pointers & set acceleration to 1"
 #pointer size
+#32 /48 /64 /
+ptsize=32
 if ! grep -q "Xcursor.size" "$USER_HOME/.Xresources"; then
-echo "Xcursor.size: 32" | sudo tee -a $USER_HOME/.Xresources
+echo "Xcursor.size: $ptsize" | sudo tee -a $USER_HOME/.Xresources
 fi
-sudo sed -i "/Xcursor.size:/c\Xcursor.size: 24" $USER_HOME/.Xresources
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" $USER_HOME/.Xresources
 
 if ! grep -q "Xcursor.size" "/root/.Xresources"; then
-echo "Xcursor.size: 32" | sudo tee -a /root/.Xresources
+echo "Xcursor.size: $ptsize" | sudo tee -a /root/.Xresources
 fi
-sudo sed -i "/Xcursor.size:/c\Xcursor.size: 24" /root/.Xresources
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" /root/.Xresources
 #Xcursor.theme: Windows10Light ?
 #
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light

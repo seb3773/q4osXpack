@@ -24,7 +24,7 @@ done
 if [ $helpdoc -eq 1 ]; then
 script="Help Qapps"
 else
-script="Qapps script"
+script="   Qapps script   "
 fi
 source common/resizecons
 source common/begin
