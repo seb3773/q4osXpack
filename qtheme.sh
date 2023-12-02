@@ -591,8 +591,10 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key Tran
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key TranslucentMovingWindows false
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key TreatKeepAboveAsActive true
 rota
-kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveBorderDelay 150
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveBorderDelay 50
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveBorders 4
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveBorderDistance 5
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key TilingMode Opaque
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveMouseScreen false
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key AltTabStyle KDE
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key AnimateMinimize false
@@ -621,12 +623,30 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key SnapOnlyW
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key TitlebarDoubleClickCommand Maximize
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key WindowSnapZone 10
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveMode Opaque
+#kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveMode Opaque
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Desktops --key Number 1
 kwriteconfig --file $TDEHOME/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow1 "Activate, raise and pass click"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow2 "Activate and pass click"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow3 "Activate and pass click"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandActiveTitlebar1 Raise
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandActiveTitlebar2 Lower
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandActiveTitlebar3 Operations menu
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandAll1 Move
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandAll2 "Toggle raise and lower"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandAll3 Resize
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandAllKey Alt
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandAllReverseWheel false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandAllWheel Nothing
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar1 "Activate and raise"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar2 "Activate and lower"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar3 "Operations menu"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandTitlebarReverseWheel false
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandTitlebarWheel Nothing
 #******** dont' know why desktop icons are flickering with true (when click on a windows then click on desktop )?
 #too bad it's more readeable with shadows on the texts...
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
-sudo kwriteconfig --file /root/.trinity/share/config --group FMSettings --key ShadowEnabled false
+
 rota
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key InactiveShadowColour "0,0,0"
@@ -673,9 +693,11 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key TranslucentInactiveWindows false
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key TranslucentMovingWindows false
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key TreatKeepAboveAsActive true
-sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveBorderDelay 150
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveBorderDelay 50
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveBorders 4
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveMouseScreen false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveBorderDistance 5
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key TilingMode Opaque
 rota
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key AltTabStyle KDE
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key AnimateMinimize false
@@ -707,6 +729,24 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --ke
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveMode Opaque
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Desktops --key Number 1
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandWindow1 "Activate, raise and pass click"
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandWindow2 "Activate and pass click"
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandWindow3 "Activate and pass click"
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandActiveTitlebar1 Raise
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandActiveTitlebar2 Lower
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandActiveTitlebar3 Operations menu
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandAll1 Move
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandAll2 "Toggle raise and lower"
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandAll3 Resize
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandAllKey Alt
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandAllReverseWheel false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandAllWheel Nothing
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar1 "Activate and raise"
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar2 "Activate and lower"
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar3 "Operations menu"
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandTitlebarReverseWheel false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandTitlebarWheel Nothing
+
 rota
 echo
 printf '\e[A\e[K'
@@ -744,6 +784,8 @@ sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowFileTips true
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowPreviewsInFileTips false
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file $TDEHOME/share/config/konqiconviewrc --group Settings --key IconSize 48
+
 rota
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key TabCloseActivatePrevious true
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key TextHeight 2
