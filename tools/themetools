@@ -1,0 +1,522 @@
+#!/bin/bash
+export NEWT_COLORS='
+root=,brown
+window=,lightgray
+border=white,lightgray
+textbox=white,blue
+button=black,white
+actbutton=black,white
+title=black,lightgray
+'
+USER_HOME=$(eval echo ~${SUDO_USER})
+if [ -z "$TDEHOME" ]
+then
+clear
+echo "   \$TDEHOME is empty, cannot continue."
+echo "   This script is designed only for Q4OS Trinity Desktop."
+echo "   If Trinity is installed, maybe this error is because"
+echo "   you're launching this script from a root shell. Please"
+echo "   try from a normal user shell."
+read -p "Press enter..."
+exit
+fi
+if [ ! -e "/etc/q4ossebtheme" ]; then
+clear
+echo "   These scripts are designed to customize the"
+echo "   q4osSeb theme, you need to run the Qtheme script"
+echo "   first before using them."
+read -p "Press enter..."
+exit
+fi
+
+lowres=0
+Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
+if (( $Xres < 1920 )); then
+lowres=1
+fi
+
+testlight () {
+lightamount=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -threshold 50% -format "%[fx:100*image.mean]" info:)
+if (( $(echo "$lightamount > 60" | bc -l) )); then
+sudo sed -i '/<normal font="Segoe UI 58" color=/c\<normal font="Segoe UI 58" color="#555555"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" color="#555555"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#333333" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+fi
+}
+
+function file_select
+{
+local TITLE=${1:-"-=- Q4OS Seb Scripts -=- select file"}
+local LOCAL_PATH=${2:-"/"}
+local FILE_MASK=${3:-"*"}
+local ALLOW_BACK=${4:-no}
+local FILES=()
+[ "$ALLOW_BACK" != "no" ] && FILES+=(".." "..")
+for DIR in $(find "$LOCAL_PATH" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" 2> /dev/null | sort)
+do
+FILES+=("$DIR" "folder")
+done
+for FILE in $(find "$LOCAL_PATH" -maxdepth 1 -type f -name "$FILE_MASK" -printf "%f %s\n" 2> /dev/null | sort)
+do
+FILES+=($FILE)
+done
+FILES=($(sort <<<"${FILES[*]}"))
+while true
+do
+FILE_SELECTED=$(whiptail --clear --backtitle "$BACK_TITLE" --title "$TITLE" --menu "$LOCAL_PATH" 25 70 15 ${FILES[@]} 3>&1 1>&2 2>&3)
+
+if [ -z "$FILE_SELECTED" ]; then
+	return 1
+else
+if [ "$FILE_SELECTED" = ".." ] && [ "$ALLOW_BACK" != "no" ]; then
+return 0
+
+elif [ -d "$LOCAL_PATH/$FILE_SELECTED" ] ; then
+if file_select "$TITLE" "$LOCAL_PATH/$FILE_SELECTED" "$FILE_MASK" "yes" ; then
+	if [ "$FILE_SELECTED" != ".." ]; then
+	return 0
+	fi
+else
+	return 1
+fi
+
+elif [ -f "$LOCAL_PATH/$FILE_SELECTED" ] ; then
+FILE_SELECTED="$LOCAL_PATH/$FILE_SELECTED"
+return 0
+fi
+fi
+    done
+}
+
+#============================================================================
+logbck () {
+rwallp=$(kreadconfig --file $TDEHOME/share/config/kdesktoprc --group Desktop0 --key Wallpaper)
+echo -e "  \e[35m░▒▓█\033[0m configuring login background with current wallpaper"
+echo "       (please be patient this could take some time...)"
+sudo convert $rwallp -filter Gaussian -blur 0x55 /opt/trinity/share/apps/tdm/themes/windows/background.jpg
+#test dark or light
+testlight
+echo "Done."
+read -p "Press enter..."
+return 1
+}
+#============================================================================
+
+logclock () {
+#check clock status
+actclock="Show"
+if grep -q '<item type="rect" id="clock">' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+then
+actclock="Hide"
+fi
+
+while [ 1 ]
+do
+
+choice=$(whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "          Qtools Scripts - Theming tools - clock at login" 25 70 15 "»$actclock" "$actclock clock at login screen" "«return" " <- return to previous menu" 3>&1 1>&2 2>&3)
+
+case $choice in
+"«return") return 1
+;;
+"»$actclock") 
+clear
+if [ $actclock = "Hide" ]; then
+sudo sed -i '/<!-- clock -->/,/<!-- endclock -->/{//!d}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+actclock="Show"
+else
+  if [[ $lowres -eq 1 ]]; then
+sudo sed -i '/<!-- clock -->/{N;s/<!-- clock -->\n<!-- endclock -->/<!-- clock -->\n<item type="rect" id="clock">\n<pos anchor="n" x="100%" y="140" width="box" \/>\n<item type="label">\n<pos anchor="n" x="50%" y="5"\/>\n<normal font="Segoe UI 48" color="#EEEEEE"\/>\n<text>%c<\/text>\n<\/item>\n<\/item>\n<!-- endclock -->/}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+  else
+sudo sed -i '/<!-- clock -->/{N;s/<!-- clock -->\n<!-- endclock -->/<!-- clock -->\n<item type="rect" id="clock">\n<pos anchor="n" x="100%" y="150" width="box" \/>\n<item type="label">\n<pos anchor="n" x="50%" y="20"\/>\n<normal font="Segoe UI 58" color="#EEEEEE"\/>\n<text>%c<\/text>\n<\/item>\n<\/item>\n<!-- endclock -->/}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+  fi
+testlight
+actclock="Hide"
+fi
+
+echo
+echo Done.
+read -p "Press enter..."
+;;
+esac
+
+
+done
+
+
+}
+
+#============================================================================
+randomwallp () {
+clear
+echo -e "  \e[35m░▒▓█\033[0m Selecting a random wallpaper"
+wallpn=$(( $RANDOM % 10 + 1 ))
+rwallp=q4seb_hd_win_$wallpn.jpg
+dcop kdesktop KBackgroundIface setWallpaper /opt/trinity/share/wallpapers/$rwallp 6
+echo "Wallpaper /opt/trinity/share/wallpapers/$rwallp set."
+echo
+logbck
+}
+
+#============================================================================
+userslistdisp () {
+#check userlist status
+actulist="Show"
+if grep -q '<bgmodifier value="5"' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+then
+actulist="Hide"
+fi
+
+while [ 1 ]
+do
+
+choice=$(whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "       Qtools Scripts - Theming tools - toggle users list" 25 70 15 "»$actulist" "$actulist users list at login screen" "«return" " <- return to previous menu" 3>&1 1>&2 2>&3)
+
+case $choice in
+"«return") return 1
+;;
+"»$actulist") 
+clear
+if [ $actulist = "Hide" ]; then
+sudo sed -i '/<!-- userslist -->/,/<!-- enduserslist -->/{//!d}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+actulist="Show"
+else
+sudo sed -i '/<!-- userslist -->/,/<!-- enduserslist -->/c\
+<!-- userslist -->\
+<item type="rect">\
+<pos anchor="nw" x="0" y="80%" height="100%" width="180"/>\
+<fixed>\
+<item type="rect" id="userlist">\
+<pos anchor="c" x="50%" y="50%" height="100%" width="100%"/>\
+<bgmodifier value="5"/>\
+</item>\
+</fixed>\
+</item>\
+<!-- enduserslist -->' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+actulist="Hide"
+fi
+
+echo
+echo Done.
+read -p "Press enter..."
+;;
+esac
+
+
+done
+
+}
+#============================================================================
+setcursz() {
+ptsize=$1
+if ! grep -q "Xcursor.size" "$USER_HOME/.Xresources"; then
+echo "Xcursor.size: $ptsize" | sudo tee -a $USER_HOME/.Xresources
+fi
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" $USER_HOME/.Xresources
+
+if ! grep -q "Xcursor.size" "/root/.Xresources"; then
+echo "Xcursor.size: $ptsize" | sudo tee -a /root/.Xresources
+fi
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" /root/.Xresources
+
+echo Done.
+echo You need to logout for this to be active.
+read -p "Press enter..."
+}
+
+pointsz () {
+
+cursorsz=$(xrdb -query | awk '/Xcursor.size/ {print $2}')
+a32="";a48="";a64=""
+if [ "$cursorsz" -eq 32 ]; then
+    a32="current size"
+elif [ "$cursorsz" -eq 48 ]; then
+    a48="current size"
+elif [ "$cursorsz" -eq 64 ]; then
+    a64="current size"
+fi
+
+while [ 1 ]
+do
+
+choice=$(whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "          Qtools Scripts - Theming tools - pointer size" 25 70 15 "» Default (32)" " $a32" "» Large (48)" " $a48" "» XL (64)" " $a64" "«return" " <- return to previous menu" 3>&1 1>&2 2>&3)
+
+case $choice in
+"«return") return 1
+;;
+"» Default (32)") 
+clear
+setcursz 32
+a32="";a48="";a64=""
+;;
+"» Large (48)") 
+clear
+setcursz 48
+a32="";a48="";a64=""
+;;
+"» XL (64)") 
+clear
+setcursz 64
+a32="";a48="";a64=""
+;;
+esac
+
+done
+
+}
+
+#============================================================================
+setcurcol () {
+clear
+kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$1
+kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$1
+kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+kwriteconfig --file $USER_HOME/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key cursorTheme Windows10$1
+sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+sudo kwriteconfig --file /root/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+sudo kwriteconfig --file /root/.trinity/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$1
+sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$1
+sudo mkdir -p  /etc/X11/cursors
+sudo \cp /usr/share/icons/Windows10$1/cursor.theme /etc/X11/cursors/Windows10$1\_cursor.theme
+sudo ln -nfs /etc/X11/cursors/Windows10$1\_cursor.theme /etc/alternatives/x-cursor-theme
+if [ "$1" = "dark" ]
+then 
+sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Dark"' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Dark"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
+if [ -f "/root/xsettingsd.conf" ]; then
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Dark"' "$USER_HOME/.config/xsettingsd/xsettingsd.conf"
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Dark"' "/root/xsettingsd.conf"
+fi
+else
+sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
+if [ -f "/root/xsettingsd.conf" ]; then
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.config/xsettingsd/xsettingsd.conf"
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "/root/xsettingsd.conf"
+fi
+fi
+
+echo Done.
+echo You need to logout for this to be active.
+read -p "Press enter..."
+
+}
+
+pointcol () {
+
+while [ 1 ]
+do
+
+actcur=$(kreadconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme)
+aw="";ad="";
+if [ "$actcur" = "Windows10Light" ]
+then
+aw="[current cursor theme]"
+else
+ if [ "$actcur" = "Windows10Dark" ]
+ then
+ ad="[current cursor theme]"
+ fi
+fi
+
+choice=$(whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "        Qtools Scripts - Theming tools - pointer color" 25 70 15 "» White" " $aw" "» Dark" " $ad" "«return" " <- return to previous menu" 3>&1 1>&2 2>&3)
+
+case $choice in
+"«return") return 1
+;;
+"» White") 
+clear
+setcurcol "Light"
+;;
+"» Dark") 
+clear
+setcurcol "Dark"
+;;
+esac
+
+done
+
+}
+
+#============================================================================
+
+setkfont () {
+if [ "$1" = "Consolas" ]
+then
+kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont "$1,11,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key defaultfont "$1,11,-1,5,50,0,0,0,0,0"
+fi
+if [ "$1" = "Cascadia Code" ]
+then
+kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont "$1,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key defaultfont "$1,10,-1,5,50,0,0,0,0,0"
+fi
+echo Done.
+read -p "Press enter..."
+}
+
+konsfont () {
+while [ 1 ]
+do
+co="";ca="";
+curkfont=$(kreadconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont)
+if echo $curkfont | grep -q "Consolas"
+then
+co="[current Konsole font]"
+else
+ if echo $curkfont | grep -q "Cascadia"
+ then
+ ca="[current Konsole font]"
+ fi
+fi
+
+choice=$(whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "         Qtools Scripts - Theming tools - Konsole font" 25 70 15 "» Consolas" " $co" "» Cascadia Code" " $ca" "«return" " <- return to previous menu" 3>&1 1>&2 2>&3)
+
+case $choice in
+"«return") return 1
+;;
+"» Consolas") 
+clear
+setkfont "Consolas"
+;;
+"» Cascadia Code") 
+clear
+setkfont "Cascadia Code"
+;;
+esac
+
+done
+}
+
+#============================================================================
+function check_image_size {
+    local image_path="$1"
+    local min_width=220
+    local min_height=220
+    local dimensions
+    dimensions=$(identify -format "%w %h" "$image_path")
+    local width height
+    read -r width height <<< "$dimensions"
+    if ((width >= min_width && height >= min_height)); then
+        echo "Picture size: Ok."
+        return 0
+    else
+        echo "Picture size must be at least 220x220 pixels"
+        return 1
+    fi
+}
+
+function resize_and_create_circle_image {
+    local input_image="$1"
+    local output_image="$2"
+    local small_image_output="$3"
+    local circle_size=220 
+    local small_image_size=48
+    convert "$input_image" -resize 220x220^ -gravity center -extent 220x220 "$input_image"
+    local temp_image=$(mktemp "${TMPDIR:-/tmp}/temp_image.XXXXXXXXXX.png")
+    convert "$input_image" -alpha set -background none -virtual-pixel transparent -distort SRT 0 +repage \( -size "${circle_size}x${circle_size}" xc:none -fill white -draw "circle $((circle_size / 2)),$((circle_size / 2)) $((circle_size / 2)),0" \) -compose copy-opacity -composite "$temp_image"
+
+    convert "$temp_image" -trim -background none -flatten "$output_image"
+    rm "$temp_image"
+
+    convert "$output_image" -resize "${small_image_size}x${small_image_size}" "$small_image_output"
+}
+
+
+userpic () {
+
+while [ 1 ]
+do
+
+
+choice=$(whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "         Qtools Scripts - Theming tools - user picture" 25 70 15 "» Select" " Select your own image" "» Default" " restore default image" "«return" " <- return to previous menu" 3>&1 1>&2 2>&3)
+
+case $choice in
+"«return") return 1
+;;
+"» Select") 
+clear
+USER_HOME=$(eval echo ~${SUDO_USER})
+if file_select "-=- Q4OS Seb Scripts -=- select user picture" "/home" "*.jpg" ; then
+    echo "File Selected: \"$FILE_SELECTED\"."
+if check_image_size "$FILE_SELECTED"; then
+        echo "Picture size is conform."
+        rm -f "$USER_HOME/.face.icon"
+        resize_and_create_circle_image "$FILE_SELECTED" "$USER_HOME/userpic.png" "$USER_HOME/faceicon.png"
+        sudo \cp "$USER_HOME/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
+        sudo \cp "$USER_HOME/faceicon.png" "$USER_HOME/.face.icon"
+        rm -f "$USER_HOME/userpic.png"
+        rm -f "$USER_HOME/faceicon.png"
+        echo "Done."
+    else
+        echo "Picture size doesn't follow size requirements."
+    fi
+
+
+else
+    echo "No picture selected."
+fi
+        read -p "Press enter..."
+        return 1
+;;
+"» Default") 
+clear
+sudo tar -xzf theme/tdmwin.tar.gz -C "/opt/trinity/share/apps/tdm/themes/" windows/userpic.png
+echo "Done."
+read -p "Press enter..."
+;;
+esac
+
+done
+
+
+
+}
+
+
+
+
+
+#============================= MAIN =========================================
+#TEST if theme installed, if not, clear + warning message (then exit ?)
+###############
+while [ 1 ]
+do
+ret=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "                  Qtools Scripts - Theming tools" 25 70 15 "»login background" "  [update login screen with current wallpaper]"  "»Random wallpaper" "  [apply random wallpaper for login & desktop]" "»User picture" "  [        select image for user picture     ]" "»users list" "  [ display/hide users list at login screen  ]" "»clock" "  [     display/hide clock at login screen   ]" "»pointer size" "  [             change pointer size          ]" "»pointer color" "  [     change pointer color (white/black)   ]" "»Konsole font" "  [             choose Konsole font          ]" "»Kmenu" "  [             launch Kmenu edit            ]" "«exit" "  [             <- quit this menu            ]" 3>&1 1>&2 2>&3)
+
+echo
+case $ret in
+"»login background")   
+	clear;logbck
+;;
+"»Random wallpaper")   
+	randomwallp
+;;
+"»User picture")   
+	userpic
+;;
+"»users list")   
+	userslistdisp
+;;
+"»clock")   
+	logclock
+;;
+"»pointer size")   
+	pointsz
+;;
+"»pointer color")   
+	pointcol
+;;
+"»Konsole font")   
+	konsfont
+;;
+"»Kmenu")   
+	kmenuedit
+;;
+"«exit") exit
+;;
+esac
+done
+
