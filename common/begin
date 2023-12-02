@@ -48,7 +48,9 @@ then
       echo -e "          ${RED}^-^"
       echo -e "         (x X)${GRAY}"
       echo -e "   ══${RED}ooO${GRAY}══${RED}(_)${GRAY}══${RED}Ooo${GRAY}══════ ${NOCOLOR}Error :-( ${GRAY}════════${NOCOLOR}"
-      echo "   \$TDEHOME is empty, cannot continue"
+echo "   \$TDEHOME is empty, cannot continue. This script is designed only for Q4OS Trinity Desktop."
+echo "   If Trinity is installed, maybe this error is because you're launching this script from a "
+echo "   root shell. Please try to run it from a normal user shell."
       echo -en "\033]0;$script - Error\a"
       echo
       read -p "Press enter..."
