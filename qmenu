@@ -33,7 +33,8 @@ esac
 
 while [ 1 ]
 do
-ret=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "                    Choose a script to launch:" 25 70 15 " Qtheme" "   [     Theming ala windows 10    ]" " Qperf" "   [      Improve performances     ]" " Qlaptop" "   [ Laptop specific configuration ]" " Qapps" "   [ Install selected applications ]" " " " " " ~Info~" "   [       Display README.md       ]" " exit" "   [     <- quit this menu         ]" 3>&1 1>&2 2>&3)
+wmctrl -r :ACTIVE: -N "-=- Q4OS Seb Scripts -=-   Main menu"
+ret=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "                    Choose a script to launch:" 25 70 15 " Qtheme" "   [      Theming ala windows 10     ]" " Qperf" "   [       Improve performances      ]" " Qlaptop" "   [  Laptop specific configuration  ]" " Qapps" "   [  Install selected applications  ]" " Qtools" "   [Customize theme,system & more... ]" " " " " " ~Info~" "   [        Display README.md        ]" " exit" "   [      <- quit this menu          ]" 3>&1 1>&2 2>&3)
 
 echo
 case $ret in
@@ -57,15 +58,19 @@ case $ret in
 	./qapps.sh
 	return 0
 ;;
+" Qtools")   
+	clear
+	./qtools.sh
+	return 0
+;;
 " ~Info~")   
 whiptail --title "-=- Q4OS Seb Scripts -=-" --msgbox "`cat README.md`" --ok-button "ESC to return" --scrolltext 30 85
 	return 0
 ;;
 " exit") 
-echo -e "          ${LIGHTGREEN}^-^"
-echo -e "         (o O)${GRAY}"
-echo -e "   ══${LIGHTGREEN}ooO${GRAY}══${LIGHTGREEN}(_)${GRAY}══${LIGHTGREEN}Ooo${GRAY}══════ ${NOCOLOR}Bye Bye ! ${GRAY}════════${NOCOLOR}"
-echo
+echo -e "                                      ${LIGHTGREEN}^-^"
+echo -e "                                     (o O)${GRAY}"
+echo -e "                               ══${LIGHTGREEN}ooO${GRAY}══${LIGHTGREEN}(_)${GRAY}══${LIGHTGREEN}Ooo${GRAY}══════ ${NOCOLOR}Bye Bye ! ${GRAY}════════${NOCOLOR}"
 exit
 ;;
 esac
