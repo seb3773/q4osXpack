@@ -373,6 +373,16 @@ sep
 echo
 echo
 echo
+
+
+itemdisp "change commit interval for ext4 partitions"
+echo
+sudo sed -i '/ext4/s/\(defaults,noatime,discard\)\(.*\)\(commit=[0-9]\+\)\(.*\)/\1\2commit=60\4/' "/etc/fstab"
+if ! grep -q 'ext4.*commit=' "/etc/fstab"; then sudo sed -i '/ext4/s/\(defaults,noatime,discard\)\(.*\)/\1,commit=60\2/' "/etc/fstab"; fi
+sep
+echo
+echo
+echo
 progress "$script" 65
 
 
