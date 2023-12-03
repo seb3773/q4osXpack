@@ -31,10 +31,46 @@ fi
 esac
 }
 
+byebye () {
+echo -e "                                      ${LIGHTGREEN}^-^"
+echo -e "                                     (o O)${GRAY}"
+echo -e "                               ══${LIGHTGREEN}ooO${GRAY}══${LIGHTGREEN}(_)${GRAY}══${LIGHTGREEN}Ooo${GRAY}══════ ${NOCOLOR}Bye Bye ! ${GRAY}════════${NOCOLOR}"
+exit
+}
+deskfold=$(xdg-user-dir DESKTOP)
+
 while [ 1 ]
 do
 wmctrl -r :ACTIVE: -N "-=- Q4OS Seb Scripts -=-   Main menu"
-ret=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "                    Choose a script to launch:" 25 70 15 " Qtheme" "   [      Theming ala windows 10     ]" " Qperf" "   [       Improve performances      ]" " Qlaptop" "   [  Laptop specific configuration  ]" " Qapps" "   [  Install selected applications  ]" " Qtools" "   [Customize theme,system & more... ]" " " " " " ~Info~" "   [        Display README.md        ]" " exit" "   [      <- quit this menu          ]" 3>&1 1>&2 2>&3)
+options=(
+    " Qtheme" "   [      Theming « ala windows 10 »    ]"
+    " Qperf" "   [        Improve performances        ]"
+    " Qlaptop" "   [    Laptop specific configuration   ]"
+    " Qapps" "   [    Install selected applications   ]"
+    " Qtools" "   [  Customize theme,system & more...  ]"
+    " " " "
+)
+
+if [ ! -e "$deskfold/Q4OS seb Scripts.desktop" ]; then
+options+=(" ~Create shortcut" "   [Create desktop shortcut for easy run]")
+fi
+
+options+=(" ~Info~" "   [          Display README.md         ]"
+          " exit" "   [       <- quit this menu (Esc)      ]"
+)
+
+menu=()
+for ((i = 0; i < ${#options[@]}; i+=2)); do
+    menu+=("${options[i]}" "${options[i + 1]}")
+done
+
+ret=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "Choose a script to launch:" 25 70 15 "${menu[@]}" --cancel-button "Exit" 3>&1 1>&2 2>&3)
+
+
+
+
+
+          
 
 echo
 case $ret in
@@ -63,15 +99,30 @@ case $ret in
 	./qtools.sh
 	return 0
 ;;
+" ~Create shortcut")
+clear
+SCRIPT_PATH="$(readlink -f "$0")"
+SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
+CURRENT_USER=$(whoami)
+\cp "common/shortcut.desktop" "$deskfold/Q4OS seb Scripts.desktop"
+sed -i "s|XxXxXxXx|$SCRIPT_DIR|g" "$deskfold/Q4OS seb Scripts.desktop"
+sudo chown "$CURRENT_USER:$CURRENT_USER" "$deskfold/Q4OS seb Scripts.desktop"
+echo Done.
+read -p "Press enter..."
+return 0
+;;
 " ~Info~")   
 whiptail --title "-=- Q4OS Seb Scripts -=-" --msgbox "`cat README.md`" --ok-button "ESC to return" --scrolltext 30 85
 	return 0
 ;;
 " exit") 
-echo -e "                                      ${LIGHTGREEN}^-^"
-echo -e "                                     (o O)${GRAY}"
-echo -e "                               ══${LIGHTGREEN}ooO${GRAY}══${LIGHTGREEN}(_)${GRAY}══${LIGHTGREEN}Ooo${GRAY}══════ ${NOCOLOR}Bye Bye ! ${GRAY}════════${NOCOLOR}"
-exit
+byebye
 ;;
+" ")
+;;
+*)
+byebye
+;;
+
 esac
 done
