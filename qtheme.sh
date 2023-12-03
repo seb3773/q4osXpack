@@ -1498,6 +1498,17 @@ sep
 echo
 echo
 echo
+
+#========== Configuring usb fast removal (sync) - slower writes to media storage
+#========== but users can remove them without worrying about unmounting first like it is the case on windows.
+itemdisp "Configuring « usb fast removal »..."
+kwriteconfig --file $TDEHOME/share/config/mediamanagerrc --group DefaultOptions --key sync true
+sep
+echo
+echo
+echo
+
+
 progress "$script" 95
 
 
