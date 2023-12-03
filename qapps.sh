@@ -130,6 +130,8 @@ progress "$script" 35
 
 itemdisp "Installing Stacer..."
 installApp "stacer" "stacer/stable"
+itemdisp "Installing lxtask..."
+installApp "lxtask" "lxtask/stable"
 progress "$script" 40
 
 
