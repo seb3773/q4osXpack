@@ -425,6 +425,7 @@ fi
 rm -f $USER_HOME/.configtde/menus/tde-applications.menu
 rota
 pathfold="$USER_HOME/.local/share/desktop-directories/"
+if [[ -d $pathfold ]]; then
 cd $pathfold
 for FILE in *;
 do
@@ -443,6 +444,7 @@ sed -i '/Icon=/c\Icon=folder-html' "$pathfold$FILE"
 fi
 done
 cd - > /dev/null 2>&1
+fi
 
 pathfold="/opt/trinity/share/desktop-directories/"
 cd $pathfold
