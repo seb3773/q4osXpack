@@ -114,7 +114,7 @@ installApp "system-config-printer" "system-config-printer/stable"
 progress "$script" 30
 
 
-
+if ( getconf LONG_BIT | grep -q 64 ); then
 itemdisp "Installing flashfetch"
 cd apps
 echo -e "${YELLOW}"
@@ -128,7 +128,7 @@ echo
 echo
 echo
 progress "$script" 35
-
+fi
 
 
 itemdisp "Installing Stacer..."
@@ -206,7 +206,7 @@ progress "$script" 60
 
 
 
-
+if ( getconf LONG_BIT | grep -q 64 ); then
 itemdisp "Installing spotify"
 #spotify
 installSpoty () {
@@ -247,7 +247,7 @@ echo
 echo
 echo
 progress "$script" 65
-
+fi
 
 
 
@@ -461,7 +461,7 @@ installVbox () {
             wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
             echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
             sudo apt update
-            sudo apt install virtualbox-7.0
+            sudo apt install -y virtualbox-7.0
             sudo usermod -G vboxusers -a $USER
             echo -e "${NOCOLOR}"
             else
