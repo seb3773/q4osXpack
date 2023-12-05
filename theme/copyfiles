@@ -112,7 +112,7 @@ ln -s edit-clear-locationbar-ltr.png 64x64/actions/locationbar_erase.png
 cd - > /dev/null 2>&1
 #
 tar -xzf kdeten_mods_$iconth.tar.gz -C /usr/share/icons/kdeten_$iconth/
-sudo sed -i '/Name=kde_ten/c\Name=kde_ten_$iconth' /usr/share/icons/kdeten_$iconth/index.theme
+sudo sed -i "/Name=kde_ten/c\Name=kde_ten_$iconth" /usr/share/icons/kdeten_$iconth/index.theme
 gtk-update-icon-cache /usr/share/icons/kdeten_$iconth/
 echo "  \e[35m░▒▓█\033[0m copying cursors"
 rm -fr /usr/share/icons/Windows10Dark
