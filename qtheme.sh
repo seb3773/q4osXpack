@@ -509,6 +509,14 @@ progress "$script" 50
 
 #========== windows style with qtcurve ==========================================================================
 itemdisp "Configuring windows style..."
+echo -e "  \e[35m░▒▓█\033[0m installing qtcurve-trinity..."
+if ! (cat common/packages_list.tmp | grep -q tde-style-qtcurve-trinity); then
+echo -e "${YELLOW}"
+sudo apt install -y tde-style-qtcurve-trinity
+echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed."
+fi
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key widgetStyle qtcurve
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectsEnabled false
@@ -1403,6 +1411,7 @@ kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --k
 sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sed -i '/font_name="/c\font_name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
+sed -i '/font_name="/c\font_name="Segoe UI 10"' $USER_HOME/.gtkrc-2.0 > /dev/null 2>&1
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "/root/.config/xsettingsd/xsettingsd.conf"
 if [ -f "/root/xsettingsd.conf" ]; then
