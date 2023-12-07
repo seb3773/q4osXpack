@@ -1540,9 +1540,10 @@ echo
 echo
 echo
 
-itemdisp "Configuring global shortcuts..."
+itemdisp "Configuring global shortcuts & default apps integration..."
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "application/x-deb - 1" --key Application appsetup2.exu.desktop
 #kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Lock Session (Hotkey)" "default(XF86ScreenSaver);Win+L"
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
