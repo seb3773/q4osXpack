@@ -93,6 +93,7 @@ create_backup "twindeKoratorrc" "$USER_HOME/.trinity/share/config/twindeKoratorr
 create_backup "twinrc" "$TDEHOME/share/config/twinrc"
 create_backup "twinrc_root" "/root/.trinity/share/config/twinrc"
 create_backup "GTK3-Q4OS02" "/usr/share/themes/Q4OS02/gtk-3.0"
+create_backup "GTK2-Q4OS02" "/usr/share/themes/Q4OS02/gtk-2.0"
 create_backup "xcompmgrrc" "$USER_HOME/.xcompmgrrc"
 create_backup "xcompmgrrc_root" "/root/.xcompmgrrc"
 create_backup "compton-tde" "$USER_HOME/.compton-tde.conf"
@@ -303,7 +304,8 @@ cd ..
 
 #========== splash screen =======================================================================================
 itemdisp "Configuring splash screen at desktop loading..."
-kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme Unified
+#kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme Unified
+kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme Redmond10
 sep
 echo
 echo
@@ -326,11 +328,21 @@ echo "Xcursor.size: $ptsize" | sudo tee -a $USER_HOME/.Xresources
 fi
 sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" $USER_HOME/.Xresources
 
+if ! grep -q "Xcursor.theme" "$USER_HOME/.Xresources"; then
+echo "Xcursor.theme: Windows10Light" | sudo tee -a $USER_HOME/.Xresources
+fi
+sudo sed -i "/Xcursor.theme:/c\Xcursor.theme: Windows10Light" $USER_HOME/.Xresources
+
+
 if ! grep -q "Xcursor.size" "/root/.Xresources"; then
 echo "Xcursor.size: $ptsize" | sudo tee -a /root/.Xresources
 fi
 sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" /root/.Xresources
-#Xcursor.theme: Windows10Light ?
+
+if ! grep -q "Xcursor.theme" "/root/.Xresources"; then
+echo "Xcursor.theme: Windows10Light" | sudo tee -a /root/.Xresources
+fi
+sudo sed -i "/Xcursor.theme:/c\Xcursor.theme: Windows10Light" /root/.Xresources
 #
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key Acceleration 1
@@ -348,6 +360,7 @@ sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --k
 sudo kwriteconfig --file /root/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 sudo kwriteconfig --file /root/.trinity/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' root/.gtkrc-2.0  > /dev/null 2>&1
 #cursor theme for x
 sudo mkdir -p  /etc/X11/cursors
 sudo \cp /usr/share/icons/Windows10Light/cursor.theme /etc/X11/cursors/Windows10Light_cursor.theme
@@ -523,11 +536,15 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectsEn
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowKonqIconActivationEffect false
 sed -i '/gtk-button-images="/c\gtk-button-images=0' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
 sed -i '/gtk-button-images="/c\gtk-button-images=0' $USER_HOME/.gtkrc-q4os
+sed -i '/gtk-theme-name="/c\gtk-theme-name="Q4OS02"' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key widgetStyle qtcurve
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectsEnabled false
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowKonqIconActivationEffect false
+sed -i '/gtk-button-images="/c\gtk-button-images=0' root/.gtkrc-2.0  > /dev/null 2>&1
+sed -i '/gtk-button-images="/c\gtk-button-images=0' root/.gtkrc-q4os
+sed -i '/gtk-theme-name="/c\gtk-theme-name="Q4OS02"' root/.gtkrc-2.0  > /dev/null 2>&1
 sep
 echo
 echo
@@ -764,8 +781,10 @@ echo -e "  \e[35m░▒▓█\033[0m configuring GTK3 style..."
 sudo rm -rf /usr/share/themes/Q4OS02/gtk-3.0/{*,.[!.]*}
 if [[ $dark -eq 1 ]]; then
 sudo tar -xzf theme/gtk3winten-dark.tar.gz -C  /usr/share/themes/Q4OS02/gtk-3.0/
+sudo tar -xzf theme/gtk2winten-dark.tar.gz -C  /usr/share/themes/Q4OS02/gtk-2.0/
 else
 sudo tar -xzf theme/gtk3winten.tar.gz -C  /usr/share/themes/Q4OS02/gtk-3.0/
+sudo tar -xzf theme/gtk2winten.tar.gz -C  /usr/share/themes/Q4OS02/gtk-2.0/
 fi
 echo -e "  \e[35m░▒▓█\033[0m configuring xcompmgr..."
 #sudo kwriteconfig --file $USER_HOME/.xcompmgrrc --group xcompmgr --key useOpenGL true
@@ -1244,7 +1263,7 @@ sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" col
 sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#333333" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 #sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#000000" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 fi
-#sudo \cp /opt/trinity/share/wallpapers/$rwallp /opt/trinity/share/apps/ksplash/Themes/Redmond10/Background.png
+sudo \cp /opt/trinity/share/apps/tdm/themes/windows/background.jpg /opt/trinity/share/apps/ksplash/Themes/Redmond10/Background.png
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoPixmap "/opt/trinity/share/apps/tdm/pics/tuxlogo.png"
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoArea Logo
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key GUIStyle QtCurve
@@ -1493,6 +1512,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group Icons --
 sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
 sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
 sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' /root/.gtkrc-q4os
+sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' root/.gtkrc-2.0 > /dev/null 2>&1
 else
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme kdeten_light
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
@@ -1504,6 +1524,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group Icons --
 sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
 sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
 sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' /root/.gtkrc-q4os
+sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' root/.gtkrc-2.0 > /dev/null 2>&1
 fi
 sep
 echo
@@ -1519,6 +1540,18 @@ echo
 echo
 echo
 
+itemdisp "Configuring global shortcuts..."
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
+#kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Lock Session (Hotkey)" "default(XF86ScreenSaver);Win+L"
+#root
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
+#sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Lock Session (Hotkey)" "default(XF86ScreenSaver);Win+L"
+sep
+echo
+echo
+echo
 
 progress "$script" 95
 
