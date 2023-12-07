@@ -109,10 +109,29 @@ ln -s edit-clear-locationbar-ltr.png 24x24/actions/locationbar_erase.png
 ln -s edit-clear-locationbar-ltr.png 32x32/actions/locationbar_erase.png
 ln -s edit-clear-locationbar-ltr.png 48x48/actions/locationbar_erase.png
 ln -s edit-clear-locationbar-ltr.png 64x64/actions/locationbar_erase.png
+ln -s ../../16x16/actions/edit-paste.png 16x16/apps/klipper.png
+ln -s ../../22x22/actions/edit-paste.png 22x22/apps/klipper.png
+ln -s ../../24x24/actions/edit-paste.png 24x24/apps/klipper.png
+ln -s ../../32x32/actions/edit-paste.png 32x32/apps/klipper.png
+ln -s ../../48x48/actions/edit-paste.png 48x48/apps/klipper.png
+ln -s kcalc.png 16x16/apps/calc.png
+ln -s kcalc.png 22x22/apps/calc.png
+ln -s kcalc.png 24x24/apps/calc.png
+ln -s kcalc.png 32x32/apps/calc.png
+ln -s kcalc.png 48x48/apps/calc.png
+ln -s kcalc.png 64x64/apps/calc.png
+ln -s kwrite.png 16x16/apps/notepad.png
+ln -s kwrite.png 22x22/apps/notepad.png
+ln -s ksysguard.png 16x16/apps/taskmgr.png
+ln -s ksysguard.png 22x22/apps/taskmgr.png
+ln -s ksysguard.png 24x24/apps/taskmgr.png
+ln -s ksysguard.png 32x32/apps/taskmgr.png
+ln -s ksysguard.png 48x48/apps/taskmgr.png
+ln -s ksysguard.png 64x64/apps/taskmgr.png
 cd - > /dev/null 2>&1
 #
 tar -xzf kdeten_mods_$iconth.tar.gz -C /usr/share/icons/kdeten_$iconth/
-sudo sed -i "/Name=kde_ten/c\Name=kde_ten_$iconth" /usr/share/icons/kdeten_$iconth/index.theme
+sudo sed -i "/Name=kde_ten/c\Name=kdeten_$iconth" /usr/share/icons/kdeten_$iconth/index.theme
 gtk-update-icon-cache /usr/share/icons/kdeten_$iconth/
 echo "  \e[35m░▒▓█\033[0m copying cursors"
 rm -fr /usr/share/icons/Windows10Dark
