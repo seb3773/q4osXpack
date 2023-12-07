@@ -94,24 +94,24 @@ progress "$script" 5
 
 itemdisp "Installing 7zip..."
 installApp "7z" "p7zip-full/stable"
-progress "$script" 15
+progress "$script" 5
 
 
 
 itemdisp "Installing Dolphin..."
 installApp "dolphin-trinity" "dolphin-trinity/"
-progress "$script" 20
+progress "$script" 10
 
 
 itemdisp "Installing Baobab..."
 installApp "baobab" "baobab/stable"
-progress "$script" 25
+progress "$script" 15
 
 
 
 itemdisp "Installing system-config-printer..."
 installApp "system-config-printer" "system-config-printer/stable"
-progress "$script" 30
+progress "$script" 20
 
 
 if ( getconf LONG_BIT | grep -q 64 ); then
@@ -127,14 +127,36 @@ sep
 echo
 echo
 echo
-progress "$script" 35
 fi
+progress "$script" 25
+
+
+itemdisp "Installing lxtask-mod (simple lightweight taskmgr)"
+if ! isinstalled "lxtask-mod/now" "common/packages_list.tmp"; then
+cd apps
+echo -e "${YELLOW}"
+if ( getconf LONG_BIT | grep -q 64 ); then
+sudo apt install -y ./lxtask-mod.deb
+else
+sudo apt install -y ./lxtask-mod_i386.deb
+fi
+cd ..
+echo -e "${NOCOLOR}"
+sep
+echo
+echo
+echo
+else
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+progress "$script" 30
+
+
+
 
 
 itemdisp "Installing Stacer..."
 installApp "stacer" "stacer/stable"
-itemdisp "Installing lxtask..."
-installApp "lxtask" "lxtask/stable"
 progress "$script" 40
 
 
@@ -198,9 +220,6 @@ do
 done
 fi
 progress "$script" 60
-
-
-
 
 
 
