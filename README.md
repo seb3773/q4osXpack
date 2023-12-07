@@ -13,13 +13,16 @@ This is a script that will modify your Q4OS Trinity installation to make it a bi
 This is my attempt to have the responsivness of Q4OS Trinity and the widely appreciated windows 10 look & feel (kind of) for customers who used to work with windows before.
 You can choose between a 'light' theme and a 'dark' one now. It's somekind of a full theme with icons, pointers, windows decorations, widgets style, color schemes, sounds (notably usb connect/disconnect sounds), taskbar & tdemenu setup, konqueror & dolphin profiles,boot splash, login screen, gtk theme, ui behavior, etc... I try to keep all differents parts of the theme as lightweight as possible as it is intended for old computers too as I explained :) And I want to keep in line with the trinity de philosophy, so it will not 'bloat' your computer with useless things.
 
+
 ## ▓▓ Qperf script:
 This one is designed to try to improve performances of your system. If you have a very recent computer, you maybe don't need it. But my testing on differents systems shows that even modern computers can gain some benefits from it. You can install a new optimized kernel (choice between xanmod & liquorix), optional of course. It will install preload, disabling some services not really needed for classic desktop usage, disable javascript in libre office (if installed),tune compton-tde conf, removes ufw & some fonts, do some sysctl tweaks, disable core dump, setup temp directories as tmps, disabling some loggin, install zram, trim initramfs size and finally some cleaning.
 I tested it a lot, but if something horrible happens, you can restore the backup created in the folder backup/ , by simply launching the restore script.
 
+
 ## ▒▒ Qlaptop:
 This will adjust some things in the system to adapt it better to a laptop usage. First it will uninstall TDEPowersave. I had a lots of problems with it (crash on some very old  laptops) and I prefer to use TLP. It will install xfce4-power-manager (please note I adapted the iconset for it, there was a naming problem with the *battery* icons with all the iconsets I tried). It enables two fingers scrolling & disable pad middle click (something which annoy me a lot on large pads). It will remove powertop and install TLP (with the optionnal option to install the TLP graphical interface for easier tuning of the settings). It will then configures xfce4-power-manager & logind.conf to handle suspend on lid switch action.
-You will have the option to create a swap file for hibernation, and it will then configure the settings to allow suspend-then-hibernate.
+You will have the option to create a swap file for hibernation, and it will then configure the settings to allow suspend-then-hibernate function.
+
 
 ## ░░ Qapps:
 Designed to install a set of apps I consider usefull for the usage I have. This reflect only my choices, so you maybe don't need it.
@@ -27,6 +30,7 @@ Designed to install a set of apps I consider usefull for the usage I have. This 
 -Apps installed by default: GIT, Ark (archive manager), Dolphin trinity, Baobab (disk usage), system-config-printer, lxtask-mod, flashfetch (fast cli system info), Stacer, lxtask, Bleachbit, vlc, Kolourpaint,KCharSelect,Ksnapshot,knote. [some of them could be already installed, depending of your Q4os profile choice at install]
 
 -Apps with choice to install: qbittorent, spotify, gparted, S4 Snapshot, remmina (rdp / vnc / ssh remote desktop client), free office, bpytop (improved htop), virtualbox 7.
+* Note that some apps are not available for 32bits install.
 
 
 ## ▓▓ Qtools script:
@@ -39,9 +43,9 @@ ________________________________________________________________________________
 ¤¤ Nearly everything was coded on an old laptop, a celeron N3060 with 4gb of non upgradable ram, so it's a good system to see what impacts or not performances. It's nearly unusable on windows 10, even with considerable tweaking, but works very good with Q4os, even without tweaking by the way :) So thanks again to the Q4OS team for this gem :) ¤¤
 
 One last note: This is a "work in progress", especially the theming part and the tools part. It's usable (I work with this theme on my laptop/desktop computer :p ) but I'm still improving it (tuning some icons or some other ui parts/behaviors...), so don't hesitate to always retrieve the last version :)
-
 ______________________________________________________________________________________________________________________________________
-Installation:
+
+## Installation:
 
 Clone the repository:
 git clone https://github.com/seb3773/Q4OSseb
