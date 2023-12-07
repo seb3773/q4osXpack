@@ -1,7 +1,7 @@
 # Q4OSseb
 
 Scripts to reconfigure a bit Q4OS Trinity to fit my needs. (theming, performances, laptop configuration,'defaults' applications selected by me, and tools to customize parts of the theme & some tuning scripts).
-This was designed for Q4OS Aquarius 64bits, but I try now to keep all the scripts compatibles with 32bits version of Q4OS, although some options are not present. Please report to me if there are problems.
+This was designed for Q4OS Aquarius 64bits, but I try now to keep all the scripts compatibles with 32bits version of Q4OS, although some options are not presents. Please report to me if there are problems.
 I don't think it will work 'as is' on another distribution using Trinity, but you can try :p (and better, if you want to fork the project and made it compatible with trinity on other distribs, you're welcome and I can help you to adapt the scripts if needed).
 * Note that classic desktop usage is targeted if you use the qperf.sh script, so don't even try it on a server type machine, as it could disable some essentials services/logs for this purpose. But it's perfectly fine 
   for a 'standard user' (and more) usage.
