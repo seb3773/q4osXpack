@@ -1,31 +1,41 @@
-
 #!/bin/bash
 dark=0
 helpdoc=0
 lowres=0
-VALID_ARGS=$(getopt -o hdL --long help,dark,light -- "$@")
-if [[ $? -ne 0 ]]; then
-    exit 1;
+customcolor=0
+while [ "$#" -gt 0 ]; do
+case "$1" in
+-d | --dark)
+dark=1
+shift
+;;
+-L | --light)
+dark=0
+shift
+;;
+-c | --color)
+if [ -n "$2" ] && [[ "$2" != -* ]]; then
+customcolor=1
+accent="${2//\"/}"
+shift 2
+else
+customcolor=1
+shift
 fi
-eval set -- "$VALID_ARGS"
-while [ : ]; do
-  case "$1" in
-    -d | --dark)
-        dark=1
-        shift
-        ;;
-    -L | --light)
-        dark=0
-        shift
-        ;;
-    -h | --help)
-        helpdoc=1
-        shift
-        ;;
-     --) shift; 
-        break 
-        ;;
-  esac
+;;
+-h | --help)
+helpdoc=1
+shift
+;;
+--)
+shift
+break
+;;
+*)
+echo "Invalid option: $1" >&2
+exit 1
+;;
+esac
 done
 if [ $helpdoc -eq 1 ]; then
 script="Help Qtheme"
@@ -35,6 +45,7 @@ fi
 source common/resizecons
 source common/begin
 source common/progress
+source theme/colorpick
 begin "   $script   "
 #================================================================================================================
 
@@ -42,7 +53,7 @@ begin "   $script   "
 
 #========== set subscripts perms ================================================================================
 progress "$script" 0
-sudo chmod +x theme/grubscripts theme/themegrub theme/copyfiles common/pklist
+sudo chmod +x theme/grubscripts theme/themegrub theme/copyfiles theme/createdeko theme/colordeko common/pklist
 
 
 #========== Retrieve resolution for res dependent elements ======================================================
@@ -50,8 +61,6 @@ Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
 if (( $Xres < 1920 )); then
 lowres=1
 fi
-
-
 
 
 #========== CREATE BACKUP FOLDER & backup files to be modified ==================================================
@@ -148,9 +157,96 @@ echo
 printf '\e[A\e[K'
 echo
 
+hex_to_rgb() {
+    local hex_color="$1"
+    local r=$(printf "%d" 0x${hex_color:1:2})
+    local g=$(printf "%d" 0x${hex_color:3:2})
+    local b=$(printf "%d" 0x${hex_color:5:2})
+    echo "$r,$g,$b"
+}
+get_luminance() {
+    hex_color=$1
+    r=$((16#${hex_color:1:2}))
+    g=$((16#${hex_color:3:2}))
+    b=$((16#${hex_color:5:2}))
+    echo $(( (r*299 + g*587 + b*114 + 500) / 1000 ))
+}
 
 
+#======== check if customcolor option specified and if there is a color specified
+#================= if customcolor is 1 and there is no color given, show the 'color picker'
+if [[ $customcolor -eq 1 ]]; then
+echo -e "  \e[35m░▒▓█\033[0m Custom accent color"
 
+if [ -z "$accent" ]; then 
+echo "  custom color specified, but no accent color given,"
+echo "  please choose one:"
+
+while true; do
+display_palette
+selected_color=$(get_user_color)
+
+if [[ "$selected_color" =~ ^[0-9]+$ ]] && ((selected_color >= 0 && selected_color <= 255)); then
+display_selected_color "$selected_color"
+if confirm_color_choice; then
+hex_color=$(ansi_to_hex $selected_color)
+break
+fi
+elif [[ "$selected_color" =~ ^#([0-9a-fA-F]{6})$ ]]; then
+hex_color="#${BASH_REMATCH[1]}"
+closest_color=$(find_closest_color "$hex_color")
+echo "You choose to use hex color: $hex_color"
+display_selected_color "$closest_color"
+echo " (please note the displayed color preview is not the real color, but"
+echo "  a close ansi color. The real color $hex_color will be used in the script)"
+if confirm_color_choice; then
+	echo "You confirm hex color $hex_color."
+	break
+fi
+else
+echo "Invalid choice. Please enter a number between 0 and 255, or an hexadecimal color value."
+fi
+done
+accent=$hex_color
+#accent2=    (this one is darker or lighter depending on base theme light or dark, and used for windows decos)
+#selectcolor=$accent
+else
+echo "accent color: $accent"
+#accent2=
+#selectcolor=$accent
+fi
+
+else
+
+ if [[ $dark -eq 1 ]]
+ then
+ accent="#000000"
+ #accent2=
+ #selectcolor=blue (actuel)
+ else
+ accent="#FFFFFF"
+ #accent2=
+ #selectcolor=blue (actuel)
+ fi
+
+fi
+if [[ $dark -eq 1 ]]
+then
+accent2=$(theme/colordeko "$accent" l)
+else
+accent2=$(theme/colordeko "$accent" d)
+fi
+
+luminance=$(get_luminance $accent)
+if [ $luminance -gt 60 ]; then
+accent3=$(theme/colordeko "$accent" d)
+else
+accent3=$(theme/colordeko "$accent" l)
+fi
+
+rgb_accent=$(hex_to_rgb "$accent")
+rgb_accent2=$(hex_to_rgb "$accent2")
+rgb_accent3=$(hex_to_rgb "$accent3")
 
 #========== retrieve packages list ==============================================================================
 echo -e "    ${ORANGE}░▒▓█\033[0m Retrieve packages list..."
@@ -171,9 +267,6 @@ echo -e "${NOCOLOR}"
 fi
 
 
-
-
-
 #========== Installing plymouth =================================================================================
 itemdisp "Install plymouth..."
 if ! (cat common/packages_list.tmp | grep -q "plymouth/stable"); then
@@ -187,8 +280,6 @@ sep
 echo
 echo
 echo
-
-
 
 
 #========== Installing plymouth themes ==========================================================================
@@ -223,9 +314,6 @@ echo
 echo
 echo
 progress "$script" 10
-
-
-
 
 
 
@@ -411,7 +499,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowLef
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRightHideButton false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key UseSidePixmap true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key SearchShortcut ""
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key CustomIcon "/usr/share/pixmaps/StartHere4.png"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key CustomIcon "/usr/share/pixmaps/StartHere.png"
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableBrowserTiles false
 rota
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableDesktopButtonTiles false
@@ -430,9 +518,21 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group menus --key ShowMenuT
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key KMenuTileColor "218,83,34"
 if [[ $dark -eq 1 ]]
 then
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintColor "36,36,36"
+ if [[ $customcolor -eq 1 ]]; then
+ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintColor "$rgb_accent"
+ kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ClassicKMenuBackgroundColor "$rgb_accent"
+ else
+ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintColor "36,36,36"
+ kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ClassicKMenuBackgroundColor "36,36,36"
+ fi
 else
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintColor "248,248,248"
+ if [[ $customcolor -eq 1 ]]; then
+ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintColor "$rgb_accent"
+ kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ClassicKMenuBackgroundColor "$rgb_accent"
+ else
+ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintColor "248,248,248"
+ kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ClassicKMenuBackgroundColor "248,248,248"
+ fi
 fi
 #menu with categories (& kmenuedit available)
 rm -f $USER_HOME/.configtde/menus/tde-applications.menu
@@ -542,9 +642,9 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General 
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectsEnabled false
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowKonqIconActivationEffect false
-sed -i '/gtk-button-images="/c\gtk-button-images=0' root/.gtkrc-2.0  > /dev/null 2>&1
-sed -i '/gtk-button-images="/c\gtk-button-images=0' root/.gtkrc-q4os
-sed -i '/gtk-theme-name="/c\gtk-theme-name="Q4OS02"' root/.gtkrc-2.0  > /dev/null 2>&1
+sed -i '/gtk-button-images="/c\gtk-button-images=0' root/.gtkrc-2.0 > /dev/null 2>&1
+sed -i '/gtk-button-images="/c\gtk-button-images=0' root/.gtkrc-q4os > /dev/null 2>&1
+sed -i '/gtk-theme-name="/c\gtk-theme-name="Q4OS02"' root/.gtkrc-2.0 > /dev/null 2>&1
 sep
 echo
 echo
@@ -566,11 +666,22 @@ echo -e "${NOCOLOR}"
 else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
+echo -e "  \e[35m░▒▓█\033[0m installing imagemagick..."
+if ! (cat common/packages_list.tmp | grep -q "imagemagick/stable" ); then
+echo -e "${YELLOW}"
+sudo apt install -y imagemagick
+echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed."
+fi
+echo -e "  \e[35m░▒▓█\033[0m Generating windows decorations..."
 if [[ $dark -eq 1 ]]; then
-sudo tar -xzf theme/WinTen-seb-theme-dark.tar.gz -C /opt/trinity/share/apps/deKorator/themes
+sudo theme/createdeko "$accent" "$accent2" "WinTenBasedark"
+#sudo tar -xzf theme/WinTen-seb-theme-dark.tar.gz -C /opt/trinity/share/apps/deKorator/themes
 sudo tar -xzf theme/twindeKoratorrc-dark.tar.gz -C $USER_HOME/.trinity/share/config/
 else
-sudo tar -xzf theme/WinTen-seb-theme.tar.gz -C /opt/trinity/share/apps/deKorator/themes
+sudo theme/createdeko "$accent" "$accent2" "WinTenBaselight"
+#sudo tar -xzf theme/WinTen-seb-theme.tar.gz -C /opt/trinity/share/apps/deKorator/themes
 sudo tar -xzf theme/twindeKoratorrc.tar.gz -C $USER_HOME/.trinity/share/config/
 fi
 echo
@@ -782,10 +893,32 @@ sudo rm -rf /usr/share/themes/Q4OS02/gtk-3.0/{*,.[!.]*}
 if [[ $dark -eq 1 ]]; then
 sudo tar -xzf theme/gtk3winten-dark.tar.gz -C  /usr/share/themes/Q4OS02/gtk-3.0/
 sudo tar -xzf theme/gtk2winten-dark.tar.gz -C  /usr/share/themes/Q4OS02/gtk-2.0/
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/hover/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/normal/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/press/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
 else
 sudo tar -xzf theme/gtk3winten.tar.gz -C  /usr/share/themes/Q4OS02/gtk-3.0/
 sudo tar -xzf theme/gtk2winten.tar.gz -C  /usr/share/themes/Q4OS02/gtk-2.0/
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/hover/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/normal/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/press/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
 fi
+
+#ADJUST GTK3 colors (+selected color GTK2)
+if [[ $customcolor -eq 1 ]]; then
+sudo sed -E -i 's/(selected_bg_color:#)[0-9A-Fa-f]+/\1'"${accent3/#\#/}"'/g' /usr/share/themes/Q4OS02/gtk-2.0/gtkrc
+sudo sed -i 's/@define-color theme_selected_bg_color .*/@define-color theme_selected_bg_color '"$accent3"';/' /usr/share/themes/Q4OS02/gtk-3.0/gtk_b.css
+acct="$accent}"
+sudo sed -i '/decoration{.*border-color:/ s/border-color:[^;]*/border-color:'"$acct"'/g' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
+sudo sed -i '/\.titlebar,headerbar{.*background-color:@theme_base_color;/ s/@theme_base_color/'"$accent"'/g' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
+sudo sed -i '/button.titlebutton{.*background-image:none;/ s/background-image:none;/&background-color:'"$accent"';/' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
+sudo sed -i '/button.titlebutton:hover{.*color:.*background-color:/ s/@theme_bg_color/'"$accent"'/g' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
+sudo sed -i '/button.titlebutton:active{.*color:.*background-color:/ s/@theme_bg_color/'"$accent"'/g' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
+fi
+
+
+
+
 echo -e "  \e[35m░▒▓█\033[0m configuring xcompmgr..."
 #sudo kwriteconfig --file $USER_HOME/.xcompmgrrc --group xcompmgr --key useOpenGL true
 sudo tar -xzf theme/xcompmgrrc.tar.gz -C $USER_HOME/
@@ -995,7 +1128,11 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key alter
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key background "244,244,244"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key buttonBackground "240,240,240"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key linkColor "0,0,192"
+if [[ $customcolor -eq 1 ]]; then
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectBackground "$rgb_accent3"
+else
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectBackground "61,174,233"
+fi
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key visitedLinkColor "128,0,128"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key windowBackground "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key buttonForeground "0,0,0"
@@ -1043,7 +1180,11 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key alter
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key background "39,41,42"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key buttonBackground "30,31,32"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key linkColor "90,130,180"
+if [[ $customcolor -eq 1 ]]; then
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectBackground "$rgb_accent3"
+else
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectBackground "50,70,120"
+fi
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key visitedLinkColor "90,60,120"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key windowBackground "30,31,32"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key buttonForeground "180,180,180"
@@ -1106,7 +1247,11 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General 
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key background "244,244,244"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key buttonBackground "240,240,240"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key linkColor "0,0,192"
+if [[ $customcolor -eq 1 ]]; then
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key selectBackground "$rgb_accent3"
+else
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key selectBackground "61,174,233"
+fi
 rota
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key visitedLinkColor "128,0,128"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key windowBackground "255,255,255"
@@ -1156,7 +1301,11 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General 
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key background "39,41,42"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key buttonBackground "30,31,32"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key linkColor "90,130,180"
+if [[ $customcolor -eq 1 ]]; then
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key selectBackground "$rgb_accent3"
+else
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key selectBackground "50,70,120"
+fi
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key visitedLinkColor "90,60,120"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key windowBackground "30,31,32"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key buttonForeground "180,180,180"
@@ -1241,14 +1390,9 @@ echo -e "${NOCOLOR}"
 else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
-echo -e "  \e[35m░▒▓█\033[0m installing imagemagick..."
-if ! (cat common/packages_list.tmp | grep -q "imagemagick/stable" ); then
-echo -e "${YELLOW}"
-sudo apt install -y imagemagick
-echo -e "${NOCOLOR}"
-else
-echo -e "${ORANGE}      ¤ Already installed."
-fi
+
+
+
 echo -e "  \e[35m░▒▓█\033[0m configuring wallpaper for login"
 echo "       (please be patient this could take some time...)"
 sudo convert /opt/trinity/share/wallpapers/$rwallp -filter Gaussian -blur 0x55 /opt/trinity/share/apps/tdm/themes/windows/background.jpg
@@ -1549,6 +1693,18 @@ kwriteconfig --file $TDEHOME/share/config/profilerc --group "application/x-deb -
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
 #sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Lock Session (Hotkey)" "default(XF86ScreenSaver);Win+L"
+
+#usuals win commands
+cd /usr/local/bin/
+sudo ln -s /opt/trinity/bin/kwrite /usr/local/bin/notepad > /dev/null 2>&1
+sudo ln -s /opt/trinity/bin/kcharselect /usr/local/bin/charmap > /dev/null 2>&1
+sudo ln -s /opt/trinity/bin/kcalc /usr/local/bin/calc > /dev/null 2>&1
+sudo ln -s /opt/trinity/bin/kolourpaint /usr/local/bin/paint > /dev/null 2>&1
+sudo ln -s /opt/trinity/bin/konsole /usr/local/bin/cmd > /dev/null 2>&1
+#default task manager (CTRL+ESC)
+#sudo ln -s /usr/bin/lxtask /usr/local/bin/taskmgr
+#sudo ln -s /usr/bin/lxtask /usr/local/bin/ksysguard
+cd - > /dev/null 2>&1
 sep
 echo
 echo

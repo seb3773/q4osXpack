@@ -32,9 +32,18 @@ esac
 }
 
 byebye () {
-echo -e "                                      ${LIGHTGREEN}^-^"
-echo -e "                                     (o O)${GRAY}"
-echo -e "                               ══${LIGHTGREEN}ooO${GRAY}══${LIGHTGREEN}(_)${GRAY}══${LIGHTGREEN}Ooo${GRAY}══════ ${NOCOLOR}Bye Bye ! ${GRAY}════════${NOCOLOR}"
+fpas="${GRAY}════════${NOCOLOR}";fpar="${GRAY}══${LIGHTGREEN}ooO${GRAY}══${LIGHTGREEN}(_)${GRAY}══${LIGHTGREEN}Ooo$fpas"
+spc="                       ";t=0.15
+echo -e "$spc       ${LIGHTGREEN}^-^";echo -e "$spc      (o O)${GRAY}"
+echo -e "$spc$fpar B         $fpas";sleep $t
+printf '\e[A\e[K';echo -e "$spc$fpar By        $fpas"
+sleep $t;printf '\e[A\e[K';echo -e "$spc$fpar Bye       $fpas"
+sleep $t;printf '\e[A\e[K\e[A\e[K';echo -e "$spc      (O O)${GRAY}"
+echo -e "$spc$fpar Bye b     $fpas";sleep $t;printf '\e[A\e[K\e[A\e[K'
+echo -e "$spc      (O +)${GRAY}";echo -e "$spc$fpar Bye by    $fpas"
+sleep $t;printf '\e[A\e[K\e[A\e[K';echo -e "$spc      (O O)${GRAY}"
+echo -e "$spc$fpar Bye bye   $fpas";sleep $t;printf '\e[A\e[K'
+echo -e "$spc$fpar Bye bye ! $fpas";sleep 0.8
 exit
 }
 deskfold=$(xdg-user-dir DESKTOP)
