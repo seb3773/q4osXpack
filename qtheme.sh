@@ -684,6 +684,14 @@ sudo theme/createdeko "$accent" "$accent2" "WinTenBaselight"
 #sudo tar -xzf theme/WinTen-seb-theme.tar.gz -C /opt/trinity/share/apps/deKorator/themes
 sudo tar -xzf theme/twindeKoratorrc.tar.gz -C $USER_HOME/.trinity/share/config/
 fi
+
+#kside custom accent color
+if [[ $customcolor -eq 1 ]]; then
+sudo convert -size 24x340 xc:${accent} /opt/trinity/share/apps/kicker/pics/kside.png
+sudo convert -size 24x4 xc:${accent} /opt/trinity/share/apps/kicker/pics/kside_tile.png
+fi
+
+
 echo
 echo -e "  \e[35m░▒▓█\033[0m configuring style..."
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key InactiveShadowColour "0,0,0"
