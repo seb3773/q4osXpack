@@ -11,6 +11,7 @@
 
  -L       Light theme (default if no args passed)
  -d       dark theme
+ -c       custom 'accent' color
  -h       this help ^^
 \e[0m
 

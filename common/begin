@@ -19,8 +19,8 @@ echo -e "${NOCOLOR}"
 echo
 
 case "$1" in
-  "Help Qtheme") echo -e "$(cat common/doc.qtheme)"; echo -e "$(cat common/atyourownrisk)";;
-  "Help Qapps") echo -e "$(cat common/doc.qapps)" ;;
+  "   Help Qtheme   ") echo -e "$(cat common/doc.qtheme)"; echo -e "$(cat common/atyourownrisk)";exit ;;
+  "Help Qapps") echo -e "$(cat common/doc.qapps)";exit ;;
   "Help Qperfs") echo -e "$(cat common/doc.qperfs)";echo -e "$(cat common/atyourownrisk)" ;;
   "Help Qlaptop") echo -e "$(cat common/doc.qlaptop)";echo -e "$(cat common/atyourownrisk)";;
   "Help Qkids") ;;
@@ -62,6 +62,11 @@ else
                if [[ $dark -eq 1 ]]
                then
                 echo -e "  ${BLUE}█${NOCOLOR} Dark theme selected"
+               fi
+               if [[ $customcolor -eq 1 ]]
+               then
+                if [ -z "$accent" ]; then ccust="none selected yet"; else ccust=$accent; fi
+                echo -e "  ${YELLOW}█${NOCOLOR} Custom accent color:$ccust"
                fi
                if [[ $installall -eq 1 ]]
                then
