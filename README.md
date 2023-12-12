@@ -68,11 +68,11 @@ You can launch directly the script you want too, for example Qtheme:
  
 
 Parameters for all scripts:  -h  (display a little description of the script)
-
-Parameters for Qtheme:
-                             -L  (light theme, default if nothing specified)
-                             -d  (dark theme)
-                             -c  ["#hexcolor"] custom 'accent' color ("#hexcolor" is optional, if not specified, you would be able to choose a color at the start of the process)
+Parameters for Qtheme: 
+      -L  (light theme, default if nothing specified)
+      -d  (dark theme)
+      -c  ["#hexcolor"] custom 'accent' color 
+          ("#hexcolor" is optional, if not specified, you would be able to choose a color at the start of the process)
 
 Parameters for Qapps:
                              -a  (install everything whithout asking)
