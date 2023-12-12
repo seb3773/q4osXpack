@@ -11,7 +11,10 @@ There are 5 main scripts:
 ## ██ Qtheme script:
 This is a script that will modify your Q4OS Trinity installation to make it a bit like Windows 10. Not the real thing of course, I had to 'adapt' some things because I doesn't know how to mimic some parts with TDE Trinity, but it's the closest I can do now. I did it in the first place because I wanted to 'recycle' old computers at my work who weren't... let's say windows 10 capables :p And don't even think of windows 11...
 This is my attempt to have the responsivness of Q4OS Trinity and the widely appreciated windows 10 look & feel (kind of) for customers who used to work with windows before.
-You can choose between a 'light' theme and a 'dark' one now. It's somekind of a full theme with icons, pointers, windows decorations, widgets style, color schemes, sounds (notably usb connect/disconnect sounds), taskbar & tdemenu setup, konqueror & dolphin profiles,boot splash, login screen, gtk theme, ui behavior, etc... I try to keep all differents parts of the theme as lightweight as possible as it is intended for old computers too as I explained :) And I want to keep in line with the trinity de philosophy, so it will not 'bloat' your computer with useless things.
+You can choose between a 'light' theme and a 'dark' one now. You can specify too (with -c argument) an 'accent' color to the base theme (light/dark) which is taskbar, menu and
+windows decoration color. Selected objects and other color parts will then be derived from this accent color.
+It's somekind of a full theme with icons, pointers, windows decorations, widgets style, color schemes, sounds (notably usb connect/disconnect sounds), taskbar & tdemenu setup, konqueror & dolphin profiles,boot splash, login screen, gtk theme, ui behavior, etc... I try to keep all differents parts of the theme as lightweight as possible as it is intended for old computers too as I explained :) And I want to keep in line with the trinity de philosophy, so it will not 'bloat' your computer with useless things.
+
 
 
 ## ▓▓ Qperf script:
@@ -69,6 +72,7 @@ Parameters for all scripts:  -h  (display a little description of the script)
 Parameters for Qtheme:
                              -L  (light theme, default if nothing specified)
                              -d  (dark theme)
+                             -c  ["#hexcolor"] custom 'accent' color ("#hexcolor" is optionnal, if not specified, you would be able to choose a color at the start of the process)
 
 Parameters for Qapps:
                              -a  (install everything whithout asking)
