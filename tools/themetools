@@ -94,6 +94,7 @@ rwallp=$(kreadconfig --file $TDEHOME/share/config/kdesktoprc --group Desktop0 --
 echo -e "  \e[35m░▒▓█\033[0m configuring login background with current wallpaper"
 echo "       (please be patient this could take some time...)"
 sudo convert $rwallp -filter Gaussian -blur 0x55 /opt/trinity/share/apps/tdm/themes/windows/background.jpg
+sudo \cp /opt/trinity/share/apps/tdm/themes/windows/background.jpg /opt/trinity/share/apps/ksplash/Themes/Redmond10/Background.png
 #test dark or light
 testlight
 echo "Done."
@@ -270,10 +271,12 @@ clear
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$1
 kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$1
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+kwriteconfig --file $USER_HOME/.configtde/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
 kwriteconfig --file $USER_HOME/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
 sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key cursorTheme Windows10$1
 sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+sudo kwriteconfig --file /root/.configtde/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
 sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
 sudo kwriteconfig --file /root/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
 sudo kwriteconfig --file /root/.trinity/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$1
