@@ -91,6 +91,10 @@ create_backup "gtk3_settings_tde" "$USER_HOME/.configtde/gtk-3.0/settings.ini"
 create_backup "gtk3_settings" "$USER_HOME/.config/gtk-3.0/settings.ini"
 create_backup "gtk3_settings_tde_root" "/root/.configtde/gtk-3.0/settings.ini"
 create_backup "gtk3_settings_root" "/root/.config/gtk-3.0/settings.ini"
+create_backup "gtk4_settings_tde" "$USER_HOME/.configtde/gtk-4.0/settings.ini"
+create_backup "gtk4_settings" "$USER_HOME/.config/gtk-4.0/settings.ini"
+create_backup "gtk4_settings_tde_root" "/root/.configtde/gtk-4.0/settings.ini"
+create_backup "gtk4_settings_root" "/root/.config/gtk-4.0/settings.ini"
 create_backup "tdmrc" "/etc/trinity/tdm/tdmrc"
 create_backup "backgroundrc" "/etc/trinity/tdm/backgroundrc"
 create_backup "ksmserverrc" "$TDEHOME/share/config/ksmserverrc"
@@ -406,69 +410,6 @@ progress "$script" 40
 
 
 
-#========== Pointers ============================================================================================
-itemdisp "Configuring pointers & set acceleration to 1"
-#pointer size
-#32 /48 /64 /
-ptsize=32
-if ! grep -q "Xcursor.size" "$USER_HOME/.Xresources"; then
-echo "Xcursor.size: $ptsize" | sudo tee -a $USER_HOME/.Xresources
-fi
-sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" $USER_HOME/.Xresources
-
-if ! grep -q "Xcursor.theme" "$USER_HOME/.Xresources"; then
-echo "Xcursor.theme: Windows10Light" | sudo tee -a $USER_HOME/.Xresources
-fi
-sudo sed -i "/Xcursor.theme:/c\Xcursor.theme: Windows10Light" $USER_HOME/.Xresources
-
-
-if ! grep -q "Xcursor.size" "/root/.Xresources"; then
-echo "Xcursor.size: $ptsize" | sudo tee -a /root/.Xresources
-fi
-sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" /root/.Xresources
-
-if ! grep -q "Xcursor.theme" "/root/.Xresources"; then
-echo "Xcursor.theme: Windows10Light" | sudo tee -a /root/.Xresources
-fi
-sudo sed -i "/Xcursor.theme:/c\Xcursor.theme: Windows10Light" /root/.Xresources
-#
-kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
-kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key Acceleration 1
-kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
-kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key Acceleration 1
-kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-kwriteconfig --file $USER_HOME/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
-#root
-sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key cursorTheme Windows10Light
-sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key Acceleration 1
-sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-sudo kwriteconfig --file /root/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-sudo kwriteconfig --file /root/.trinity/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
-sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
-sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' root/.gtkrc-2.0  > /dev/null 2>&1
-#cursor theme for x
-sudo mkdir -p  /etc/X11/cursors
-sudo \cp /usr/share/icons/Windows10Light/cursor.theme /etc/X11/cursors/Windows10Light_cursor.theme
-sudo ln -nfs /etc/X11/cursors/Windows10Light_cursor.theme /etc/alternatives/x-cursor-theme
-sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
-if [ -f "/root/xsettingsd.conf" ]; then
-sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.config/xsettingsd/xsettingsd.conf"
-sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "/root/xsettingsd.conf"
-fi
-sep
-echo
-echo
-echo
-progress "$script" 45
-
-
-
-
-
-
 #========== Start menu configuration ============================================================================
 itemdisp "Configuring start menu..."
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key CustomSize 36
@@ -615,7 +556,7 @@ sep
 echo
 echo
 echo
-progress "$script" 50
+progress "$script" 45
 
 
 
@@ -650,7 +591,7 @@ sep
 echo
 echo
 echo
-progress "$script" 55
+progress "$script" 50
 
 
 
@@ -897,20 +838,34 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBinding
 rota
 echo
 printf '\e[A\e[K'
-echo -e "  \e[35m░▒▓█\033[0m configuring GTK3 style..."
+echo -e "  \e[35m░▒▓█\033[0m configuring GTK2/GTK3/GTK4 styles..."
+#to do: edit values in
+#  $USER_HOME/configtde/gtk-3.0/settings.ini
+#
 sudo rm -rf /usr/share/themes/Q4OS02/gtk-3.0/{*,.[!.]*}
+sudo mkdir -p $USER_HOME/.configtde/gtk-4.0
+sudo rm -rf $USER_HOME/.configtde/gtk-4.0/{*,.[!.]*}
+sudo rm -rf $USER_HOME/.config/gtk-4.0/{*,.[!.]*}
 if [[ $dark -eq 1 ]]; then
 sudo tar -xzf theme/gtk3winten-dark.tar.gz -C  /usr/share/themes/Q4OS02/gtk-3.0/
 sudo tar -xzf theme/gtk2winten-dark.tar.gz -C  /usr/share/themes/Q4OS02/gtk-2.0/
+sudo tar -xzf theme/gtk4winten-dark.tar.gz -C  $USER_HOME/.configtde/gtk-4.0/
 sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/hover/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
 sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/normal/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
 sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/press/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
+
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/hover/* $USER_HOME/.configtde/gtk-4.0/assets
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/normal/* $USER_HOME/.configtde/gtk-4.0/assets
 else
 sudo tar -xzf theme/gtk3winten.tar.gz -C  /usr/share/themes/Q4OS02/gtk-3.0/
 sudo tar -xzf theme/gtk2winten.tar.gz -C  /usr/share/themes/Q4OS02/gtk-2.0/
+sudo tar -xzf theme/gtk4winten.tar.gz -C  $USER_HOME/.configtde/gtk-4.0/
 sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/hover/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
 sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/normal/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
 sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/press/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
+
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/hover/* $USER_HOME/.configtde/gtk-4.0/assets
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/normal/* $USER_HOME/.configtde/gtk-4.0/assets
 fi
 
 #ADJUST GTK3 colors (+selected color GTK2)
@@ -923,6 +878,18 @@ sudo sed -i '/\.titlebar,headerbar{.*background-color:@theme_base_color;/ s/@the
 sudo sed -i '/button.titlebutton{.*background-image:none;/ s/background-image:none;/&background-color:'"$accent"';/' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
 sudo sed -i '/button.titlebutton:hover{.*color:.*background-color:/ s/@theme_bg_color/'"$accent"'/g' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
 sudo sed -i '/button.titlebutton:active{.*color:.*background-color:/ s/@theme_bg_color/'"$accent"'/g' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
+b_accent="background-color: $accent"
+sed -E -i '/^headerbar[[:space:]]*\{/ s/(background-color:[[:space:]]*#[0-9a-fA-F]*)/'"$b_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
+bb_accent="border-bottom: 1px solid $accent"
+sed -E -i '/^headerbar[[:space:]]*\{/ s/(border-bottom:[[:space:]]*[^;]*)/'"$bb_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
+wb_accent="border: solid 1px $accent2"
+sed -E -i '/^window\.solid-csd[[:space:]]*\{/ s/(border:[[:space:]]*[^;]*)/'"$wb_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
+wbb_accent="box-shadow: inset 0 0 0 4px $accent, inset 0 0 0 3px $accent"
+sed -E -i '/^window\.solid-csd[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;]*)/'"$wbb_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
+wbs_accent="box-shadow: inset 0 0 0 4px $accent, inset 0 0 0 3px $accent" 
+sed -E -i '/^window\.solid-csd:backdrop[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;]*)/'"$wbs_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
+wbm_accent="box-shadow: inset 0 0 0 3px $accent"
+sed -E -i '/^window\.maximized[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;]*)/'"$wbm_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
 fi
 
 
@@ -1102,7 +1069,7 @@ sep
 echo
 echo
 echo
-progress "$script" 60
+progress "$script" 55
 
 
 
@@ -1120,9 +1087,70 @@ sep
 echo
 echo
 echo
+progress "$script" 60
+
+
+
+
+#========== Pointers ============================================================================================
+itemdisp "Configuring pointers & set acceleration to 1"
+#pointer size
+#32 /48 /64 /
+ptsize=32
+if ! grep -q "Xcursor.size" "$USER_HOME/.Xresources"; then
+echo "Xcursor.size: $ptsize" | sudo tee -a $USER_HOME/.Xresources
+fi
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" $USER_HOME/.Xresources
+
+if ! grep -q "Xcursor.theme" "$USER_HOME/.Xresources"; then
+echo "Xcursor.theme: Windows10Light" | sudo tee -a $USER_HOME/.Xresources
+fi
+sudo sed -i "/Xcursor.theme:/c\Xcursor.theme: Windows10Light" $USER_HOME/.Xresources
+
+
+if ! grep -q "Xcursor.size" "/root/.Xresources"; then
+echo "Xcursor.size: $ptsize" | sudo tee -a /root/.Xresources
+fi
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" /root/.Xresources
+
+if ! grep -q "Xcursor.theme" "/root/.Xresources"; then
+echo "Xcursor.theme: Windows10Light" | sudo tee -a /root/.Xresources
+fi
+sudo sed -i "/Xcursor.theme:/c\Xcursor.theme: Windows10Light" /root/.Xresources
+#
+kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key Acceleration 1
+kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key Acceleration 1
+kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+kwriteconfig --file $USER_HOME/.configtde/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+kwriteconfig --file $USER_HOME/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
+#root
+sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key Acceleration 1
+sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+sudo kwriteconfig --file /root/.configtde/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+sudo kwriteconfig --file /root/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
+sudo kwriteconfig --file /root/.trinity/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' root/.gtkrc-2.0  > /dev/null 2>&1
+#cursor theme for x
+sudo mkdir -p  /etc/X11/cursors
+sudo \cp /usr/share/icons/Windows10Light/cursor.theme /etc/X11/cursors/Windows10Light_cursor.theme
+sudo ln -nfs /etc/X11/cursors/Windows10Light_cursor.theme /etc/alternatives/x-cursor-theme
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
+if [ -f "/root/xsettingsd.conf" ]; then
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.config/xsettingsd/xsettingsd.conf"
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "/root/xsettingsd.conf"
+fi
+sep
+echo
+echo
+echo
 progress "$script" 65
-
-
 
 
 
