@@ -1506,40 +1506,41 @@ progress "$script" 80
 
 #========== Configuring systray clock ===========================================================================
 itemdisp "Configuring systray clock..."
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Foreground_Color "220,220,220"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Shadow_Color "255,255,255"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Background_Color invalid
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Background_Color invalid
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Font "Segoe UI,8,-1,5,63,0,0,0,0,0"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Foreground_Color "33,33,33"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Foreground_Color "195,195,195"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Shadow_Color "240,240,240"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Background_Color invalid
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Foreground_Color "228,228,228"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Background_Color invalid
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Font "Segoe UI,10,-1,5,63,0,0,0,0,0"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Background_Color invalid
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Foreground_Color "1,0,0"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Analog --key Foreground_Color "220,220,220"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Analog --key Shadow_Color "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Analog --key Background_Color invalid
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Date --key Background_Color invalid
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Date --key Font "Segoe UI,8,-1,5,63,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Date --key Foreground_Color "33,33,33"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Digital --key Foreground_Color "195,195,195"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Digital --key Shadow_Color "240,240,240"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Digital --key Background_Color invalid
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Fuzzy --key Foreground_Color "228,228,228"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Fuzzy --key Background_Color invalid
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Plain --key Font "Segoe UI,10,-1,5,63,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Plain --key Background_Color invalid
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Plain --key Foreground_Color "1,0,0"
 if [[ $dark -eq 1 ]]
 then
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Foreground_Color "215,215,215"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Analog --key Foreground_Color "215,215,215"
 #kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Background_Color "39,41,42"
 #kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Background_Color "39,41,42"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Foreground_Color "215,215,215"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Plain --key Foreground_Color "215,215,215"
 #kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Background_Color "39,41,42"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Date --key Foreground_Color "215,215,215"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Foreground_Color "215,215,215"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Date --key Foreground_Color "215,215,215"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Digital --key Foreground_Color "215,215,215"
 #kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Digital --key Background_Color "39,41,42"
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Foreground_Color "215,215,215"
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Fuzzy --key Foreground_Color "215,215,215"
 #kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Background_Color "39,41,42"
 fi
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Antialias 2
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key LCD_Style false
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Analog --key Show_Seconds false
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Fuzzy --key Show_Date false
-kwriteconfig --file $TDEHOME/share/config/clock_panelapplet_rc --group Plain --key Show_Date true
-sudo sed -i '/Type=/d' $USER_HOME/.trinity/share/config/clock_panelapplet_rc
-sudo sed -i '/Use_Shadow=/d' $USER_HOME/.trinity/share/config/clock_panelapplet_rc
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Analog --key Antialias 2
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Analog --key LCD_Style false
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Analog --key Show_Seconds false
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Fuzzy --key Show_Date false
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Plain --key Show_Date true
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group "System Tray" --key ShowClockInTray true
+sudo sed -i '/Type=/d' $USER_HOME/.trinity/share/config/systemtray_panelappletrc
+sudo sed -i '/Use_Shadow=/d' $USER_HOME/.trinity/share/config/systemtray_panelappletrc
 sep
 echo
 echo
