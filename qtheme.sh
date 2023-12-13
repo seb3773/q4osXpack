@@ -500,6 +500,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRig
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key UseSidePixmap true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key SearchShortcut ""
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key CustomIcon "/usr/share/pixmaps/StartHere.png"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ShowText false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableBrowserTiles false
 rota
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableDesktopButtonTiles false
@@ -1486,6 +1487,7 @@ sed -i '/^\[Applet_8\]/d' $TDEHOME/share/config/kickerrc
 sed -i '/^\[Applet_9\]/d' $TDEHOME/share/config/kickerrc
 cat theme/kickpart >> $TDEHOME/share/config/kickerrc
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Applets2 "KMenuButton_1,ExtensionButton_1,WindowListButton_1,Applet_4,Applet_1,Applet_2,Applet_3,Applet_5"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key UseResizeHandle false
 #echo -e ">> Wait for kicker to restart..."
 #dcop kicker kicker restart
 #sleep 10
