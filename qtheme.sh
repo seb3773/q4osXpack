@@ -162,18 +162,37 @@ printf '\e[A\e[K'
 echo
 
 hex_to_rgb() {
-    local hex_color="$1"
-    local r=$(printf "%d" 0x${hex_color:1:2})
-    local g=$(printf "%d" 0x${hex_color:3:2})
-    local b=$(printf "%d" 0x${hex_color:5:2})
-    echo "$r,$g,$b"
+local hex_color="$1"
+local r=$(printf "%d" 0x${hex_color:1:2})
+local g=$(printf "%d" 0x${hex_color:3:2})
+local b=$(printf "%d" 0x${hex_color:5:2})
+echo "$r,$g,$b"
 }
 get_luminance() {
-    hex_color=$1
-    r=$((16#${hex_color:1:2}))
-    g=$((16#${hex_color:3:2}))
-    b=$((16#${hex_color:5:2}))
-    echo $(( (r*299 + g*587 + b*114 + 500) / 1000 ))
+hex_color=$1
+r=$((16#${hex_color:1:2}))
+g=$((16#${hex_color:3:2}))
+b=$((16#${hex_color:5:2}))
+echo $(( (r*299 + g*587 + b*114 + 500) / 1000 ))
+}
+convert_to_rgb_hex() {
+local x=$1
+rgb_hex=$(printf "#%02x%02x%02x" $x $x $x)
+echo $rgb_hex
+}
+calculate_gray_value() {
+local r=$1
+local g=$2
+local b=$3
+local result=$(( (r + g + b) / 3 ))
+if (( result >= 0 && result <= 76 )); then
+gray_value=$(( 7 + (result * (127 - 7)) / 76 ))
+elif (( result >= 77 && result <= 179 )); then
+gray_value=127
+elif (( result >= 180 && result <= 255 )); then
+gray_value=$(( 144 + ((result - 180) * (240 - 144)) / 75 ))
+fi
+echo $gray_value
 }
 
 
@@ -185,11 +204,9 @@ echo -e "  \e[35m░▒▓█\033[0m Custom accent color"
 if [ -z "$accent" ]; then 
 echo "  custom color specified, but no accent color given,"
 echo "  please choose one:"
-
 while true; do
 display_palette
 selected_color=$(get_user_color)
-
 if [[ "$selected_color" =~ ^[0-9]+$ ]] && ((selected_color >= 0 && selected_color <= 255)); then
 display_selected_color "$selected_color"
 if confirm_color_choice; then
@@ -204,20 +221,16 @@ display_selected_color "$closest_color"
 echo " (please note the displayed color preview is not the real color, but"
 echo "  a close ansi color. The real color $hex_color will be used in the script)"
 if confirm_color_choice; then
-	echo "You confirm hex color $hex_color."
-	break
+echo "You confirm hex color $hex_color."
+break
 fi
 else
 echo "Invalid choice. Please enter a number between 0 and 255, or an hexadecimal color value."
 fi
 done
 accent=$hex_color
-#accent2=    (this one is darker or lighter depending on base theme light or dark, and used for windows decos)
-#selectcolor=$accent
 else
 echo "accent color: $accent"
-#accent2=
-#selectcolor=$accent
 fi
 
 else
@@ -225,21 +238,20 @@ else
  if [[ $dark -eq 1 ]]
  then
  accent="#000000"
- #accent2=
  #selectcolor=blue (actuel)
  else
  accent="#FFFFFF"
- #accent2=
  #selectcolor=blue (actuel)
  fi
 
 fi
-if [[ $dark -eq 1 ]]
-then
-accent2=$(theme/colordeko "$accent" l)
-else
+
+#if [[ $dark -eq 1 ]]
+#then
+#accent2=$(theme/colordeko "$accent" l)
+#else
 accent2=$(theme/colordeko "$accent" d)
-fi
+#fi
 
 luminance=$(get_luminance $accent)
 if [ $luminance -gt 60 ]; then
@@ -247,6 +259,7 @@ accent3=$(theme/colordeko "$accent" d)
 else
 accent3=$(theme/colordeko "$accent" l)
 fi
+
 
 rgb_accent=$(hex_to_rgb "$accent")
 rgb_accent2=$(hex_to_rgb "$accent2")
@@ -629,8 +642,11 @@ fi
 
 #kside custom accent color
 if [[ $customcolor -eq 1 ]]; then
-sudo convert -size 24x340 xc:${accent} /opt/trinity/share/apps/kicker/pics/kside.png
-sudo convert -size 24x4 xc:${accent} /opt/trinity/share/apps/kicker/pics/kside_tile.png
+IFS=',' read -r r g b <<< "$rgb_accent"
+vgrey=$(calculate_gray_value $r $g $b)
+kcolor=$(convert_to_rgb_hex $vgrey)
+sudo convert -size 24x340 xc:${kcolor} /opt/trinity/share/apps/kicker/pics/kside.png
+sudo convert -size 24x4 xc:${kcolor} /opt/trinity/share/apps/kicker/pics/kside_tile.png
 fi
 
 
@@ -879,17 +895,17 @@ sudo sed -i '/button.titlebutton{.*background-image:none;/ s/background-image:no
 sudo sed -i '/button.titlebutton:hover{.*color:.*background-color:/ s/@theme_bg_color/'"$accent"'/g' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
 sudo sed -i '/button.titlebutton:active{.*color:.*background-color:/ s/@theme_bg_color/'"$accent"'/g' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
 b_accent="background-color: $accent"
-sed -E -i '/^headerbar[[:space:]]*\{/ s/(background-color:[[:space:]]*#[0-9a-fA-F]*)/'"$b_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
+sudo sed -E -i '/^headerbar[[:space:]]*\{/ s/(background-color:[[:space:]]*#[0-9a-fA-F]*)/'"$b_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
 bb_accent="border-bottom: 1px solid $accent"
-sed -E -i '/^headerbar[[:space:]]*\{/ s/(border-bottom:[[:space:]]*[^;]*)/'"$bb_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
+sudo sed -E -i '/^headerbar[[:space:]]*\{/ s/(border-bottom:[[:space:]]*[^;]*)/'"$bb_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
 wb_accent="border: solid 1px $accent2"
-sed -E -i '/^window\.solid-csd[[:space:]]*\{/ s/(border:[[:space:]]*[^;]*)/'"$wb_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
+sudo sed -E -i '/^window\.solid-csd[[:space:]]*\{/ s/(border:[[:space:]]*[^;]*)/'"$wb_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
 wbb_accent="box-shadow: inset 0 0 0 4px $accent, inset 0 0 0 3px $accent"
-sed -E -i '/^window\.solid-csd[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;]*)/'"$wbb_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
+sudo sed -E -i '/^window\.solid-csd[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;]*)/'"$wbb_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
 wbs_accent="box-shadow: inset 0 0 0 4px $accent, inset 0 0 0 3px $accent" 
-sed -E -i '/^window\.solid-csd:backdrop[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;]*)/'"$wbs_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
+sudo sed -E -i '/^window\.solid-csd:backdrop[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;]*)/'"$wbs_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
 wbm_accent="box-shadow: inset 0 0 0 3px $accent"
-sed -E -i '/^window\.maximized[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;]*)/'"$wbm_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
+sudo sed -E -i '/^window\.maximized[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;]*)/'"$wbm_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
 fi
 
 
@@ -1167,8 +1183,16 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key butto
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key linkColor "0,0,192"
 if [[ $customcolor -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectBackground "$rgb_accent3"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBackground "$rgb_accent"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveBackground "$rgb_accent"
+kwriteconfig --file $TDEHOME/share/config/kickerrc  --group WM --key activeBackground "$rgb_accent"
+kwriteconfig --file $TDEHOME/share/config/kickerrc  --group WM --key inactiveBackground "$rgb_accent"
 else
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectBackground "61,174,233"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBackground "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveBackground "240,240,240"
+kwriteconfig --file $TDEHOME/share/config/kickerrc  --group WM --key activeBackground "255,255,255"
+kwriteconfig --file $TDEHOME/share/config/kickerrc  --group WM --key inactiveBackground "240,240,240"
 fi
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key visitedLinkColor "128,0,128"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key windowBackground "255,255,255"
@@ -1187,7 +1211,6 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key De
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DisabledColor "34,202,0"
 rota
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DisabledColor2 "0,0,0"
-kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBackground "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBlend "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeForeground "0,0,0"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeTitleBtnBg "0,0,0"
@@ -1195,7 +1218,6 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key alternateB
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key frame "240,240,240"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key handle "240,240,240"
 rota
-kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveBackground "239,239,239"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveBlend "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveForeground "142,142,142"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveFrame "240,240,240"
@@ -1219,8 +1241,16 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key butto
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key linkColor "90,130,180"
 if [[ $customcolor -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectBackground "$rgb_accent3"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBackground "$rgb_accent"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveBackground "$rgb_accent"
+kwriteconfig --file $TDEHOME/share/config/kickerrc  --group WM --key activeBackground "$rgb_accent"
+kwriteconfig --file $TDEHOME/share/config/kickerrc  --group WM --key inactiveBackground "$rgb_accent"
 else
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectBackground "50,70,120"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBackground "40,40,40"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveBackground "40,40,40"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group WM --key activeBackground "40,40,40"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group WM --key inactiveBackground "40,40,40"
 fi
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key visitedLinkColor "90,60,120"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key windowBackground "30,31,32"
@@ -1228,7 +1258,6 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key butto
 rota
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key foreground "240,240,240"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key windowForeground "215,215,215"
-kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBackground "40,40,40"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBlend "39,41,42"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeForeground "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeTitleBtnBg "40,40,40"
@@ -1236,7 +1265,6 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key alternateB
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key frame "237,249,255"
 rota
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key handle "39,41,42"
-kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveBackground "39,41,42"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveBlend "39,41,42"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveForeground "94,104,114"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key inactiveFrame "39,41,42"
@@ -1286,8 +1314,16 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General 
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key linkColor "0,0,192"
 if [[ $customcolor -eq 1 ]]; then
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key selectBackground "$rgb_accent3"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeBackground "$rgb_accent"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveBackground "$rgb_accent"
+sudo kwriteconfig --file /root/.trinity/share/config/kickerrc  --group WM --key activeBackground "$rgb_accent"
+sudo kwriteconfig --file /root/.trinity/share/config/kickerrc  --group WM --key inactiveBackground "$rgb_accent"
 else
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key selectBackground "61,174,233"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeBackground "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveBackground "240,240,240"
+sudo kwriteconfig --file /root/.trinity/share/config/kickerrc --group WM --key activeBackground "255,255,255"
+sudo kwriteconfig --file /root/.trinity/share/config/kickerrc --group WM --key inactiveBackground "240,240,240"
 fi
 rota
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key visitedLinkColor "128,0,128"
@@ -1308,7 +1344,6 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIco
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DisabledColor "34,202,0"
 rota
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DisabledColor2 "0,0,0"
-sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeBackground "255,255,255"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeBlend "255,255,255"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeForeground "0,0,0"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeTitleBtnBg "0,0,0"
@@ -1316,7 +1351,6 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key frame "240,240,240"
 rota
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key handle "240,240,240"
-sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveBackground "239,239,239"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveBlend "255,255,255"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveForeground "142,142,142"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveFrame "240,240,240"
@@ -1340,8 +1374,16 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General 
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key linkColor "90,130,180"
 if [[ $customcolor -eq 1 ]]; then
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key selectBackground "$rgb_accent3"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeBackground "$rgb_accent"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveBackground "$rgb_accent"
+sudo kwriteconfig --file /root/.trinity/share/config/kickerrc  --group WM --key activeBackground "$rgb_accent"
+sudo kwriteconfig --file /root/.trinity/share/config/kickerrc  --group WM --key inactiveBackground "$rgb_accent"
 else
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key selectBackground "50,70,120"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeBackground "39,41,42"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveBackground "39,41,42"
+sudo kwriteconfig --file /root/.trinity/share/config/kickerrc --group WM --key activeBackground "39,41,42"
+sudo kwriteconfig --file /root/.trinity/share/config/kickerrc --group WM --key inactiveBackground "39,41,42"
 fi
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key visitedLinkColor "90,60,120"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key windowBackground "30,31,32"
@@ -1349,7 +1391,6 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General 
 rota
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key foreground "240,240,240"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key windowForeground "215,215,215"
-sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeBackground "40,40,40"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeBlend "39,41,42"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeForeground "255,255,255"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeTitleBtnBg "40,40,40"
@@ -1357,7 +1398,6 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key frame "237,249,255"
 rota
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key handle "39,41,42"
-sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveBackground "39,41,42"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveBlend "39,41,42"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveForeground "94,104,114"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key inactiveFrame "39,41,42"
@@ -1567,6 +1607,7 @@ kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Analo
 kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Fuzzy --key Show_Date false
 kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group Plain --key Show_Date true
 kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group "System Tray" --key ShowClockInTray true
+kwriteconfig --file $TDEHOME/share/config/systemtray_panelappletrc --group "System Tray" --key systrayIconWidth 22
 sudo sed -i '/Type=/d' $USER_HOME/.trinity/share/config/systemtray_panelappletrc
 sudo sed -i '/Use_Shadow=/d' $USER_HOME/.trinity/share/config/systemtray_panelappletrc
 sep
@@ -1684,6 +1725,10 @@ progress "$script" 90
 #========== Configuring icons ===================================================================================
 # based on kdeten from Q4os Plasma edition :p with some modifications
 itemdisp "Configuring icons..."
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key IconUseRoundedRect false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key Size 48
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group SmallIcons --key DoublePixels false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group SmallIcons --key Size 24
 if [[ $dark -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme kdeten_dark
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
@@ -1740,6 +1785,7 @@ sudo ln -s /opt/trinity/bin/kcharselect /usr/local/bin/charmap > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/kcalc /usr/local/bin/calc > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/kolourpaint /usr/local/bin/paint > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/konsole /usr/local/bin/cmd > /dev/null 2>&1
+sudo ln -s /opt/trinity/bin/ksnapshot /usr/local/bin/snapshot > /dev/null 2>&1
 #default task manager (CTRL+ESC)
 #sudo ln -s /usr/bin/lxtask /usr/local/bin/taskmgr
 #sudo ln -s /usr/bin/lxtask /usr/local/bin/ksysguard
