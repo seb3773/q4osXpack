@@ -136,6 +136,7 @@ ln -s konsole.png 24x24/apps/cmd.png
 ln -s konsole.png 32x32/apps/cmd.png
 ln -s konsole.png 48x48/apps/cmd.png
 ln -s konsole.png 64x64/apps/cmd.png
+ln -s ksnapshot.svg 64x64/apps/snapshot.svg
 ln -s ../../scalable/actions/kfind.png 16x16/actions/kfind.png
 ln -s ../../scalable/actions/kfind.png 22x22/actions/kfind.png
 ln -s ../../scalable/actions/kfind.png 24x24/actions/kfind.png
