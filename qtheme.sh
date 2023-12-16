@@ -1181,6 +1181,7 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key alter
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key background "244,244,244"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key buttonBackground "240,240,240"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key linkColor "0,0,192"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectForeground "255,255,255"
 if [[ $customcolor -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectBackground "$rgb_accent3"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBackground "$rgb_accent"
@@ -1655,6 +1656,7 @@ sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sed -i '/font_name="/c\font_name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sed -i '/font_name="/c\font_name="Segoe UI 10"' $USER_HOME/.gtkrc-2.0 > /dev/null 2>&1
+# in  $USER_HOME/.gtkrc-2.0, assign text[SELECTED] = { 1.000, 1.000, 1.000 }
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "/root/.config/xsettingsd/xsettingsd.conf"
 if [ -f "/root/xsettingsd.conf" ]; then
