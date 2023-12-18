@@ -574,6 +574,13 @@ sep
 echo
 echo
 echo
+itemdisp "Setting fast commit for system partition"
+sysp=$(df /boot | grep -Eo '/dev/[^ ]+')
+sudo tune2fs -O fast_commit $sysp
+sep
+echo
+echo
+echo
 progress "$script" 95
 
 
