@@ -63,7 +63,7 @@ case $choice in
 "»Clean") 
 clear
 echo "Cleaning buffers & cache..."
-echo 3 | sudo tee -a /proc/sys/vm/drop_caches
+free -h && sudo sysctl -w vm.drop_caches=3 && sudo sync && echo 3 | sudo tee /proc/sys/vm/drop_caches && free -h
 echo "Cleaning swap..."
 sudo swapoff -a
 sleep 1
