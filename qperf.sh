@@ -209,6 +209,8 @@ do
             sudo systemctl stop bluetooth.service
             sudo systemctl disable bluetooth.service
             sudo systemctl mask bluetooth.service
+            sudo sed -i -e 's/^AutoEnable=true/AutoEnable=false/' /etc/bluetooth/main.conf
+            sudo sed -i -e 's/^BLUETOOTH_ENABLED=1/BLUETOOTH_ENABLED=0/' /etc/default/bluetooth
             break
             ;;
         "Skip")

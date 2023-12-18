@@ -11,18 +11,47 @@ actbutton=black,white
 title=black,lightgray
 '
 qmenutheme () {
+while [ 1 ]
+do
 qmenu=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "                Qtheme Script - choose an option:" 25 70 15 " Light" "   [     Classic windows 10 theme    ]" " Dark" "   [       Dark windows 10 theme     ]" " return" "   [    <- return to previous menu   ]" 3>&1 1>&2 2>&3)
 
 case $qmenu in
 " Light")   
+tbase="classic"
+qmenuthemeacc
+;;
+" Dark")   
+tbase="dark"
+qmenuthemeacc
+;;
+" return") return 0
+;;
+esac
+done
+}
+
+
+qmenuthemeacc () {
+qmenu=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "             Qtheme Script - $tbase - choose an option:" 25 70 15 " Default" "   [   Theme default color accent   ]" " Custom" "   [       Custom color accent     ]" " return" "   [    <- return to previous menu   ]" 3>&1 1>&2 2>&3)
+
+case $qmenu in
+" Default")   
 clear
+if [ $tbase == "classic" ]; then
 ./qtheme.sh
+else
+./qtheme.sh -d
+fi
 if [ $? -eq 2 ]; then return 0; else exit
 fi
 ;;
-" Dark")   
+" Custom")   
 clear
-./qtheme.sh -d
+if [ $tbase == "classic" ]; then
+./qtheme.sh -c
+else
+./qtheme.sh -d -c
+fi
 if [ $? -eq 2 ]; then return 0; else exit
 fi
 ;;
@@ -30,6 +59,7 @@ fi
 ;;
 esac
 }
+
 
 byebye () {
 fpas="${GRAY}════════${NOCOLOR}";fpar="${GRAY}══${LIGHTGREEN}ooO${GRAY}══${LIGHTGREEN}(_)${GRAY}══${LIGHTGREEN}Ooo$fpas"
