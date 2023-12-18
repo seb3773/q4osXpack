@@ -17,7 +17,8 @@ base="$3"
 #================================================================================
 thbase="theme/$base"
 sudo mkdir -p $thbase
-sudo tar -xzf "theme/$base.tar.gz" -C "theme/"
+sudo tar --owner root --group root --no-same-owner -xzf "theme/$base.tar.gz" -C "theme/"
+
 
 if [ "$base" = "WinTenBaselight" ]; then
 couleur_ligne10="#000000"
