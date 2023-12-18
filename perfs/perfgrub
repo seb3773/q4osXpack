@@ -88,6 +88,10 @@ sudo sed -i 's/page_alloc.shuffle=[0-9]*[a-z]*[A-Z]*/page_alloc.shuffle=1/' /etc
 if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "video="; then
 sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&video=SVIDEO-1:d /' /etc/default/grub
 fi
+#modprobe.blacklist=iTCO_wdt   #maybe best in /etc/modprobe.d/blacklist (or ?) /etc/modprobe.d/blacklist.conf
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "modprobe.blacklist="; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&modprobe.blacklist=iTCO_wdt /' /etc/default/grub
+fi
 
 
 
