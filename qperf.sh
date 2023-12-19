@@ -54,7 +54,7 @@ create_backup "Xsession" "/etc/X11/Xsession"
 create_backup "klipperrc" "$USER_HOME/.trinity/share/config/klipperrc"
 create_backup "initramfs.conf" "/etc/initramfs-tools/initramfs.conf"
 create_backup "tdecryptocardwatcher" "/opt/trinity/bin/tdecryptocardwatcher"
-
+create_backup "atspi.Registry.service" "/usr/share/dbus-1/accessibility-services/org.a11y.atspi.Registry.service"
 sudo \cp common/restore "backups/restore_$now"
 sudo sed -i "s/XxXxXxXxX/$now/g" "backups/restore_$now"
 sudo sed -i "s/YyYyYyYyY/Restoring backup created by qperf script/g" "backups/restore_$now"
@@ -287,9 +287,16 @@ progress "$script" 35
 
 
 #========== Removing tdecryptocardwatcher =======================================================================
-itemdisp "tdecryptocardwatcher binary..."
+itemdisp "removing tdecryptocardwatcher binary..."
 echo
 sudo rm -f /opt/trinity/bin/tdecryptocardwatcher
+sep
+echo
+echo
+echo
+itemdisp "removing org.a11y.atspi.Registry.service..."
+echo
+sudo rm -f /usr/share/dbus-1/accessibility-services/org.a11y.atspi.Registry.service
 sep
 echo
 echo
