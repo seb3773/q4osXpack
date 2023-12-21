@@ -143,6 +143,13 @@ ln -s ../../scalable/actions/kfind.png 24x24/actions/kfind.png
 ln -s ../../scalable/actions/kfind.png 32x32/actions/kfind.png
 ln -s ../../scalable/actions/kfind.png 48x48/actions/kfind.png
 ln -s ../../scalable/actions/kfind.png 64x64/actions/kfind.png
+ln -s unlock.png 16x16/actions/kdenlive-unlock.png
+ln -s unlock.png 22x22/actions/kdenlive-unlock.png
+ln -s unlock.png 24x24/actions/kdenlive-unlock.png
+ln -s unlock.png 16x16/actions/object-unlocked.png
+ln -s unlock.png 22x22/actions/object-unlocked.png
+ln -s unlock.png 24x24/actions/object-unlocked.png
+
 cd - > /dev/null 2>&1
 #
 sudo sed -i "/Name=kde_ten/c\Name=kdeten_$iconth" /usr/share/icons/kdeten_$iconth/index.theme
