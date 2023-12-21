@@ -237,10 +237,10 @@ else
 
  if [[ $dark -eq 1 ]]
  then
- accent="#000000"
+ accent="#242424"
  #selectcolor=blue (actuel)
  else
- accent="#FFFFFF"
+ accent="#F8F8F8"
  #selectcolor=blue (actuel)
  fi
 
@@ -444,10 +444,10 @@ rota
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Size 4
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key SizePercentage 100
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintValue 99
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Transparent false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Transparent true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key panelIconWidth 48
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowDeepButtons false
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key UseBackgroundTheme true
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key UseBackgroundTheme false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ColorizeBackground false
 rota
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowIconActivationEffect false
@@ -653,15 +653,15 @@ fi
 #sudo convert -size 24x4 xc:${kcolor} /opt/trinity/share/apps/kicker/pics/kside_tile.png
 #fi
 
-## new method, make use of Q4OS team modifications
+## new method, make use of Q4OS team modification (ColorizeSidePixmap=false)
 sudo convert -size 24x340 xc:${accent} /opt/trinity/share/apps/kicker/pics/kside.png
 sudo convert -size 24x4 xc:${accent} /opt/trinity/share/apps/kicker/pics/kside_tile.png
+
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ColorizeSidePixmap false
 
 
 #kickerbar rgb_accent
-sudo convert -size 2x60 xc:${accent} /opt/trinity/share/apps/kicker/pics/panel-win.png
-
+#sudo convert -size 2x60 xc:${accent} /opt/trinity/share/apps/kicker/pics/panel-win.png
 
 echo
 echo -e "  \e[35m░▒▓█\033[0m configuring style..."
@@ -1550,7 +1550,7 @@ sed -i "/ShowButtonOnHover=/d" $TDEHOME/share/config/ktaskbarrc
 kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key ConserveSpace true
 kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key DragEnabled true
 kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key IconDim 30
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BackgroundTheme "/opt/trinity/share/apps/kicker/pics/panel-win.png"
+#kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BackgroundTheme "/opt/trinity/share/apps/kicker/pics/panel-win.png"
 ####kwriteconfig --file $TDEHOME/share/config/kickerrc --group Applet_1 --key 'ConfigFile[$e]' taskbar_panelapplet_rc
 sed -i '/^ConfigFile\[/d' $TDEHOME/share/config/kickerrc
 sed -i '/^DesktopFile\[/d' $TDEHOME/share/config/kickerrc
