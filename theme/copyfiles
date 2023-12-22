@@ -149,7 +149,36 @@ ln -s unlock.png 24x24/actions/kdenlive-unlock.png
 ln -s unlock.png 16x16/actions/object-unlocked.png
 ln -s unlock.png 22x22/actions/object-unlocked.png
 ln -s unlock.png 24x24/actions/object-unlocked.png
-
+ln -s unlock.png 16x16/actions/document-decrypt.png
+ln -s unlock.png 22x22/actions/document-decrypt.png
+ln -s unlock.png 24x24/actions/document-decrypt.png
+ln -s document-properties.png 16x16/actions/gtk-properties.png
+ln -s document-properties.png 22x22/actions/gtk-properties.png
+ln -s document-properties.png 24x24/actions/gtk-properties.png
+ln -s document-properties.png 32x32/actions/gtk-properties.png
+ln -s document-properties.png 48x48/actions/gtk-properties.png
+ln -s document-properties.png 64x64/actions/gtk-properties.png
+ln -s document-properties.png 16x16/actions/info.png
+ln -s document-properties.png 22x22/actions/info.png
+ln -s document-properties.png 24x24/actions/info.png
+ln -s document-properties.png 32x32/actions/info.png
+ln -s document-properties.png 48x48/actions/info.png
+ln -s document-properties.png 64x64/actions/info.png
+ln -s ../../16x16/actions/document-properties.png 16x16/mimetypes/info.png
+ln -s ../../22x22/actions/document-properties.png 22x22/mimetypes/info.png
+ln -s ../../24x24/actions/document-properties.png 24x24/mimetypes/info.png
+ln -s ../../32x32/actions/document-properties.png 32x32/mimetypes/info.png
+ln -s ../../48x48/actions/document-properties.png 48x48/mimetypes/info.png
+ln -s ../../64x64/actions/document-properties.png 48x48/mimetypes/info.png
+ln -s run.png 16x16/actions/gtk-execute.png
+ln -s run.png 22x22/actions/gtk-execute.png
+ln -s run.png 24x24/actions/gtk-execute.png
+ln -s run.png 32x32/actions/gtk-execute.png
+ln -s run.png 48x48/actions/gtk-execute.png
+ln -s run.png 64x64/actions/gtk-execute.png
+#ln -s ../../16x16/apps/ksysguard.png 16x16/actions/fork.png
+#ln -s ../../16x16/apps/ksysguard.png 22x22/actions/fork.png
+#ln -s ../../16x16/apps/ksysguard.png 24x24/actions/fork.png
 cd - > /dev/null 2>&1
 #
 sudo sed -i "/Name=kde_ten/c\Name=kdeten_$iconth" /usr/share/icons/kdeten_$iconth/index.theme
