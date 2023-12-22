@@ -898,7 +898,7 @@ sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/norma
 fi
 
 #ADJUST GTK3 colors (+selected color GTK2)
-if [[ $customcolor -eq 1 ]]; then
+#if [[ $customcolor -eq 1 ]]; then
 sudo sed -E -i 's/(selected_bg_color:#)[0-9A-Fa-f]+/\1'"${accent3/#\#/}"'/g' /usr/share/themes/Q4OS02/gtk-2.0/gtkrc
 sudo sed -i 's/@define-color theme_selected_bg_color .*/@define-color theme_selected_bg_color '"$accent3"';/' /usr/share/themes/Q4OS02/gtk-3.0/gtk_b.css
 acct="$accent}"
@@ -919,7 +919,7 @@ wbs_accent="box-shadow: inset 0 0 0 4px $accent, inset 0 0 0 3px $accent"
 sudo sed -E -i '/^window\.solid-csd:backdrop[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;]*)/'"$wbs_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
 wbm_accent="box-shadow: inset 0 0 0 3px $accent"
 sudo sed -E -i '/^window\.maximized[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;]*)/'"$wbm_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
-fi
+#fi
 
 
 
