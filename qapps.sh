@@ -518,7 +518,7 @@ progress "$script" 95
 
 
 
-
+if ( getconf LONG_BIT | grep -q 64 ); then
 itemdisp "Installing Qtscrcpy"
 installQtscrcpy () {
             if [ ! -e "$USER_HOME/qtscrcpy/QtScrcpy" ]; then
@@ -560,7 +560,7 @@ echo
 echo
 echo
 progress "$script" 95
-
+fi
 
 
 
