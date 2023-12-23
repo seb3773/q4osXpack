@@ -30,6 +30,7 @@ source common/resizecons
 source common/begin
 source common/progress
 begin "$script"
+USER_HOME=$(eval echo ~${SUDO_USER})
 #================================================================================================================
 
 
@@ -513,6 +514,56 @@ echo
 echo
 echo
 progress "$script" 95
+
+
+
+
+
+itemdisp "Installing Qtscrcpy"
+installQtscrcpy () {
+            if [ ! -e "$USER_HOME/qtscrcpy/QtScrcpy" ]; then
+            echo -e "${YELLOW}"
+            cd apps
+            sudo apt install libqt5multimedia5
+            sudo tar -xzf qtscrcpy.tar.gz -C $USER_HOME/
+            sudo ln -s $USER_HOME/qtscrcpy/QtScrcpy $USER_HOME/.local/bin/QtScrcpy
+            sudo mv $USER_HOME/qtscrcpy/qtscrcpy.desktop /usr/share/applications/qtscrcpy.desktop
+            cd ..
+            echo -e "${NOCOLOR}"
+            else
+            echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+            fi
+}
+if [ "$installall" -eq 1 ]; then
+    installQtscrcpy
+else
+echo
+echo -e "${RED}█ ${ORANGE}Install Qtscrcpy ? (android phone screen mirroring+control)${NOCOLOR}"
+optionz=("Install Qtscrcpy" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install Qtscrcpy")
+            echo -e "  \e[35m░▒▓█\033[0m Installing Qtscrcpy..."
+            installQtscrcpy
+            break
+            ;;
+        "Skip")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+sep
+echo
+echo
+echo
+progress "$script" 95
+
+
+
+
 
 
 
