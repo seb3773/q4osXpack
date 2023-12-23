@@ -36,7 +36,8 @@ Designed to install a set of apps I consider usefull for the usage I have. This 
   
 -Apps installed by default: GIT, Ark (archive manager), Dolphin trinity, Baobab (disk usage), system-config-printer, lxtask-mod, flashfetch (fast cli system info), Stacer, Bleachbit, vlc, Kolourpaint,KCharSelect,Ksnapshot,knote. [some of them could be already installed, depending of your Q4os profile choice at install]  
   
--Apps with choice to install: qbittorent, spotify, gparted, S4 Snapshot, remmina (rdp / vnc / ssh remote desktop client), free office, bpytop (improved htop), virtualbox 7.  
+-Apps with choice to install: qbittorent, spotify, gparted, S4 Snapshot, remmina (rdp / vnc / ssh remote desktop client), free office, bpytop (improved htop), virtualbox 7, QtScrcpy
+(android phone screen mirroring & control).  
 * Note: some apps are not available for 32bits install.
 
 
