@@ -224,6 +224,35 @@ progress "$script" 60
 
 
 
+itemdisp "Installing guvcview"
+if [ "$installall" -eq 1 ]; then
+    installApp "guvcview" "guvcview/stable"
+else
+echo
+echo -e "${RED}█ ${ORANGE}Install guvcview ?${NOCOLOR}"
+optionz=("Install guvcview" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install guvcview")
+            echo -e "  \e[35m░▒▓█\033[0m Installing guvcview..."
+            installApp "guvcview" "guvcview/stable"
+            break
+            ;;
+        "Skip")
+            sep
+            echo
+            echo
+            echo
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+progress "$script" 60
+
+
 
 
 if ( getconf LONG_BIT | grep -q 64 ); then
