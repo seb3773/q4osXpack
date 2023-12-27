@@ -742,7 +742,9 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key WindowSna
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveMode Opaque
 #kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveMode Opaque
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Desktops --key Number 1
-kwriteconfig --file $TDEHOME/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
+#-----this one made the desktop unresponsible, konsole desn't echo anything, etc... (?) :
+#kwriteconfig --file $TDEHOME/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
+#--- need to find out why :p
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow1 "Activate, raise and pass click"
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow2 "Activate and pass click"
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow3 "Activate and pass click"
@@ -845,7 +847,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --ke
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key WindowSnapZone 10
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveMode Opaque
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Desktops --key Number 1
-sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
+#sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandWindow1 "Activate, raise and pass click"
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandWindow2 "Activate and pass click"
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandWindow3 "Activate and pass click"
