@@ -663,6 +663,9 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ColorizeS
 #kickerbar rgb_accent
 #sudo convert -size 2x60 xc:${accent} /opt/trinity/share/apps/kicker/pics/panel-win.png
 
+#showdeskten icon
+sudo convert -size 7x64 xc:${accent} /opt/trinity/share/apps/kicker/pics/showdesk10.png
+
 echo
 echo -e "  \e[35m░▒▓█\033[0m configuring style..."
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Style --key InactiveShadowColour "0,0,0"
@@ -1493,13 +1496,20 @@ if [[ $lowres -eq 1 ]]; then
 sudo tar -xzf theme/tdmwin_lowres.tar.gz -C /opt/trinity/share/apps/tdm/themes/windows/
 fi
 #test dark or light
-lightamount=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -threshold 50% -format "%[fx:100*image.mean]" info:)
-if (( $(echo "$lightamount > 60" | bc -l) )); then
+#lightamount=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -threshold 50% -format "%[fx:100*image.mean]" info:)
+
+
+lightamount_up=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -crop x260+0+0 -threshold 50% -format "%[fx:100*image.mean]" info:)
+lightamount_center=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -crop x300+0+400 -threshold 50% -format "%[fx:100*image.mean]" info:)
+if (( $(echo "$lightamount_up > 60" | bc -l) )); then
 sudo sed -i '/<normal font="Segoe UI 58" color=/c\<normal font="Segoe UI 58" color="#555555"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" color="#555555"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
-sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#333333" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
-#sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#000000" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 fi
+if (( $(echo "$lightamount_center > 60" | bc -l) )); then
+sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#333333" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+fi
+
+
 sudo \cp /opt/trinity/share/apps/tdm/themes/windows/background.jpg /opt/trinity/share/apps/ksplash/Themes/Redmond10/Background.png
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoPixmap "/opt/trinity/share/apps/tdm/pics/tuxlogo.png"
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoArea Logo
