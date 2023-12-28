@@ -38,11 +38,11 @@ fi
 testlight () {
 lightamount_up=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -crop x260+0+0 -threshold 50% -format "%[fx:100*image.mean]" info:)
 lightamount_center=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -crop x300+0+400 -threshold 50% -format "%[fx:100*image.mean]" info:)
-if (( $(echo "$lightamount_up > 60" | bc -l) )); then
-sudo sed -i '/<normal font="Segoe UI 58" color=/c\<normal font="Segoe UI 58" color="#555555"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
-sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" color="#555555"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+if (( $(echo "$lightamount_up > 30" | bc -l) )); then
+sudo sed -i '/<normal font="Segoe UI 58" color=/c\<normal font="Segoe UI 58" color="#444444"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" color="#444444"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 fi
-if (( $(echo "$lightamount_center > 60" | bc -l) )); then
+if (( $(echo "$lightamount_center > 30" | bc -l) )); then
 sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#333333" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 fi
 }
