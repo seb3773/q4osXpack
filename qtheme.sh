@@ -1,4 +1,4 @@
-#!/bin/bash
+*#!/bin/bash
 dark=0
 helpdoc=0
 lowres=0
@@ -443,7 +443,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRig
 rota
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Size 4
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key SizePercentage 100
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintValue 99
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintValue 95
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Transparent true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key panelIconWidth 48
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowDeepButtons false
@@ -664,7 +664,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ColorizeS
 #sudo convert -size 2x60 xc:${accent} /opt/trinity/share/apps/kicker/pics/panel-win.png
 
 #showdeskten icon
-sudo convert -size 7x64 xc:${accent} /opt/trinity/share/apps/kicker/pics/showdesk10.png
+sudo convert -size 5x64 xc:${accent} /opt/trinity/share/apps/kicker/pics/showdesk10.png
 
 echo
 echo -e "  \e[35m░▒▓█\033[0m configuring style..."
