@@ -1,4 +1,4 @@
-*#!/bin/bash
+#!/bin/bash
 dark=0
 helpdoc=0
 lowres=0
@@ -431,7 +431,6 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key LegacyK
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Locked true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key AutoHidePanel false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key AutoHideSwitch false
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key MenubarPanelBlurred false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key MenubarPanelTransparent false
 rota
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BackgroundHide false
@@ -443,7 +442,8 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRig
 rota
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Size 4
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key SizePercentage 100
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintValue 95
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintValue 92
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key MenubarPanelBlurred true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Transparent true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key panelIconWidth 48
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowDeepButtons false
@@ -1800,12 +1800,9 @@ itemdisp "Configuring global shortcuts & default apps integration..."
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
 kwriteconfig --file $TDEHOME/share/config/profilerc --group "application/x-deb - 1" --key Application appsetup2.exu.desktop
-#kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Lock Session (Hotkey)" "default(XF86ScreenSaver);Win+L"
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
-#sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Lock Session (Hotkey)" "default(XF86ScreenSaver);Win+L"
-
 #usuals win commands
 cd /usr/local/bin/
 sudo ln -s /opt/trinity/bin/kwrite /usr/local/bin/notepad > /dev/null 2>&1
@@ -1814,9 +1811,10 @@ sudo ln -s /opt/trinity/bin/kcalc /usr/local/bin/calc > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/kolourpaint /usr/local/bin/paint > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/konsole /usr/local/bin/cmd > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/ksnapshot /usr/local/bin/snapshot > /dev/null 2>&1
+sudo ln -s /opt/trinity/bin/knotes /usr/local/bin/stickynotes > /dev/null 2>&1
 #default task manager (CTRL+ESC)
-#sudo ln -s /usr/bin/lxtask /usr/local/bin/taskmgr
-#sudo ln -s /usr/bin/lxtask /usr/local/bin/ksysguard
+sudo ln -s /usr/bin/lxtask /usr/local/bin/taskmgr
+sudo ln -s /usr/bin/lxtask /usr/local/bin/ksysguard
 cd - > /dev/null 2>&1
 sep
 echo
