@@ -442,7 +442,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRig
 rota
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Size 4
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key SizePercentage 100
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintValue 92
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintValue 94
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key MenubarPanelBlurred true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Transparent true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key panelIconWidth 48
@@ -1796,6 +1796,42 @@ echo
 echo
 echo
 
+itemdisp "Installing lxtask-mod (taskmanager)..."
+if ! (cat common/packages_list.tmp | grep -q "lxtask-mod/now"); then
+cd apps
+echo -e "${YELLOW}"
+if ( getconf LONG_BIT | grep -q 64 ); then
+sudo apt install -y ./lxtask-mod.deb
+else
+sudo apt install -y ./lxtask-mod_i386.deb
+fi
+cd ..
+echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed."
+fi
+sep
+echo
+echo
+echo
+
+
+
+
+itemdisp "Installing .themepack/.deskthemepack installer..."
+sudo \cp theme/themeinst.sh /usr/local/bin/themeinst.sh
+cd /usr/local/bin/
+sudo chmod +x themeinst.sh
+themeinst.sh install
+cd - > /dev/null 2>&1
+sep
+echo
+echo
+echo
+
+
+
+
 itemdisp "Configuring global shortcuts & default apps integration..."
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
@@ -1813,8 +1849,8 @@ sudo ln -s /opt/trinity/bin/konsole /usr/local/bin/cmd > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/ksnapshot /usr/local/bin/snapshot > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/knotes /usr/local/bin/stickynotes > /dev/null 2>&1
 #default task manager (CTRL+ESC)
-sudo ln -s /usr/bin/lxtask /usr/local/bin/taskmgr
-sudo ln -s /usr/bin/lxtask /usr/local/bin/ksysguard
+sudo ln -s /usr/bin/lxtask /usr/local/bin/taskmgr > /dev/null 2>&1
+sudo ln -s /usr/bin/lxtask /usr/local/bin/ksysguard > /dev/null 2>&1
 cd - > /dev/null 2>&1
 sep
 echo
