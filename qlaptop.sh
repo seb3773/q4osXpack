@@ -213,7 +213,7 @@ echo
 if (grep "GRUB_CMDLINE_LINUX_DEFAULT" "/etc/default/grub")|grep -q "resume_offset="; then
 echo "**  resume function seems to be already activated, skipping this part."
 else 
-if ! grep -q "/swap" "/etc/fstab"; then
+if grep -q "/swap" "/etc/fstab"; then
 echo "**  /swap already exist, skipping this part."
 #TO DO:
 #test if resume fonction exist,and in this case propose to adjust parameters for hibernation 
