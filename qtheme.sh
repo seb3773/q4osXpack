@@ -1819,7 +1819,7 @@ echo
 
 
 itemdisp "Installing .themepack/.deskthemepack installer..."
-sudo \cp theme/themeinst.sh /usr/local/bin/themeinst.sh
+sudo \cp apps/themeinst.sh /usr/local/bin/themeinst.sh
 cd /usr/local/bin/
 sudo chmod +x themeinst.sh
 themeinst.sh install
