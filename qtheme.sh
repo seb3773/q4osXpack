@@ -1,8 +1,5 @@
 #!/bin/bash
-dark=0
-helpdoc=0
-lowres=0
-customcolor=0
+dark=0;helpdoc=0;lowres=0;customcolor=0
 while [ "$#" -gt 0 ]; do
 case "$1" in
 -d | --dark)
@@ -65,9 +62,9 @@ fi
 
 #========== CREATE BACKUP FOLDER & backup files to be modified ==================================================
 create_backup() {
-    local backup_path="backups/$now/$1.tar.gz"
-    sudo tar -zcvf "$backup_path" "$2" > /dev/null 2>&1
-    rota
+local backup_path="backups/$now/$1.tar.gz"
+sudo tar -zcvf "$backup_path" "$2" > /dev/null 2>&1
+rota
 }
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")
@@ -105,8 +102,8 @@ create_backup "kdeglobals_root" "/root/.trinity/share/config/kdeglobals"
 create_backup "twindeKoratorrc" "$USER_HOME/.trinity/share/config/twindeKoratorrc"
 create_backup "twinrc" "$TDEHOME/share/config/twinrc"
 create_backup "twinrc_root" "/root/.trinity/share/config/twinrc"
-create_backup "GTK3-Q4OS02" "/usr/share/themes/Q4OS02/gtk-3.0"
-create_backup "GTK2-Q4OS02" "/usr/share/themes/Q4OS02/gtk-2.0"
+#create_backup "GTK3-Q4OS02" "/usr/share/themes/Q4OS02/gtk-3.0"
+#create_backup "GTK2-Q4OS02" "/usr/share/themes/Q4OS02/gtk-2.0"
 create_backup "xcompmgrrc" "$USER_HOME/.xcompmgrrc"
 create_backup "xcompmgrrc_root" "/root/.xcompmgrrc"
 create_backup "compton-tde" "$USER_HOME/.compton-tde.conf"
@@ -123,7 +120,7 @@ create_backup "clock_panelapplet_rc" "$TDEHOME/share/config/clock_panelapplet_rc
 create_backup "kcmfonts" "$USER_HOME/.trinity/share/config/kcmfonts"
 create_backup "gtkrc-q4os" "$USER_HOME/.gtkrc-q4os"
 if [ -f "$USER_HOME/.gtkrc-2.0" ]; then
-create_backup "gtkrc-q4os" "$USER_HOME/.gtkrc-2.0"
+create_backup "gtkrc-2" "$USER_HOME/.gtkrc-2.0"
 fi
 create_backup "gtkrc-q4os_root" "/root/.gtkrc-q4os"
 create_backup "launcher_panelapplet_rc" "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
@@ -144,6 +141,7 @@ fi
 create_backup "Trolltech.conf" "$USER_HOME/.config/Trolltech.conf"
 create_backup "desktop-directories" "$USER_HOME/.local/share/desktop-directories/"
 create_backup "desktop-directories_opt" "/opt/trinity/share/desktop-directories/"
+create_backup "q4tde" "$USER_HOME/.configtde/q4tde"
 #
 #.trinity/share/config/ksmserverrc
 #.trinity/share/config/ksplashrc
@@ -359,7 +357,6 @@ progress "$script" 15
 
 
 
-
 #========== Shutdown images =====================================================================================
 itemdisp "Copying shutdown image..."
 if [[ $dark -eq 1 ]]
@@ -375,8 +372,6 @@ echo
 echo
 echo
 progress "$script" 20
-
-
 
 
 
@@ -405,8 +400,6 @@ cd ..
 
 
 
-
-
 #========== splash screen =======================================================================================
 itemdisp "Configuring splash screen at desktop loading..."
 #kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme Unified
@@ -416,8 +409,6 @@ echo
 echo
 echo
 progress "$script" 40
-
-
 
 
 
@@ -591,17 +582,26 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key widge
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectsEnabled false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowKonqIconActivationEffect false
-sed -i '/gtk-button-images="/c\gtk-button-images=0' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
+if [ ! -f "$USER_HOME/.gtkrc-2.0" ]; then
+\cp theme/gtkrc2 "$USER_HOME/.gtkrc-2.0"
+fi
+if [ ! -f "/root/.gtkrc-2.0" ]; then
+sudo \cp theme/gtkrc2 "/root/.gtkrc-2.0"
+fi
+sed -i '/gtk-button-images="/c\gtk-button-images=0' $USER_HOME/.gtkrc-2.0
 sed -i '/gtk-button-images="/c\gtk-button-images=0' $USER_HOME/.gtkrc-q4os
-sed -i '/gtk-theme-name="/c\gtk-theme-name="Q4OS02"' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
+sed -i '/gtk-theme-name="/c\gtk-theme-name="Q4OSWIN10"' $USER_HOME/.gtkrc-q4os
+sed -i '/gtk-theme-name="/c\gtk-theme-name="Q4OSWIN10"' $USER_HOME/.gtkrc-2.0
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key widgetStyle qtcurve
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectsEnabled false
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowKonqIconActivationEffect false
-sed -i '/gtk-button-images="/c\gtk-button-images=0' root/.gtkrc-2.0 > /dev/null 2>&1
-sed -i '/gtk-button-images="/c\gtk-button-images=0' root/.gtkrc-q4os > /dev/null 2>&1
-sed -i '/gtk-theme-name="/c\gtk-theme-name="Q4OS02"' root/.gtkrc-2.0 > /dev/null 2>&1
+sudo sed -i '/gtk-button-images="/c\gtk-button-images=0' /root/.gtkrc-2.0
+sudo sed -i '/gtk-button-images="/c\gtk-button-images=0' /root/.gtkrc-q4os
+sudo sed -i '/gtk-theme-name="/c\gtk-theme-name="Q4OSWIN10"' /root/.gtkrc-q4os
+sudo sed -i '/gtk-theme-name="/c\gtk-theme-name="Q4OSWIN10"' /root/.gtkrc-2.0
+sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-theme-name Q4OSWIN10
 sep
 echo
 echo
@@ -656,7 +656,6 @@ fi
 ## new method, make use of Q4OS team modification (ColorizeSidePixmap=false)
 sudo convert -size 24x340 xc:${accent} /opt/trinity/share/apps/kicker/pics/kside.png
 sudo convert -size 24x4 xc:${accent} /opt/trinity/share/apps/kicker/pics/kside_tile.png
-
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ColorizeSidePixmap false
 
 
@@ -742,12 +741,8 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ShadeHove
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key SnapOnlyWhenOverlapping true
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key TitlebarDoubleClickCommand Maximize
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key WindowSnapZone 10
-kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveMode Opaque
-#kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveMode Opaque
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Desktops --key Number 1
-#-----this one made the desktop unresponsible, konsole desn't echo anything, etc... (?) :
-#kwriteconfig --file $TDEHOME/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
-#--- need to find out why :p
+rota
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow1 "Activate, raise and pass click"
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow2 "Activate and pass click"
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow3 "Activate and pass click"
@@ -768,6 +763,8 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key Com
 #******** dont' know why desktop icons are flickering with true (when click on a windows then click on desktop )?
 #too bad it's more readeable with shadows on the texts...
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
+#
+
 
 rota
 #root
@@ -848,7 +845,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --ke
 rota
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key TitlebarDoubleClickCommand Maximize
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key WindowSnapZone 10
-sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveMode Opaque
+#sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveMode Opaque
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Desktops --key Number 1
 #sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandWindow1 "Activate, raise and pass click"
@@ -868,50 +865,54 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBinding
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar3 "Operations menu"
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandTitlebarReverseWheel false
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandTitlebarWheel Nothing
-
 rota
 echo
 printf '\e[A\e[K'
+
+echo -e "  \e[35m░▒▓█\033[0m enabling compton-tde compositing..."
+kwriteconfig --file $TDEHOME/share/config/twinrc --group "Windows" --key "MoveMode" "Opaque"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group "Notification Messages" --key "UseTranslucency" true
+
 echo -e "  \e[35m░▒▓█\033[0m configuring GTK2/GTK3/GTK4 styles..."
 #to do: edit values in
 #  $USER_HOME/configtde/gtk-3.0/settings.ini
 #
-sudo rm -rf /usr/share/themes/Q4OS02/gtk-3.0/{*,.[!.]*}
+sudo mkdir -p /usr/share/themes/Q4OSWIN10/gtk-3.0/
+sudo mkdir -p /usr/share/themes/Q4OSWIN10/gtk-2.0/
+sudo rm -rf /usr/share/themes/Q4OSWIN10/gtk-3.0/{*,.[!.]*}
 sudo mkdir -p $USER_HOME/.configtde/gtk-4.0
 sudo rm -rf $USER_HOME/.configtde/gtk-4.0/{*,.[!.]*}
 sudo rm -rf $USER_HOME/.config/gtk-4.0/{*,.[!.]*}
 if [[ $dark -eq 1 ]]; then
-sudo tar -xzf theme/gtk3winten-dark.tar.gz -C  /usr/share/themes/Q4OS02/gtk-3.0/
-sudo tar -xzf theme/gtk2winten-dark.tar.gz -C  /usr/share/themes/Q4OS02/gtk-2.0/
+sudo tar -xzf theme/gtk3winten-dark.tar.gz -C  /usr/share/themes/Q4OSWIN10/gtk-3.0/
+sudo tar -xzf theme/gtk2winten-dark.tar.gz -C  /usr/share/themes/Q4OSWIN10/gtk-2.0/
 sudo tar -xzf theme/gtk4winten-dark.tar.gz -C  $USER_HOME/.configtde/gtk-4.0/
-sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/hover/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
-sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/normal/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
-sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/press/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
-
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/hover/* /usr/share/themes/Q4OSWIN10/gtk-3.0/assets/
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/normal/* /usr/share/themes/Q4OSWIN10/gtk-3.0/assets/
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/press/* /usr/share/themes/Q4OSWIN10/gtk-3.0/assets/
 sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/hover/* $USER_HOME/.configtde/gtk-4.0/assets
 sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark/buttons/normal/* $USER_HOME/.configtde/gtk-4.0/assets
 else
-sudo tar -xzf theme/gtk3winten.tar.gz -C  /usr/share/themes/Q4OS02/gtk-3.0/
-sudo tar -xzf theme/gtk2winten.tar.gz -C  /usr/share/themes/Q4OS02/gtk-2.0/
+sudo tar -xzf theme/gtk3winten.tar.gz -C  /usr/share/themes/Q4OSWIN10/gtk-3.0/
+sudo tar -xzf theme/gtk2winten.tar.gz -C  /usr/share/themes/Q4OSWIN10/gtk-2.0/
 sudo tar -xzf theme/gtk4winten.tar.gz -C  $USER_HOME/.configtde/gtk-4.0/
-sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/hover/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
-sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/normal/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
-sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/press/* /usr/share/themes/Q4OS02/gtk-3.0/assets/
-
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/hover/* /usr/share/themes/Q4OSWIN10/gtk-3.0/assets/
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/normal/* /usr/share/themes/Q4OSWIN10/gtk-3.0/assets/
+sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/press/* /usr/share/themes/Q4OSWIN10/gtk-3.0/assets/
 sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/hover/* $USER_HOME/.configtde/gtk-4.0/assets
 sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/normal/* $USER_HOME/.configtde/gtk-4.0/assets
 fi
 
 #ADJUST GTK3 colors (+selected color GTK2)
 #if [[ $customcolor -eq 1 ]]; then
-sudo sed -E -i 's/(selected_bg_color:#)[0-9A-Fa-f]+/\1'"${accent3/#\#/}"'/g' /usr/share/themes/Q4OS02/gtk-2.0/gtkrc
-sudo sed -i 's/@define-color theme_selected_bg_color .*/@define-color theme_selected_bg_color '"$accent3"';/' /usr/share/themes/Q4OS02/gtk-3.0/gtk_b.css
+sudo sed -E -i 's/(selected_bg_color:#)[0-9A-Fa-f]+/\1'"${accent3/#\#/}"'/g' /usr/share/themes/Q4OSWIN10/gtk-2.0/gtkrc
+sudo sed -i 's/@define-color theme_selected_bg_color .*/@define-color theme_selected_bg_color '"$accent3"';/' /usr/share/themes/Q4OSWIN10/gtk-3.0/gtk.css
 acct="$accent}"
-sudo sed -i '/decoration{.*border-color:/ s/border-color:[^;]*/border-color:'"$acct"'/g' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
-sudo sed -i '/\.titlebar,headerbar{.*background-color:@theme_base_color;/ s/@theme_base_color/'"$accent"'/g' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
-sudo sed -i '/button.titlebutton{.*background-image:none;/ s/background-image:none;/&background-color:'"$accent"';/' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
-sudo sed -i '/button.titlebutton:hover{.*color:.*background-color:/ s/@theme_bg_color/'"$accent"'/g' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
-sudo sed -i '/button.titlebutton:active{.*color:.*background-color:/ s/@theme_bg_color/'"$accent"'/g' /usr/share/themes/Q4OS02/gtk-3.0/gtk-contained.css
+sudo sed -i '/decoration{.*border-color:/ s/border-color:[^;]*/border-color:'"$acct"'/g' /usr/share/themes/Q4OSWIN10/gtk-3.0/gtk-contained.css
+sudo sed -i '/\.titlebar,headerbar{.*background-color:@theme_base_color;/ s/@theme_base_color/'"$accent"'/g' /usr/share/themes/Q4OSWIN10/gtk-3.0/gtk-contained.css
+sudo sed -i '/button.titlebutton{.*background-image:none;/ s/background-image:none;/&background-color:'"$accent"';/' /usr/share/themes/Q4OSWIN10/gtk-3.0/gtk-contained.css
+sudo sed -i '/button.titlebutton:hover{.*color:.*background-color:/ s/@theme_bg_color/'"$accent"'/g' /usr/share/themes/Q4OSWIN10/gtk-3.0/gtk-contained.css
+sudo sed -i '/button.titlebutton:active{.*color:.*background-color:/ s/@theme_bg_color/'"$accent"'/g' /usr/share/themes/Q4OSWIN10/gtk-3.0/gtk-contained.css
 b_accent="background-color: $accent"
 sudo sed -E -i '/^headerbar[[:space:]]*\{/ s/(background-color:[[:space:]]*#[0-9a-fA-F]*)/'"$b_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
 bb_accent="border-bottom: 1px solid $accent"
@@ -925,7 +926,8 @@ sudo sed -E -i '/^window\.solid-csd:backdrop[[:space:]]*\{/ s/(box-shadow:[[:spa
 wbm_accent="box-shadow: inset 0 0 0 3px $accent"
 sudo sed -E -i '/^window\.maximized[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;]*)/'"$wbm_accent"'/g' $USER_HOME/.configtde/gtk-4.0/gtk.css
 #fi
-
+kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-theme-name Q4OSWIN10
+kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-theme-name Q4OSWIN10
 
 
 
@@ -1108,8 +1110,6 @@ progress "$script" 55
 
 
 
-
-
 #========== No start indicator (no cpu cycles wasting ;) ) ======================================================
 itemdisp "Disabling start indicator"
 kwriteconfig --file $TDEHOME/share/config/tdelaunchrc --group BusyCursorSettings --key Blinking false
@@ -1141,7 +1141,6 @@ echo "Xcursor.theme: Windows10Light" | sudo tee -a $USER_HOME/.Xresources
 fi
 sudo sed -i "/Xcursor.theme:/c\Xcursor.theme: Windows10Light" $USER_HOME/.Xresources
 
-
 if ! grep -q "Xcursor.size" "/root/.Xresources"; then
 echo "Xcursor.size: $ptsize" | sudo tee -a /root/.Xresources
 fi
@@ -1160,7 +1159,7 @@ kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings 
 kwriteconfig --file $USER_HOME/.configtde/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 kwriteconfig --file $USER_HOME/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
+sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' $USER_HOME/.gtkrc-2.0
 #root
 sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key Acceleration 1
@@ -1170,7 +1169,7 @@ sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --k
 sudo kwriteconfig --file /root/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
 sudo kwriteconfig --file /root/.trinity/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
 sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
-sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' root/.gtkrc-2.0  > /dev/null 2>&1
+sudo sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' /root/.gtkrc-2.0
 #cursor theme for x
 sudo mkdir -p  /etc/X11/cursors
 sudo \cp /usr/share/icons/Windows10Light/cursor.theme /etc/X11/cursors/Windows10Light_cursor.theme
@@ -1472,9 +1471,6 @@ progress "$script" 70
 
 
 
-
-
-
 #========== Login style ala windows10 ===========================================================================
 itemdisp "Configuring login style..."
 echo
@@ -1534,20 +1530,17 @@ progress "$script" 75
 
 
 
-
-
-
 #========== Configuring taskbar =================================================================================
 itemdisp "Configuring taskbar..."
-               if [[ $dark -eq 1 ]]; then
+	if [[ $dark -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ActiveTaskTextColor "235,235,235"
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key InactiveTaskTextColor "93,93,93"
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key TaskBackgroundColor "119,119,119"
-               else
+	else
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ActiveTaskTextColor "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key InactiveTaskTextColor "195,195,195"
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key TaskBackgroundColor "255,255,255"
-               fi
+	fi
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key HaloText true
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key IconSize 22
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key Q4ButtonFrameType 1
@@ -1591,9 +1584,6 @@ echo
 echo
 echo
 progress "$script" 80
-
-
-
 
 
 
@@ -1647,8 +1637,6 @@ progress "$script" 85
 
 
 
-
-
 #========== Fonts. Mostly Segoe UI & conslas for Konsole ========================================================
 itemdisp "Configuring fonts"
 kwriteconfig --file $TDEHOME/share/config/kcmfonts --group General --key dontChangeAASettings true
@@ -1681,7 +1669,7 @@ kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --k
 sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sed -i '/gtk-font-name="/c\gtk-font-name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
 sed -i '/font_name="/c\font_name="Segoe UI 10"' $USER_HOME/.gtkrc-q4os
-sed -i '/font_name="/c\font_name="Segoe UI 10"' $USER_HOME/.gtkrc-2.0 > /dev/null 2>&1
+sed -i '/font_name="/c\font_name="Segoe UI 10"' $USER_HOME/.gtkrc-2.0
 # in  $USER_HOME/.gtkrc-2.0, assign text[SELECTED] = { 1.000, 1.000, 1.000 }
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
 sudo sed -i '/Gtk\/FontName/c\Gtk\/FontName "Segoe UI 10"' "/root/.config/xsettingsd/xsettingsd.conf"
@@ -1762,25 +1750,25 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme k
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
 sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' $USER_HOME/.gtkrc-q4os
-sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' $USER_HOME/.gtkrc-2.0 > /dev/null 2>&1
+sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' $USER_HOME/.gtkrc-2.0
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group Icons --key Theme kdeten_dark
 sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
 sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_dark
 sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' /root/.gtkrc-q4os
-sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' root/.gtkrc-2.0 > /dev/null 2>&1
+sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_dark"' /root/.gtkrc-2.0
 else
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme kdeten_light
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
 sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' $USER_HOME/.gtkrc-q4os
-sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' $USER_HOME/.gtkrc-2.0 > /dev/null 2>&1
+sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' $USER_HOME/.gtkrc-2.0
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group Icons --key Theme kdeten_light
 sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
 sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-icon-theme-name kdeten_light
 sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' /root/.gtkrc-q4os
-sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' root/.gtkrc-2.0 > /dev/null 2>&1
+sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' /root/.gtkrc-2.0
 fi
 sep
 echo
@@ -1815,9 +1803,6 @@ echo
 echo
 echo
 
-
-
-
 itemdisp "Installing .themepack/.deskthemepack installer..."
 sudo \cp apps/themeinst.sh /usr/local/bin/themeinst.sh
 cd /usr/local/bin/
@@ -1829,9 +1814,6 @@ echo
 echo
 echo
 
-
-
-
 itemdisp "Configuring global shortcuts & default apps integration..."
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
@@ -1839,6 +1821,8 @@ kwriteconfig --file $TDEHOME/share/config/profilerc --group "application/x-deb -
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
+#desktop images preview
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop Icons" --key "Preview" "svgthumbnail,imagethumbnail"
 #usuals win commands
 cd /usr/local/bin/
 sudo ln -s /opt/trinity/bin/kwrite /usr/local/bin/notepad > /dev/null 2>&1
@@ -1856,10 +1840,7 @@ sep
 echo
 echo
 echo
-
 progress "$script" 95
-
-
 
 
 #========== Cleaning ============================================================================================
@@ -1876,6 +1857,15 @@ sudo touch /etc/q4ossebtheme
 #========== DONE. ==================================================================================================
 alldone
 
+if [ -n "$vm" ]; then
+echo
+echo -e "${GRAY}█ It seems you're running Q4OS inside a virtualized machine."
+echo -e "${GRAY}█ Please ensure that you have enabled 3D acceleration and enough video RAM."
+if [ "$vmsys" = "(VirtualBox)" ]; then
+echo -e "${GRAY}█ For virtualbox which seems to be used in this case, check 3D acceleration in"
+echo -e "${GRAY}█ configuration display of the virtual machine, and set video ram to 128Mb."
+fi
+fi
 echo
 echo -e "\e[5m~~ reboot is required ~~\e[25m"
 echo
