@@ -4,7 +4,7 @@ NOCOLOR='\033[0m';RED='\033[0;31m'
 REDL='\033[0;91m';ORANGE='\033[0;33m'
 BLUE='\033[0;96m';LIGHTGREEN='\033[1;32m'
 YELLOW='\033[0;93m';WHITE='\033[0;97m'
-SEPL="${ORANGE}";for ((i = 0; i < 80; i++)); do  SEPL+="═";done;SEPL+="${NOCOLOR}"
+SEPL="${ORANGE}";for ((i = 0; i < 80; i++)); do  SEPL+="═";done;SEPL+="${NOCOLOR}";vm=""
 
 begin () {
 wmctrl -r :ACTIVE: -N "$1"
@@ -41,6 +41,16 @@ if ( getconf LONG_BIT | grep -q 64 ); then
 bits="64bits system";
 else  bits="32bits system"; fi
 
+isvm=$(systemd-detect-virt)
+if [ "$isvm" != "none" ]; then
+vm="Virtual machine detected"
+if [ "$isvm" = "oracle" ]; then
+vmsys="(VirtualBox)"
+fi
+fi
+
+
+
 if [ $opt -eq 0 ]; then
 #test $TDEHOME
 if [ -z "$TDEHOME" ]
@@ -59,6 +69,10 @@ echo "   root shell. Please try to run it from a normal user shell."
 else
       echo -e "  ${LIGHTGRAY}█${NOCOLOR} User Home is ${ORANGE}$USER_HOME ${NOCOLOR}"
       echo -e "  ${GRAY}█${NOCOLOR} TDEHOME is ${ORANGE}$TDEHOME ${NOCOLOR} / ${BLUE}▒ $bits${NOCOLOR}"
+      if [ -n "$vm" ]; then
+      echo -e "  ${GRAY}█${YELLOW} ${LIGHTGREEN}$vm $vmsys ${NOCOLOR}"
+      fi
+#
                if [[ $dark -eq 1 ]]
                then
                 echo -e "  ${BLUE}█${NOCOLOR} Dark theme selected"
