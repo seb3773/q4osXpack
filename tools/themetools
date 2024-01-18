@@ -49,47 +49,54 @@ fi
 
 function file_select
 {
-local TITLE=${1:-"-=- Q4OS Seb Scripts -=- select file"}
-local LOCAL_PATH=${2:-"/"}
-local FILE_MASK=${3:-"*"}
-local ALLOW_BACK=${4:-no}
-local FILES=()
-[ "$ALLOW_BACK" != "no" ] && FILES+=(".." "..")
-for DIR in $(find "$LOCAL_PATH" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" 2> /dev/null | sort)
-do
-FILES+=("$DIR" "folder")
-done
-for FILE in $(find "$LOCAL_PATH" -maxdepth 1 -type f -name "$FILE_MASK" -printf "%f %s\n" 2> /dev/null | sort)
-do
-FILES+=($FILE)
-done
-FILES=($(sort <<<"${FILES[*]}"))
-while true
-do
-FILE_SELECTED=$(whiptail --clear --backtitle "$BACK_TITLE" --title "$TITLE" --menu "$LOCAL_PATH" 25 70 15 ${FILES[@]} 3>&1 1>&2 2>&3)
+  local TITLE=${1:-"-=- Q4OS Seb Scripts -=- select file"}
+  local LOCAL_PATH=${2:-"/"}
+  local FILE_MASK=${3:-"*"}
+  local ALLOW_BACK=${4:-no}
+  local FILES=()
+
+  [ "$ALLOW_BACK" != "no" ] && FILES+=(".." "..")
+
+  while IFS= read -r -d $'\0' DIR; do
+    DIR_NAME=$(basename "$DIR")
+    FILES+=("\"$DIR_NAME\"" folder)
+  done < <(find "$LOCAL_PATH" -maxdepth 1 -mindepth 1 -type d -print0 2> /dev/null | sort -z)
+
+  while IFS= read -r -d $'\0' FILE; do
+    FILE_NAME=$(basename "$FILE")
+FILE_SIZE=$(du -sh "$FILE" | cut -f1)
+    FILES+=("\"$FILE_NAME\"" $FILE_SIZE)
+  done < <(find "$LOCAL_PATH" -maxdepth 1 -type f -name "$FILE_MASK" -print0 2> /dev/null | sort -z)
+
+  FILES=("${FILES[@]}")
+
+
+  while true
+  do
+    FILE_SELECTED=$(whiptail --clear --backtitle "$BACK_TITLE" --title "$TITLE" --menu "$LOCAL_PATH" 25 70 15 "${FILES[@]}" 3>&1 1>&2 2>&3)
+
 
 if [ -z "$FILE_SELECTED" ]; then
-	return 1
+  return 1
 else
-if [ "$FILE_SELECTED" = ".." ] && [ "$ALLOW_BACK" != "no" ]; then
-return 0
-
-elif [ -d "$LOCAL_PATH/$FILE_SELECTED" ] ; then
-if file_select "$TITLE" "$LOCAL_PATH/$FILE_SELECTED" "$FILE_MASK" "yes" ; then
-	if [ "$FILE_SELECTED" != ".." ]; then
-	return 0
-	fi
-else
-	return 1
+  if [ "$FILE_SELECTED" = ".." ] && [ "$ALLOW_BACK" != "no" ]; then
+    return 0
+  elif [ -d "$LOCAL_PATH/${FILE_SELECTED//\"/}" ]; then
+    if file_select "$TITLE" "$LOCAL_PATH/${FILE_SELECTED//\"/}" "$FILE_MASK" "yes"; then
+      if [ "$FILE_SELECTED" != ".." ]; then
+        return 0
+      fi
+    else
+      return 1
+    fi
+  elif [ -f "$LOCAL_PATH/${FILE_SELECTED//\"/}" ]; then
+    FILE_SELECTED="$LOCAL_PATH/${FILE_SELECTED//\"/}"
+    return 0
+  fi
 fi
-
-elif [ -f "$LOCAL_PATH/$FILE_SELECTED" ] ; then
-FILE_SELECTED="$LOCAL_PATH/$FILE_SELECTED"
-return 0
-fi
-fi
-    done
+  done
 }
+
 
 #============================================================================
 logbck () {
