@@ -413,7 +413,7 @@ function check_image_size {
     local width height
     read -r width height <<< "$dimensions"
     if ((width >= min_width && height >= min_height)); then
-        echo "Picture size: Ok."
+       # echo "Picture size: Ok."
         return 0
     else
         echo "Picture size must be at least 220x220 pixels"
@@ -453,9 +453,14 @@ case $choice in
 clear
 USER_HOME=$(eval echo ~${SUDO_USER})
 if file_select "-=- Q4OS Seb Scripts -=- select user picture" "/home" "*.jpg" ; then
+
     echo "File Selected: \"$FILE_SELECTED\"."
+
 if check_image_size "$FILE_SELECTED"; then
         echo "Picture size is conform."
+if ( getconf LONG_BIT | grep -q 64 ); then
+tools/tiv -w 60 "$FILE_SELECTED"
+else tools/tiv32 -w 60 "$FILE_SELECTED"; fi
         rm -f "$USER_HOME/.face.icon"
         resize_and_create_circle_image "$FILE_SELECTED" "$USER_HOME/userpic.png" "$USER_HOME/faceicon.png"
         sudo \cp "$USER_HOME/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
