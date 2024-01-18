@@ -741,6 +741,9 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ShadeHove
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key SnapOnlyWhenOverlapping true
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key TitlebarDoubleClickCommand Maximize
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key WindowSnapZone 10
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveResizeMaximizedWindows true
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ResetMaximizedWindowGeometry true
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key Placement Centered
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Desktops --key Number 1
 rota
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow1 "Activate, raise and pass click"
@@ -845,6 +848,9 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --ke
 rota
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key TitlebarDoubleClickCommand Maximize
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key WindowSnapZone 10
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveResizeMaximizedWindows true
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ResetMaximizedWindowGeometry true
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key Placement Centered
 #sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveMode Opaque
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Desktops --key Number 1
 #sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
@@ -1729,6 +1735,10 @@ sudo kwriteconfig --file $USER_HOME/.tderc --group General --key taskbarFont "Se
 sudo kwriteconfig --file $USER_HOME/.tderc --group General --key toolBarFont "Segoe UI,9,-1,5,50,0,0,0,0,0"
 sudo kwriteconfig --file /root/.trinity/share/config/systemtray_panelappletrc --group Plain --key Font "Segoe UI,10,-1,5,50,0,0,0,0,0"
 sudo kwriteconfig --file /root/.qt/qtrc --group General --key font "Segoe UI,9,-1,5,50,0,0,0,0,0"
+if ! grep -q "xterm*faceName" "$USER_HOME/.Xresources"; then echo "xterm*faceName: Consolas" | sudo tee -a $USER_HOME/.Xresources ; fi
+sudo sed -i "/xterm*faceName:/c\xterm*faceName: Consolas" $USER_HOME/.Xresources
+if ! grep -q "xterm*faceSize" "$USER_HOME/.Xresources"; then echo "xterm*faceSize: 10" | sudo tee -a $USER_HOME/.Xresources ; fi
+sudo sed -i "/xterm*faceSize:/c\xterm*faceSize: 10" $USER_HOME/.Xresources
 sep
 echo
 echo
