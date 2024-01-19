@@ -421,11 +421,23 @@ fi
 udevadm control --reload-rules
 
 echo "  \e[35m░▒▓█\033[0m copying tdm windows theme..."
+loginpicsetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginpic")
+if [ -n "$loginpicsetting" ] && [ "$loginpicsetting" == "custom" ]; then
+sudo mv -f "/opt/trinity/share/apps/tdm/themes/windows/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png"
 tar -xzf tdmwin.tar.gz -C /opt/trinity/share/apps/tdm/themes/
+sudo mv -f "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
+else
+tar -xzf tdmwin.tar.gz -C /opt/trinity/share/apps/tdm/themes/
+fi
 
+
+userpicsetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic")
+if [ "$userpicsetting" != "custom" ] || [ ! -e "$USER_HOME/.face.icon" ]; then
 echo "  \e[35m░▒▓█\033[0m copying default user picture"
 sudo \cp "/usr/share/icons/kdeten_$iconth/48x48/actions/switchuser.png" "$USER_HOME/.face.icon"
 sudo \cp "/usr/share/icons/kdeten_$iconth/48x48/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
+fi
+
 mkdir -p $USER_HOME/.local/share/icons/kdeten_$iconth
 tar -xzf kdeten_local.tar.gz -C $USER_HOME/.local/share/icons/kdeten_$iconth/
 sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/16x16/actions/switchuser.png" > /dev/null 2>&1
