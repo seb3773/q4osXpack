@@ -69,7 +69,7 @@ rota
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")
 sudo mkdir -p "backups/$now" > /dev/null 2>&1
-create_backup "shutimg" "/opt/trinity/share/apps/ksmserver/pics/shutdownkonq2.png"
+#create_backup "shutimg" "/opt/trinity/share/apps/ksmserver/pics/shutdownkonq2.png"
 create_backup "grub" "/etc/default/grub"
 create_backup "konq_fm_entries" "$USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/"
 create_backup "ksides_pics" "/opt/trinity/share/apps/kicker/pics/kside*.*"
@@ -359,11 +359,12 @@ progress "$script" 15
 
 #========== Shutdown images =====================================================================================
 itemdisp "Copying shutdown image..."
+sudo mkdir -p "$TDEHOME/share/apps/ksmserver/pics"
 if [[ $dark -eq 1 ]]
 then
-sudo \cp theme/shutdownkonq2-dark.png /opt/trinity/share/apps/ksmserver/pics/shutdownkonq2.png
+sudo \cp theme/shutdownkonq2-dark.png "$TDEHOME/share/apps/ksmserver/pics/shutdownkonq2.png"
 else
-sudo \cp theme/shutdownkonq2.png /opt/trinity/share/apps/ksmserver/pics/shutdownkonq2.png
+sudo \cp theme/shutdownkonq2.png "$TDEHOME/share/apps/ksmserver/pics/shutdownkonq2.png"
 fi
 #tdm can use a png image for this dialog, but we have to change extension to .jpg
 sudo \cp theme/shutdownkonq2.png /opt/trinity/share/apps/tdm/pics/shutdown.jpg
@@ -1136,11 +1137,14 @@ progress "$script" 60
 itemdisp "Configuring pointers & set acceleration to 1"
 #pointer size
 #32 /48 /64 /
+pointersizesetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointersize")
+if [ "$pointersizesetting" == "default" ] || [ -z "$pointersizesetting" ]; then
 ptsize=32
 if ! grep -q "Xcursor.size" "$USER_HOME/.Xresources"; then
 echo "Xcursor.size: $ptsize" | sudo tee -a $USER_HOME/.Xresources
 fi
 sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" $USER_HOME/.Xresources
+fi
 
 if ! grep -q "Xcursor.theme" "$USER_HOME/.Xresources"; then
 echo "Xcursor.theme: Windows10Light" | sudo tee -a $USER_HOME/.Xresources
@@ -1735,9 +1739,9 @@ sudo kwriteconfig --file $USER_HOME/.tderc --group General --key taskbarFont "Se
 sudo kwriteconfig --file $USER_HOME/.tderc --group General --key toolBarFont "Segoe UI,9,-1,5,50,0,0,0,0,0"
 sudo kwriteconfig --file /root/.trinity/share/config/systemtray_panelappletrc --group Plain --key Font "Segoe UI,10,-1,5,50,0,0,0,0,0"
 sudo kwriteconfig --file /root/.qt/qtrc --group General --key font "Segoe UI,9,-1,5,50,0,0,0,0,0"
-if ! grep -q "xterm*faceName" "$USER_HOME/.Xresources"; then echo "xterm*faceName: Consolas" | sudo tee -a $USER_HOME/.Xresources ; fi
+if ! grep -q "xterm\\*faceName" "$USER_HOME/.Xresources"; then echo "xterm*faceName: Consolas" | sudo tee -a $USER_HOME/.Xresources ; fi
 sudo sed -i "/xterm*faceName:/c\xterm*faceName: Consolas" $USER_HOME/.Xresources
-if ! grep -q "xterm*faceSize" "$USER_HOME/.Xresources"; then echo "xterm*faceSize: 10" | sudo tee -a $USER_HOME/.Xresources ; fi
+if ! grep -q "xterm\\*faceSize" "$USER_HOME/.Xresources"; then echo "xterm*faceSize: 10" | sudo tee -a $USER_HOME/.Xresources ; fi
 sudo sed -i "/xterm*faceSize:/c\xterm*faceSize: 10" $USER_HOME/.Xresources
 sep
 echo
@@ -1863,7 +1867,7 @@ echo
 echo
 progress "$script" 100
 
-sudo touch /etc/q4ossebtheme
+touch $USER_HOME/.q4oswin10.conf
 #========== DONE. ==================================================================================================
 alldone
 
