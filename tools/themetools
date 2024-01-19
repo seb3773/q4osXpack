@@ -21,7 +21,7 @@ echo "   try from a normal user shell."
 read -p "Press enter..."
 exit
 fi
-if [ ! -e "/etc/q4ossebtheme" ]; then
+if [ ! -e "$USER_HOME/.q4oswin10.conf" ]; then
 clear
 echo "   These scripts are designed to customize the"
 echo "   q4osSeb theme, you need to run the Qtheme script"
@@ -134,6 +134,7 @@ case $choice in
 clear
 if [ $actclock = "Hide" ]; then
 sudo sed -i '/<!-- clock -->/,/<!-- endclock -->/{//!d}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginclock" "hide"
 actclock="Show"
 else
   if [[ $lowres -eq 1 ]]; then
@@ -142,6 +143,7 @@ sudo sed -i '/<!-- clock -->/{N;s/<!-- clock -->\n<!-- endclock -->/<!-- clock -
 sudo sed -i '/<!-- clock -->/{N;s/<!-- clock -->\n<!-- endclock -->/<!-- clock -->\n<item type="rect" id="clock">\n<pos anchor="n" x="100%" y="150" width="box" \/>\n<item type="label">\n<pos anchor="n" x="50%" y="20"\/>\n<normal font="Segoe UI 58" color="#EEEEEE"\/>\n<text>%c<\/text>\n<\/item>\n<\/item>\n<!-- endclock -->/}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
   fi
 testlight
+kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginclock" "default"
 actclock="Hide"
 fi
 
@@ -190,6 +192,7 @@ case $choice in
 clear
 if [ $actulist = "Hide" ]; then
 sudo sed -i '/<!-- userslist -->/,/<!-- enduserslist -->/{//!d}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginuserslist" "hide"
 actulist="Show"
 else
 sudo sed -i '/<!-- userslist -->/,/<!-- enduserslist -->/c\
@@ -204,6 +207,7 @@ sudo sed -i '/<!-- userslist -->/,/<!-- enduserslist -->/c\
 </fixed>\
 </item>\
 <!-- enduserslist -->' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginuserslist" "default"
 actulist="Hide"
 fi
 
@@ -258,16 +262,19 @@ case $choice in
 "» Default (32)") 
 clear
 setcursz 32
+kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointersize" "default"
 a32="";a48="";a64=""
 ;;
 "» Large (48)") 
 clear
 setcursz 48
+kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointersize" "48"
 a32="";a48="";a64=""
 ;;
 "» XL (64)") 
 clear
 setcursz 64
+kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointersize" "64"
 a32="";a48="";a64=""
 ;;
 esac
@@ -470,10 +477,12 @@ if [ "$choix" == "y" ] || [ "$choix" == "Y" ]; then
         resize_and_create_circle_image "$FILE_SELECTED" "$USER_HOME/userpic.png" "$USER_HOME/faceicon.png"
         sudo \cp "$USER_HOME/faceicon.png" "$USER_HOME/.face.icon"
         sudo \cp "$USER_HOME/faceicon.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
+        kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic" "custom"
         echo "Do you want to use this image as login image too ?"
         read -p "(this will be global for all users in case of multi accounts usage (y/n) " uspic
         if [ "$uspic" == "y" ] || [ "$uspic" == "Y" ]; then
         sudo \cp "$USER_HOME/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
+        kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginpic" "custom"
         fi
         rm -f "$USER_HOME/userpic.png"
         rm -f "$USER_HOME/faceicon.png"
@@ -496,10 +505,12 @@ sudo tar -xzf theme/tdmwin.tar.gz -C "/opt/trinity/share/apps/tdm/themes/" windo
 iconth=$(kreadconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme)
 sudo \cp "/usr/share/icons/$iconth/48x48/actions/switchuser.png" "$USER_HOME/.face.icon"
 sudo \cp "/usr/share/icons/$iconth/48x48/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
+kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic" "default"
 echo "Do you want to use the default image as login image too ?"
 read -p "(this will be global for all users in case of multi accounts usage (y/n) " uspic
 if [ "$uspic" == "y" ] || [ "$uspic" == "Y" ]; then
 sudo rm -f "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png"
+kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginpic" "default"
 else
 sudo mv -f "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
 fi
