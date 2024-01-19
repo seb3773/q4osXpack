@@ -9,6 +9,7 @@ actbutton=black,white
 title=black,lightgray
 '
 USER_HOME=$(eval echo ~${SUDO_USER})
+USER_SU=$(eval echo ${SUDO_USER})
 if [ -z "$TDEHOME" ]
 then
 clear
@@ -461,27 +462,47 @@ if check_image_size "$FILE_SELECTED"; then
 if ( getconf LONG_BIT | grep -q 64 ); then
 tools/tiv -w 60 "$FILE_SELECTED"
 else tools/tiv32 -w 60 "$FILE_SELECTED"; fi
+
+
+read -p "Use this image as user picture ? (y/n) " choix
+if [ "$choix" == "y" ] || [ "$choix" == "Y" ]; then
         rm -f "$USER_HOME/.face.icon"
         resize_and_create_circle_image "$FILE_SELECTED" "$USER_HOME/userpic.png" "$USER_HOME/faceicon.png"
-        sudo \cp "$USER_HOME/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
         sudo \cp "$USER_HOME/faceicon.png" "$USER_HOME/.face.icon"
+        sudo \cp "$USER_HOME/faceicon.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
+        echo "Do you want to use this image as login image too ?"
+        read -p "(this will be global for all users in case of multi accounts usage (y/n) " uspic
+        if [ "$uspic" == "y" ] || [ "$uspic" == "Y" ]; then
+        sudo \cp "$USER_HOME/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
+        fi
         rm -f "$USER_HOME/userpic.png"
         rm -f "$USER_HOME/faceicon.png"
         echo "Done."
+fi
     else
         echo "Picture size doesn't follow size requirements."
     fi
-
 
 else
     echo "No picture selected."
 fi
         read -p "Press enter..."
-        return 1
 ;;
 "» Default") 
 clear
+rm -f "$USER_HOME/.face.icon"
+sudo mv -f "/opt/trinity/share/apps/tdm/themes/windows/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png"
 sudo tar -xzf theme/tdmwin.tar.gz -C "/opt/trinity/share/apps/tdm/themes/" windows/userpic.png
+iconth=$(kreadconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme)
+sudo \cp "/usr/share/icons/$iconth/48x48/actions/switchuser.png" "$USER_HOME/.face.icon"
+sudo \cp "/usr/share/icons/$iconth/48x48/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
+echo "Do you want to use the default image as login image too ?"
+read -p "(this will be global for all users in case of multi accounts usage (y/n) " uspic
+if [ "$uspic" == "y" ] || [ "$uspic" == "Y" ]; then
+sudo rm -f "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png"
+else
+sudo mv -f "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
+fi
 echo "Done."
 read -p "Press enter..."
 ;;
@@ -537,4 +558,3 @@ case $ret in
 ;;
 esac
 done
-
