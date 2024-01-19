@@ -422,7 +422,7 @@ udevadm control --reload-rules
 
 echo "  \e[35m░▒▓█\033[0m copying tdm windows theme..."
 loginpicsetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginpic")
-if [ -n "$loginpicsetting" ] && [ "$loginpicsetting" == "custom" ]; then
+if [ -n "$loginpicsetting" ] && [ "$loginpicsetting" = "custom" ]; then
 sudo mv -f "/opt/trinity/share/apps/tdm/themes/windows/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png"
 tar -xzf tdmwin.tar.gz -C /opt/trinity/share/apps/tdm/themes/
 sudo mv -f "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
