@@ -1,0 +1,159 @@
+#!/bin/bash
+
+#to pass as parameters  example light light (c_base= "#FFFFFF" ) ( c_ligne2="#AAAAAA" )  (base="WinTenBaselight")
+#to pass as parameters  example dark dark (light= "#FFFFFF" ) ( "#AAAAAA" )  (base= "WinTenBasedark" )
+
+#couleur_base="#FF8000"
+#couleur_ligne2="#994D00"
+#base="WinTenBaselight"
+
+#couleur_base="#FF8000"
+#couleur_ligne2="#FFE161"
+#base="WinTenBasedark"
+
+couleur_base="$1"
+couleur_ligne2="$2"
+base="$3"
+#================================================================================
+thbase="theme/$base"
+sudo mkdir -p $thbase
+sudo tar --owner root --group root --no-same-owner -xzf "theme/$base.tar.gz" -C "theme/"
+
+
+if [ "$base" = "WinTenBaselight" ]; then
+couleur_ligne10="#000000"
+else
+couleur_ligne10="#FFFFFF"
+fi
+
+image_superposee10="$thbase/deko_over_.png"
+image_superposee11="$thbase/deko_press_.png"
+image_superposee="$thbase/deko_Close_.png"
+image_superposee16="$thbase/deko_Restore_.png"
+largeur=8;hauteur=4;largeur2=4;hauteur2=6;largeur4=8;hauteur4=4
+largeur5=4;hauteur5=35;largeur7=1;largeur8=6;hauteur8=4
+largeur10=46;hauteur10=35;largeur14=46;hauteur14=35
+largeur15=46;hauteur15=35;largeur16=46;hauteur16=35
+x_relative10=19;y_relative10=15;longueur_ligne10=10
+x_relative14=18;y_relative14=10;cote_carre14=10
+couleur_base10="transparent"
+couleur_base14=$couleur_base10
+couleur_rectangle14="$couleur_base"
+couleur_carre14=$couleur_ligne10
+couleur_base15=$couleur_base10
+couleur_rectangle15="$couleur_base"
+couleur_base16=$couleur_base10
+couleur_rectangle16="$couleur_base"
+
+
+
+
+
+
+
+
+#=================================== deco =========================================
+#leftBottomFrameBg.png
+convert -size ${largeur}x${hauteur} xc:"${couleur_base}" base.png
+convert base.png -fill "${couleur_ligne2}" -draw "rectangle 0,0,0,${hauteur}" ligne1.png
+convert ligne1.png -fill "${couleur_ligne2}" -draw "rectangle 0,$((${hauteur}-1)),$((${largeur}-1)),$hauteur" $thbase/deco/leftBottomFrameBg.png
+#bottomRightFrameBg.png
+convert -size ${largeur2}x${hauteur2} xc:"${couleur_base}" base2.png
+convert base2.png -fill "${couleur_ligne2}" -draw "rectangle $(( ${largeur2} - 1 )),0,${largeur2},${hauteur2}" $thbase/deco/bottomRightFrameBg.png
+#midRightFrameBg.png
+\cp $thbase/deco/bottomRightFrameBg.png $thbase/deco/midRightFrameBg.png
+#topRightFrameBg.png
+\cp $thbase/deco/bottomRightFrameBg.png $thbase/deco/topRightFrameBg.png
+#bottomLeftFrameBg.png
+convert -size ${largeur2}x${hauteur2} xc:"${couleur_base}" base3.png
+convert base3.png -fill "${couleur_ligne2}" -draw "rectangle 0,0,0,${hauteur2}" $thbase/deco/bottomLeftFrameBg.png
+#midLeftFrameBg.png
+\cp $thbase/deco/bottomLeftFrameBg.png $thbase/deco/midLeftFrameBg.png
+#topLeftFrameBg.png
+\cp $thbase/deco/bottomLeftFrameBg.png $thbase/deco/topLeftFrameBg.png
+#rightBottomFrameBg.png
+convert -size ${largeur4}x${hauteur4} xc:"${couleur_base}" base4.png
+convert base4.png -fill "${couleur_ligne2}" -draw "rectangle $(( ${largeur4} - 1 )),0,${largeur4},${hauteur4}" ligne4.png
+convert ligne4.png -fill "${couleur_ligne2}" -draw "rectangle 0,$((${hauteur4}-1)),$((${largeur4}-1)),$hauteur4" $thbase/deco/rightBottomFrameBg.png
+#topLeftCornerBg.png
+convert -size ${largeur5}x${hauteur5} xc:"${couleur_base}" base5.png
+convert base5.png -fill "${couleur_ligne2}" -draw "rectangle 0,0,0,${hauteur5}" ligne5.png
+convert ligne5.png -fill "${couleur_ligne2}" -draw "rectangle 0,0,${largeur5},0" $thbase/deco/topLeftCornerBg.png
+#topRightCornerBg.png
+convert -size ${largeur5}x${hauteur5} xc:"${couleur_base}" base6.png
+convert base6.png -fill "${couleur_ligne2}" -draw "rectangle $(( ${largeur5} - 1 )),0,${largeur5},${hauteur5}" ligne6.png
+convert ligne6.png -fill "${couleur_ligne2}" -draw "rectangle 0,0,${largeur5},0" $thbase/deco/topRightCornerBg.png
+#leftButtonsBg.png
+convert -size ${largeur7}x${hauteur5} xc:"${couleur_base}" base7.png
+convert base7.png -fill "${couleur_ligne2}" -draw "point 0,0" $thbase/deco/leftButtonsBg.png
+#leftButtonsBg.png
+\cp $thbase/deco/leftButtonsBg.png $thbase/deco/leftTitleBg.png
+#rightTitleBg.png
+\cp $thbase/deco/leftButtonsBg.png $thbase/deco/rightTitleBg.png
+#rightButtonsBg.png
+\cp $thbase/deco/leftButtonsBg.png $thbase/deco/rightButtonsBg.png
+#midTitleBg.png
+\cp $thbase/deco/leftButtonsBg.png $thbase/deco/midTitleBg.png
+#midBottomFrameBg.png
+convert -size ${largeur8}x${hauteur8} xc:"${couleur_base}" base8.png
+convert base8.png -fill "${couleur_ligne2}" -draw "rectangle 0,$((${hauteur8}-1)),$((${largeur8}-1)),$hauteur8" $thbase/deco/midBottomFrameBg.png
+
+#============================= buttons normal ====================================
+#buttonMin.png
+convert -size ${largeur10}x${hauteur10} xc:"${couleur_base10}" base10.png
+convert base10.png -fill "${couleur_base}" -draw "rectangle 1,1,45,29" temp.png
+convert temp.png -fill "${couleur_ligne10}" -draw "line ${x_relative10},${y_relative10} $((x_relative10 + longueur_ligne10 - 1)),$y_relative10" $thbase/buttons/normal/buttonMin.png
+rm temp.png
+#buttonMax.png
+convert -size ${largeur14}x${hauteur14} xc:"${couleur_base14}" base14.png
+convert base14.png -fill "${couleur_rectangle14}" -draw "rectangle 1,1,45,29" temp.png
+convert temp.png -fill "${couleur_carre14}" -draw "line ${x_relative14},${y_relative14} $((x_relative14 + cote_carre14 - 1)),$y_relative14" -draw "line $((x_relative14 + cote_carre14 - 1)),$y_relative14 $((x_relative14 + cote_carre14 - 1)),$((y_relative14 + cote_carre14 - 1))" -draw "line $((x_relative14 + cote_carre14 - 1)),$((y_relative14 + cote_carre14 - 1)) ${x_relative14},$((y_relative14 + cote_carre14 - 1))" -draw "line ${x_relative14},$((y_relative14 + cote_carre14 - 1)) ${x_relative14},${y_relative14}" $thbase/buttons/normal/buttonMax.png
+#buttonClose.png
+convert -size ${largeur15}x${hauteur15} xc:"${couleur_base15}" -fill "${couleur_rectangle15}" -draw "rectangle 1,1,45,29" base15.png
+composite -geometry +0+0 "${image_superposee}" base15.png $thbase/buttons/normal/buttonClose.png
+#buttonRestore.png
+convert -size ${largeur16}x${hauteur16} xc:"${couleur_base16}" -fill "${couleur_rectangle16}" -draw "rectangle 1,1,45,29" base16.png
+composite -geometry +0+0 "${image_superposee16}" base16.png $thbase/buttons/normal/buttonRestore.png
+#============================= buttons hover ====================================
+#buttonMinHover.png
+convert -size ${largeur10}x${hauteur10} xc:"${couleur_base10}" base10.png
+convert base10.png -fill "${couleur_base}" -draw "rectangle 1,1,45,29" temp.png
+composite -geometry +0+0 "${image_superposee10}" temp.png temp.png
+convert temp.png -fill "${couleur_ligne10}" -draw "line ${x_relative10},${y_relative10} $((x_relative10 + longueur_ligne10 - 1)),$y_relative10" $thbase/buttons/hover/buttonMinHover.png
+#buttonMaxHover.png
+convert -size ${largeur14}x${hauteur14} xc:"${couleur_base14}" base14.png
+convert base14.png -fill "${couleur_rectangle14}" -draw "rectangle 1,1,45,29" temp.png
+composite -geometry +0+0 "${image_superposee10}" temp.png temp.png
+convert temp.png -fill "${couleur_carre14}" -draw "line ${x_relative14},${y_relative14} $((x_relative14 + cote_carre14 - 1)),$y_relative14" -draw "line $((x_relative14 + cote_carre14 - 1)),$y_relative14 $((x_relative14 + cote_carre14 - 1)),$((y_relative14 + cote_carre14 - 1))" -draw "line $((x_relative14 + cote_carre14 - 1)),$((y_relative14 + cote_carre14 - 1)) ${x_relative14},$((y_relative14 + cote_carre14 - 1))" -draw "line ${x_relative14},$((y_relative14 + cote_carre14 - 1)) ${x_relative14},${y_relative14}" $thbase/buttons/hover/buttonMaxHover.png
+#buttonRestoreHover.png
+convert -size ${largeur16}x${hauteur16} xc:"${couleur_base16}" -fill "${couleur_rectangle16}" -draw "rectangle 1,1,45,29" base16.png
+composite -geometry +0+0 "${image_superposee10}" base16.png base16.png
+composite -geometry +0+0 "${image_superposee16}" base16.png $thbase/buttons/hover/buttonRestoreHover.png
+#============================= buttons press ====================================
+#buttonMinPress.png
+convert -size ${largeur10}x${hauteur10} xc:"${couleur_base10}" base10.png
+convert base10.png -fill "${couleur_base}" -draw "rectangle 1,1,45,29" temp.png
+composite -geometry +0+0 "${image_superposee11}" temp.png temp.png
+convert temp.png -fill "${couleur_ligne10}" -draw "line ${x_relative10},${y_relative10} $((x_relative10 + longueur_ligne10 - 1)),$y_relative10" $thbase/buttons/press/buttonMinPress.png
+#buttonMaxPress.png
+convert -size ${largeur14}x${hauteur14} xc:"${couleur_base14}" base14.png
+convert base14.png -fill "${couleur_rectangle14}" -draw "rectangle 1,1,45,29" temp.png
+composite -geometry +0+0 "${image_superposee11}" temp.png temp.png
+convert temp.png -fill "${couleur_carre14}" -draw "line ${x_relative14},${y_relative14} $((x_relative14 + cote_carre14 - 1)),$y_relative14" -draw "line $((x_relative14 + cote_carre14 - 1)),$y_relative14 $((x_relative14 + cote_carre14 - 1)),$((y_relative14 + cote_carre14 - 1))" -draw "line $((x_relative14 + cote_carre14 - 1)),$((y_relative14 + cote_carre14 - 1)) ${x_relative14},$((y_relative14 + cote_carre14 - 1))" -draw "line ${x_relative14},$((y_relative14 + cote_carre14 - 1)) ${x_relative14},${y_relative14}" $thbase/buttons/press/buttonMaxPress.png
+#buttonRestorePress.png
+convert -size ${largeur16}x${hauteur16} xc:"${couleur_base16}" -fill "${couleur_rectangle16}" -draw "rectangle 1,1,45,29" base16.png
+composite -geometry +0+0 "${image_superposee11}" base16.png base16.png
+composite -geometry +0+0 "${image_superposee16}" base16.png $thbase/buttons/press/buttonRestorePress.png
+#===========================================================================================
+#del temp images
+rm -f base.png base2.png base3.png base4.png base5.png base6.png base7.png base8.png base10.png base14.png base15.png base16.png temp.png ligne1.png ligne4.png ligne5.png ligne6.png
+rm -f $thbase/deko_Close_.png $thbase/deko_over_.png $thbase/deko_press_.png $thbase/deko_Restore_.png
+#===========================================================================================
+#move folder
+if [ "$base" = "WinTenBaselight" ]; then
+rm -rf /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme
+mv $thbase /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme
+else
+rm -rf /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark
+mv $thbase /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme-dark
+fi
