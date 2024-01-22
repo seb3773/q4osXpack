@@ -1008,7 +1008,7 @@ musicfold=$(xdg-user-dir MUSIC)
 vidfold=$(xdg-user-dir VIDEOS)
 downlfold=$(xdg-user-dir DOWNLOAD)
 usrfold=$(xdg-user-dir USER)
-downlfoldroot=$(sudo xdg-user-dir DOWNLOAD)
+downlfoldroot=$(xdg-user-dir DOWNLOAD)
 #~~~~~~~~~~~~~~~~~~~~~ if dolphin is installed
 if [[ -f "$TDEHOME/share/config/d3lphinrc" ]]; then
 echo -e "  \e[35m░▒▓█\033[0m Configuring Dolphin ui..."
