@@ -302,7 +302,8 @@ sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse
 sudo mkdir -p  /etc/X11/cursors
 sudo \cp /usr/share/icons/Windows10$1/cursor.theme /etc/X11/cursors/Windows10$1\_cursor.theme
 sudo ln -nfs /etc/X11/cursors/Windows10$1\_cursor.theme /etc/alternatives/x-cursor-theme
-if [ "$1" = "dark" ]
+sudo ln -nfs /etc/alternatives/x-cursor-theme /usr/share/icons/default/index.theme
+if [ "$1" = "Dark" ]
 then 
 sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Dark"' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
 sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Dark"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
@@ -318,6 +319,9 @@ sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$US
 sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "/root/xsettingsd.conf"
 fi
 fi
+
+kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointercolor" $1
+
 
 echo Done.
 echo You need to logout for this to be active.
@@ -475,7 +479,7 @@ read -p "Use this image as user picture ? (y/n) " choix
 if [ "$choix" == "y" ] || [ "$choix" == "Y" ]; then
         rm -f "$USER_HOME/.face.icon"
         resize_and_create_circle_image "$FILE_SELECTED" "$USER_HOME/userpic.png" "$USER_HOME/faceicon.png"
-        sudo \cp "$USER_HOME/faceicon.png" "$USER_HOME/.face.icon"
+        \cp "$USER_HOME/faceicon.png" "$USER_HOME/.face.icon"
         sudo \cp "$USER_HOME/faceicon.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
         kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic" "custom"
         echo "Do you want to use this image as login image too ?"
