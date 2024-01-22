@@ -142,6 +142,7 @@ create_backup "Trolltech.conf" "$USER_HOME/.config/Trolltech.conf"
 create_backup "desktop-directories" "$USER_HOME/.local/share/desktop-directories/"
 create_backup "desktop-directories_opt" "/opt/trinity/share/desktop-directories/"
 create_backup "q4tde" "$USER_HOME/.configtde/q4tde"
+create_backup "tdm_pic_users" "/opt/trinity/share/apps/tdm/pics/users/"
 #
 #.trinity/share/config/ksmserverrc
 #.trinity/share/config/ksplashrc
@@ -1138,18 +1139,39 @@ itemdisp "Configuring pointers & set acceleration to 1"
 #pointer size
 #32 /48 /64 /
 pointersizesetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointersize")
-if [ "$pointersizesetting" == "default" ] || [ -z "$pointersizesetting" ]; then
+pointercolorsetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointercolor")
+
+if [ -n "$pointersizesetting" ]; then
+if [ "$pointersizesetting" == "default" ]; then
 ptsize=32
+else
+ptsize=$pointersizesetting
+fi
+else
+ptsize=32
+fi
+
+if [ -n "$pointercolorsetting" ]; then
+if [ "$pointercolorsetting" == "Dark" ]; then
+pc="Dark"
+else
+pc="Light"
+fi
+else
+pc="Light"
+fi
+
+
 if ! grep -q "Xcursor.size" "$USER_HOME/.Xresources"; then
 echo "Xcursor.size: $ptsize" | sudo tee -a $USER_HOME/.Xresources
 fi
 sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" $USER_HOME/.Xresources
-fi
+
 
 if ! grep -q "Xcursor.theme" "$USER_HOME/.Xresources"; then
-echo "Xcursor.theme: Windows10Light" | sudo tee -a $USER_HOME/.Xresources
+echo "Xcursor.theme: Windows10$pc" | sudo tee -a $USER_HOME/.Xresources
 fi
-sudo sed -i "/Xcursor.theme:/c\Xcursor.theme: Windows10Light" $USER_HOME/.Xresources
+sudo sed -i "/Xcursor.theme:/c\Xcursor.theme: Windows10$pc" $USER_HOME/.Xresources
 
 if ! grep -q "Xcursor.size" "/root/.Xresources"; then
 echo "Xcursor.size: $ptsize" | sudo tee -a /root/.Xresources
@@ -1157,37 +1179,49 @@ fi
 sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" /root/.Xresources
 
 if ! grep -q "Xcursor.theme" "/root/.Xresources"; then
-echo "Xcursor.theme: Windows10Light" | sudo tee -a /root/.Xresources
+echo "Xcursor.theme: Windows10$pc" | sudo tee -a /root/.Xresources
 fi
-sudo sed -i "/Xcursor.theme:/c\Xcursor.theme: Windows10Light" /root/.Xresources
+sudo sed -i "/Xcursor.theme:/c\Xcursor.theme: Windows10$pc" /root/.Xresources
 #
-kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$pc
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key Acceleration 1
-kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$pc
 kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key Acceleration 1
-kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-kwriteconfig --file $USER_HOME/.configtde/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-kwriteconfig --file $USER_HOME/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' $USER_HOME/.gtkrc-2.0
-#root
-sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key cursorTheme Windows10Light
+kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$pc
+kwriteconfig --file $USER_HOME/.configtde/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$pc
+kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$pc
+kwriteconfig --file $USER_HOME/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$pc
+
+sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key cursorTheme Windows10$pc
 sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key Acceleration 1
-sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-sudo kwriteconfig --file /root/.configtde/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-sudo kwriteconfig --file /root/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10Light
-sudo kwriteconfig --file /root/.trinity/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
-sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10Light
-sudo sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' /root/.gtkrc-2.0
+sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$pc
+sudo kwriteconfig --file /root/.configtde/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$pc
+sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$pc
+sudo kwriteconfig --file /root/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$pc
+sudo kwriteconfig --file /root/.trinity/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$pc
+sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$pc
 #cursor theme for x
 sudo mkdir -p  /etc/X11/cursors
-sudo \cp /usr/share/icons/Windows10Light/cursor.theme /etc/X11/cursors/Windows10Light_cursor.theme
-sudo ln -nfs /etc/X11/cursors/Windows10Light_cursor.theme /etc/alternatives/x-cursor-theme
+sudo \cp /usr/share/icons/Windows10$pc/cursor.theme /etc/X11/cursors/Windows10$pc\_cursor.theme
+sudo ln -nfs /etc/X11/cursors/Windows10$pc\_cursor.theme /etc/alternatives/x-cursor-theme
+sudo ln -nfs /etc/alternatives/x-cursor-theme /usr/share/icons/default/index.theme
+if [ "$1" = "Dark" ]
+then 
+sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Dark"' $USER_HOME/.gtkrc-2.0
+sudo sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Dark"' /root/.gtkrc-2.0
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Dark"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
+if [ -f "/root/xsettingsd.conf" ]; then
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Dark"' "$USER_HOME/.config/xsettingsd/xsettingsd.conf"
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Dark"' "/root/xsettingsd.conf"
+fi
+else
+sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' $USER_HOME/.gtkrc-2.0
+sudo sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' /root/.gtkrc-2.0
 sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
 if [ -f "/root/xsettingsd.conf" ]; then
 sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.config/xsettingsd/xsettingsd.conf"
 sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "/root/xsettingsd.conf"
+fi
 fi
 sep
 echo
@@ -1871,6 +1905,22 @@ touch $USER_HOME/.q4oswin10.conf
 #========== DONE. ==================================================================================================
 alldone
 
+m1="${ORANGE}════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
+m2="${ORANGE}===${NOCOLOR} Customizing"
+echo -e $m1;echo -e $m2
+echo -e " ${YELLOW}»${NOCOLOR} Do you want to customize the theme (this can be done anytime"
+echo "   by launching qmenu Qtools-->Theming tools) (y:customize/enter:skip) ?" && read x
+if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
+tools/themetools
+clear
+echo -e $m1;echo -e $m2
+echo
+fi
+sep
+echo
+echo
+echo
+
 if [ -n "$vm" ]; then
 echo
 echo -e "${GRAY}█ It seems you're running Q4OS inside a virtualized machine."
@@ -1883,7 +1933,7 @@ fi
 echo
 echo -e "\e[5m~~ reboot is required ~~\e[25m"
 echo
-echo " > Do you want to reboot right now ? (y/n)" && read x && [[ "$x" == "y" ]] && sudo /sbin/reboot;
+echo " > Do you want to reboot right now ? (y:reboot/enter:skip)" && read x && [[ "$x" == "y" ]] && sudo /sbin/reboot;
 echo
 wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
 exit 2
