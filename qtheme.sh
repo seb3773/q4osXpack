@@ -418,7 +418,7 @@ progress "$script" 40
 
 #========== Start menu configuration ============================================================================
 itemdisp "Configuring start menu..."
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key CustomSize 36
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key CustomSize 38
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BourbonMenu false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key LegacyKMenu true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Locked true
@@ -765,9 +765,7 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key Com
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar3 "Operations menu"
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandTitlebarReverseWheel false
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandTitlebarWheel Nothing
-#******** dont' know why desktop icons are flickering with true (when click on a windows then click on desktop )?
-#too bad it's more readeable with shadows on the texts...
-kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled true
 #
 
 
@@ -788,7 +786,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key 
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key InactiveShadowYOffset 5
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowDocks false
 rota
-sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowEnabled false
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowEnabled true
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowOpacity 0.7
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowOverrides false
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowThickness 10
@@ -1099,7 +1097,6 @@ cat << EOF > $downlfold/.directory
 [Desktop Entry]
 Icon=folder-download
 EOF
-sudo \cp $downlfold/.directory $downlfoldroot/.directory
 vidfold=$(xdg-user-dir DOWNLOAD)
 vidfoldroot=$(sudo xdg-user-dir DOWNLOAD)
 cat << EOF > $vidfold/.directory

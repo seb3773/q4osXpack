@@ -104,15 +104,13 @@ installApp "dolphin-trinity" "dolphin-trinity/"
 progress "$script" 10
 
 
-itemdisp "Installing Baobab..."
-installApp "baobab" "baobab/stable"
-progress "$script" 15
-
+#itemdisp "Installing Baobab..."
+#installApp "baobab" "baobab/stable"
 
 
 itemdisp "Installing system-config-printer..."
 installApp "system-config-printer" "system-config-printer/stable"
-progress "$script" 20
+progress "$script" 15
 
 
 if ( getconf LONG_BIT | grep -q 64 ); then
@@ -129,7 +127,7 @@ echo
 echo
 echo
 fi
-progress "$script" 25
+progress "$script" 20
 
 
 itemdisp "Installing lxtask-mod (simple lightweight taskmgr)"
@@ -150,7 +148,7 @@ echo
 else
 echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
 fi
-progress "$script" 30
+progress "$script" 25
 
 
 
@@ -158,24 +156,30 @@ progress "$script" 30
 
 itemdisp "Installing Stacer..."
 installApp "stacer" "stacer/stable"
-progress "$script" 40
+progress "$script" 30
 
 
 
 itemdisp "Installing bleachbit..."
 installApp "bleachbit" "bleachbit/stable"
-progress "$script" 45
+progress "$script" 35
 
 
 
 itemdisp "Installing vlc..."
 installApp "vlc" "vlc/stable"
-progress "$script" 50
+progress "$script" 40
+
+
+itemdisp "Installing usefull console tools..."
+installApp "duf" "duf/stable"
+installApp "jdupes" "jdupes/stable"
+progress "$script" 45
 
 
 
 #classics tools, may be already installed with desktop version
-itemdisp "Installing Kolourpaint,KCharSelect,Ksnapshot,knotes..."
+itemdisp "Installing Kolourpaint,KCharSelect,Ksnapshot,knotes,kcron, kdirstat..."
 echo
 echo -e "  \e[35m░▒▓█\033[0m Installing Kolourpaint..."
 installApp "kolourpaint-trinity" "kolourpaint-trinity" 0
@@ -185,6 +189,10 @@ echo -e " \e[35m░▒▓█\033[0m Installing Ksnapshot..."
 installApp "ksnapshot-trinity" "ksnapshot-trinity" 0
 echo -e " \e[35m░▒▓█\033[0m Installing Knotes..."
 installApp "knotes-trinity" "knotes-trinity"
+echo -e " \e[35m░▒▓█\033[0m Installing Kcron..."
+installApp "kcron-trinity" "kcron-trinity"
+echo -e " \e[35m░▒▓█\033[0m Installing kdirstat..."
+installApp "kdirstat-trinity" "kdirstat-trinity"
 progress "$script" 55
 
 
