@@ -30,6 +30,8 @@ read -p "Press enter..."
 exit
 fi
 
+
+sudo chmod +x tools/tiv tools/tiv32
 lowres=0
 Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
 if (( $Xres < 1920 )); then
