@@ -1,0 +1,110 @@
+#!/bin/sh
+#check root
+if [ "$(id -u)" -ne 0 ]; then
+        echo 'This script must be run by root' >&2
+        exit 1
+fi
+#
+NOCOLOR='\033[0m'
+RED='\033[0;31m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;96m'
+SEPL="${ORANGE}════════════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
+echo "${RED}== ${BLUE}\e[1m\e[4mTuning kernel command line..\e[21m"
+echo "${SEPL}"
+#GRUB_TIMEOUT
+if ! grep -q "GRUB_TIMEOUT=" "/etc/default/grub"; then
+echo 'GRUB_TIMEOUT="3"' | sudo tee -a /etc/default/grub
+fi
+sudo sed -i '/GRUB_TIMEOUT=/c\GRUB_TIMEOUT="3"' /etc/default/grub
+#GRUB_CMDLINE_LINUX_DEFAULT
+#fsck.mode
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "fsck.mode"; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&fsck.mode=skip /' /etc/default/grub
+fi
+sudo sed -i 's/fsck.mode=[0-9]*[a-z]*[A-Z]*/fsck.mode=skip/' /etc/default/grub
+#nowatchdog
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "nowatchdog"; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&nowatchdog /' /etc/default/grub
+fi
+#nomce
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "nomce"; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&nomce /' /etc/default/grub
+fi
+#cryptomgr.notests
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "cryptomgr.notests"; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&cryptomgr.notests /' /etc/default/grub
+fi
+#random.trust_cpu
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "random.trust_cpu"; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&random.trust_cpu=1 /' /etc/default/grub
+fi
+sudo sed -i 's/random.trust_cpu=[0-9]*[a-z]*[A-Z]*/random.trust_cpu=1/' /etc/default/grub
+#no_timer_check
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "no_timer_check"; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&no_timer_check /' /etc/default/grub
+fi
+#tsc
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "tsc="; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&tsc=reliable /' /etc/default/grub
+fi
+sudo sed -i 's/tsc=[0-9]*[a-z]*[A-Z]*/tsc=reliable/' /etc/default/grub
+#audit
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "audit="; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&audit=0 /' /etc/default/grub
+fi
+sudo sed -i 's/audit=[0-9]*[a-z]*[A-Z]*/audit=0/' /etc/default/grub
+#mitigations !! important!!
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "mitigations="; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&mitigations=off /' /etc/default/grub
+fi
+sudo sed -i 's/mitigations=[0-9]*[a-z]*[A-Z]*/mitigations=off/' /etc/default/grub
+#ipv6
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "ipv6.disable="; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&ipv6.disable=1 /' /etc/default/grub
+fi
+sudo sed -i 's/ipv6.disable=[0-9]*[a-z]*[A-Z]*/ipv6.disable=1/' /etc/default/grub
+#apparmor
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "apparmor="; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&apparmor=0 /' /etc/default/grub
+fi
+sudo sed -i 's/apparmor=[0-9]*[a-z]*[A-Z]*/apparmor=0/' /etc/default/grub
+apparmor=0
+#module.sig_unenforce
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "module.sig_unenforce"; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&module.sig_unenforce /' /etc/default/grub
+fi
+#debugfs=off
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "debugfs="; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&debugfs=off /' /etc/default/grub
+fi
+sudo sed -i 's/debugfs=[0-9]*[a-z]*[A-Z]*/debugfs=off/' /etc/default/grub
+#page_alloc.shuffle=1
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "page_alloc.shuffle="; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&page_alloc.shuffle=1 /' /etc/default/grub
+fi
+sudo sed -i 's/page_alloc.shuffle=[0-9]*[a-z]*[A-Z]*/page_alloc.shuffle=1/' /etc/default/grub
+#video=SVIDEO-1:d    (for old intel chipset who tries to init svideo)
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "video="; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&video=SVIDEO-1:d /' /etc/default/grub
+fi
+#modprobe.blacklist=iTCO_wdt   #maybe best in /etc/modprobe.d/blacklist (or ?) /etc/modprobe.d/blacklist.conf
+cpum=$(lscpu | awk '/Vendor ID:/ {print $3}')
+cpum_lower=$(echo "$cpum" | tr '[:upper:]' '[:lower:]')
+if [ "$(echo "$cpum_lower" | grep -c "intel")" -gt 0 ]; then
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "modprobe.blacklist="; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&modprobe.blacklist=iTCO_wdt /' /etc/default/grub
+fi
+elif [ "$(echo "$cpum_lower" | grep -c "amd")" -gt 0 ]; then
+if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "modprobe.blacklist="; then
+sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&modprobe.blacklist=sp5100-tco /' /etc/default/grub
+fi
+fi
+
+sudo update-grub
+sudo sed -i 's/echo/#ech~o/g' /boot/grub/grub.cfg
+echo "${BLUE}----------------------------------------------------------------"
+echo "----------------------------------------------------------------${NOCOLOR}"
+echo
+echo
+echo
