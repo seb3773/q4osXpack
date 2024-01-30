@@ -337,9 +337,29 @@ progress "$script" 50
 itemdisp "Tweaking  shutdown time..."
 echo
 if ! grep -q "DefaultTimeoutStopSec=" "/etc/systemd/system.conf"; then
-echo "DefaultTimeoutStopSec=8" | sudo tee -a /etc/systemd/system.conf
+echo "DefaultTimeoutStopSec=10" | sudo tee -a /etc/systemd/system.conf
 fi
-sudo sed -i "/DefaultTimeoutStopSec=/c\DefaultTimeoutStopSec=8" /etc/systemd/system.conf
+sudo sed -i "/DefaultTimeoutStopSec=/c\DefaultTimeoutStopSec=10" /etc/systemd/system.conf
+sudo sed -i "/#DefaultTimeoutStopSec=/c\DefaultTimeoutStopSec=10" /etc/systemd/system.conf
+
+if ! grep -q "DefaultTimeoutAbortSec=" "/etc/systemd/system.conf"; then
+echo "DefaultTimeoutAbortSec=10" | sudo tee -a /etc/systemd/system.conf
+fi
+sudo sed -i "/DefaultTimeoutAbortSec=/c\DefaultTimeoutAbortSec=10" /etc/systemd/system.conf
+sudo sed -i "/#DefaultTimeoutAbortSec=/c\DefaultTimeoutAbortSec=10" /etc/systemd/system.conf
+
+if ! grep -q "DefaultDeviceTimeoutSec=" "/etc/systemd/system.conf"; then
+echo "DefaultDeviceTimeoutSec=10" | sudo tee -a /etc/systemd/system.conf
+fi
+sudo sed -i "/DefaultDeviceTimeoutSec=/c\DefaultDeviceTimeoutSec=10" /etc/systemd/system.conf
+sudo sed -i "/#DefaultDeviceTimeoutSec=/c\DefaultDeviceTimeoutSec=10" /etc/systemd/system.conf
+
+if ! grep -q "LogLevel=" "/etc/systemd/system.conf"; then
+echo "LogLevel=warning" | sudo tee -a /etc/systemd/system.conf
+fi
+sudo sed -i "/LogLevel=/c\LogLevel=warning" /etc/systemd/system.conf
+sudo sed -i "/#LogLevel=/c\LogLevel=warning" /etc/systemd/system.conf
+
 sep
 echo
 echo
@@ -604,26 +624,26 @@ else
 echo 'backend = "glx";' | sudo tee -a $USER_HOME/.compton-tde.conf
 fi
 #glx paint-on-overlay
-if grep -q "paint-on-overlay =" "$USER_HOME/.compton-tde.conf" || grep -q "paint-on-overlay=" "$USER_HOME/.compton-tde.conf"; then
-sudo sed -i '/paint-on-overlay =/c\paint-on-overlay = true;' $USER_HOME/.compton-tde.conf
-sudo sed -i '/paint-on-overlay=/c\paint-on-overlay = true;' $USER_HOME/.compton-tde.conf
-else
-echo 'paint-on-overlay = true;' | sudo tee -a $USER_HOME/.compton-tde.conf
-fi
+#if grep -q "paint-on-overlay =" "$USER_HOME/.compton-tde.conf" || grep -q "paint-on-overlay=" "$USER_HOME/.compton-tde.conf"; then
+#sudo sed -i '/paint-on-overlay =/c\paint-on-overlay = true;' $USER_HOME/.compton-tde.conf
+#sudo sed -i '/paint-on-overlay=/c\paint-on-overlay = true;' $USER_HOME/.compton-tde.conf
+#else
+#echo 'paint-on-overlay = true;' | sudo tee -a $USER_HOME/.compton-tde.conf
+#fi
 #glx glx-no-stencil
-if grep -q "glx-no-stencil =" "$USER_HOME/.compton-tde.conf" || grep -q "glx-no-stencil=" "$USER_HOME/.compton-tde.conf"; then
-sudo sed -i '/glx-no-stencil =/c\glx-no-stencil = true;' $USER_HOME/.compton-tde.conf
-sudo sed -i '/glx-no-stencil=/c\glx-no-stencil = true;' $USER_HOME/.compton-tde.conf
-else
-echo 'glx-no-stencil = true;' | sudo tee -a $USER_HOME/.compton-tde.conf
-fi
+#if grep -q "glx-no-stencil =" "$USER_HOME/.compton-tde.conf" || grep -q "glx-no-stencil=" "$USER_HOME/.compton-tde.conf"; then
+#sudo sed -i '/glx-no-stencil =/c\glx-no-stencil = true;' $USER_HOME/.compton-tde.conf
+#sudo sed -i '/glx-no-stencil=/c\glx-no-stencil = true;' $USER_HOME/.compton-tde.conf
+#else
+#echo 'glx-no-stencil = true;' | sudo tee -a $USER_HOME/.compton-tde.conf
+#fi
 #glx-no-rebind-pixmap
-if grep -q "glx-no-rebind-pixmap =" "$USER_HOME/.compton-tde.conf" || grep -q "glx-no-rebind-pixmap=" "$USER_HOME/.compton-tde.conf"; then
-sudo sed -i '/glx-no-rebind-pixmap =/c\glx-no-rebind-pixmap = true;' $USER_HOME/.compton-tde.conf
-sudo sed -i '/glx-no-rebind-pixmap=/c\glx-no-rebind-pixmap = true;' $USER_HOME/.compton-tde.conf
-else
-echo 'glx-no-rebind-pixmap = true;' | sudo tee -a $USER_HOME/.compton-tde.conf
-fi
+#if grep -q "glx-no-rebind-pixmap =" "$USER_HOME/.compton-tde.conf" || grep -q "glx-no-rebind-pixmap=" "$USER_HOME/.compton-tde.conf"; then
+#sudo sed -i '/glx-no-rebind-pixmap =/c\glx-no-rebind-pixmap = true;' $USER_HOME/.compton-tde.conf
+#sudo sed -i '/glx-no-rebind-pixmap=/c\glx-no-rebind-pixmap = true;' $USER_HOME/.compton-tde.conf
+#else
+#echo 'glx-no-rebind-pixmap = true;' | sudo tee -a $USER_HOME/.compton-tde.conf
+#fi
 #vsync
 if grep -q "vsync =" "$USER_HOME/.compton-tde.conf" || grep -q "vsync=" "$USER_HOME/.compton-tde.conf"; then
 sudo sed -i '/vsync =/c\vsync = "opengl-swc";' $USER_HOME/.compton-tde.conf

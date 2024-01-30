@@ -765,8 +765,10 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key Com
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar3 "Operations menu"
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandTitlebarReverseWheel false
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandTitlebarWheel Nothing
-kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled true
-#
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Toolbar style" --key TransparentMoving "true"
+######### random bug with desktop redrawing icons - need to find out why. too bad as the text with shadows looks much better
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
+#############
 
 
 rota
@@ -786,7 +788,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key 
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key InactiveShadowYOffset 5
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowDocks false
 rota
-sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowEnabled true
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowEnabled false
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowOpacity 0.7
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowOverrides false
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowThickness 10
@@ -871,6 +873,9 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBinding
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar3 "Operations menu"
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandTitlebarReverseWheel false
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBindings --key CommandTitlebarWheel Nothing
+######### random bug with desktop redrawing icons - need to find out why. too bad as the text with shadows looks much better
+sudo kwriteconfig --file /root/.trinity/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
+#######
 rota
 echo
 printf '\e[A\e[K'
@@ -1678,9 +1683,8 @@ progress "$script" 85
 
 
 
-#========== Fonts. Mostly Segoe UI & conslas for Konsole ========================================================
+#========== Fonts. Mostly Segoe UI & consolas for Konsole ========================================================
 itemdisp "Configuring fonts"
-kwriteconfig --file $TDEHOME/share/config/kcmfonts --group General --key dontChangeAASettings true
 #kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key fixed "Droid Sans Mono,9,-1,5,50,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key fixed "Consolas,11,-1,5,50,0,0,0,0,0"
 #kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key fixed "Cascadia Code,11,-1,5,50,0,0,0,0,0"
@@ -1774,6 +1778,12 @@ if ! grep -q "xterm\\*faceName" "$USER_HOME/.Xresources"; then echo "xterm*faceN
 sudo sed -i "/xterm*faceName:/c\xterm*faceName: Consolas" $USER_HOME/.Xresources
 if ! grep -q "xterm\\*faceSize" "$USER_HOME/.Xresources"; then echo "xterm*faceSize: 10" | sudo tee -a $USER_HOME/.Xresources ; fi
 sudo sed -i "/xterm*faceSize:/c\xterm*faceSize: 10" $USER_HOME/.Xresources
+#
+kwriteconfig --file $TDEHOME/share/config/kcmfonts --group General --key dontChangeAASettings false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key XftSubPixel none
+#------#------
+
+
 sep
 echo
 echo
@@ -1906,7 +1916,7 @@ m1="${ORANGE}══════════════════════�
 m2="${ORANGE}===${NOCOLOR} Customizing"
 echo -e $m1;echo -e $m2
 echo -e " ${YELLOW}»${NOCOLOR} Do you want to customize the theme (this can be done anytime"
-echo "   by launching qmenu Qtools-->Theming tools) (y:customize/enter:skip) ?" && read x
+echo "   by launching qmenu-->Qtools-->Theming tools) (y:customize/enter:skip) ?" && read x
 if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
 tools/themetools
 clear
