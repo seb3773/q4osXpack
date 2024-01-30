@@ -10,7 +10,8 @@ echo "installing...";scriptfolder=$(dirname "$(readlink -f "$0")")
 desktopfilecontent="[Desktop Entry]
 Exec[\$e]=$scriptfolder/themeinst.sh
 MimeType=application/ms_themepack
-Name=ms themepack installer
+Icon=preferences-desktop-theme
+Name=MS themepack installer
 Terminal=false
 Type=Application
 X-TDE-InitialPreference=2
@@ -20,7 +21,8 @@ echo "$desktopfilecontent" | sudo tee "$desktopfilepath" > /dev/null 2>&1
 desktopfilecontent="[Desktop Entry]
 Exec[\$e]=$scriptfolder/themeinst.sh
 MimeType=application/ms_deskthemepack
-Name=ms themepack installer
+Icon=preferences-desktop-theme
+Name=MS themepack installer
 Terminal=false
 Type=Application
 X-TDE-InitialPreference=2
@@ -51,17 +53,14 @@ if [[ $filename == *.themepack ]]; then filename_no_extension="${filename%.theme
 elif [[ $filename == *.deskthemepack ]]; then filename_no_extension="${filename%.deskthemepack}"
 else echo "Extension must be .themepack or .deskthemepack"; exit; fi
 filename=$filename_no_extension
-wallpapers_dir="/opt/trinity/share/wallpapers/$filename"
-if  [ $interm -eq 0 ]; then
-tdesudo -i preferences-desktop-wallpaper -d -c ls --comment "ms themepack installer needs administrators rights. Please enter your password:"; fi
-sudo mkdir -p "$wallpapers_dir"
-sudo 7z x "$1" -o"$wallpapers_dir" -y > /dev/null 2>&1
-sudo chmod -R 755 "/opt/trinity/share/wallpapers/$filename"
-sudo rm -f "/opt/trinity/share/wallpapers/$filename/"*.theme
-sudo kwriteconfig --file $USER_HOME/.trinity/share/config/kdesktoprc --group Desktop0 --key WallpaperList "/opt/trinity/share/wallpapers/$filename/DesktopBackground/"
-sudo kwriteconfig --file $USER_HOME/.trinity/share/config/kdesktoprc --group Desktop0 --key MultiWallpaperMode Random
-sudo kwriteconfig --file $USER_HOME/.trinity/share/config/kdesktoprc --group Desktop0 --key CrossFadeBg true
-sudo kwriteconfig --file $USER_HOME/.trinity/share/config/kdesktoprc --group Desktop0 --key ChangeInterval 10
+wallpapers_dir="$TDEHOME/share/wallpapers/$filename"
+mkdir -p "$wallpapers_dir"
+7z x "$1" -o"$wallpapers_dir" -y > /dev/null 2>&1
+rm -f "$TDEHOME/share/wallpapers/$filename/"*.theme
+kwriteconfig --file $USER_HOME/.trinity/share/config/kdesktoprc --group Desktop0 --key WallpaperList "$TDEHOME/share/wallpapers/$filename/DesktopBackground/"
+kwriteconfig --file $USER_HOME/.trinity/share/config/kdesktoprc --group Desktop0 --key MultiWallpaperMode Random
+kwriteconfig --file $USER_HOME/.trinity/share/config/kdesktoprc --group Desktop0 --key CrossFadeBg true
+kwriteconfig --file $USER_HOME/.trinity/share/config/kdesktoprc --group Desktop0 --key ChangeInterval 10
 if  [ $interm -eq 1 ]; then echo "MS Themepack $filename installed.";echo "Restarting kdesktop..."
 else dcop knotify Notify notify "Themepack installation" "knotify" "Restarting kdesktop..." "" "" 16 0
 fi
