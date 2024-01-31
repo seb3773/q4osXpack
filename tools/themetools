@@ -473,8 +473,8 @@ if file_select "-=- Q4OS Seb Scripts -=- select user picture" "/home" "*.jpg" ; 
 if check_image_size "$FILE_SELECTED"; then
         echo "Picture size is conform."
 if ( getconf LONG_BIT | grep -q 64 ); then
-tools/tiv -w 60 "$FILE_SELECTED"
-else tools/tiv32 -w 60 "$FILE_SELECTED"; fi
+tools/tiv -0 -w 70 "$FILE_SELECTED"
+else tools/tiv32 -0 -w 70 "$FILE_SELECTED"; fi
 
 
 read -p "Use this image as user picture ? (y/n) " choix
