@@ -435,7 +435,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRig
 rota
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Size 4
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key SizePercentage 100
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintValue 94
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintValue 91
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key MenubarPanelBlurred true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Transparent true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key panelIconWidth 48
@@ -1009,6 +1009,7 @@ picfold=$(xdg-user-dir PICTURES)
 docfold=$(xdg-user-dir DOCUMENTS)
 musicfold=$(xdg-user-dir MUSIC)
 vidfold=$(xdg-user-dir VIDEOS)
+vidfoldroot=$(sudo xdg-user-dir VIDEOS)
 downlfold=$(xdg-user-dir DOWNLOAD)
 usrfold=$(xdg-user-dir USER)
 downlfoldroot=$(xdg-user-dir DOWNLOAD)
@@ -1102,8 +1103,6 @@ cat << EOF > $downlfold/.directory
 [Desktop Entry]
 Icon=folder-download
 EOF
-vidfold=$(xdg-user-dir DOWNLOAD)
-vidfoldroot=$(sudo xdg-user-dir DOWNLOAD)
 cat << EOF > $vidfold/.directory
 [Desktop Entry]
 Icon=folder-videos
@@ -1887,6 +1886,7 @@ sudo ln -s /opt/trinity/bin/kolourpaint /usr/local/bin/paint > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/konsole /usr/local/bin/cmd > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/ksnapshot /usr/local/bin/snapshot > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/knotes /usr/local/bin/stickynotes > /dev/null 2>&1
+sudo ln -s /opt/trinity/bin/kcron /usr/local/bin/taskschd > /dev/null 2>&1
 #default task manager (CTRL+ESC)
 sudo ln -s /usr/bin/lxtask /usr/local/bin/taskmgr > /dev/null 2>&1
 sudo ln -s /usr/bin/lxtask /usr/local/bin/ksysguard > /dev/null 2>&1

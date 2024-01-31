@@ -104,10 +104,6 @@ installApp "dolphin-trinity" "dolphin-trinity/"
 progress "$script" 10
 
 
-#itemdisp "Installing Baobab..."
-#installApp "baobab" "baobab/stable"
-
-
 itemdisp "Installing system-config-printer..."
 installApp "system-config-printer" "system-config-printer/stable"
 progress "$script" 15
@@ -179,7 +175,7 @@ progress "$script" 45
 
 
 #classics tools, may be already installed with desktop version
-itemdisp "Installing Kolourpaint,KCharSelect,Ksnapshot,knotes,kcron, kdirstat..."
+itemdisp "Installing Kolourpaint,KCharSelect,Ksnapshot,knotes,kcron, kdirstat, kpdf..."
 echo
 echo -e "  \e[35m░▒▓█\033[0m Installing Kolourpaint..."
 installApp "kolourpaint-trinity" "kolourpaint-trinity" 0
@@ -193,6 +189,8 @@ echo -e " \e[35m░▒▓█\033[0m Installing Kcron..."
 installApp "kcron-trinity" "kcron-trinity"
 echo -e " \e[35m░▒▓█\033[0m Installing kdirstat..."
 installApp "kdirstat-trinity" "kdirstat-trinity"
+echo -e " \e[35m░▒▓█\033[0m Installing kpdf..."
+installApp "kpdf-trinity" "kpdf-trinity"
 progress "$script" 55
 
 
