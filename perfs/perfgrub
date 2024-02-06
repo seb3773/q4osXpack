@@ -14,9 +14,9 @@ echo "${RED}== ${BLUE}\e[1m\e[4mTuning kernel command line..\e[21m"
 echo "${SEPL}"
 #GRUB_TIMEOUT
 if ! grep -q "GRUB_TIMEOUT=" "/etc/default/grub"; then
-echo 'GRUB_TIMEOUT="3"' | sudo tee -a /etc/default/grub
+echo 'GRUB_TIMEOUT="1"' | sudo tee -a /etc/default/grub
 fi
-sudo sed -i '/GRUB_TIMEOUT=/c\GRUB_TIMEOUT="3"' /etc/default/grub
+sudo sed -i '/GRUB_TIMEOUT=/c\GRUB_TIMEOUT="1"' /etc/default/grub
 #GRUB_CMDLINE_LINUX_DEFAULT
 #fsck.mode
 if ! (grep "GRUB_CMDLINE_LINUX_DEFAULT=" "/etc/default/grub")|grep -q "fsck.mode"; then
@@ -101,8 +101,10 @@ sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&modprobe.blacklist=sp5100-tco /' /
 fi
 fi
 
+
+tar -xzf update-grub.tar.gz -C /usr/sbin/
 sudo update-grub
-sudo sed -i 's/echo/#ech~o/g' /boot/grub/grub.cfg
+#sudo sed -i 's/echo/#ech~o/g' /boot/grub/grub.cfg
 echo "${BLUE}----------------------------------------------------------------"
 echo "----------------------------------------------------------------${NOCOLOR}"
 echo
