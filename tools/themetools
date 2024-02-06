@@ -9,7 +9,7 @@ actbutton=black,white
 title=black,lightgray
 '
 USER_HOME=$(eval echo ~${SUDO_USER})
-USER_SU=$(eval echo ${SUDO_USER})
+USER_SU=$USER
 if [ -z "$TDEHOME" ]
 then
 clear
@@ -106,8 +106,18 @@ logbck () {
 rwallp=$(kreadconfig --file $TDEHOME/share/config/kdesktoprc --group Desktop0 --key Wallpaper)
 echo -e "  \e[35m░▒▓█\033[0m configuring login background with current wallpaper"
 echo "       (please be patient this could take some time...)"
-sudo convert $rwallp -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/background.jpg
-sudo \cp /opt/trinity/share/apps/tdm/themes/windows/background.jpg /opt/trinity/share/apps/ksplash/Themes/Redmond10/Background.png
+Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
+Yres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
+sudo convert $rwallp -resize ${Xres}x${Yres}! -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg
+sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-220)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*0.2]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
+base_bg="/opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg"
+user_directories=(/opt/trinity/share/apps/ksplash/Themes/Redmond10_*/)
+for user_dir in "${user_directories[@]}"; do
+user_dir="${user_dir%/}"
+userpic="/opt/trinity/share/apps/ksplash/Themes/$(basename "$user_dir")/userpic.png"
+output_bg="/opt/trinity/share/apps/ksplash/Themes/$(basename "$user_dir")/Background.png"
+sudo convert "$base_bg" "$userpic" -geometry +$(convert "$base_bg" -ping -format "%[fx:(w-220)/2]" info:)+$(convert "$base_bg" -ping -format "%[fx:h*0.2]" info:) -composite "$output_bg"
+done
 #test dark or light
 testlight
 echo "Done."
@@ -483,11 +493,14 @@ if [ "$choix" == "y" ] || [ "$choix" == "Y" ]; then
         resize_and_create_circle_image "$FILE_SELECTED" "$USER_HOME/userpic.png" "$USER_HOME/faceicon.png"
         \cp "$USER_HOME/faceicon.png" "$USER_HOME/.face.icon"
         sudo \cp "$USER_HOME/faceicon.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
+        sudo \cp "$USER_HOME/userpic.png" "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png"
+        sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-220)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*0.2]" info:) -composite /opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/Background.png
         kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic" "custom"
-        echo "Do you want to use this image as login image too ?"
-        read -p "(this will be global for all users in case of multi accounts usage (y/n) " uspic
+        echo "  Do you want to use this image as login image too ?"
+        read -p "  this will be global for all users in case of multi accounts usage (y/n) " uspic
         if [ "$uspic" == "y" ] || [ "$uspic" == "Y" ]; then
         sudo \cp "$USER_HOME/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
+        sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-220)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*0.2]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
         kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginpic" "custom"
         fi
         rm -f "$USER_HOME/userpic.png"
@@ -506,8 +519,10 @@ fi
 "» Default") 
 clear
 rm -f "$USER_HOME/.face.icon"
-sudo mv -f "/opt/trinity/share/apps/tdm/themes/windows/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png"
-sudo tar -xzf theme/tdmwin.tar.gz -C "/opt/trinity/share/apps/tdm/themes/" windows/userpic.png
+#sudo mv -f "/opt/trinity/share/apps/tdm/themes/windows/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png"
+#sudo tar -xzf theme/tdmwin.tar.gz -C "/opt/trinity/share/apps/tdm/themes/" windows/userpic.png
+sudo \cp /opt/trinity/share/apps/tdm/themes/windows/loginpic_default.png "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png"
+sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-220)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*0.2]" info:) -composite /opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/Background.png
 iconth=$(kreadconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme)
 sudo \cp "/usr/share/icons/$iconth/48x48/actions/switchuser.png" "$USER_HOME/.face.icon"
 sudo \cp "/usr/share/icons/$iconth/48x48/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
@@ -515,10 +530,9 @@ kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic
 echo "Do you want to use the default image as login image too ?"
 read -p "(this will be global for all users in case of multi accounts usage (y/n) " uspic
 if [ "$uspic" == "y" ] || [ "$uspic" == "Y" ]; then
-sudo rm -f "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png"
+sudo \cp "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
+sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-220)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*0.2]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
 kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginpic" "default"
-else
-sudo mv -f "/opt/trinity/share/apps/tdm/themes/windows/olduserpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
 fi
 echo "Done."
 read -p "Press enter..."
