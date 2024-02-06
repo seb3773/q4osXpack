@@ -55,6 +55,7 @@ sudo chmod +x theme/grubscripts theme/themegrub theme/copyfiles theme/createdeko
 
 #========== Retrieve resolution for res dependent elements ======================================================
 Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
+Yres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
 if (( $Xres < 1920 )); then
 lowres=1
 fi
@@ -200,9 +201,34 @@ echo $gray_value
 if [[ $customcolor -eq 1 ]]; then
 echo -e "  \e[35m░▒▓█\033[0m Custom accent color"
 
+
+
+
 if [ -z "$accent" ]; then 
-echo "  custom color specified, but no accent color given,"
-echo "  please choose one:"
+
+if [[ $dark -eq 1 ]]
+then
+accentsettings=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "dark_custom_color")
+themecolor="dark theme"
+else
+accentsettings=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "light_custom_color")
+themecolor="light theme"
+fi
+
+echo " ► custom color specified, but no accent color given,"
+if [ -n "$accentsettings" ]; then 
+	echo "  do you want to use previous custom color ($accentsettings) for $themecolor ?)"
+        echo "  (y:use previous color/enter:skip) ?" && read x
+	if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
+        accent=$accentsettings
+	fi
+
+fi
+fi
+
+if [ -z "$accent" ]; then 
+echo "  please choose a color:"
+
 while true; do
 display_palette
 selected_color=$(get_user_color)
@@ -229,7 +255,15 @@ fi
 done
 accent=$hex_color
 else
-echo "accent color: $accent"
+echo -e "  ${BLUE}»${NOCOLOR} Accent color: $accent"
+echo
+fi
+
+if [[ $dark -eq 1 ]]
+then
+kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "dark_custom_color" "$accent"
+else
+kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "light_custom_color" "$accent"
 fi
 
 else
@@ -265,7 +299,7 @@ rgb_accent2=$(hex_to_rgb "$accent2")
 rgb_accent3=$(hex_to_rgb "$accent3")
 
 #========== retrieve packages list ==============================================================================
-echo -e "    ${ORANGE}░▒▓█\033[0m Retrieve packages list..."
+echo -e "   ${ORANGE}░▒▓█\033[0m Retrieve packages list..."
 echo
 cd common
 sudo ./pklist
@@ -402,10 +436,13 @@ cd ..
 
 
 
+
+
+
 #========== splash screen =======================================================================================
 itemdisp "Configuring splash screen at desktop loading..."
 #kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme Unified
-kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme Redmond10
+kwriteconfig --file $TDEHOME/share/config/ksplashrc --group KSplash --key Theme "Redmond10_$USER"
 sep
 echo
 echo
@@ -651,18 +688,19 @@ fi
 #IFS=',' read -r r g b <<< "$rgb_accent"
 #vgrey=$(calculate_gray_value $r $g $b)
 #kcolor=$(convert_to_rgb_hex $vgrey)
-#sudo convert -size 24x340 xc:${kcolor} /opt/trinity/share/apps/kicker/pics/kside.png
-#sudo convert -size 24x4 xc:${kcolor} /opt/trinity/share/apps/kicker/pics/kside_tile.png
+#sudo convert -size 24x340 xc:${kcolor} $TDEHOME/share/apps/kicker/pics/kside.png
+#sudo convert -size 24x4 xc:${kcolor} $TDEHOME/share/apps/kicker/pics/kside_tile.png
 #fi
 
 ## new method, make use of Q4OS team modification (ColorizeSidePixmap=false)
-sudo convert -size 24x340 xc:${accent} /opt/trinity/share/apps/kicker/pics/kside.png
-sudo convert -size 24x4 xc:${accent} /opt/trinity/share/apps/kicker/pics/kside_tile.png
+sudo mkdir -p $TDEHOME/share/apps/kicker/pics
+sudo convert -size 24x340 xc:${accent} $TDEHOME/share/apps/kicker/pics/kside.png
+sudo convert -size 24x4 xc:${accent} $TDEHOME/share/apps/kicker/pics/kside_tile.png
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ColorizeSidePixmap false
 
 
 #kickerbar rgb_accent
-#sudo convert -size 2x60 xc:${accent} /opt/trinity/share/apps/kicker/pics/panel-win.png
+#sudo convert -size 2x60 xc:${accent} $TDEHOME/share/apps/kicker/pics/panel-win.png
 
 #showdeskten icon
 sudo convert -size 5x64 xc:${accent} /opt/trinity/share/apps/kicker/pics/showdesk10.png
@@ -1530,9 +1568,15 @@ fi
 
 
 
-echo -e "  \e[35m░▒▓█\033[0m configuring wallpaper for login"
+echo -e "  \e[35m░▒▓█\033[0m configuring wallpaper for login & ksplash"
 echo "       (please be patient this could take some time...)"
-sudo convert /opt/trinity/share/wallpapers/$rwallp -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/background.jpg
+#sudo convert /opt/trinity/share/wallpapers/$rwallp -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/background.jpg
+#sudo convert /opt/trinity/share/wallpapers/$rwallp -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg
+sudo convert /opt/trinity/share/wallpapers/$rwallp -resize ${Xres}x${Yres}! -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg
+## here imagemagick apply loginpic
+sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-220)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*0.2]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
+
+
 if [[ $lowres -eq 1 ]]; then
 sudo tar -xzf theme/tdmwin_lowres.tar.gz -C /opt/trinity/share/apps/tdm/themes/windows/
 fi
@@ -1550,8 +1594,17 @@ if (( $(echo "$lightamount_center > 30" | bc -l) )); then
 sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#333333" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 fi
 
+## here imagemagick apply userpic
+base_bg="/opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg"
+user_directories=(/opt/trinity/share/apps/ksplash/Themes/Redmond10_*/)
+for user_dir in "${user_directories[@]}"; do
+user_dir="${user_dir%/}"
+userpic="/opt/trinity/share/apps/ksplash/Themes/$(basename "$user_dir")/userpic.png"
+output_bg="/opt/trinity/share/apps/ksplash/Themes/$(basename "$user_dir")/Background.png"
+sudo convert "$base_bg" "$userpic" -geometry +$(convert "$base_bg" -ping -format "%[fx:(w-220)/2]" info:)+$(convert "$base_bg" -ping -format "%[fx:h*0.2]" info:) -composite "$output_bg"
+done
+############
 
-sudo \cp /opt/trinity/share/apps/tdm/themes/windows/background.jpg /opt/trinity/share/apps/ksplash/Themes/Redmond10/Background.png
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoPixmap "/opt/trinity/share/apps/tdm/pics/tuxlogo.png"
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoArea Logo
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key GUIStyle QtCurve
@@ -1913,9 +1966,9 @@ touch $USER_HOME/.q4oswin10.conf
 alldone
 
 m1="${ORANGE}════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
-m2="${ORANGE}===${NOCOLOR} Customizing"
+m2="${ORANGE}═══${NOCOLOR} Customizing"
 echo -e $m1;echo -e $m2
-echo -e " ${YELLOW}»${NOCOLOR} Do you want to customize the theme (this can be done anytime"
+echo -e " ${YELLOW}►${NOCOLOR} Do you want to customize the theme (this can be done anytime"
 echo "   by launching qmenu-->Qtools-->Theming tools) (y:customize/enter:skip) ?" && read x
 if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
 tools/themetools
@@ -1940,7 +1993,7 @@ fi
 echo
 echo -e "\e[5m~~ reboot is required ~~\e[25m"
 echo
-echo " > Do you want to reboot right now ? (y:reboot/enter:skip)" && read x && [[ "$x" == "y" ]] && sudo /sbin/reboot;
+echo -e " ${RED}►${NOCOLOR} Do you want to reboot right now ? (y:reboot/enter:skip)" && read x && [[ "$x" == "y" ]] && sudo /sbin/reboot;
 echo
 wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
 exit 2

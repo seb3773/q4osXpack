@@ -425,8 +425,6 @@ sep
 echo
 echo
 echo
-progress "$script" 70
-
 
 
 
@@ -438,12 +436,19 @@ sep
 echo
 echo
 echo
-progress "$script" 75
+progress "$script" 70
 
 
-
-
-
+itemdisp "check if firmwares missing & try autoinstall..."
+echo -e "  \e[35m░▒▓█\033[0m Installing isenkram-cli..."
+echo -e "${YELLOW}"
+sudo apt install -y isenkram-cli
+echo -e "${NOCOLOR}"
+sudo isenkram-autoinstall-firmware
+sep
+echo
+echo
+echo
 
 #========== fix i915 modules missing on some intel machines ========================================================
 itemdisp "testing if i915 modules firmwares missing..."
@@ -484,7 +489,7 @@ sep
 echo
 echo
 echo
-progress "$script" 80
+progress "$script" 75
 
 
 
@@ -521,7 +526,7 @@ sep
 echo
 echo
 echo
-progress "$script" 85
+progress "$script" 80
 
 
 
@@ -558,7 +563,7 @@ sep
 echo
 echo
 echo
-progress "$script" 90
+progress "$script" 85
 
 
 
@@ -608,9 +613,30 @@ sep
 echo
 echo
 echo
-progress "$script" 95
+progress "$script" 90
 
 
+
+#========== installing ananicy  =====================================================================================
+itemdisp "Installing ananicy"
+
+cd perfs
+if ( getconf LONG_BIT | grep -q 64 ); then
+sudo tar -xzf ananicy-cpp_bin_64.tar.gz -C /usr/local/bin/
+else
+sudo tar -xzf ananicy-cpp_bin_32.tar.gz -C /usr/local/bin/
+fi
+sudo mkdir -p /usr/local/lib/systemd/system
+sudo tar -xzf ananicy-cpp.service.tar.gz -C /usr/local/lib/systemd/system/
+sudo mkdir -p /etc/ananicy.d
+sudo tar -xzf ananicy.rules.tar.gz -C /etc/ananicy.d/
+cd ..
+sudo systemctl enable --now ananicy-cpp.service
+sep
+echo
+echo
+echo
+progress "$script" 90
 
 
 #========== tuning compton tde =====================================================================================
@@ -624,26 +650,26 @@ else
 echo 'backend = "glx";' | sudo tee -a $USER_HOME/.compton-tde.conf
 fi
 #glx paint-on-overlay
-#if grep -q "paint-on-overlay =" "$USER_HOME/.compton-tde.conf" || grep -q "paint-on-overlay=" "$USER_HOME/.compton-tde.conf"; then
-#sudo sed -i '/paint-on-overlay =/c\paint-on-overlay = true;' $USER_HOME/.compton-tde.conf
-#sudo sed -i '/paint-on-overlay=/c\paint-on-overlay = true;' $USER_HOME/.compton-tde.conf
-#else
-#echo 'paint-on-overlay = true;' | sudo tee -a $USER_HOME/.compton-tde.conf
-#fi
+if grep -q "paint-on-overlay =" "$USER_HOME/.compton-tde.conf" || grep -q "paint-on-overlay=" "$USER_HOME/.compton-tde.conf"; then
+sudo sed -i '/paint-on-overlay =/c\paint-on-overlay = true;' $USER_HOME/.compton-tde.conf
+sudo sed -i '/paint-on-overlay=/c\paint-on-overlay = true;' $USER_HOME/.compton-tde.conf
+else
+echo 'paint-on-overlay = true;' | sudo tee -a $USER_HOME/.compton-tde.conf
+fi
 #glx glx-no-stencil
-#if grep -q "glx-no-stencil =" "$USER_HOME/.compton-tde.conf" || grep -q "glx-no-stencil=" "$USER_HOME/.compton-tde.conf"; then
-#sudo sed -i '/glx-no-stencil =/c\glx-no-stencil = true;' $USER_HOME/.compton-tde.conf
-#sudo sed -i '/glx-no-stencil=/c\glx-no-stencil = true;' $USER_HOME/.compton-tde.conf
-#else
-#echo 'glx-no-stencil = true;' | sudo tee -a $USER_HOME/.compton-tde.conf
-#fi
+if grep -q "glx-no-stencil =" "$USER_HOME/.compton-tde.conf" || grep -q "glx-no-stencil=" "$USER_HOME/.compton-tde.conf"; then
+sudo sed -i '/glx-no-stencil =/c\glx-no-stencil = true;' $USER_HOME/.compton-tde.conf
+sudo sed -i '/glx-no-stencil=/c\glx-no-stencil = true;' $USER_HOME/.compton-tde.conf
+else
+echo 'glx-no-stencil = true;' | sudo tee -a $USER_HOME/.compton-tde.conf
+fi
 #glx-no-rebind-pixmap
-#if grep -q "glx-no-rebind-pixmap =" "$USER_HOME/.compton-tde.conf" || grep -q "glx-no-rebind-pixmap=" "$USER_HOME/.compton-tde.conf"; then
-#sudo sed -i '/glx-no-rebind-pixmap =/c\glx-no-rebind-pixmap = true;' $USER_HOME/.compton-tde.conf
-#sudo sed -i '/glx-no-rebind-pixmap=/c\glx-no-rebind-pixmap = true;' $USER_HOME/.compton-tde.conf
-#else
-#echo 'glx-no-rebind-pixmap = true;' | sudo tee -a $USER_HOME/.compton-tde.conf
-#fi
+if grep -q "glx-no-rebind-pixmap =" "$USER_HOME/.compton-tde.conf" || grep -q "glx-no-rebind-pixmap=" "$USER_HOME/.compton-tde.conf"; then
+sudo sed -i '/glx-no-rebind-pixmap =/c\glx-no-rebind-pixmap = true;' $USER_HOME/.compton-tde.conf
+sudo sed -i '/glx-no-rebind-pixmap=/c\glx-no-rebind-pixmap = true;' $USER_HOME/.compton-tde.conf
+else
+echo 'glx-no-rebind-pixmap = true;' | sudo tee -a $USER_HOME/.compton-tde.conf
+fi
 #vsync
 if grep -q "vsync =" "$USER_HOME/.compton-tde.conf" || grep -q "vsync=" "$USER_HOME/.compton-tde.conf"; then
 sudo sed -i '/vsync =/c\vsync = "opengl-swc";' $USER_HOME/.compton-tde.conf
