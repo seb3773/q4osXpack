@@ -58,6 +58,15 @@ Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
 Yres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
 if (( $Xres < 1920 )); then
 lowres=1
+usz=180
+rsz1="180x180^"
+rsz2="180x180"
+fact="0.15"
+else
+usz=220
+rsz1="220x220^"
+rsz2="220x220"
+fact="0.2"
 fi
 
 
@@ -531,7 +540,7 @@ for FILE in *;
 do
 sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
 if [ "$FILE" = "tde-settingsmenu.directory" ]; then
-sed -i '/Icon=/c\Icon=systemsettings' "$pathfold$FILE"
+sed -i '/Icon=/c\Icon=menu-settings' "$pathfold$FILE"
 fi
 if [ "$FILE" = "chrome-apps.directory" ]; then
 sed -i '/Icon=/c\Icon=folder-html' "$pathfold$FILE"
@@ -554,7 +563,7 @@ if [ "$FILE" = "tde-system.directory" ]; then
 sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-settingsmenu.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=systemsettings' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=menu-settings' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-multimedia.directory" ]; then
 sudo sed -i '/Icon=/c\Icon=default-folder-video' "$pathfold$FILE"
@@ -589,7 +598,9 @@ fi
 if [ "$FILE" = "tde-edutainment.directory" ]; then
 sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
 fi
-
+if [ "$FILE" = "tde-unknown.directory" ]; then
+sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+fi
 
 
 done
@@ -1574,12 +1585,10 @@ echo "       (please be patient this could take some time...)"
 #sudo convert /opt/trinity/share/wallpapers/$rwallp -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg
 sudo convert /opt/trinity/share/wallpapers/$rwallp -resize ${Xres}x${Yres}! -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg
 ## here imagemagick apply loginpic
-sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-220)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*0.2]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
+sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*$fact]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
 
 
-if [[ $lowres -eq 1 ]]; then
-sudo tar -xzf theme/tdmwin_lowres.tar.gz -C /opt/trinity/share/apps/tdm/themes/windows/
-fi
+
 #test dark or light
 #lightamount=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -threshold 50% -format "%[fx:100*image.mean]" info:)
 
@@ -1601,7 +1610,7 @@ for user_dir in "${user_directories[@]}"; do
 user_dir="${user_dir%/}"
 userpic="/opt/trinity/share/apps/ksplash/Themes/$(basename "$user_dir")/userpic.png"
 output_bg="/opt/trinity/share/apps/ksplash/Themes/$(basename "$user_dir")/Background.png"
-sudo convert "$base_bg" "$userpic" -geometry +$(convert "$base_bg" -ping -format "%[fx:(w-220)/2]" info:)+$(convert "$base_bg" -ping -format "%[fx:h*0.2]" info:) -composite "$output_bg"
+sudo convert "$base_bg" "$userpic" -geometry +$(convert "$base_bg" -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert "$base_bg" -ping -format "%[fx:h*$fact]" info:) -composite "$output_bg"
 done
 ############
 
