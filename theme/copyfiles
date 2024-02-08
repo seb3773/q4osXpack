@@ -1,0 +1,2173 @@
+#!/bin/sh
+#check root
+if [ "$(id -u)" -ne 0 ]; then
+        echo 'This script must be run by root' >&2
+        exit 1
+fi
+#
+
+USER_HOME=$(eval echo ~${SUDO_USER})
+USER_SU=$(eval echo ${SUDO_USER})
+NOCOLOR='\033[0m'
+RED='\033[0;31m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;96m'
+SEPL="${ORANGE}════════════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
+echo "${RED}== ${BLUE}\e[1m\e[4mCopying various files...\e[21m"
+echo "${SEPL}"
+echo "  \e[35m░▒▓█\033[0m copying icons"
+if [ $1 -eq 1 ]
+then
+iconth="dark"
+else
+iconth="light"
+fi
+rm -fr /usr/share/icons/kdeten_$iconth
+mkdir -p /usr/share/icons/kdeten_$iconth
+#tar -xzf kdeten_icons.tar.gz -C /usr/share/icons/kdeten_light/
+7z x -so kdeten_icons.tar.7z | tar xf - -C /usr/share/icons/kdeten_$iconth/
+tar -xzf kdeten_mods_$iconth.tar.gz -C /usr/share/icons/kdeten_$iconth/
+#links
+cd /usr/share/icons/kdeten_$iconth/
+ln -s kde1.png 16x16/actions/kde2.png
+ln -s kde1.png 16x16/actions/kde3.png
+ln -s kde1.png 16x16/actions/kde4.png
+ln -s kde1.png 16x16/actions/kde5.png
+ln -s kde1.png 16x16/actions/kde6.png
+ln -s kde1.png 22x22/actions/kde2.png
+ln -s kde1.png 22x22/actions/kde3.png
+ln -s kde1.png 22x22/actions/kde4.png
+ln -s kde1.png 22x22/actions/kde5.png
+ln -s kde1.png 22x22/actions/kde6.png
+ln -s kde1.png 24x24/actions/kde2.png
+ln -s kde1.png 24x24/actions/kde3.png
+ln -s kde1.png 24x24/actions/kde4.png
+ln -s kde1.png 24x24/actions/kde5.png
+ln -s kde1.png 24x24/actions/kde6.png
+ln -s kde1.png 32x32/actions/kde2.png
+ln -s kde1.png 32x32/actions/kde3.png
+ln -s kde1.png 32x32/actions/kde4.png
+ln -s kde1.png 32x32/actions/kde5.png
+ln -s kde1.png 32x32/actions/kde6.png
+ln -s kde1.png 48x48/actions/kde2.png
+ln -s kde1.png 48x48/actions/kde3.png
+ln -s kde1.png 48x48/actions/kde4.png
+ln -s kde1.png 48x48/actions/kde5.png
+ln -s kde1.png 48x48/actions/kde6.png
+ln -s kde1.png 64x64/actions/kde2.png
+ln -s kde1.png 64x64/actions/kde3.png
+ln -s kde1.png 64x64/actions/kde4.png
+ln -s kde1.png 64x64/actions/kde5.png
+ln -s kde1.png 64x64/actions/kde6.png
+ln -s text-x-generic.png 16x16/mimetypes/text-x-log.png
+ln -s text-x-generic.png 22x22/mimetypes/text-x-log.png
+ln -s text-x-generic.png 24x24/mimetypes/text-x-log.png
+ln -s text-x-generic.png 32x32/mimetypes/text-x-log.png
+ln -s text-x-generic.png 48x48/mimetypes/text-x-log.png
+ln -s text-x-generic.png 64x64/mimetypes/text-x-log.png
+ln -s edit-select-all.png 16x16/actions/kr_selectall.png
+ln -s edit-select-all.png 22x22/actions/kr_selectall.png
+ln -s edit-select-all.png 24x24/actions/kr_selectall.png
+ln -s edit-select-all.png 32x32/actions/kr_selectall.png
+ln -s edit-select-all.png 48x48/actions/kr_selectall.png
+ln -s edit-select-all.png 64x64/actions/kr_selectall.png
+ln -s edit-select-none.png 16x16/actions/kr_unselectall.png
+ln -s edit-select-none.png 22x22/actions/kr_unselectall.png
+ln -s edit-select-none.png 24x24/actions/kr_unselectall.png
+ln -s edit-select-none.png 32x32/actions/kr_unselectall.png
+ln -s edit-select-none.png 48x48/actions/kr_unselectall.png
+ln -s edit-select-none.png 64x64/actions/kr_unselectall.png
+ln -s edit-select.png 16x16/actions/kr_select.png
+ln -s edit-select.png 22x22/actions/kr_select.png
+ln -s edit-select.png 24x24/actions/kr_select.png
+ln -s edit-select.png 32x32/actions/kr_select.png
+ln -s edit-select.png 48x48/actions/kr_select.png
+ln -s edit-select.png 64x64/actions/kr_select.png
+ln -s edit-select-invert.png 16x16/actions/kr_invert.png
+ln -s edit-select-invert.png 22x22/actions/kr_invert.png
+ln -s edit-select-invert.png 24x24/actions/kr_invert.png
+ln -s edit-select-invert.png 32x32/actions/kr_invert.png
+ln -s edit-select-invert.png 48x48/actions/kr_invert.png
+ln -s edit-select-invert.png 64x64/actions/kr_invert.png
+ln -s nm_device_wired.png 16x16/actions/connect_creating.png
+ln -s nm_device_wired.png 16x16/actions/connect_established.png
+ln -s nm_device_wired.png 22x22/actions/connect_creating.png
+ln -s nm_device_wired.png 22x22/actions/connect_established.png
+ln -s nm_device_wired.png 24x24/actions/connect_creating.png
+ln -s nm_device_wired.png 24x24/actions/connect_established.png
+ln -s nm_device_wired.png 32x32/actions/connect_creating.png
+ln -s nm_device_wired.png 32x32/actions/connect_established.png
+ln -s nm_device_wired.png 48x48/actions/connect_creating.png
+ln -s nm_device_wired.png 48x48/actions/connect_established.png
+ln -s nm_device_wired.png 64x64/actions/connect_creating.png
+ln -s nm_device_wired.png 64x64/actions/connect_established.png
+ln -s edit-clear-locationbar-ltr.png 16x16/actions/locationbar_erase.png
+ln -s edit-clear-locationbar-ltr.png 22x22/actions/locationbar_erase.png
+ln -s edit-clear-locationbar-ltr.png 24x24/actions/locationbar_erase.png
+ln -s edit-clear-locationbar-ltr.png 32x32/actions/locationbar_erase.png
+ln -s edit-clear-locationbar-ltr.png 48x48/actions/locationbar_erase.png
+ln -s edit-clear-locationbar-ltr.png 64x64/actions/locationbar_erase.png
+ln -s ../../16x16/actions/edit-paste.png 16x16/apps/klipper.png
+ln -s ../../22x22/actions/edit-paste.png 22x22/apps/klipper.png
+ln -s ../../24x24/actions/edit-paste.png 24x24/apps/klipper.png
+ln -s ../../32x32/actions/edit-paste.png 32x32/apps/klipper.png
+ln -s ../../48x48/actions/edit-paste.png 48x48/apps/klipper.png
+ln -s kcalc.png 16x16/apps/calc.png
+ln -s kcalc.png 22x22/apps/calc.png
+ln -s kcalc.png 24x24/apps/calc.png
+ln -s kcalc.png 32x32/apps/calc.png
+ln -s kcalc.png 48x48/apps/calc.png
+ln -s kcalc.png 64x64/apps/calc.png
+ln -s kwrite.png 16x16/apps/notepad.png
+ln -s kwrite.png 22x22/apps/notepad.png
+ln -s ksysguard.png 16x16/apps/taskmgr.png
+ln -s ksysguard.png 22x22/apps/taskmgr.png
+ln -s ksysguard.png 24x24/apps/taskmgr.png
+ln -s ksysguard.png 32x32/apps/taskmgr.png
+ln -s ksysguard.png 48x48/apps/taskmgr.png
+ln -s ksysguard.png 64x64/apps/taskmgr.png
+ln -s kolourpaint.svg 64x64/apps/paint.svg
+ln -s konsole.png 16x16/apps/cmd.png
+ln -s konsole.png 22x22/apps/cmd.png
+ln -s konsole.png 24x24/apps/cmd.png
+ln -s konsole.png 32x32/apps/cmd.png
+ln -s konsole.png 48x48/apps/cmd.png
+ln -s konsole.png 64x64/apps/cmd.png
+ln -s ksnapshot.svg 64x64/apps/snapshot.svg
+ln -s ../../scalable/actions/kfind.png 16x16/actions/kfind.png
+ln -s ../../scalable/actions/kfind.png 22x22/actions/kfind.png
+ln -s ../../scalable/actions/kfind.png 24x24/actions/kfind.png
+ln -s ../../scalable/actions/kfind.png 32x32/actions/kfind.png
+ln -s ../../scalable/actions/kfind.png 48x48/actions/kfind.png
+ln -s ../../scalable/actions/kfind.png 64x64/actions/kfind.png
+ln -s unlock.png 16x16/actions/kdenlive-unlock.png
+ln -s unlock.png 22x22/actions/kdenlive-unlock.png
+ln -s unlock.png 24x24/actions/kdenlive-unlock.png
+ln -s unlock.png 16x16/actions/object-unlocked.png
+ln -s unlock.png 22x22/actions/object-unlocked.png
+ln -s unlock.png 24x24/actions/object-unlocked.png
+ln -s unlock.png 16x16/actions/document-decrypt.png
+ln -s unlock.png 22x22/actions/document-decrypt.png
+ln -s unlock.png 24x24/actions/document-decrypt.png
+ln -s document-properties.png 16x16/actions/gtk-properties.png
+ln -s document-properties.png 22x22/actions/gtk-properties.png
+ln -s document-properties.png 24x24/actions/gtk-properties.png
+ln -s document-properties.png 32x32/actions/gtk-properties.png
+ln -s document-properties.png 32x32/actions/edit.png
+ln -s document-properties.png 48x48/actions/gtk-properties.png
+ln -s document-properties.png 64x64/actions/gtk-properties.png
+ln -s document-properties.png 16x16/actions/info.png
+ln -s document-properties.png 22x22/actions/info.png
+ln -s document-properties.png 24x24/actions/info.png
+ln -s document-properties.png 32x32/actions/info.png
+ln -s document-properties.png 48x48/actions/info.png
+ln -s document-properties.png 64x64/actions/info.png
+ln -s ../../16x16/actions/document-properties.png 16x16/mimetypes/info.png
+ln -s ../../22x22/actions/document-properties.png 22x22/mimetypes/info.png
+ln -s ../../24x24/actions/document-properties.png 24x24/mimetypes/info.png
+ln -s ../../32x32/actions/document-properties.png 32x32/mimetypes/info.png
+ln -s ../../48x48/actions/document-properties.png 48x48/mimetypes/info.png
+ln -s ../../64x64/actions/document-properties.png 64x64/mimetypes/info.png
+ln -s run.png 16x16/actions/gtk-execute.png
+ln -s run.png 22x22/actions/gtk-execute.png
+ln -s run.png 24x24/actions/gtk-execute.png
+ln -s run.png 32x32/actions/gtk-execute.png
+ln -s run.png 48x48/actions/gtk-execute.png
+ln -s run.png 64x64/actions/gtk-execute.png
+ln -s blueman.png 16x16/status/blueman-tray.png
+ln -s blueman.png 22x22/status/blueman-tray.png
+ln -s blueman.png 24x24/status/blueman-tray.png
+ln -s blueman.png 32x32/status/blueman-tray.png
+ln -s ../../scalable/actions/nm_device_wired.png 16x16/actions/nm_device_wired.png
+ln -s ../../scalable/actions/nm_device_wired.png 22x22/actions/nm_device_wired.png
+ln -s ../../scalable/actions/nm_device_wired.png 24x24/actions/nm_device_wired.png
+ln -s ../../scalable/actions/nm_device_wired.png 32x32/actions/nm_device_wired.png
+ln -s ../../scalable/actions/nm_device_wired.png 64x64/actions/nm_device_wired.png
+ln -s ../../scalable/actions/nm_no_connection.png 16x16/actions/nm_no_connection.png
+ln -s ../../scalable/actions/nm_no_connection.png 22x22/actions/nm_no_connection.png
+ln -s ../../scalable/actions/nm_no_connection.png 24x24/actions/nm_no_connection.png
+ln -s ../../scalable/actions/nm_no_connection.png 32x32/actions/nm_no_connection.png
+ln -s ../../scalable/actions/nm_no_connection.png 64x64/actions/nm_no_connection.png
+ln -s ../../scalable/actions/nm_signal_0.png 16x16/actions/nm_signal_0.png
+ln -s ../../scalable/actions/nm_signal_0.png 22x22/actions/nm_signal_0.png
+ln -s ../../scalable/actions/nm_signal_0.png 24x24/actions/nm_signal_0.png
+ln -s ../../scalable/actions/nm_signal_0.png 32x32/actions/nm_signal_0.png
+ln -s ../../scalable/actions/nm_signal_0.png 64x64/actions/nm_signal_0.png
+ln -s ../../scalable/actions/nm_signal_25.png 16x16/actions/nm_signal_25.png
+ln -s ../../scalable/actions/nm_signal_25.png 22x22/actions/nm_signal_25.png
+ln -s ../../scalable/actions/nm_signal_25.png 24x24/actions/nm_signal_25.png
+ln -s ../../scalable/actions/nm_signal_25.png 32x32/actions/nm_signal_25.png
+ln -s ../../scalable/actions/nm_signal_25.png 64x64/actions/nm_signal_25.png
+ln -s ../../scalable/actions/nm_signal_50.png 16x16/actions/nm_signal_50.png
+ln -s ../../scalable/actions/nm_signal_50.png 22x22/actions/nm_signal_50.png
+ln -s ../../scalable/actions/nm_signal_50.png 24x24/actions/nm_signal_50.png
+ln -s ../../scalable/actions/nm_signal_50.png 32x32/actions/nm_signal_50.png
+ln -s ../../scalable/actions/nm_signal_50.png 64x64/actions/nm_signal_50.png
+ln -s ../../scalable/actions/nm_signal_75.png 16x16/actions/nm_signal_75.png
+ln -s ../../scalable/actions/nm_signal_75.png 22x22/actions/nm_signal_75.png
+ln -s ../../scalable/actions/nm_signal_75.png 24x24/actions/nm_signal_75.png
+ln -s ../../scalable/actions/nm_signal_75.png 32x32/actions/nm_signal_75.png
+ln -s ../../scalable/actions/nm_signal_75.png 64x64/actions/nm_signal_75.png
+ln -s ../../scalable/actions/nm_signal_100.png 16x16/actions/nm_signal_100.png
+ln -s ../../scalable/actions/nm_signal_100.png 22x22/actions/nm_signal_100.png
+ln -s ../../scalable/actions/nm_signal_100.png 24x24/actions/nm_signal_100.png
+ln -s ../../scalable/actions/nm_signal_100.png 32x32/actions/nm_signal_100.png
+ln -s ../../scalable/actions/nm_signal_100.png 64x64/actions/nm_signal_100.png
+ln -s ../../scalable/status/battery-caution-charging-symbolic.png 16x16/status/battery-caution-charging-symbolic.png
+ln -s ../../scalable/status/battery-caution-symbolic.png 16x16/status/battery-caution-symbolic.png
+ln -s ../../scalable/status/battery-empty-charging-symbolic.png 16x16/status/battery-empty-charging-symbolic.png
+ln -s ../../scalable/status/battery-empty-symbolic.png 16x16/status/battery-empty-symbolic.png
+ln -s ../../scalable/status/battery-full-charged.png 16x16/status/battery-full-charged.png
+ln -s ../../scalable/status/battery-full-charging-symbolic.png 16x16/status/battery-full-charging-symbolic.png
+ln -s ../../scalable/status/battery-full-symbolic.png 16x16/status/battery-full-symbolic.png
+ln -s ../../scalable/status/battery-level-0-charging-symbolic.png 16x16/status/battery-level-0-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-0-symbolic.png 16x16/status/battery-level-0-symbolic.png
+ln -s ../../scalable/status/battery-level-100-charged-symbolic.png 16x16/status/battery-level-100-charged-symbolic.png
+ln -s ../../scalable/status/battery-level-100-symbolic.png 16x16/status/battery-level-100-symbolic.png
+ln -s ../../scalable/status/battery-level-10-charging-symbolic.png 16x16/status/battery-level-10-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-10-symbolic.png 16x16/status/battery-level-10-symbolic.png
+ln -s ../../scalable/status/battery-level-20-charging-symbolic.png 16x16/status/battery-level-20-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-20-symbolic.png 16x16/status/battery-level-20-symbolic.png
+ln -s ../../scalable/status/battery-level-30-charging-symbolic.png 16x16/status/battery-level-30-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-30-symbolic.png 16x16/status/battery-level-30-symbolic.png
+ln -s ../../scalable/status/battery-level-40-charging-symbolic.png 16x16/status/battery-level-40-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-40-symbolic.png 16x16/status/battery-level-40-symbolic.png
+ln -s ../../scalable/status/battery-level-50-charging-symbolic.png 16x16/status/battery-level-50-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-50-symbolic.png 16x16/status/battery-level-50-symbolic.png
+ln -s ../../scalable/status/battery-level-60-charging-symbolic.png 16x16/status/battery-level-60-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-60-symbolic.png 16x16/status/battery-level-60-symbolic.png
+ln -s ../../scalable/status/battery-level-70-charging-symbolic.png 16x16/status/battery-level-70-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-70-symbolic.png 16x16/status/battery-level-70-symbolic.png
+ln -s ../../scalable/status/battery-level-80-charging-symbolic.png 16x16/status/battery-level-80-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-80-symbolic.png 16x16/status/battery-level-80-symbolic.png
+ln -s ../../scalable/status/battery-level-90-charging-symbolic.png 16x16/status/battery-level-90-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-90-symbolic.png 16x16/status/battery-level-90-symbolic.png
+ln -s ../../scalable/status/battery-caution-charging-symbolic.png 22x22/status/battery-caution-charging-symbolic.png
+ln -s ../../scalable/status/battery-caution-symbolic.png 22x22/status/battery-caution-symbolic.png
+ln -s ../../scalable/status/battery-empty-charging-symbolic.png 22x22/status/battery-empty-charging-symbolic.png
+ln -s ../../scalable/status/battery-empty-symbolic.png 22x22/status/battery-empty-symbolic.png
+ln -s ../../scalable/status/battery-full-charged.png 22x22/status/battery-full-charged.png
+ln -s ../../scalable/status/battery-full-charging-symbolic.png 22x22/status/battery-full-charging-symbolic.png
+ln -s ../../scalable/status/battery-full-symbolic.png 22x22/status/battery-full-symbolic.png
+ln -s ../../scalable/status/battery-level-0-charging-symbolic.png 22x22/status/battery-level-0-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-0-symbolic.png 22x22/status/battery-level-0-symbolic.png
+ln -s ../../scalable/status/battery-level-100-charged-symbolic.png 22x22/status/battery-level-100-charged-symbolic.png
+ln -s ../../scalable/status/battery-level-100-symbolic.png 22x22/status/battery-level-100-symbolic.png
+ln -s ../../scalable/status/battery-level-10-charging-symbolic.png 22x22/status/battery-level-10-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-10-symbolic.png 22x22/status/battery-level-10-symbolic.png
+ln -s ../../scalable/status/battery-level-20-charging-symbolic.png 22x22/status/battery-level-20-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-20-symbolic.png 22x22/status/battery-level-20-symbolic.png
+ln -s ../../scalable/status/battery-level-30-charging-symbolic.png 22x22/status/battery-level-30-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-30-symbolic.png 22x22/status/battery-level-30-symbolic.png
+ln -s ../../scalable/status/battery-level-40-charging-symbolic.png 22x22/status/battery-level-40-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-40-symbolic.png 22x22/status/battery-level-40-symbolic.png
+ln -s ../../scalable/status/battery-level-50-charging-symbolic.png 22x22/status/battery-level-50-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-50-symbolic.png 22x22/status/battery-level-50-symbolic.png
+ln -s ../../scalable/status/battery-level-60-charging-symbolic.png 22x22/status/battery-level-60-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-60-symbolic.png 22x22/status/battery-level-60-symbolic.png
+ln -s ../../scalable/status/battery-level-70-charging-symbolic.png 22x22/status/battery-level-70-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-70-symbolic.png 22x22/status/battery-level-70-symbolic.png
+ln -s ../../scalable/status/battery-level-80-charging-symbolic.png 22x22/status/battery-level-80-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-80-symbolic.png 22x22/status/battery-level-80-symbolic.png
+ln -s ../../scalable/status/battery-level-90-charging-symbolic.png 22x22/status/battery-level-90-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-90-symbolic.png 22x22/status/battery-level-90-symbolic.png
+ln -s ../../scalable/status/battery-caution-charging-symbolic.png 24x24/status/battery-caution-charging-symbolic.png
+ln -s ../../scalable/status/battery-caution-symbolic.png 24x24/status/battery-caution-symbolic.png
+ln -s ../../scalable/status/battery-empty-charging-symbolic.png 24x24/status/battery-empty-charging-symbolic.png
+ln -s ../../scalable/status/battery-empty-symbolic.png 24x24/status/battery-empty-symbolic.png
+ln -s ../../scalable/status/battery-full-charged.png 24x24/status/battery-full-charged.png
+ln -s ../../scalable/status/battery-full-charging-symbolic.png 24x24/status/battery-full-charging-symbolic.png
+ln -s ../../scalable/status/battery-full-symbolic.png 24x24/status/battery-full-symbolic.png
+ln -s ../../scalable/status/battery-level-0-charging-symbolic.png 24x24/status/battery-level-0-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-0-symbolic.png 24x24/status/battery-level-0-symbolic.png
+ln -s ../../scalable/status/battery-level-100-charged-symbolic.png 24x24/status/battery-level-100-charged-symbolic.png
+ln -s ../../scalable/status/battery-level-100-symbolic.png 24x24/status/battery-level-100-symbolic.png
+ln -s ../../scalable/status/battery-level-10-charging-symbolic.png 24x24/status/battery-level-10-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-10-symbolic.png 24x24/status/battery-level-10-symbolic.png
+ln -s ../../scalable/status/battery-level-20-charging-symbolic.png 24x24/status/battery-level-20-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-20-symbolic.png 24x24/status/battery-level-20-symbolic.png
+ln -s ../../scalable/status/battery-level-30-charging-symbolic.png 24x24/status/battery-level-30-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-30-symbolic.png 24x24/status/battery-level-30-symbolic.png
+ln -s ../../scalable/status/battery-level-40-charging-symbolic.png 24x24/status/battery-level-40-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-40-symbolic.png 24x24/status/battery-level-40-symbolic.png
+ln -s ../../scalable/status/battery-level-50-charging-symbolic.png 24x24/status/battery-level-50-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-50-symbolic.png 24x24/status/battery-level-50-symbolic.png
+ln -s ../../scalable/status/battery-level-60-charging-symbolic.png 24x24/status/battery-level-60-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-60-symbolic.png 24x24/status/battery-level-60-symbolic.png
+ln -s ../../scalable/status/battery-level-70-charging-symbolic.png 24x24/status/battery-level-70-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-70-symbolic.png 24x24/status/battery-level-70-symbolic.png
+ln -s ../../scalable/status/battery-level-80-charging-symbolic.png 24x24/status/battery-level-80-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-80-symbolic.png 24x24/status/battery-level-80-symbolic.png
+ln -s ../../scalable/status/battery-level-90-charging-symbolic.png 24x24/status/battery-level-90-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-90-symbolic.png 24x24/status/battery-level-90-symbolic.png
+ln -s ../../scalable/status/battery-caution-charging-symbolic.png 32x32/status/battery-caution-charging-symbolic.png
+ln -s ../../scalable/status/battery-caution-symbolic.png 32x32/status/battery-caution-symbolic.png
+ln -s ../../scalable/status/battery-empty-charging-symbolic.png 32x32/status/battery-empty-charging-symbolic.png
+ln -s ../../scalable/status/battery-empty-symbolic.png 32x32/status/battery-empty-symbolic.png
+ln -s ../../scalable/status/battery-full-charged.png 32x32/status/battery-full-charged.png
+ln -s ../../scalable/status/battery-full-charging-symbolic.png 32x32/status/battery-full-charging-symbolic.png
+ln -s ../../scalable/status/battery-full-symbolic.png 32x32/status/battery-full-symbolic.png
+ln -s ../../scalable/status/battery-level-0-charging-symbolic.png 32x32/status/battery-level-0-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-0-symbolic.png 32x32/status/battery-level-0-symbolic.png
+ln -s ../../scalable/status/battery-level-100-charged-symbolic.png 32x32/status/battery-level-100-charged-symbolic.png
+ln -s ../../scalable/status/battery-level-100-symbolic.png 32x32/status/battery-level-100-symbolic.png
+ln -s ../../scalable/status/battery-level-10-charging-symbolic.png 32x32/status/battery-level-10-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-10-symbolic.png 32x32/status/battery-level-10-symbolic.png
+ln -s ../../scalable/status/battery-level-20-charging-symbolic.png 32x32/status/battery-level-20-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-20-symbolic.png 32x32/status/battery-level-20-symbolic.png
+ln -s ../../scalable/status/battery-level-30-charging-symbolic.png 32x32/status/battery-level-30-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-30-symbolic.png 32x32/status/battery-level-30-symbolic.png
+ln -s ../../scalable/status/battery-level-40-charging-symbolic.png 32x32/status/battery-level-40-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-40-symbolic.png 32x32/status/battery-level-40-symbolic.png
+ln -s ../../scalable/status/battery-level-50-charging-symbolic.png 32x32/status/battery-level-50-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-50-symbolic.png 32x32/status/battery-level-50-symbolic.png
+ln -s ../../scalable/status/battery-level-60-charging-symbolic.png 32x32/status/battery-level-60-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-60-symbolic.png 32x32/status/battery-level-60-symbolic.png
+ln -s ../../scalable/status/battery-level-70-charging-symbolic.png 32x32/status/battery-level-70-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-70-symbolic.png 32x32/status/battery-level-70-symbolic.png
+ln -s ../../scalable/status/battery-level-80-charging-symbolic.png 32x32/status/battery-level-80-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-80-symbolic.png 32x32/status/battery-level-80-symbolic.png
+ln -s ../../scalable/status/battery-level-90-charging-symbolic.png 32x32/status/battery-level-90-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-90-symbolic.png 32x32/status/battery-level-90-symbolic.png
+ln -s ../../scalable/status/battery-caution-charging-symbolic.png 48x48/status/battery-caution-charging-symbolic.png
+ln -s ../../scalable/status/battery-caution-symbolic.png 48x48/status/battery-caution-symbolic.png
+ln -s ../../scalable/status/battery-empty-charging-symbolic.png 48x48/status/battery-empty-charging-symbolic.png
+ln -s ../../scalable/status/battery-empty-symbolic.png 48x48/status/battery-empty-symbolic.png
+ln -s ../../scalable/status/battery-full-charged.png 48x48/status/battery-full-charged.png
+ln -s ../../scalable/status/battery-full-charging-symbolic.png 48x48/status/battery-full-charging-symbolic.png
+ln -s ../../scalable/status/battery-full-symbolic.png 48x48/status/battery-full-symbolic.png
+ln -s ../../scalable/status/battery-level-0-charging-symbolic.png 48x48/status/battery-level-0-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-0-symbolic.png 48x48/status/battery-level-0-symbolic.png
+ln -s ../../scalable/status/battery-level-100-charged-symbolic.png 48x48/status/battery-level-100-charged-symbolic.png
+ln -s ../../scalable/status/battery-level-100-symbolic.png 48x48/status/battery-level-100-symbolic.png
+ln -s ../../scalable/status/battery-level-10-charging-symbolic.png 48x48/status/battery-level-10-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-10-symbolic.png 48x48/status/battery-level-10-symbolic.png
+ln -s ../../scalable/status/battery-level-20-charging-symbolic.png 48x48/status/battery-level-20-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-20-symbolic.png 48x48/status/battery-level-20-symbolic.png
+ln -s ../../scalable/status/battery-level-30-charging-symbolic.png 48x48/status/battery-level-30-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-30-symbolic.png 48x48/status/battery-level-30-symbolic.png
+ln -s ../../scalable/status/battery-level-40-charging-symbolic.png 48x48/status/battery-level-40-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-40-symbolic.png 48x48/status/battery-level-40-symbolic.png
+ln -s ../../scalable/status/battery-level-50-charging-symbolic.png 48x48/status/battery-level-50-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-50-symbolic.png 48x48/status/battery-level-50-symbolic.png
+ln -s ../../scalable/status/battery-level-60-charging-symbolic.png 48x48/status/battery-level-60-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-60-symbolic.png 48x48/status/battery-level-60-symbolic.png
+ln -s ../../scalable/status/battery-level-70-charging-symbolic.png 48x48/status/battery-level-70-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-70-symbolic.png 48x48/status/battery-level-70-symbolic.png
+ln -s ../../scalable/status/battery-level-80-charging-symbolic.png 48x48/status/battery-level-80-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-80-symbolic.png 48x48/status/battery-level-80-symbolic.png
+ln -s ../../scalable/status/battery-level-90-charging-symbolic.png 48x48/status/battery-level-90-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-90-symbolic.png 48x48/status/battery-level-90-symbolic.png
+ln -s ../../scalable/status/battery-caution-charging-symbolic.png 64x64/status/battery-caution-charging-symbolic.png
+ln -s ../../scalable/status/battery-caution-symbolic.png 64x64/status/battery-caution-symbolic.png
+ln -s ../../scalable/status/battery-empty-charging-symbolic.png 64x64/status/battery-empty-charging-symbolic.png
+ln -s ../../scalable/status/battery-empty-symbolic.png 64x64/status/battery-empty-symbolic.png
+ln -s ../../scalable/status/battery-full-charged.png 64x64/status/battery-full-charged.png
+ln -s ../../scalable/status/battery-full-charging-symbolic.png 64x64/status/battery-full-charging-symbolic.png
+ln -s ../../scalable/status/battery-full-symbolic.png 64x64/status/battery-full-symbolic.png
+ln -s ../../scalable/status/battery-level-0-charging-symbolic.png 64x64/status/battery-level-0-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-0-symbolic.png 64x64/status/battery-level-0-symbolic.png
+ln -s ../../scalable/status/battery-level-100-charged-symbolic.png 64x64/status/battery-level-100-charged-symbolic.png
+ln -s ../../scalable/status/battery-level-100-symbolic.png 64x64/status/battery-level-100-symbolic.png
+ln -s ../../scalable/status/battery-level-10-charging-symbolic.png 64x64/status/battery-level-10-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-10-symbolic.png 64x64/status/battery-level-10-symbolic.png
+ln -s ../../scalable/status/battery-level-20-charging-symbolic.png 64x64/status/battery-level-20-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-20-symbolic.png 64x64/status/battery-level-20-symbolic.png
+ln -s ../../scalable/status/battery-level-30-charging-symbolic.png 64x64/status/battery-level-30-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-30-symbolic.png 64x64/status/battery-level-30-symbolic.png
+ln -s ../../scalable/status/battery-level-40-charging-symbolic.png 64x64/status/battery-level-40-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-40-symbolic.png 64x64/status/battery-level-40-symbolic.png
+ln -s ../../scalable/status/battery-level-50-charging-symbolic.png 64x64/status/battery-level-50-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-50-symbolic.png 64x64/status/battery-level-50-symbolic.png
+ln -s ../../scalable/status/battery-level-60-charging-symbolic.png 64x64/status/battery-level-60-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-60-symbolic.png 64x64/status/battery-level-60-symbolic.png
+ln -s ../../scalable/status/battery-level-70-charging-symbolic.png 64x64/status/battery-level-70-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-70-symbolic.png 64x64/status/battery-level-70-symbolic.png
+ln -s ../../scalable/status/battery-level-80-charging-symbolic.png 64x64/status/battery-level-80-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-80-symbolic.png 64x64/status/battery-level-80-symbolic.png
+ln -s ../../scalable/status/battery-level-90-charging-symbolic.png 64x64/status/battery-level-90-charging-symbolic.png
+ln -s ../../scalable/status/battery-level-90-symbolic.png 64x64/status/battery-level-90-symbolic.png
+ln -s ../../64x64/apps/taskscheduler.png 16x16/apps/taskscheduler.png
+ln -s ../../64x64/apps/taskscheduler.png 22x22/apps/taskscheduler.png
+ln -s ../../64x64/apps/taskscheduler.png 24x24/apps/taskscheduler.png
+ln -s ../../64x64/apps/taskscheduler.png 32x32/apps/taskscheduler.png
+ln -s taskscheduler.png 64x64/apps/kcron.png
+ln -s ../../64x64/apps/taskscheduler.png 16x16/apps/kcron.png
+ln -s ../../64x64/apps/taskscheduler.png 22x22/apps/kcron.png
+ln -s ../../64x64/apps/taskscheduler.png 24x24/apps/kcron.png
+ln -s ../../64x64/apps/taskscheduler.png 32x32/apps/kcron.png
+ln -s dolphin.png 16x16/apps/konqueror.png
+ln -s dolphin.png 22x22/apps/konqueror.png
+ln -s dolphin.png 24x24/apps/konqueror.png
+ln -s dolphin.png 32x32/apps/konqueror.png
+ln -s dolphin.png 48x48/apps/konqueror.png
+ln -s dolphin.png 64x64/apps/konqueror.png
+ln -s ../../64x64/actions/fork.png 16x16/actions/fork.png
+ln -s ../../64x64/actions/fork.png 22x22/actions/fork.png
+ln -s ../../64x64/actions/fork.png 24x24/actions/fork.png
+ln -s ../../64x64/actions/fork.png 32x32/actions/fork.png
+ln -s ../../64x64/actions/fork.png 48x48/actions/fork.png
+ln -s ../../32x32/places/start-here.png 32x32/apps/x.png
+ln -s ../../48x48/places/start-here.png 48x48/apps/x.png
+ln -s ../../32x32/places/start-here.png 32x32/apps/kcmx.png
+ln -s ../../48x48/places/start-here.png 48x48/apps/kcmx.png
+ln -s ../../32x32/places/start-here.png 32x32/apps/xapp.png
+ln -s ../../48x48/places/start-here.png 48x48/apps/xapp.png
+ln -s ../../16x16/actions/edit-paste.png 16x16/apps/xclipboard.png
+ln -s ../../32x32/actions/edit-paste.png 32x32/apps/xclipboard.png
+ln -s ../../48x48/actions/edit-paste.png 48x48/apps/xclipboard.png
+ln -s ../../48x48/apps/xconsole.png 32x32/apps/konsole.png
+ln -s ../../48x48/apps/xconsole.png 24x24/apps/konsole.png
+ln -s ../../48x48/apps/xconsole.png 22x22/apps/konsole.png
+ln -s ../../48x48/apps/xconsole.png 16x16/apps/konsole.png
+ln -s ../../48x48/apps/xconsole.png 16x16/apps/openterm.png
+ln -s ../../48x48/apps/xconsole.png 16x16/actions/openterm.png
+ln -s ../../48x48/apps/xconsole.png 22x22/apps/openterm.png
+ln -s ../../48x48/apps/xconsole.png 22x22/actions/openterm.png
+ln -s ../../48x48/apps/xconsole.png 24x24/apps/openterm.png
+ln -s ../../48x48/apps/xconsole.png 24x24/actions/openterm.png
+ln -s ../../48x48/apps/xconsole.png 32x32/apps/openterm.png
+ln -s ../../48x48/apps/xconsole.png 32x32/actions/openterm.png
+ln -s ../../48x48/apps/xconsole.png 48x48/apps/openterm.png
+ln -s ../../48x48/apps/xconsole.png 48x48/actions/openterm.png
+ln -s ../../48x48/apps/xconsole.png 64x64/apps/openterm.png
+ln -s ../../48x48/apps/xconsole.png 64x64/actions/openterm.png
+ln -s ../../48x48/apps/xconsole.png 16x16/apps/terminal.png
+ln -s ../../48x48/apps/xconsole.png 22x22/apps/terminal.png
+ln -s ../../48x48/apps/xconsole.png 24x24/apps/terminal.png
+ln -s ../../48x48/apps/xconsole.png 32x32/apps/terminal.png
+ln -s ../../48x48/apps/xconsole.png 48x48/apps/terminal.png
+ln -s ../../48x48/apps/xconsole.png 64x64/apps/terminal.png
+ln -s ../../48x48/apps/xconsole.png 16x16/apps/utilities-terminal.png
+ln -s ../../48x48/apps/xconsole.png 22x22/apps/utilities-terminal.png
+ln -s ../../48x48/apps/xconsole.png 24x24/apps/utilities-terminal.png
+ln -s ../../48x48/apps/xconsole.png 32x32/apps/utilities-terminal.png
+ln -s ../../48x48/apps/xconsole.png 48x48/apps/utilities-terminal.png
+ln -s ../../48x48/apps/xconsole.png 64x64/apps/utilities-terminal.png
+ln -s deb.png 16x16/mimetypes/application-x-deb.png
+ln -s deb.png 22x22/mimetypes/application-x-deb.png
+ln -s deb.png 24x24/mimetypes/application-x-deb.png
+ln -s deb.png 32x32/mimetypes/application-x-deb.png
+ln -s deb.png 48x48/mimetypes/application-x-deb.png
+ln -s deb.png 64x64/mimetypes/application-x-deb.png
+ln -s deb.png 16x16/mimetypes/application-vnd.debian.binary-package.png
+ln -s deb.png 22x22/mimetypes/application-vnd.debian.binary-package.png
+ln -s deb.png 24x24/mimetypes/application-vnd.debian.binary-package.png
+ln -s deb.png 32x32/mimetypes/application-vnd.debian.binary-package.png
+ln -s deb.png 48x48/mimetypes/application-vnd.debian.binary-package.png
+ln -s deb.png 64x64/mimetypes/application-vnd.debian.binary-package.png
+ln -s ../../scalable/devices/media-flash-usb-mounted.png 16x16/devices/media-flash-usb-mounted.png
+ln -s ../../scalable/devices/media-flash-usb-unmounted.png 16x16/devices/media-flash-usb-unmounted.png
+ln -s ../../scalable/devices/media-flash-usb-mounted.png 22x22/devices/media-flash-usb-mounted.png
+ln -s ../../scalable/devices/media-flash-usb-unmounted.png 22x22/devices/media-flash-usb-unmounted.png
+ln -s ../../scalable/devices/media-flash-usb-mounted.png 24x24/devices/media-flash-usb-mounted.png
+ln -s ../../scalable/devices/media-flash-usb-unmounted.png 24x24/devices/media-flash-usb-unmounted.png
+ln -s ../../scalable/devices/media-flash-usb-mounted.png 32x32/devices/media-flash-usb-mounted.png
+ln -s ../../scalable/devices/media-flash-usb-unmounted.png 32x32/devices/media-flash-usb-unmounted.png
+ln -s ../../scalable/devices/media-flash-usb-mounted.png 48x48/devices/media-flash-usb-mounted.png
+ln -s ../../scalable/devices/media-flash-usb-unmounted.png 48x48/devices/media-flash-usb-unmounted.png
+ln -s ../../scalable/devices/media-flash-usb-mounted.png 64x64/devices/media-flash-usb-mounted.png
+ln -s ../../scalable/devices/media-flash-usb-unmounted.png 64x64/devices/media-flash-usb-unmounted.png
+ln -s checkbox.png 16x16/actions/checkmark.png
+ln -s checkbox.png 22x22/actions/checkmark.png
+ln -s checkbox.png 24x24/actions/checkmark.png
+ln -s checkbox.png 16x16/actions/gtk-apply.png
+ln -s checkbox.png 22x22/actions/gtk-apply.png
+ln -s checkbox.png 24x24/actions/gtk-apply.png
+ln -s checkbox.png 16x16/actions/gtk-ok.png
+ln -s checkbox.png 22x22/actions/gtk-ok.png
+ln -s checkbox.png 24x24/actions/gtk-ok.png
+ln -s checkbox.png 16x16/actions/gtk-yes.png
+ln -s checkbox.png 22x22/actions/gtk-yes.png
+ln -s checkbox.png 24x24/actions/gtk-yes.png
+ln -s checkbox.png 16x16/actions/kt-check-data.png
+ln -s checkbox.png 22x22/actions/kt-check-data.png
+ln -s checkbox.png 24x24/actions/kt-check-data.png
+ln -s checkbox.png 16x16/actions/blueman-trust.png
+ln -s checkbox.png 22x22/actions/blueman-trust.png
+ln -s checkbox.png 24x24/actions/blueman-trust.png
+ln -s checkbox.png 16x16/actions/dialog-ok-apply.png
+ln -s checkbox.png 22x22/actions/dialog-ok-apply.png
+ln -s checkbox.png 24x24/actions/dialog-ok-apply.png
+ln -s checkbox.png 16x16/actions/kr_mountman.png
+ln -s checkbox.png 22x22/actions/kr_mountman.png
+ln -s checkbox.png 24x24/actions/kr_mountman.png
+ln -s zip.png 16x16/mimetypes/application-x-tarz.png
+ln -s zip.png 22x22/mimetypes/application-x-tarz.png
+ln -s zip.png 24x24/mimetypes/application-x-tarz.png
+ln -s zip.png 32x32/mimetypes/application-x-tarz.png
+ln -s zip.png 48x48/mimetypes/application-x-tarz.png
+ln -s zip.png 64x64/mimetypes/application-x-tarz.png
+ln -s zip.png 16x16/mimetypes/application-x-tar.png
+ln -s zip.png 22x22/mimetypes/application-x-tar.png
+ln -s zip.png 24x24/mimetypes/application-x-tar.png
+ln -s zip.png 32x32/mimetypes/application-x-tar.png
+ln -s zip.png 48x48/mimetypes/application-x-tar.png
+ln -s zip.png 64x64/mimetypes/application-x-tar.png
+ln -s zip.png 16x16/mimetypes/application-x-xz-compressed-tar.png
+ln -s zip.png 22x22/mimetypes/application-x-xz-compressed-tar.png
+ln -s zip.png 24x24/mimetypes/application-x-xz-compressed-tar.png
+ln -s zip.png 32x32/mimetypes/application-x-xz-compressed-tar.png
+ln -s zip.png 48x48/mimetypes/application-x-xz-compressed-tar.png
+ln -s zip.png 64x64/mimetypes/application-x-xz-compressed-tar.png
+ln -s desktop.png 16x16/places/user-desktop.png
+ln -s desktop.png 22x22/places/user-desktop.png
+ln -s desktop.png 24x24/places/user-desktop.png
+ln -s desktop.png 32x32/places/user-desktop.png
+ln -s desktop.png 48x48/places/user-desktop.png
+ln -s desktop.png 64x64/places/user-desktop.png
+ln -s rotate_right.png 16x16/actions/object-rotate-right.png
+ln -s rotate_right.png 22x22/actions/object-rotate-right.png
+ln -s rotate_right.png 24x24/actions/object-rotate-right.png
+ln -s rotate_right.png 32x32/actions/object-rotate-right.png
+ln -s rotate_right.png 48x48/actions/object-rotate-right.png
+ln -s rotate_right.png 16x16/actions/rotate_cw.png
+ln -s rotate_right.png 22x22/actions/rotate_cw.png
+ln -s rotate_right.png 24x24/actions/rotate_cw.png
+ln -s rotate_right.png 32x32/actions/rotate_cw.png
+ln -s rotate_right.png 48x48/actions/rotate_cw.png
+ln -s rotate_left.png 16x16/actions/object-rotate-left.png
+ln -s rotate_left.png 22x22/actions/object-rotate-left.png
+ln -s rotate_left.png 24x24/actions/object-rotate-left.png
+ln -s rotate_left.png 32x32/actions/object-rotate-left.png
+ln -s rotate_left.png 48x48/actions/object-rotate-left.png
+ln -s drive-harddisk.png 16x16/devices/drive-harddisk-mounted.png
+ln -s drive-harddisk.png 22x22/devices/drive-harddisk-mounted.png
+ln -s drive-harddisk.png 24x24/devices/drive-harddisk-mounted.png
+ln -s drive-harddisk.png 32x32/devices/drive-harddisk-mounted.png
+ln -s drive-harddisk.png 48x48/devices/drive-harddisk-mounted.png
+ln -s drive-harddisk.png 64x64/devices/drive-harddisk-mounted.png
+ln -s drive-harddisk.png 16x16/devices/drive-harddisk-decrypted-mounted.png
+ln -s drive-harddisk.png 22x22/devices/drive-harddisk-decrypted-mounted.png
+ln -s drive-harddisk.png 24x24/devices/drive-harddisk-decrypted-mounted.png
+ln -s drive-harddisk.png 32x32/devices/drive-harddisk-decrypted-mounted.png
+ln -s drive-harddisk.png 48x48/devices/drive-harddisk-decrypted-mounted.png
+ln -s drive-harddisk.png 64x64/devices/drive-harddisk-decrypted-mounted.png
+ln -s drive-harddisk.png 16x16/devices/drive-harddisk-decrypted.png
+ln -s drive-harddisk.png 22x22/devices/drive-harddisk-decrypted.png
+ln -s drive-harddisk.png 24x24/devices/drive-harddisk-decrypted.png
+ln -s drive-harddisk.png 32x32/devices/drive-harddisk-decrypted.png
+ln -s drive-harddisk.png 48x48/devices/drive-harddisk-decrypted.png
+ln -s drive-harddisk.png 64x64/devices/drive-harddisk-decrypted.png
+ln -s drive-harddisk.png 16x16/devices/harddrive.png
+ln -s drive-harddisk.png 22x22/devices/harddrive.png
+ln -s drive-harddisk.png 24x24/devices/harddrive.png
+ln -s drive-harddisk.png 32x32/devices/harddrive.png
+ln -s drive-harddisk.png 48x48/devices/harddrive.png
+ln -s drive-harddisk.png 64x64/devices/harddrive.png
+ln -s drive-harddisk.png 16x16/devices/usbpendrive_unmount.png
+ln -s drive-harddisk.png 22x22/devices/usbpendrive_unmount.png
+ln -s drive-harddisk.png 24x24/devices/usbpendrive_unmount.png
+ln -s drive-harddisk.png 32x32/devices/usbpendrive_unmount.png
+ln -s drive-harddisk.png 48x48/devices/usbpendrive_unmount.png
+ln -s drive-harddisk.png 64x64/devices/usbpendrive_unmount.png
+ln -s usb-creator.png 24x24/apps/usb-creator-kde.png
+ln -s usb-creator.png 32x32/apps/usb-creator-kde.png
+ln -s usb-creator.png 48x48/apps/usb-creator-kde.png
+ln -s usb-creator.png 64x64/apps/usb-creator-kde.png
+ln -s shutdown.svg 16x16/actions/system-shutdown.svg
+ln -s shutdown.svg 22x22/actions/system-shutdown.svg
+ln -s shutdown.svg 24x24/actions/system-shutdown.svg
+ln -s shutdown.svg 32x32/actions/system-shutdown.svg
+ln -s shutdown.svg 48x48/actions/system-shutdown.svg
+ln -s shutdown.svg 64x64/actions/system-shutdown.svg
+ln -s edit-cut.png 16x16/actions/editcut.png
+ln -s edit-cut.png 22x22/actions/editcut.png
+ln -s edit-cut.png 24x24/actions/editcut.png
+ln -s edit-cut.png 32x32/actions/editcut.png
+ln -s edit-cut.png 48x48/actions/editcut.png
+ln -s exit.png 16x16/actions/application-exit.png
+ln -s exit.png 16x16/actions/edit-delete.png
+ln -s exit.png 16x16/actions/gtk-quit.png
+ln -s exit.png 16x16/actions/list-remove.png
+ln -s exit.png 16x16/actions/remove.png
+ln -s exit.png 16x16/actions/mail_ham.png
+ln -s exit.png 16x16/actions/mail-mark-notjunk.png
+ln -s exit.png 22x22/actions/application-exit.png
+ln -s exit.png 22x22/actions/edit-delete.png
+ln -s exit.png 22x22/actions/gtk-quit.png
+ln -s exit.png 22x22/actions/list-remove.png
+ln -s exit.png 22x22/actions/remove.png
+ln -s exit.png 22x22/actions/mail_ham.png
+ln -s exit.png 22x22/actions/mail-mark-notjunk.png
+ln -s exit.png 24x24/actions/application-exit.png
+ln -s exit.png 24x24/actions/edit-delete.png
+ln -s exit.png 24x24/actions/gtk-quit.png
+ln -s exit.png 24x24/actions/list-remove.png
+ln -s exit.png 24x24/actions/remove.png
+ln -s exit.png 24x24/actions/mail_ham.png
+ln -s exit.png 24x24/actions/mail-mark-notjunk.png
+ln -s exit.png 32x32/actions/application-exit.png
+ln -s exit.png 32x32/actions/edit-delete.png
+ln -s exit.png 32x32/actions/gtk-quit.png
+ln -s exit.png 32x32/actions/list-remove.png
+ln -s exit.png 32x32/actions/remove.png
+ln -s exit.png 32x32/actions/mail_ham.png
+ln -s exit.png 32x32/actions/mail-mark-notjunk.png
+ln -s exit.png 48x48/actions/application-exit.png
+ln -s exit.png 48x48/actions/edit-delete.png
+ln -s exit.png 48x48/actions/gtk-quit.png
+ln -s exit.png 48x48/actions/list-remove.png
+ln -s exit.png 48x48/actions/remove.png
+ln -s exit.png 48x48/actions/mail_ham.png
+ln -s exit.png 48x48/actions/mail-mark-notjunk.png
+ln -s exit.png 64x64/actions/application-exit.png
+ln -s exit.png 64x64/actions/edit-delete.png
+ln -s exit.png 64x64/actions/gtk-quit.png
+ln -s exit.png 64x64/actions/list-remove.png
+ln -s exit.png 64x64/actions/remove.png
+ln -s exit.png 64x64/actions/mail_ham.png
+ln -s exit.png 64x64/actions/mail-mark-notjunk.png
+ln -s close.png 16x16/actions/fileclose.png
+ln -s close.png 22x22/actions/fileclose.png
+ln -s close.png 24x24/actions/fileclose.png
+ln -s close.png 32x32/actions/fileclose.png
+ln -s close.png 48x48/actions/fileclose.png
+ln -s close.png 16x16/actions/gtk-close.png
+ln -s close.png 22x22/actions/gtk-close.png
+ln -s close.png 24x24/actions/gtk-close.png
+ln -s close.png 32x32/actions/gtk-close.png
+ln -s close.png 48x48/actions/gtk-close.png
+ln -s close.png 16x16/actions/window-close.png
+ln -s close.png 22x22/actions/window-close.png
+ln -s close.png 24x24/actions/window-close.png
+ln -s close.png 32x32/actions/window-close.png
+ln -s close.png 48x48/actions/window-close.png
+ln -s bookmark_add.png 16x16/actions/bookmark-new.png
+ln -s bookmark_add.png 22x22/actions/bookmark-new.png
+ln -s bookmark_add.png 24x24/actions/bookmark-new.png
+ln -s bookmark_add.png 32x32/actions/bookmark-new.png
+ln -s bookmark_add.png 48x48/actions/bookmark-new.png
+ln -s bookmark_add.png 16x16/actions/bookmarks_list_add.png
+ln -s bookmark_add.png 22x22/actions/bookmarks_list_add.png
+ln -s bookmark_add.png 24x24/actions/bookmarks_list_add.png
+ln -s bookmark_add.png 32x32/actions/bookmarks_list_add.png
+ln -s bookmark_add.png 48x48/actions/bookmarks_list_add.png
+ln -s ../../16x16/actions/bookmark_add.png 16x16/status/bookmark.png
+ln -s ../../22x22/actions/bookmark_add.png 22x22/status/bookmark.png
+ln -s ../../24x24/actions/bookmark_add.png 24x24/status/bookmark.png
+ln -s ../../32x32/actions/bookmark_add.png 32x32/status/bookmark.png
+ln -s ../../48x48/actions/bookmark_add.png 48x48/status/bookmark.png
+ln -s reload.png 16x16/actions/reload3.png
+ln -s reload.png 22x22/actions/reload3.png
+ln -s reload.png 24x24/actions/reload3.png
+ln -s reload.png 32x32/actions/reload3.png
+ln -s reload.png 48x48/actions/reload3.png
+ln -s reload.png 64x64/actions/reload3.png
+ln -s reload.png 16x16/actions/reload_all_tabs.png
+ln -s reload.png 22x22/actions/reload_all_tabs.png
+ln -s reload.png 24x24/actions/reload_all_tabs.png
+ln -s reload.png 32x32/actions/reload_all_tabs.png
+ln -s reload.png 48x48/actions/reload_all_tabs.png
+ln -s reload.png 64x64/actions/reload_all_tabs.png
+ln -s reload.png 16x16/actions/reload_page.png
+ln -s reload.png 22x22/actions/reload_page.png
+ln -s reload.png 24x24/actions/reload_page.png
+ln -s reload.png 32x32/actions/reload_page.png
+ln -s reload.png 48x48/actions/reload_page.png
+ln -s reload.png 64x64/actions/reload_page.png
+ln -s reload.png 16x16/actions/view-refresh.png
+ln -s reload.png 22x22/actions/view-refresh.png
+ln -s reload.png 24x24/actions/view-refresh.png
+ln -s reload.png 32x32/actions/view-refresh.png
+ln -s reload.png 48x48/actions/view-refresh.png
+ln -s reload.png 64x64/actions/view-refresh.png
+ln -s reload.png 48x48/actions/restart.png
+ln -s stop.png 16x16/actions/process-stop.png
+ln -s stop.png 22x22/actions/process-stop.png
+ln -s stop.png 24x24/actions/process-stop.png
+ln -s stop.png 32x32/actions/process-stop.png
+ln -s stop.png 48x48/actions/process-stop.png
+ln -s stop.png 64x64/actions/process-stop.png
+ln -s stop.png 16x16/actions/messagebox_critical.png
+ln -s stop.png 22x22/actions/messagebox_critical.png
+ln -s stop.png 24x24/actions/messagebox_critical.png
+ln -s stop.png 32x32/actions/messagebox_critical.png
+ln -s stop.png 48x48/actions/messagebox_critical.png
+ln -s stop.png 64x64/actions/messagebox_critical.png
+ln -s stop.png 16x16/actions/gtk-cancel.png
+ln -s stop.png 22x22/actions/gtk-cancel.png
+ln -s stop.png 24x24/actions/gtk-cancel.png
+ln -s stop.png 32x32/actions/gtk-cancel.png
+ln -s stop.png 48x48/actions/gtk-cancel.png
+ln -s stop.png 64x64/actions/gtk-cancel.png
+ln -s stop.png 16x16/actions/gtk-stop.png
+ln -s stop.png 22x22/actions/gtk-stop.png
+ln -s stop.png 24x24/actions/gtk-stop.png
+ln -s stop.png 32x32/actions/gtk-stop.png
+ln -s stop.png 48x48/actions/gtk-stop.png
+ln -s stop.png 64x64/actions/gtk-stop.png
+ln -s ../../16x16/actions/stop.png 16x16/status/messagebox_critical.png
+ln -s ../../22x22/actions/stop.png 22x22/status/messagebox_critical.png
+ln -s ../../24x24/actions/stop.png 24x24/status/messagebox_critical.png
+ln -s ../../32x32/actions/stop.png 32x32/status/messagebox_critical.png
+ln -s ../../48x48/actions/stop.png 48x48/status/messagebox_critical.png
+ln -s ../../64x64/actions/stop.png 64x64/status/messagebox_critical.png
+ln -s back.png 16x16/actions/go-first.png
+ln -s back.png 22x22/actions/go-first.png
+ln -s back.png 24x24/actions/go-first.png
+ln -s back.png 32x32/actions/go-first.png
+ln -s back.png 48x48/actions/go-first.png
+ln -s back.png 64x64/actions/go-first.png
+ln -s back.png 16x16/actions/go-previous.png
+ln -s back.png 22x22/actions/go-previous.png
+ln -s back.png 24x24/actions/go-previous.png
+ln -s back.png 32x32/actions/go-previous.png
+ln -s back.png 48x48/actions/go-previous.png
+ln -s back.png 64x64/actions/go-previous.png
+ln -s back.png 16x16/actions/previous.png
+ln -s back.png 22x22/actions/previous.png
+ln -s back.png 24x24/actions/previous.png
+ln -s back.png 32x32/actions/previous.png
+ln -s back.png 48x48/actions/previous.png
+ln -s back.png 64x64/actions/previous.png
+ln -s back.png 16x16/actions/start.png
+ln -s back.png 22x22/actions/start.png
+ln -s back.png 24x24/actions/start.png
+ln -s back.png 32x32/actions/start.png
+ln -s back.png 48x48/actions/start.png
+ln -s back.png 64x64/actions/start.png
+ln -s forward.png 16x16/actions/go-last.png
+ln -s forward.png 22x22/actions/go-last.png
+ln -s forward.png 24x24/actions/go-last.png
+ln -s forward.png 32x32/actions/go-last.png
+ln -s forward.png 48x48/actions/go-last.png
+ln -s forward.png 64x64/actions/go-last.png
+ln -s forward.png 16x16/actions/go-next.png
+ln -s forward.png 22x22/actions/go-next.png
+ln -s forward.png 24x24/actions/go-next.png
+ln -s forward.png 32x32/actions/go-next.png
+ln -s forward.png 48x48/actions/go-next.png
+ln -s forward.png 64x64/actions/go-next.png
+ln -s forward.png 16x16/actions/next.png
+ln -s forward.png 22x22/actions/next.png
+ln -s forward.png 24x24/actions/next.png
+ln -s forward.png 32x32/actions/next.png
+ln -s forward.png 48x48/actions/next.png
+ln -s forward.png 64x64/actions/next.png
+ln -s bottom.png 16x16/actions/down.png
+ln -s bottom.png 22x22/actions/down.png
+ln -s bottom.png 24x24/actions/down.png
+ln -s bottom.png 32x32/actions/down.png
+ln -s bottom.png 48x48/actions/down.png
+ln -s bottom.png 64x64/actions/down.png
+ln -s bottom.png 16x16/actions/go-down.png
+ln -s bottom.png 22x22/actions/go-down.png
+ln -s bottom.png 24x24/actions/go-down.png
+ln -s bottom.png 32x32/actions/go-down.png
+ln -s bottom.png 48x48/actions/go-down.png
+ln -s bottom.png 64x64/actions/go-down.png
+ln -s bottom.png 16x16/actions/go-bottom.png
+ln -s bottom.png 22x22/actions/go-bottom.png
+ln -s bottom.png 24x24/actions/go-bottom.png
+ln -s bottom.png 32x32/actions/go-bottom.png
+ln -s bottom.png 48x48/actions/go-bottom.png
+ln -s bottom.png 64x64/actions/go-bottom.png
+ln -s bottom.png 16x16/actions/go-jump.png
+ln -s bottom.png 22x22/actions/go-jump.png
+ln -s bottom.png 24x24/actions/go-jump.png
+ln -s bottom.png 32x32/actions/go-jump.png
+ln -s bottom.png 48x48/actions/go-jump.png
+ln -s bottom.png 64x64/actions/go-jump.png
+ln -s bottom.png 16x16/actions/goto.png
+ln -s bottom.png 22x22/actions/goto.png
+ln -s bottom.png 24x24/actions/goto.png
+ln -s bottom.png 32x32/actions/goto.png
+ln -s bottom.png 48x48/actions/goto.png
+ln -s bottom.png 64x64/actions/goto.png
+ln -s add.png 16x16/actions/gtk-add.png
+ln -s add.png 22x22/actions/gtk-add.png
+ln -s add.png 24x24/actions/gtk-add.png
+ln -s add.png 32x32/actions/gtk-add.png
+ln -s add.png 48x48/actions/gtk-add.png
+ln -s add.png 16x16/actions/list-add.png
+ln -s add.png 22x22/actions/list-add.png
+ln -s add.png 24x24/actions/list-add.png
+ln -s add.png 32x32/actions/list-add.png
+ln -s add.png 48x48/actions/list-add.png
+ln -s appointment.png 16x16/actions/appointment-new.png
+ln -s appointment.png 22x22/actions/appointment-new.png
+ln -s appointment.png 24x24/actions/appointment-new.png
+ln -s appointment.png 32x32/actions/appointment-new.png
+ln -s appointment.png 48x48/actions/appointment-new.png
+ln -s appointment.png 64x64/actions/appointment-new.png
+ln -s search.png 16x16/actions/system-search.png
+ln -s search.png 22x22/actions/system-search.png
+ln -s search.png 24x24/actions/system-search.png
+ln -s search.png 32x32/actions/system-search.png
+ln -s search.png 48x48/actions/system-search.png
+ln -s search.png 64x64/actions/system-search.png
+ln -s zoom-out.png 16x16/actions/viewmag-.png
+ln -s zoom-out.png 22x22/actions/viewmag-.png
+ln -s zoom-out.png 24x24/actions/viewmag-.png
+ln -s zoom-out.png 32x32/actions/viewmag-.png
+ln -s zoom-out.png 48x48/actions/viewmag-.png
+ln -s zoom-in.png 16x16/actions/viewmag+.png
+ln -s zoom-in.png 22x22/actions/viewmag+.png
+ln -s zoom-in.png 24x24/actions/viewmag+.png
+ln -s zoom-in.png 32x32/actions/viewmag+.png
+ln -s zoom-in.png 48x48/actions/viewmag+.png
+ln -s help.png 16x16/actions/help-faq.png
+ln -s help.png 22x22/actions/help-faq.png
+ln -s help.png 24x24/actions/help-faq.png
+ln -s help.png 32x32/actions/help-faq.png
+ln -s help.png 48x48/actions/help-faq.png
+ln -s help.png 16x16/actions/help-contents.png
+ln -s help.png 22x22/actions/help-contents.png
+ln -s help.png 24x24/actions/help-contents.png
+ln -s help.png 32x32/actions/help-contents.png
+ln -s help.png 48x48/actions/help-contents.png
+ln -s help.png 16x16/actions/help-about.png
+ln -s help.png 22x22/actions/help-about.png
+ln -s help.png 24x24/actions/help-about.png
+ln -s help.png 32x32/actions/help-about.png
+ln -s help.png 48x48/actions/help-about.png
+ln -s help.png 16x16/actions/contents.png
+ln -s help.png 22x22/actions/contents.png
+ln -s help.png 24x24/actions/contents.png
+ln -s help.png 32x32/actions/contents.png
+ln -s help.png 48x48/actions/contents.png
+ln -s help.png 16x16/actions/messagebox_info.png
+ln -s help.png 22x22/actions/messagebox_info.png
+ln -s help.png 24x24/actions/messagebox_info.png
+ln -s help.png 32x32/actions/messagebox_info.png
+ln -s help.png 48x48/actions/messagebox_info.png
+ln -s ../../16x16/actions/help.png 16x16/status/messagebox_info.png
+ln -s ../../22x22/actions/help.png 22x22/status/messagebox_info.png
+ln -s ../../24x24/actions/help.png 24x24/status/messagebox_info.png
+ln -s ../../32x32/actions/help.png 32x32/status/messagebox_info.png
+ln -s ../../48x48/actions/help.png 48x48/status/messagebox_info.png
+ln -s player_rew.png 16x16/actions/media-seek-backward.png
+ln -s player_rew.png 22x22/actions/media-seek-backward.png
+ln -s player_rew.png 24x24/actions/media-seek-backward.png
+ln -s player_rew.png 32x32/actions/media-seek-backward.png
+ln -s player_rew.png 48x48/actions/media-seek-backward.png
+ln -s player_fwd.png 16x16/actions/media-seek-forward.png
+ln -s player_fwd.png 22x22/actions/media-seek-forward.png
+ln -s player_fwd.png 24x24/actions/media-seek-forward.png
+ln -s player_fwd.png 32x32/actions/media-seek-forward.png
+ln -s player_fwd.png 48x48/actions/media-seek-forward.png
+ln -s undo.png 16x16/actions/edit-undo.png
+ln -s undo.png 22x22/actions/edit-undo.png
+ln -s undo.png 24x24/actions/edit-undo.png
+ln -s undo.png 32x32/actions/edit-undo.png
+ln -s undo.png 48x48/actions/edit-undo.png
+ln -s redo.png 16x16/actions/edit-redo.png
+ln -s redo.png 22x22/actions/edit-redo.png
+ln -s redo.png 24x24/actions/edit-redo.png
+ln -s redo.png 32x32/actions/edit-redo.png
+ln -s redo.png 48x48/actions/edit-redo.png
+ln -s find.png 16x16/actions/edit-find.png
+ln -s find.png 22x22/actions/edit-find.png
+ln -s find.png 24x24/actions/edit-find.png
+ln -s find.png 32x32/actions/edit-find.png
+ln -s find.png 48x48/actions/edit-find.png
+ln -s find.png 64x64/actions/edit-find.png
+ln -s find.png 16x16/actions/filefind.png
+ln -s find.png 22x22/actions/filefind.png
+ln -s find.png 24x24/actions/filefind.png
+ln -s find.png 32x32/actions/filefind.png
+ln -s find.png 48x48/actions/filefind.png
+ln -s find.png 64x64/actions/filefind.png
+ln -s up.png 16x16/actions/top.png
+ln -s up.png 22x22/actions/top.png
+ln -s up.png 24x24/actions/top.png
+ln -s up.png 32x32/actions/top.png
+ln -s up.png 48x48/actions/top.png
+ln -s up.png 64x64/actions/top.png
+ln -s up.png 16x16/actions/go-up.png
+ln -s up.png 22x22/actions/go-up.png
+ln -s up.png 24x24/actions/go-up.png
+ln -s up.png 32x32/actions/go-up.png
+ln -s up.png 48x48/actions/go-up.png
+ln -s up.png 64x64/actions/go-up.png
+ln -s up.png 16x16/actions/go-top.png
+ln -s up.png 22x22/actions/go-top.png
+ln -s up.png 24x24/actions/go-top.png
+ln -s up.png 32x32/actions/go-top.png
+ln -s up.png 48x48/actions/go-top.png
+ln -s up.png 64x64/actions/go-top.png
+ln -s edit-paste.png 16x16/actions/editpaste.png
+ln -s edit-paste.png 22x22/actions/editpaste.png
+ln -s edit-paste.png 24x24/actions/editpaste.png
+ln -s edit-paste.png 32x32/actions/editpaste.png
+ln -s edit-paste.png 48x48/actions/editpaste.png
+ln -s edit-copy.png 16x16/actions/editcopy.png
+ln -s edit-copy.png 22x22/actions/editcopy.png
+ln -s edit-copy.png 24x24/actions/editcopy.png
+ln -s edit-copy.png 32x32/actions/editcopy.png
+ln -s edit-copy.png 48x48/actions/editcopy.png
+ln -s edit-clear.png 16x16/actions/gtk-clear.png
+ln -s edit-clear.png 22x22/actions/gtk-clear.png
+ln -s edit-clear.png 24x24/actions/gtk-clear.png
+ln -s edit-clear.png 32x32/actions/gtk-clear.png
+ln -s edit-clear.png 48x48/actions/gtk-clear.png
+ln -s view-restore.png 16x16/actions/window_nofullscreen.png
+ln -s view-restore.png 22x22/actions/window_nofullscreen.png
+ln -s view-restore.png 24x24/actions/window_nofullscreen.png
+ln -s view-restore.png 32x32/actions/window_nofullscreen.png
+ln -s view-restore.png 48x48/actions/window_nofullscreen.png
+ln -s media-eject.png 16x16/actions/player_eject.png
+ln -s media-eject.png 22x22/actions/player_eject.png
+ln -s media-eject.png 24x24/actions/player_eject.png
+ln -s media-eject.png 32x32/actions/player_eject.png
+ln -s media-eject.png 48x48/actions/player_eject.png
+ln -s indent.png 16x16/actions/format-indent-more.png
+ln -s indent.png 22x22/actions/format-indent-more.png
+ln -s indent.png 24x24/actions/format-indent-more.png
+ln -s indent.png 32x32/actions/format-indent-more.png
+ln -s indent.png 48x48/actions/format-indent-more.png
+ln -s align_left.png 16x16/actions/format-justify-left.png
+ln -s align_left.png 22x22/actions/format-justify-left.png
+ln -s align_left.png 24x24/actions/format-justify-left.png
+ln -s align_left.png 32x32/actions/format-justify-left.png
+ln -s align_left.png 48x48/actions/format-justify-left.png
+ln -s fileprint.png 16x16/actions/document-print.png
+ln -s fileprint.png 22x22/actions/document-print.png
+ln -s fileprint.png 24x24/actions/document-print.png
+ln -s fileprint.png 32x32/actions/document-print.png
+ln -s fileprint.png 48x48/actions/document-print.png
+ln -s fileprint.png 64x64/actions/document-print.png
+ln -s ok.png 64x64/actions/dialog-ok.png
+ln -s ok.png 64x64/actions/button_ok.png
+ln -s player_stop.png 16x16/actions/media-playback-stop.png
+ln -s player_stop.png 22x22/actions/media-playback-stop.png
+ln -s player_stop.png 24x24/actions/media-playback-stop.png
+ln -s player_stop.png 32x32/actions/media-playback-stop.png
+ln -s player_stop.png 48x48/actions/media-playback-stop.png
+ln -s player_play.png 16x16/actions/media-playback-start.png
+ln -s player_play.png 22x22/actions/media-playback-start.png
+ln -s player_play.png 24x24/actions/media-playback-start.png
+ln -s player_play.png 32x32/actions/media-playback-start.png
+ln -s player_play.png 48x48/actions/media-playback-start.png
+ln -s exec.png 16x16/actions/gear.png
+ln -s exec.png 22x22/actions/gear.png
+ln -s exec.png 24x24/actions/gear.png
+ln -s exec.png 32x32/actions/gear.png
+ln -s exec.png 48x48/actions/gear.png
+ln -s exec.png 64x64/actions/gear.png
+ln -s window-new.png 16x16/actions/window_new.png
+ln -s window-new.png 22x22/actions/window_new.png
+ln -s window-new.png 24x24/actions/window_new.png
+ln -s window-new.png 32x32/actions/window_new.png
+ln -s window-new.png 48x48/actions/window_new.png
+ln -s format-text-bold.png 16x16/actions/gtk-bold.png
+ln -s format-text-bold.png 22x22/actions/gtk-bold.png
+ln -s format-text-bold.png 24x24/actions/gtk-bold.png
+ln -s format-text-bold.png 32x32/actions/gtk-bold.png
+ln -s format-text-bold.png 48x48/actions/gtk-bold.png
+ln -s player_pause.png 16x16/actions/media-playback-pause.png
+ln -s player_pause.png 22x22/actions/media-playback-pause.png
+ln -s player_pause.png 24x24/actions/media-playback-pause.png
+ln -s player_pause.png 32x32/actions/media-playback-pause.png
+ln -s player_pause.png 48x48/actions/media-playback-pause.png
+ln -s mail_spam.png 16x16/actions/mail-mark-junk.png
+ln -s mail_spam.png 22x22/actions/mail-mark-junk.png
+ln -s mail_spam.png 24x24/actions/mail-mark-junk.png
+ln -s mail_spam.png 32x32/actions/mail-mark-junk.png
+ln -s mail_spam.png 48x48/actions/mail-mark-junk.png
+ln -s fileopen.png 16x16/actions/document-open.png
+ln -s fileopen.png 22x22/actions/document-open.png
+ln -s fileopen.png 24x24/actions/document-open.png
+ln -s fileopen.png 32x32/actions/document-open.png
+ln -s fileopen.png 48x48/actions/document-open.png
+ln -s fileopen.png 64x64/actions/document-open.png
+ln -s player_record.png 16x16/actions/media-record.png
+ln -s player_record.png 22x22/actions/media-record.png
+ln -s player_record.png 24x24/actions/media-record.png
+ln -s player_record.png 32x32/actions/media-record.png
+ln -s player_record.png 48x48/actions/media-record.png
+ln -s player_start.png 16x16/actions/media-skip-backward.png
+ln -s player_start.png 22x22/actions/media-skip-backward.png
+ln -s player_start.png 24x24/actions/media-skip-backward.png
+ln -s player_start.png 32x32/actions/media-skip-backward.png
+ln -s player_start.png 48x48/actions/media-skip-backward.png
+ln -s filenew.png 16x16/actions/document-new.png
+ln -s filenew.png 22x22/actions/document-new.png
+ln -s filenew.png 24x24/actions/document-new.png
+ln -s filenew.png 32x32/actions/document-new.png
+ln -s filenew.png 48x48/actions/document-new.png
+ln -s filenew.png 64x64/actions/document-new.png
+ln -s filesave.png 16x16/actions/document-save.png
+ln -s filesave.png 22x22/actions/document-save.png
+ln -s filesave.png 24x24/actions/document-save.png
+ln -s filesave.png 32x32/actions/document-save.png
+ln -s filesave.png 48x48/actions/document-save.png
+ln -s filesave.png 64x64/actions/document-save.png
+ln -s system-lock-screen.png 16x16/actions/lock.png
+ln -s system-lock-screen.png 22x22/actions/lock.png
+ln -s system-lock-screen.png 24x24/actions/lock.png
+ln -s system-lock-screen.png 32x32/actions/lock.png
+ln -s system-lock-screen.png 48x48/actions/lock.png
+ln -s system-lock-screen.png 64x64/actions/lock.png
+ln -s viewmagfit.png 16x16/actions/zoom-fit-best.png
+ln -s viewmagfit.png 22x22/actions/zoom-fit-best.png
+ln -s viewmagfit.png 24x24/actions/zoom-fit-best.png
+ln -s viewmagfit.png 32x32/actions/zoom-fit-best.png
+ln -s viewmagfit.png 48x48/actions/zoom-fit-best.png
+ln -s mouse.png 16x16/actions/input-mouse.png
+ln -s mouse.png 22x22/actions/input-mouse.png
+ln -s mouse.png 24x24/actions/input-mouse.png
+ln -s mouse.png 32x32/actions/input-mouse.png
+ln -s mouse.png 48x48/actions/input-mouse.png
+ln -s mouse.png 64x64/actions/input-mouse.png
+ln -s ../../16x16/actions/mouse.png 16x16/devices/mouse.png
+ln -s ../../22x22/actions/mouse.png 22x22/devices/mouse.png
+ln -s ../../24x24/actions/mouse.png 24x24/devices/mouse.png
+ln -s ../../32x32/actions/mouse.png 32x32/devices/mouse.png
+ln -s ../../48x48/actions/mouse.png 48x48/devices/mouse.png
+ln -s ../../64x64/actions/mouse.png 64x64/devices/mouse.png
+ln -s ../../16x16/actions/mouse.png 16x16/devices/input-mouse.png
+ln -s ../../22x22/actions/mouse.png 22x22/devices/input-mouse.png
+ln -s ../../24x24/actions/mouse.png 24x24/devices/input-mouse.png
+ln -s ../../32x32/actions/mouse.png 32x32/devices/input-mouse.png
+ln -s ../../48x48/actions/mouse.png 48x48/devices/input-mouse.png
+ln -s ../../64x64/actions/mouse.png 64x64/devices/input-mouse.png
+ln -s run.png 16x16/actions/system-run.png
+ln -s run.png 22x22/actions/system-run.png
+ln -s run.png 24x24/actions/system-run.png
+ln -s run.png 32x32/actions/system-run.png
+ln -s run.png 48x48/actions/system-run.png
+ln -s run.png 64x64/actions/system-run.png
+ln -s player_end.png 16x16/actions/media-skip-forward.png
+ln -s player_end.png 22x22/actions/media-skip-forward.png
+ln -s player_end.png 24x24/actions/media-skip-forward.png
+ln -s player_end.png 32x32/actions/media-skip-forward.png
+ln -s player_end.png 48x48/actions/media-skip-forward.png
+ln -s insert-object.png 16x16/actions/frame_text.png
+ln -s insert-object.png 22x22/actions/frame_text.png
+ln -s insert-object.png 24x24/actions/frame_text.png
+ln -s insert-object.png 32x32/actions/frame_text.png
+ln -s insert-object.png 48x48/actions/frame_text.png
+ln -s view-fullscreen.png 16x16/actions/window_fullscreen.png
+ln -s view-fullscreen.png 22x22/actions/window_fullscreen.png
+ln -s view-fullscreen.png 24x24/actions/window_fullscreen.png
+ln -s view-fullscreen.png 32x32/actions/window_fullscreen.png
+ln -s view-fullscreen.png 48x48/actions/window_fullscreen.png
+ln -s gohome.png 16x16/actions/go-home.png
+ln -s gohome.png 22x22/actions/go-home.png
+ln -s gohome.png 24x24/actions/go-home.png
+ln -s gohome.png 32x32/actions/go-home.png
+ln -s gohome.png 48x48/actions/go-home.png
+ln -s gohome.png 64x64/actions/go-home.png
+ln -s gohome.png 16x16/actions/kfm_home.png
+ln -s gohome.png 22x22/actions/kfm_home.png
+ln -s gohome.png 24x24/actions/kfm_home.png
+ln -s gohome.png 32x32/actions/kfm_home.png
+ln -s gohome.png 48x48/actions/kfm_home.png
+ln -s gohome.png 64x64/actions/kfm_home.png
+ln -s ../../16x16/actions/gohome.png 16x16/apps/kfm_home.png
+ln -s ../../22x22/actions/gohome.png 22x22/apps/kfm_home.png
+ln -s ../../24x24/actions/gohome.png 24x24/apps/kfm_home.png
+ln -s ../../32x32/actions/gohome.png 32x32/apps/kfm_home.png
+ln -s ../../48x48/actions/gohome.png 48x48/apps/kfm_home.png
+ln -s ../../64x64/actions/gohome.png 64x64/apps/kfm_home.png
+ln -s thunderbird.svg 22x22/apps/claws-mail.svg
+ln -s thunderbird.svg 24x24/apps/claws-mail.svg
+ln -s thunderbird.svg 32x32/apps/claws-mail.svg
+ln -s thunderbird.svg 48x48/apps/claws-mail.svg
+ln -s thunderbird.svg 64x64/apps/claws-mail.svg
+ln -s thunderbird.svg 48x48/apps/internet-mail.svg
+ln -s thunderbird.svg 64x64/apps/internet-mail.svg
+ln -s tor-browser.svg 16x16/apps/tor.svg
+ln -s tor-browser.svg 22x22/apps/tor.svg
+ln -s tor-browser.svg 24x24/apps/tor.svg
+ln -s tor-browser.svg 32x32/apps/tor.svg
+ln -s tor-browser.svg 48x48/apps/tor.svg
+ln -s tor-browser.svg 64x64/apps/tor.svg
+ln -s q4oslogo2.svg 16x16/apps/distributor-logo-q4os1.svg
+ln -s q4oslogo2.svg 24x24/apps/distributor-logo-q4os1.svg
+ln -s q4oslogo2.svg 32x32/apps/distributor-logo-q4os1.svg
+ln -s q4oslogo2.svg 48x48/apps/distributor-logo-q4os1.svg
+ln -s q4oslogo2.svg 64x64/apps/distributor-logo-q4os1.svg
+ln -s ring.svg 16x16/apps/ring-kde.svg
+ln -s ring.svg 22x22/apps/ring-kde.svg
+ln -s ring.svg 24x24/apps/ring-kde.svg
+ln -s ring.svg 32x32/apps/ring-kde.svg
+ln -s ring.svg 48x48/apps/ring-kde.svg
+ln -s ring.svg 64x64/apps/ring-kde.svg
+ln -s virtualbox.png 16x16/apps/virtualbox-ose.png
+ln -s virtualbox.png 24x24/apps/virtualbox-ose.png
+ln -s virtualbox.png 32x32/apps/virtualbox-ose.png
+ln -s virtualbox.png 48x48/apps/virtualbox-ose.png
+ln -s virtualbox.png 64x64/apps/virtualbox-ose.png
+ln -s virtualbox.png 16x16/apps/VBox.png
+ln -s virtualbox.png 24x24/apps/VBox.png
+ln -s virtualbox.png 32x32/apps/VBox.png
+ln -s virtualbox.png 48x48/apps/VBox.png
+ln -s virtualbox.png 64x64/apps/VBox.png
+ln -s knotes.svg 64x64/apps/kjots.svg
+ln -s knotes.svg 64x64/apps/basket.svg
+ln -s plank.png 16x16/apps/docky.png
+ln -s plank.png 24x24/apps/docky.png
+ln -s plank.png 32x32/apps/docky.png
+ln -s plank.png 48x48/apps/docky.png
+ln -s plank.png 64x64/apps/docky.png
+ln -s digikam.png 16x16/apps/shotwell.png
+ln -s digikam.png 24x24/apps/shotwell.png
+ln -s digikam.png 32x32/apps/shotwell.png
+ln -s digikam.png 48x48/apps/shotwell.png
+ln -s digikam.png 64x64/apps/shotwell.png
+ln -s openshot.png 16x16/apps/openshot-qt.png
+ln -s openshot.png 24x24/apps/openshot-qt.png
+ln -s openshot.png 32x32/apps/openshot-qt.png
+ln -s openshot.png 48x48/apps/openshot-qt.png
+ln -s openshot.png 64x64/apps/openshot-qt.png
+ln -s locale.png 16x16/apps/preferences-desktop-locale.png
+ln -s locale.png 22x22/apps/preferences-desktop-locale.png
+ln -s locale.png 24x24/apps/preferences-desktop-locale.png
+ln -s locale.png 32x32/apps/preferences-desktop-locale.png
+ln -s locale.png 48x48/apps/preferences-desktop-locale.png
+ln -s locale.png 64x64/apps/preferences-desktop-locale.png
+ln -s kedit.png 16x16/apps/gedit.png
+ln -s kedit.png 22x22/apps/gedit.png
+ln -s kedit.png 24x24/apps/gedit.png
+ln -s kedit.png 32x32/apps/gedit.png
+ln -s kedit.png 48x48/apps/gedit.png
+ln -s kedit.png 64x64/apps/gedit.png
+ln -s kedit.png 16x16/apps/accessories-text-editor.png
+ln -s kedit.png 22x22/apps/accessories-text-editor.png
+ln -s kedit.png 24x24/apps/accessories-text-editor.png
+ln -s kedit.png 32x32/apps/accessories-text-editor.png
+ln -s kedit.png 48x48/apps/accessories-text-editor.png
+ln -s kedit.png 64x64/apps/accessories-text-editor.png
+ln -s background.png 16x16/apps/preferences-desktop-wallpaper.png
+ln -s background.png 22x22/apps/preferences-desktop-wallpaper.png
+ln -s background.png 24x24/apps/preferences-desktop-wallpaper.png
+ln -s background.png 32x32/apps/preferences-desktop-wallpaper.png
+ln -s background.png 48x48/apps/preferences-desktop-wallpaper.png
+ln -s background.png 64x64/apps/preferences-desktop-wallpaper.png
+ln -s kolourpaint.svg 64x64/apps/krita.svg
+ln -s kolourpaint.svg 64x64/apps/gnome-paint.svg
+ln -s amarok.svg 64x64/apps/amarok-icon.svg
+ln -s ksysguard.png 16x16/apps/utilities-system-monitor.png
+ln -s ksysguard.png 22x22/apps/utilities-system-monitor.png
+ln -s ksysguard.png 24x24/apps/utilities-system-monitor.png
+ln -s ksysguard.png 32x32/apps/utilities-system-monitor.png
+ln -s ksysguard.png 48x48/apps/utilities-system-monitor.png
+ln -s ksysguard.png 64x64/apps/utilities-system-monitor.png
+ln -s preferences-color.png 16x16/apps/preferences-desktop-display-color.png
+ln -s preferences-color.png 24x24/apps/preferences-desktop-display-color.png
+ln -s preferences-color.png 32x32/apps/preferences-desktop-display-color.png
+ln -s preferences-color.png 48x48/apps/preferences-desktop-display-color.png
+ln -s preferences-color.png 64x64/apps/preferences-desktop-display-color.png
+ln -s amule.svg 16x16/apps/eiskaltdcpp.svg
+ln -s amule.svg 22x22/apps/eiskaltdcpp.svg
+ln -s amule.svg 24x24/apps/eiskaltdcpp.svg
+ln -s amule.svg 32x32/apps/eiskaltdcpp.svg
+ln -s amule.svg 48x48/apps/eiskaltdcpp.svg
+ln -s amule.svg 64x64/apps/eiskaltdcpp.svg
+ln -s kcharselect.png 16x16/apps/accessories-character-map.png
+ln -s kcharselect.png 22x22/apps/accessories-character-map.png
+ln -s kcharselect.png 24x24/apps/accessories-character-map.png
+ln -s kcharselect.png 32x32/apps/accessories-character-map.png
+ln -s kcharselect.png 48x48/apps/accessories-character-map.png
+ln -s kcharselect.png 64x64/apps/accessories-character-map.png
+ln -s preferences-desktop-remote-desktop.png 16x16/apps/krfb.png
+ln -s preferences-desktop-remote-desktop.png 22x22/apps/krfb.png
+ln -s preferences-desktop-remote-desktop.png 24x24/apps/krfb.png
+ln -s preferences-desktop-remote-desktop.png 32x32/apps/krfb.png
+ln -s preferences-desktop-remote-desktop.png 48x48/apps/krfb.png
+ln -s preferences-desktop-remote-desktop.png 64x64/apps/krfb.png
+ln -s dragonplayer.png 16x16/apps/totem.png
+ln -s dragonplayer.png 24x24/apps/totem.png
+ln -s dragonplayer.png 32x32/apps/totem.png
+ln -s dragonplayer.png 48x48/apps/totem.png
+ln -s dragonplayer.png 64x64/apps/totem.png
+ln -s style.png 16x16/apps/preferences-desktop-theme.png
+ln -s style.png 22x22/apps/preferences-desktop-theme.png
+ln -s style.png 24x24/apps/preferences-desktop-theme.png
+ln -s style.png 32x32/apps/preferences-desktop-theme.png
+ln -s style.png 48x48/apps/preferences-desktop-theme.png
+ln -s style.png 64x64/apps/preferences-desktop-theme.png
+ln -s style.png 16x16/apps/kthememgr.png
+ln -s style.png 22x22/apps/kthememgr.png
+ln -s style.png 24x24/apps/kthememgr.png
+ln -s style.png 32x32/apps/kthememgr.png
+ln -s style.png 48x48/apps/kthememgr.png
+ln -s style.png 64x64/apps/kthememgr.png
+ln -s k9copy.svg 16x16/apps/k9-copy.svg
+ln -s k9copy.svg 22x22/apps/k9-copy.svg
+ln -s k9copy.svg 24x24/apps/k9-copy.svg
+ln -s k9copy.svg 32x32/apps/k9-copy.svg
+ln -s k9copy.svg 48x48/apps/k9-copy.svg
+ln -s k9copy.svg 64x64/apps/k9-copy.svg
+ln -s arts.png 16x16/apps/kcmsound.png
+ln -s arts.png 22x22/apps/kcmsound.png
+ln -s arts.png 24x24/apps/kcmsound.png
+ln -s arts.png 32x32/apps/kcmsound.png
+ln -s arts.png 48x48/apps/kcmsound.png
+ln -s arts.png 64x64/apps/kcmsound.png
+ln -s arts.png 16x16/apps/multimedia.png
+ln -s arts.png 22x22/apps/multimedia.png
+ln -s arts.png 24x24/apps/multimedia.png
+ln -s arts.png 32x32/apps/multimedia.png
+ln -s arts.png 48x48/apps/multimedia.png
+ln -s arts.png 64x64/apps/multimedia.png
+ln -s arts.png 16x16/apps/multimedia-volume-control.png
+ln -s arts.png 22x22/apps/multimedia-volume-control.png
+ln -s arts.png 24x24/apps/multimedia-volume-control.png
+ln -s arts.png 32x32/apps/multimedia-volume-control.png
+ln -s arts.png 48x48/apps/multimedia-volume-control.png
+ln -s arts.png 64x64/apps/multimedia-volume-control.png
+ln -s debian-installer-launcher.svg 16x16/apps/ubiquity-kde.svg
+ln -s debian-installer-launcher.svg 22x22/apps/ubiquity-kde.svg
+ln -s debian-installer-launcher.svg 24x24/apps/ubiquity-kde.svg
+ln -s debian-installer-launcher.svg 32x32/apps/ubiquity-kde.svg
+ln -s debian-installer-launcher.svg 48x48/apps/ubiquity-kde.svg
+ln -s debian-installer-launcher.svg 64x64/apps/ubiquity-kde.svg
+ln -s flow.svg 16x16/apps/calligraflow.svg
+ln -s flow.svg 22x22/apps/calligraflow.svg
+ln -s flow.svg 24x24/apps/calligraflow.svg
+ln -s flow.svg 32x32/apps/calligraflow.svg
+ln -s flow.svg 48x48/apps/calligraflow.svg
+ln -s flow.svg 64x64/apps/calligraflow.svg
+ln -s kuser.png 16x16/apps/config-users.png
+ln -s kuser.png 22x22/apps/config-users.png
+ln -s kuser.png 24x24/apps/config-users.png
+ln -s kuser.png 32x32/apps/config-users.png
+ln -s kuser.png 48x48/apps/config-users.png
+ln -s kuser.png 64x64/apps/config-users.png
+ln -s kuser.png 16x16/apps/system-config-users.png
+ln -s kuser.png 22x22/apps/system-config-users.png
+ln -s kuser.png 24x24/apps/system-config-users.png
+ln -s kuser.png 32x32/apps/system-config-users.png
+ln -s kuser.png 48x48/apps/system-config-users.png
+ln -s kuser.png 64x64/apps/system-config-users.png
+ln -s kuser.png 16x16/apps/system-users.png
+ln -s kuser.png 22x22/apps/system-users.png
+ln -s kuser.png 24x24/apps/system-users.png
+ln -s kuser.png 32x32/apps/system-users.png
+ln -s kuser.png 48x48/apps/system-users.png
+ln -s kuser.png 64x64/apps/system-users.png
+ln -s kontact-import-wizard.svg 16x16/apps/ktnef.svg
+ln -s kontact-import-wizard.svg 22x22/apps/ktnef.svg
+ln -s kontact-import-wizard.svg 24x24/apps/ktnef.svg
+ln -s kontact-import-wizard.svg 32x32/apps/ktnef.svg
+ln -s kontact-import-wizard.svg 48x48/apps/ktnef.svg
+ln -s kontact-import-wizard.svg 64x64/apps/ktnef.svg
+ln -s key_bindings.png 16x16/apps/preferences-desktop-keyboard-shortcuts.png
+ln -s key_bindings.png 22x22/apps/preferences-desktop-keyboard-shortcuts.png
+ln -s key_bindings.png 24x24/apps/preferences-desktop-keyboard-shortcuts.png
+ln -s key_bindings.png 32x32/apps/preferences-desktop-keyboard-shortcuts.png
+ln -s key_bindings.png 48x48/apps/preferences-desktop-keyboard-shortcuts.png
+ln -s key_bindings.png 64x64/apps/preferences-desktop-keyboard-shortcuts.png
+ln -s bitcoin.png 16x16/apps/bitcoin128.png
+ln -s bitcoin.png 24x24/apps/bitcoin128.png
+ln -s bitcoin.png 32x32/apps/bitcoin128.png
+ln -s bitcoin.png 48x48/apps/bitcoin128.png
+ln -s bitcoin.png 64x64/apps/bitcoin128.png
+ln -s tdescreensaver.png 16x16/apps/preferences-desktop-screensaver.png
+ln -s tdescreensaver.png 24x24/apps/preferences-desktop-screensaver.png
+ln -s tdescreensaver.png 32x32/apps/preferences-desktop-screensaver.png
+ln -s tdescreensaver.png 48x48/apps/preferences-desktop-screensaver.png
+ln -s tdescreensaver.png 64x64/apps/preferences-desktop-screensaver.png
+ln -s gourmet.svg 16x16/apps/preferences-web-browser-cookies.svg
+ln -s gourmet.svg 22x22/apps/preferences-web-browser-cookies.svg
+ln -s gourmet.svg 24x24/apps/preferences-web-browser-cookies.svg
+ln -s gourmet.svg 32x32/apps/preferences-web-browser-cookies.svg
+ln -s gourmet.svg 48x48/apps/preferences-web-browser-cookies.svg
+ln -s gourmet.svg 64x64/apps/preferences-web-browser-cookies.svg
+ln -s usb-creator.png 24x24/apps/unetbootin.png
+ln -s usb-creator.png 32x32/apps/unetbootin.png
+ln -s usb-creator.png 48x48/apps/unetbootin.png
+ln -s usb-creator.png 64x64/apps/unetbootin.png
+ln -s usb-creator.png 24x24/apps/imagewriter.png
+ln -s usb-creator.png 32x32/apps/imagewriter.png
+ln -s usb-creator.png 48x48/apps/imagewriter.png
+ln -s usb-creator.png 64x64/apps/imagewriter.png
+ln -s system.png 16x16/apps/computer.png
+ln -s system.png 22x22/apps/computer.png
+ln -s system.png 24x24/apps/computer.png
+ln -s system.png 32x32/apps/computer.png
+ln -s system.png 48x48/apps/computer.png
+ln -s system.png 64x64/apps/computer.png
+ln -s ../../16x16/apps/system.png 16x16/devices/system.png
+ln -s ../../22x22/apps/system.png 22x22/devices/system.png
+ln -s ../../24x24/apps/system.png 24x24/devices/system.png
+ln -s ../../32x32/apps/system.png 32x32/devices/system.png
+ln -s ../../48x48/apps/system.png 48x48/devices/system.png
+ln -s ../../64x64/apps/system.png 64x64/devices/system.png
+ln -s ../../16x16/apps/system.png 16x16/devices/computer.png
+ln -s ../../22x22/apps/system.png 22x22/devices/computer.png
+ln -s ../../24x24/apps/system.png 24x24/devices/computer.png
+ln -s ../../32x32/apps/system.png 32x32/devices/computer.png
+ln -s ../../48x48/apps/system.png 48x48/devices/computer.png
+ln -s ../../64x64/apps/system.png 64x64/devices/computer.png
+ln -s java.png 16x16/apps/jar.png
+ln -s java.png 24x24/apps/jar.png
+ln -s java.png 32x32/apps/jar.png
+ln -s java.png 48x48/apps/jar.png
+ln -s java.png 64x64/apps/jar.png
+ln -s youtube-dl.png 16x16/apps/youtube-dl-gui.png
+ln -s youtube-dl.png 24x24/apps/youtube-dl-gui.png
+ln -s youtube-dl.png 32x32/apps/youtube-dl-gui.png
+ln -s youtube-dl.png 48x48/apps/youtube-dl-gui.png
+ln -s youtube-dl.png 64x64/apps/youtube-dl-gui.png
+ln -s youtube-dl.png 16x16/apps/youtube-dlg.png
+ln -s youtube-dl.png 24x24/apps/youtube-dlg.png
+ln -s youtube-dl.png 32x32/apps/youtube-dlg.png
+ln -s youtube-dl.png 48x48/apps/youtube-dlg.png
+ln -s youtube-dl.png 64x64/apps/youtube-dlg.png
+ln -s access.png 16x16/apps/preferences-desktop-accessibility.png
+ln -s access.png 22x22/apps/preferences-desktop-accessibility.png
+ln -s access.png 24x24/apps/preferences-desktop-accessibility.png
+ln -s access.png 32x32/apps/preferences-desktop-accessibility.png
+ln -s access.png 48x48/apps/preferences-desktop-accessibility.png
+ln -s access.png 64x64/apps/preferences-desktop-accessibility.png
+ln -s kwin.png 16x16/apps/preferences-system-windows.png
+ln -s kwin.png 22x22/apps/preferences-system-windows.png
+ln -s kwin.png 24x24/apps/preferences-system-windows.png
+ln -s kwin.png 32x32/apps/preferences-system-windows.png
+ln -s kwin.png 48x48/apps/preferences-system-windows.png
+ln -s kwin.png 64x64/apps/preferences-system-windows.png
+ln -s kwin.png 16x16/apps/kcmkwm.png
+ln -s kwin.png 22x22/apps/kcmkwm.png
+ln -s kwin.png 24x24/apps/kcmkwm.png
+ln -s kwin.png 32x32/apps/kcmkwm.png
+ln -s kwin.png 48x48/apps/kcmkwm.png
+ln -s kwin.png 64x64/apps/kcmkwm.png
+ln -s kcontrol.png 16x16/apps/package_settings.png
+ln -s kcontrol.png 22x22/apps/package_settings.png
+ln -s kcontrol.png 24x24/apps/package_settings.png
+ln -s kcontrol.png 32x32/apps/package_settings.png
+ln -s kcontrol.png 48x48/apps/package_settings.png
+ln -s kcontrol.png 64x64/apps/package_settings.png
+ln -s ../../16x16/apps/kcontrol.png 16x16/categories/package_settings.png
+ln -s ../../22x22/apps/kcontrol.png 22x22/categories/package_settings.png
+ln -s ../../24x24/apps/kcontrol.png 24x24/categories/package_settings.png
+ln -s ../../32x32/apps/kcontrol.png 32x32/categories/package_settings.png
+ln -s ../../48x48/apps/kcontrol.png 48x48/categories/package_settings.png
+ln -s ../../64x64/apps/kcontrol.png 64x64/categories/package_settings.png
+ln -s midori.png 16x16/apps/epiphany.png
+ln -s midori.png 24x24/apps/epiphany.png
+ln -s midori.png 32x32/apps/epiphany.png
+ln -s midori.png 48x48/apps/epiphany.png
+ln -s midori.png 64x64/apps/epiphany.png
+ln -s kjobviewer.png 16x16/apps/printmgr.png
+ln -s kjobviewer.png 22x22/apps/printmgr.png
+ln -s kjobviewer.png 24x24/apps/printmgr.png
+ln -s kjobviewer.png 32x32/apps/printmgr.png
+ln -s kjobviewer.png 48x48/apps/printmgr.png
+ln -s kjobviewer.png 64x64/apps/printmgr.png
+ln -s ../../16x16/apps/kjobviewer.png 16x16/devices/printmgr.png
+ln -s ../../22x22/apps/kjobviewer.png 22x22/devices/printmgr.png
+ln -s ../../24x24/apps/kjobviewer.png 24x24/devices/printmgr.png
+ln -s ../../32x32/apps/kjobviewer.png 32x32/devices/printmgr.png
+ln -s ../../48x48/apps/kjobviewer.png 48x48/devices/printmgr.png
+ln -s ../../64x64/apps/kjobviewer.png 64x64/devices/printmgr.png
+ln -s ../../16x16/apps/kjobviewer.png 16x16/devices/kjobviewer.png
+ln -s ../../22x22/apps/kjobviewer.png 22x22/devices/kjobviewer.png
+ln -s ../../24x24/apps/kjobviewer.png 24x24/devices/kjobviewer.png
+ln -s ../../32x32/apps/kjobviewer.png 32x32/devices/kjobviewer.png
+ln -s ../../48x48/apps/kjobviewer.png 48x48/devices/kjobviewer.png
+ln -s ../../64x64/apps/kjobviewer.png 64x64/devices/kjobviewer.png
+ln -s khelpcenter.png 16x16/apps/help-browser.png
+ln -s khelpcenter.png 22x22/apps/help-browser.png
+ln -s khelpcenter.png 24x24/apps/help-browser.png
+ln -s khelpcenter.png 32x32/apps/help-browser.png
+ln -s khelpcenter.png 48x48/apps/help-browser.png
+ln -s khelpcenter.png 64x64/apps/help-browser.png
+ln -s yandex-browser.svg 16x16/apps/yandex-browser-beta.svg
+ln -s yandex-browser.svg 22x22/apps/yandex-browser-beta.svg
+ln -s yandex-browser.svg 24x24/apps/yandex-browser-beta.svg
+ln -s yandex-browser.svg 32x32/apps/yandex-browser-beta.svg
+ln -s yandex-browser.svg 48x48/apps/yandex-browser-beta.svg
+ln -s yandex-browser.svg 64x64/apps/yandex-browser-beta.svg
+ln -s package.png 16x16/apps/system-software-install.png
+ln -s package.png 22x22/apps/system-software-install.png
+ln -s package.png 24x24/apps/system-software-install.png
+ln -s package.png 32x32/apps/system-software-install.png
+ln -s package.png 48x48/apps/system-software-install.png
+ln -s package.png 64x64/apps/system-software-install.png
+ln -s ../../16x16/apps/package.png 16x16/mimetypes/package.png
+ln -s ../../22x22/apps/package.png 22x22/mimetypes/package.png
+ln -s ../../24x24/apps/package.png 24x24/mimetypes/package.png
+ln -s ../../32x32/apps/package.png 32x32/mimetypes/package.png
+ln -s ../../48x48/apps/package.png 48x48/mimetypes/package.png
+ln -s ../../64x64/apps/package.png 64x64/mimetypes/package.png
+ln -s fonts.png 16x16/apps/preferences-desktop-font.png
+ln -s fonts.png 22x22/apps/preferences-desktop-font.png
+ln -s fonts.png 24x24/apps/preferences-desktop-font.png
+ln -s fonts.png 32x32/apps/preferences-desktop-font.png
+ln -s fonts.png 48x48/apps/preferences-desktop-font.png
+ln -s fonts.png 64x64/apps/preferences-desktop-font.png
+ln -s ../../16x16/apps/fonts.png 16x16/actions/fonts.png
+ln -s ../../22x22/apps/fonts.png 22x22/actions/fonts.png
+ln -s ../../24x24/apps/fonts.png 24x24/actions/fonts.png
+ln -s ../../32x32/apps/fonts.png 32x32/actions/fonts.png
+ln -s ../../48x48/apps/fonts.png 48x48/actions/fonts.png
+ln -s ../../64x64/apps/fonts.png 64x64/actions/fonts.png
+ln -s smartgit.png 16x16/apps/syntevo-smartgit.png
+ln -s smartgit.png 24x24/apps/syntevo-smartgit.png
+ln -s smartgit.png 32x32/apps/syntevo-smartgit.png
+ln -s smartgit.png 48x48/apps/syntevo-smartgit.png
+ln -s smartgit.png 64x64/apps/syntevo-smartgit.png
+ln -s gitg.png 16x16/apps/git-gui.png
+ln -s gitg.png 24x24/apps/git-gui.png
+ln -s gitg.png 32x32/apps/git-gui.png
+ln -s gitg.png 48x48/apps/git-gui.png
+ln -s gitg.png 64x64/apps/git-gui.png
+ln -s qt.png 16x16/apps/qtlogo.png
+ln -s qt.png 24x24/apps/qtlogo.png
+ln -s qt.png 32x32/apps/qtlogo.png
+ln -s qt.png 48x48/apps/qtlogo.png
+ln -s qt.png 64x64/apps/qtlogo.png
+ln -s qt.png 16x16/apps/qt-logo.png
+ln -s qt.png 24x24/apps/qt-logo.png
+ln -s qt.png 32x32/apps/qt-logo.png
+ln -s qt.png 48x48/apps/qt-logo.png
+ln -s qt.png 64x64/apps/qt-logo.png
+ln -s qt.png 16x16/apps/qtcreator.png
+ln -s qt.png 24x24/apps/qtcreator.png
+ln -s qt.png 32x32/apps/qtcreator.png
+ln -s qt.png 48x48/apps/qtcreator.png
+ln -s qt.png 64x64/apps/qtcreator.png
+ln -s qt.png 16x16/apps/qdbusviewer.png
+ln -s qt.png 24x24/apps/qdbusviewer.png
+ln -s qt.png 32x32/apps/qdbusviewer.png
+ln -s qt.png 48x48/apps/qdbusviewer.png
+ln -s qt.png 64x64/apps/qdbusviewer.png
+ln -s internet-news-reader.png 16x16/apps/liferea.png
+ln -s internet-news-reader.png 24x24/apps/liferea.png
+ln -s internet-news-reader.png 32x32/apps/liferea.png
+ln -s internet-news-reader.png 48x48/apps/liferea.png
+ln -s internet-news-reader.png 64x64/apps/liferea.png
+ln -s kfm.png 16x16/apps/file-manager.png
+ln -s kfm.png 22x22/apps/file-manager.png
+ln -s kfm.png 24x24/apps/file-manager.png
+ln -s kfm.png 32x32/apps/file-manager.png
+ln -s kfm.png 48x48/apps/file-manager.png
+ln -s kfm.png 64x64/apps/file-manager.png
+ln -s kfm.png 16x16/apps/system-file-manager.png
+ln -s kfm.png 22x22/apps/system-file-manager.png
+ln -s kfm.png 24x24/apps/system-file-manager.png
+ln -s kfm.png 32x32/apps/system-file-manager.png
+ln -s kfm.png 48x48/apps/system-file-manager.png
+ln -s kfm.png 64x64/apps/system-file-manager.png
+ln -s kfm.png 16x16/apps/dolphin.png
+ln -s kfm.png 22x22/apps/dolphin.png
+ln -s kfm.png 24x24/apps/dolphin.png
+ln -s kfm.png 32x32/apps/dolphin.png
+ln -s kfm.png 48x48/apps/dolphin.png
+ln -s kfm.png 64x64/apps/dolphin.png
+ln -s cutecom.svg 16x16/apps/blueman-serial.svg
+ln -s cutecom.svg 22x22/apps/blueman-serial.svg
+ln -s cutecom.svg 24x24/apps/blueman-serial.svg
+ln -s cutecom.svg 32x32/apps/blueman-serial.svg
+ln -s cutecom.svg 48x48/apps/blueman-serial.svg
+ln -s cutecom.svg 64x64/apps/blueman-serial.svg
+ln -s vmware.png 16x16/apps/vmware-workstation.png
+ln -s vmware.png 24x24/apps/vmware-workstation.png
+ln -s vmware.png 32x32/apps/vmware-workstation.png
+ln -s vmware.png 48x48/apps/vmware-workstation.png
+ln -s vmware.png 64x64/apps/vmware-workstation.png
+ln -s kxkb.png 16x16/apps/keyboard.png
+ln -s kxkb.png 22x22/apps/keyboard.png
+ln -s kxkb.png 24x24/apps/keyboard.png
+ln -s kxkb.png 32x32/apps/keyboard.png
+ln -s kxkb.png 48x48/apps/keyboard.png
+ln -s kxkb.png 64x64/apps/keyboard.png
+ln -s kxkb.png 16x16/apps/preferences-desktop-keyboard.png
+ln -s kxkb.png 22x22/apps/preferences-desktop-keyboard.png
+ln -s kxkb.png 24x24/apps/preferences-desktop-keyboard.png
+ln -s kxkb.png 32x32/apps/preferences-desktop-keyboard.png
+ln -s kxkb.png 48x48/apps/preferences-desktop-keyboard.png
+ln -s kxkb.png 64x64/apps/preferences-desktop-keyboard.png
+ln -s ../../16x16/apps/kxkb.png 16x16/devices/kxkb.png
+ln -s ../../22x22/apps/kxkb.png 22x22/devices/kxkb.png
+ln -s ../../24x24/apps/kxkb.png 24x24/devices/kxkb.png
+ln -s ../../32x32/apps/kxkb.png 32x32/devices/kxkb.png
+ln -s ../../48x48/apps/kxkb.png 48x48/devices/kxkb.png
+ln -s ../../64x64/apps/kxkb.png 64x64/devices/kxkb.png
+ln -s ../../16x16/apps/kxkb.png 16x16/devices/keyboard.png
+ln -s ../../22x22/apps/kxkb.png 22x22/devices/keyboard.png
+ln -s ../../24x24/apps/kxkb.png 24x24/devices/keyboard.png
+ln -s ../../32x32/apps/kxkb.png 32x32/devices/keyboard.png
+ln -s ../../48x48/apps/kxkb.png 48x48/devices/keyboard.png
+ln -s ../../64x64/apps/kxkb.png 64x64/devices/keyboard.png
+ln -s ../../16x16/apps/kxkb.png 16x16/devices/input-keyboard.png
+ln -s ../../22x22/apps/kxkb.png 22x22/devices/input-keyboard.png
+ln -s ../../24x24/apps/kxkb.png 24x24/devices/input-keyboard.png
+ln -s ../../32x32/apps/kxkb.png 32x32/devices/input-keyboard.png
+ln -s ../../48x48/apps/kxkb.png 48x48/devices/input-keyboard.png
+ln -s ../../64x64/apps/kxkb.png 64x64/devices/input-keyboard.png
+ln -s kdenlive.png 16x16/apps/video-editor.png
+ln -s kdenlive.png 24x24/apps/video-editor.png
+ln -s kdenlive.png 32x32/apps/video-editor.png
+ln -s kdenlive.png 48x48/apps/video-editor.png
+ln -s kdenlive.png 64x64/apps/video-editor.png
+ln -s libreoffice-startcenter.png 16x16/apps/libreoffice-main.png
+ln -s libreoffice-startcenter.png 32x32/apps/libreoffice-main.png
+ln -s libreoffice-startcenter.png 48x48/apps/libreoffice-main.png
+ln -s libreoffice-startcenter.png 64x64/apps/libreoffice-main.png
+ln -s workspace-switcher.png 16x16/apps/panel_settings.png
+ln -s workspace-switcher.png 24x24/apps/panel_settings.png
+ln -s workspace-switcher.png 32x32/apps/panel_settings.png
+ln -s workspace-switcher.png 48x48/apps/panel_settings.png
+ln -s workspace-switcher.png 64x64/apps/panel_settings.png
+ln -s workspace-switcher.png 16x16/apps/mate-panel-workspace-switcher.png
+ln -s workspace-switcher.png 24x24/apps/mate-panel-workspace-switcher.png
+ln -s workspace-switcher.png 32x32/apps/mate-panel-workspace-switcher.png
+ln -s workspace-switcher.png 48x48/apps/mate-panel-workspace-switcher.png
+ln -s workspace-switcher.png 64x64/apps/mate-panel-workspace-switcher.png
+ln -s kcalc.png 16x16/apps/accessories-calculator.png
+ln -s kcalc.png 22x22/apps/accessories-calculator.png
+ln -s kcalc.png 24x24/apps/accessories-calculator.png
+ln -s kcalc.png 32x32/apps/accessories-calculator.png
+ln -s kcalc.png 48x48/apps/accessories-calculator.png
+ln -s kcalc.png 64x64/apps/accessories-calculator.png
+ln -s knemo.svg 16x16/apps/knetwalk.svg
+ln -s knemo.svg 22x22/apps/knetwalk.svg
+ln -s knemo.svg 24x24/apps/knetwalk.svg
+ln -s knemo.svg 32x32/apps/knetwalk.svg
+ln -s knemo.svg 48x48/apps/knetwalk.svg
+ln -s knemo.svg 64x64/apps/knetwalk.svg
+ln -s youtube.svg 16x16/apps/smtube.svg
+ln -s youtube.svg 22x22/apps/smtube.svg
+ln -s youtube.svg 24x24/apps/smtube.svg
+ln -s youtube.svg 32x32/apps/smtube.svg
+ln -s youtube.svg 48x48/apps/smtube.svg
+ln -s youtube.svg 64x64/apps/smtube.svg
+ln -s q4os-swprofiler.svg 16x16/apps/desktop-profiler.svg
+ln -s q4os-swprofiler.svg 24x24/apps/desktop-profiler.svg
+ln -s q4os-swprofiler.svg 32x32/apps/desktop-profiler.svg
+ln -s q4os-swprofiler.svg 48x48/apps/desktop-profiler.svg
+ln -s q4os-swprofiler.svg 64x64/apps/desktop-profiler.svg
+ln -s dolphin.png 16x16/apps/d3lphin.png
+ln -s dolphin.png 22x22/apps/d3lphin.png
+ln -s dolphin.png 24x24/apps/d3lphin.png
+ln -s dolphin.png 32x32/apps/d3lphin.png
+ln -s dolphin.png 48x48/apps/d3lphin.png
+ln -s dolphin.png 64x64/apps/d3lphin.png
+ln -s photo.svg 64x64/apps/kphotoalbum.svg
+ln -s photo.svg 64x64/apps/gallery.svg
+ln -s photo.svg 64x64/apps/accessories-image-viewer.svg
+ln -s photo.svg 64x64/apps/showfoto.svg
+ln -s thunderbird.svg 64x64/apps/thunderbird-icon.svg
+ln -s thunderbird.svg 64x64/apps/nylas.svg
+ln -s thunderbird.svg 64x64/apps/mail_generic.svg
+ln -s thunderbird.svg 64x64/apps/mail-client.svg
+ln -s thunderbird.svg 64x64/apps/kmail.svg
+ln -s thunderbird.svg 64x64/apps/kmailcvt.svg
+ln -s thunderbird.svg 64x64/apps/email.svg
+ln -s mozilla.svg 64x64/apps/firefox.svg
+ln -s mozilla.svg 64x64/apps/firefox-original.svg
+ln -s mozilla.svg 64x64/apps/firefox-mozilla-build.svg
+ln -s mozilla.svg 64x64/apps/firefox-icon.svg
+ln -s mozilla.svg 64x64/apps/firefox-gtk3.svg
+ln -s mozilla.svg 64x64/apps/firefox-esr.svg
+ln -s mozilla.svg 64x64/apps/firefox-default.svg
+ln -s mozilla.svg 64x64/apps/firefox-beta.svg
+ln -s mozilla.svg 64x64/apps/firefox-beta-bin.svg
+ln -s q4oslogo.svg 64x64/apps/distributor-logo-q4os5.svg
+ln -s q4oslogo.svg 64x64/apps/distributor-logo-q4os2.svg
+ln -s q4oslogo.svg 64x64/apps/distributor-logo-q4os3.svg
+ln -s kplayer.svg 64x64/apps/mpv.svg
+ln -s kplayer.svg 64x64/apps/smplayer.svg
+ln -s 2048-qt.svg 64x64/apps/2048.svg
+ln -s visual-studio-code.png 64x64/apps/com.visualstudio.code.png
+ln -s visual-studio-code.png 64x64/apps/com.visualstudio.code.oss.png
+ln -s ksnapshot.png 64x64/apps/spectacle.png
+ln -s ksnapshot.png 64x64/apps/accessories-screenshot.png
+ln -s kwalletmanager.png 64x64/apps/kwalletmanager2.png
+ln -s kwalletmanager.png 64x64/apps/preferences-desktop-user-password.png
+ln -s kwalletmanager.png 64x64/apps/kleopatra.png
+ln -s knotify.svg 64x64/apps/preferences-desktop-notification-bell.svg
+ln -s knotify.svg 64x64/apps/preferences-desktop-notification.svg
+ln -s preferences.png 64x64/apps/preferences-desktop-launch-feedback.png
+ln -s preferences.png 64x64/apps/application-default-icon.png
+ln -s graphics-viewer-document.svg 64x64/apps/accessories-document-viewer.svg
+ln -s kuser.png 64x64/apps/cs-user-accounts.png
+ln -s inkscape.png 64x64/apps/org.inkscape.Inkscape.png
+ln -s inkscape.png 64x64/apps/inkscape-logo.png
+ln -s users.svg 64x64/apps/system-switch-user.svg
+ln -s users.svg 64x64/apps/mugshot.svg
+ln -s skype.svg 64x64/apps/skype_protocol.svg
+ln -s kontact.svg 64x64/apps/yast-ldap-kerberos.svg
+ln -s kontact.svg 64x64/apps/preferences-system-network-ldap.svg
+ln -s kontact.svg 64x64/apps/office-address-book.svg
+ln -s kontact.svg 64x64/apps/kaddressbook.svg
+ln -s kontact.svg 64x64/apps/contact.svg
+ln -s kontact.svg 64x64/apps/addressbook.svg
+ln -s kexi.svg 64x64/apps/calligrakexi.svg
+ln -s google-chrome.svg 64x64/apps/chrome.svg
+ln -s google-chrome.svg 64x64/apps/google-chrome-beta.svg
+ln -s google-chrome.svg 64x64/apps/google-chrome-unstable.svg
+ln -s software-center.svg 64x64/apps/software-store.svg
+ln -s software-center.svg 64x64/apps/swcentre.svg
+ln -s software-center.svg 64x64/apps/x-content-software.svg
+ln -s software-center.svg 64x64/apps/x-content-unix-software.svg
+ln -s software-center.svg 64x64/apps/yast-sw_single.svg
+ln -s software-center.svg 64x64/apps/softwarecenter-debian.svg
+ln -s software-center.svg 64x64/apps/muondiscover.svg
+ln -s gtkconfig.svg 64x64/apps/kde-gtk-config.svg
+ln -s gtkconfig.svg 64x64/apps/preferences-gtk-config.svg
+ln -s kdeconnect.svg 64x64/apps/preferences-kde-connect.svg
+ln -s korganizer.svg 64x64/apps/office-calendar.svg
+ln -s theme-config.png 64x64/apps/preferences-desktop-theme-global.png
+ln -s kpatience.svg 64x64/apps/kpat.svg
+ln -s user_icon.svg 64x64/apps/preferences-desktop-user.svg
+ln -s thunderbird.png 64x64/apps/evolution.png
+ln -s qt-designer.png 64x64/apps/QtProject-designer.png
+ln -s system-os-installer.png 64x64/apps/ubiquity.png
+ln -s preferences-desktop-baloo.svg 64x64/apps/baloo.svg
+ln -s photo.svg 64x64/apps/kuiviewer.svg
+ln -s photo.svg 64x64/apps/kuickshow.svg
+ln -s photo.svg 64x64/apps/gwenview.svg
+ln -s ../../16x16/actions/edittrash.png 16x16/places/edittrash.png
+ln -s ../../22x22/actions/edittrash.png 22x22/places/edittrash.png
+ln -s ../../24x24/actions/edittrash.png 24x24/places/edittrash.png
+ln -s ../../32x32/actions/edittrash.png 32x32/places/edittrash.png
+ln -s ../../48x48/actions/edittrash.png 48x48/places/edittrash.png
+ln -s ../../64x64/actions/edittrash.png 64x64/places/edittrash.png
+ln -s ../../16x16/actions/edittrash.png 16x16/status/edittrash.png
+ln -s ../../22x22/actions/edittrash.png 22x22/status/edittrash.png
+ln -s ../../24x24/actions/edittrash.png 24x24/status/edittrash.png
+ln -s ../../32x32/actions/edittrash.png 32x32/status/edittrash.png
+ln -s ../../48x48/actions/edittrash.png 48x48/status/edittrash.png
+ln -s ../../64x64/actions/edittrash.png 64x64/status/edittrash.png
+ln -s ../../16x16/actions/edittrash.png 16x16/status/trashcan_full.png
+ln -s ../../22x22/actions/edittrash.png 22x22/status/trashcan_full.png
+ln -s ../../24x24/actions/edittrash.png 24x24/status/trashcan_full.png
+ln -s ../../32x32/actions/edittrash.png 32x32/status/trashcan_full.png
+ln -s ../../48x48/actions/edittrash.png 48x48/status/trashcan_full.png
+ln -s ../../64x64/actions/edittrash.png 64x64/status/trashcan_full.png
+ln -s ../../16x16/actions/edittrash.png 16x16/places/trashcan_full.png
+ln -s ../../22x22/actions/edittrash.png 22x22/places/trashcan_full.png
+ln -s ../../24x24/actions/edittrash.png 24x24/places/trashcan_full.png
+ln -s ../../32x32/actions/edittrash.png 32x32/places/trashcan_full.png
+ln -s ../../48x48/actions/edittrash.png 48x48/places/trashcan_full.png
+ln -s ../../64x64/actions/edittrash.png 64x64/places/trashcan_full.png
+ln -s ../../16x16/actions/edittrash.png 16x16/status/user-trash-full.png
+ln -s ../../22x22/actions/edittrash.png 22x22/status/user-trash-full.png
+ln -s ../../24x24/actions/edittrash.png 24x24/status/user-trash-full.png
+ln -s ../../32x32/actions/edittrash.png 32x32/status/user-trash-full.png
+ln -s ../../48x48/actions/edittrash.png 48x48/status/user-trash-full.png
+ln -s ../../64x64/actions/edittrash.png 64x64/status/user-trash-full.png
+ln -s folder_grey.png 16x16/places/folder_grey_open.png
+ln -s folder_grey.png 22x22/places/folder_grey_open.png
+ln -s folder_grey.png 32x32/places/folder_grey_open.png
+ln -s folder_grey.png 48x48/places/folder_grey_open.png
+ln -s folder_green.png 16x16/places/folder_green_open.png
+ln -s folder_green.png 22x22/places/folder_green_open.png
+ln -s folder_green.png 32x32/places/folder_green_open.png
+ln -s folder_green.png 48x48/places/folder_green_open.png
+ln -s folder_red.png 16x16/places/folder_red_open.png
+ln -s folder_red.png 22x22/places/folder_red_open.png
+ln -s folder_red.png 32x32/places/folder_red_open.png
+ln -s folder_red.png 48x48/places/folder_red_open.png
+ln -s folder_yellow.png 16x16/places/folder_yellow_open.png
+ln -s folder_yellow.png 22x22/places/folder_yellow_open.png
+ln -s folder_yellow.png 32x32/places/folder_yellow_open.png
+ln -s folder_yellow.png 48x48/places/folder_yellow_open.png
+ln -s folder_orange.png 16x16/places/folder_orange_open.png
+ln -s folder_orange.png 22x22/places/folder_orange_open.png
+ln -s folder_orange.png 32x32/places/folder_orange_open.png
+ln -s folder_orange.png 48x48/places/folder_orange_open.png
+ln -s user-home.png 16x16/places/folder_home.png
+ln -s user-home.png 22x22/places/folder_home.png
+ln -s user-home.png 24x24/places/folder_home.png
+ln -s user-home.png 32x32/places/folder_home.png
+ln -s user-home.png 48x48/places/folder_home.png
+ln -s user-home.png 64x64/places/folder_home.png
+ln -s user-home.png 16x16/places/folder_home2.png
+ln -s user-home.png 22x22/places/folder_home2.png
+ln -s user-home.png 24x24/places/folder_home2.png
+ln -s user-home.png 32x32/places/folder_home2.png
+ln -s user-home.png 48x48/places/folder_home2.png
+ln -s user-home.png 64x64/places/folder_home2.png
+ln -s google.png 16x16/places/web-google.png
+ln -s google.png 24x24/places/web-google.png
+ln -s google.png 32x32/places/web-google.png
+ln -s google.png 48x48/places/web-google.png
+ln -s google.png 64x64/places/web-google.png
+ln -s folder-videos.png 16x16/places/folder_video.png
+ln -s folder-videos.png 22x22/places/folder_video.png
+ln -s folder-videos.png 24x24/places/folder_video.png
+ln -s folder-videos.png 32x32/places/folder_video.png
+ln -s folder-videos.png 48x48/places/folder_video.png
+ln -s folder-videos.png 64x64/places/folder_video.png
+ln -s slack.png 16x16/places/web-slack.png
+ln -s slack.png 24x24/places/web-slack.png
+ln -s slack.png 32x32/places/web-slack.png
+ln -s slack.png 48x48/places/web-slack.png
+ln -s slack.png 64x64/places/web-slack.png
+ln -s server.png 16x16/places/network-server.png
+ln -s server.png 22x22/places/network-server.png
+ln -s server.png 24x24/places/network-server.png
+ln -s server.png 32x32/places/network-server.png
+ln -s server.png 48x48/places/network-server.png
+ln -s server.png 64x64/places/network-server.png
+ln -s folder-remote.png 16x16/places/network.png
+ln -s folder-remote.png 22x22/places/network.png
+ln -s folder-remote.png 24x24/places/network.png
+ln -s folder-remote.png 32x32/places/network.png
+ln -s folder-remote.png 48x48/places/network.png
+ln -s folder-remote.png 64x64/places/network.png
+ln -s user-trash.png 16x16/places/trashcan_empty.png
+ln -s user-trash.png 22x22/places/trashcan_empty.png
+ln -s user-trash.png 24x24/places/trashcan_empty.png
+ln -s user-trash.png 32x32/places/trashcan_empty.png
+ln -s user-trash.png 48x48/places/trashcan_empty.png
+ln -s user-trash.png 64x64/places/trashcan_empty.png
+ln -s ../../16x16/actions/emptytrash.png 16x16/places/emptytrash.png
+ln -s ../../22x22/actions/emptytrash.png 22x22/places/emptytrash.png
+ln -s ../../24x24/actions/emptytrash.png 24x24/places/emptytrash.png
+ln -s ../../32x32/actions/emptytrash.png 32x32/places/emptytrash.png
+ln -s ../../48x48/actions/emptytrash.png 48x48/places/emptytrash.png
+ln -s ../../64x64/actions/emptytrash.png 64x64/places/emptytrash.png
+ln -s folder-documents.png 16x16/places/folder_doc_q4os_startmenu.png
+ln -s folder-documents.png 22x22/places/folder_doc_q4os_startmenu.png
+ln -s folder-documents.png 24x24/places/folder_doc_q4os_startmenu.png
+ln -s folder-documents.png 32x32/places/folder_doc_q4os_startmenu.png
+ln -s folder-documents.png 48x48/places/folder_doc_q4os_startmenu.png
+ln -s folder-documents.png 64x64/places/folder_doc_q4os_startmenu.png
+ln -s folder-documents.png 16x16/places/folder_man.png
+ln -s folder-documents.png 22x22/places/folder_man.png
+ln -s folder-documents.png 24x24/places/folder_man.png
+ln -s folder-documents.png 32x32/places/folder_man.png
+ln -s folder-documents.png 48x48/places/folder_man.png
+ln -s folder-documents.png 64x64/places/folder_man.png
+ln -s folder-documents.png 16x16/places/folder_txt.png
+ln -s folder-documents.png 22x22/places/folder_txt.png
+ln -s folder-documents.png 24x24/places/folder_txt.png
+ln -s folder-documents.png 32x32/places/folder_txt.png
+ln -s folder-documents.png 48x48/places/folder_txt.png
+ln -s folder-documents.png 64x64/places/folder_txt.png
+ln -s folder-documents.png 16x16/places/folder_wordprocessing.png
+ln -s folder-documents.png 22x22/places/folder_wordprocessing.png
+ln -s folder-documents.png 24x24/places/folder_wordprocessing.png
+ln -s folder-documents.png 32x32/places/folder_wordprocessing.png
+ln -s folder-documents.png 48x48/places/folder_wordprocessing.png
+ln -s folder-documents.png 64x64/places/folder_wordprocessing.png
+ln -s lastfm.png 16x16/places/web-lastfm.png
+ln -s lastfm.png 22x22/places/web-lastfm.png
+ln -s lastfm.png 24x24/places/web-lastfm.png
+ln -s lastfm.png 32x32/places/web-lastfm.png
+ln -s lastfm.png 48x48/places/web-lastfm.png
+ln -s lastfm.png 64x64/places/web-lastfm.png
+ln -s folder-music.png 16x16/places/folder-sound.png
+ln -s folder-music.png 22x22/places/folder-sound.png
+ln -s folder-music.png 24x24/places/folder-sound.png
+ln -s folder-music.png 32x32/places/folder-sound.png
+ln -s folder-music.png 48x48/places/folder-sound.png
+ln -s folder-music.png 64x64/places/folder-sound.png
+ln -s folder-music.png 16x16/places/folder_sound.png
+ln -s folder-music.png 22x22/places/folder_sound.png
+ln -s folder-music.png 24x24/places/folder_sound.png
+ln -s folder-music.png 32x32/places/folder_sound.png
+ln -s folder-music.png 48x48/places/folder_sound.png
+ln -s folder-music.png 64x64/places/folder_sound.png
+ln -s folder-pictures.png 16x16/places/folder-image.png
+ln -s folder-pictures.png 22x22/places/folder-image.png
+ln -s folder-pictures.png 24x24/places/folder-image.png
+ln -s folder-pictures.png 32x32/places/folder-image.png
+ln -s folder-pictures.png 48x48/places/folder-image.png
+ln -s folder-pictures.png 64x64/places/folder-image.png
+ln -s folder-pictures.png 16x16/places/folder_image.png
+ln -s folder-pictures.png 22x22/places/folder_image.png
+ln -s folder-pictures.png 24x24/places/folder_image.png
+ln -s folder-pictures.png 32x32/places/folder_image.png
+ln -s folder-pictures.png 48x48/places/folder_image.png
+ln -s folder-pictures.png 64x64/places/folder_image.png
+ln -s folder-publicshare.png 16x16/places/folder_favorite.png
+ln -s folder-publicshare.png 22x22/places/folder_favorite.png
+ln -s folder-publicshare.png 24x24/places/folder_favorite.png
+ln -s folder-publicshare.png 32x32/places/folder_favorite.png
+ln -s folder-publicshare.png 48x48/places/folder_favorite.png
+ln -s folder-publicshare.png 64x64/places/folder_favorite.png
+ln -s folder.png 16x16/places/folder_open.png
+ln -s folder.png 22x22/places/folder_open.png
+ln -s folder.png 24x24/places/folder_open.png
+ln -s folder.png 32x32/places/folder_open.png
+ln -s folder.png 48x48/places/folder_open.png
+ln -s folder.png 64x64/places/folder_open.png
+ln -s folder.png 16x16/places/inode-directory.png
+ln -s folder.png 22x22/places/inode-directory.png
+ln -s folder.png 24x24/places/inode-directory.png
+ln -s folder.png 32x32/places/inode-directory.png
+ln -s folder.png 48x48/places/inode-directory.png
+ln -s folder.png 64x64/places/inode-directory.png
+ln -s folder.png 16x16/places/stock_folder.png
+ln -s folder.png 22x22/places/stock_folder.png
+ln -s folder.png 24x24/places/stock_folder.png
+ln -s folder.png 32x32/places/stock_folder.png
+ln -s folder.png 48x48/places/stock_folder.png
+ln -s folder.png 64x64/places/stock_folder.png
+ln -s ../../16x16/places/folder.png 16x16/mimetypes/inode-directory.png
+ln -s ../../22x22/places/folder.png 22x22/mimetypes/inode-directory.png
+ln -s ../../24x24/places/folder.png 24x24/mimetypes/inode-directory.png
+ln -s ../../32x32/places/folder.png 32x32/mimetypes/inode-directory.png
+ln -s ../../48x48/places/folder.png 48x48/mimetypes/inode-directory.png
+ln -s ../../64x64/places/folder.png 64x64/mimetypes/inode-directory.png
+ln -s ../../16x16/places/folder.png 16x16/status/folder_open.png
+ln -s ../../22x22/places/folder.png 22x22/status/folder_open.png
+ln -s ../../24x24/places/folder.png 24x24/status/folder_open.png
+ln -s ../../32x32/places/folder.png 32x32/status/folder_open.png
+ln -s ../../48x48/places/folder.png 48x48/status/folder_open.png
+ln -s ../../64x64/places/folder.png 64x64/status/folder_open.png
+ln -s ../../16x16/places/folder.png 16x16/status/folder-open.png
+ln -s ../../22x22/places/folder.png 22x22/status/folder-open.png
+ln -s ../../24x24/places/folder.png 24x24/status/folder-open.png
+ln -s ../../32x32/places/folder.png 32x32/status/folder-open.png
+ln -s ../../48x48/places/folder.png 48x48/status/folder-open.png
+ln -s ../../64x64/places/folder.png 64x64/status/folder-open.png
+ln -s ../../16x16/places/folder.png 16x16/actions/folder.png
+ln -s ../../22x22/places/folder.png 22x22/actions/folder.png
+ln -s ../../24x24/places/folder.png 24x24/actions/folder.png
+ln -s ../../32x32/places/folder.png 32x32/actions/folder.png
+ln -s ../../48x48/places/folder.png 48x48/actions/folder.png
+ln -s ../../64x64/places/folder.png 64x64/actions/folder.png
+ln -s ../../16x16/places/folder.png 16x16/actions/folder_new.png
+ln -s ../../22x22/places/folder.png 22x22/actions/folder_new.png
+ln -s ../../24x24/places/folder.png 24x24/actions/folder_new.png
+ln -s ../../32x32/places/folder.png 32x32/actions/folder_new.png
+ln -s ../../48x48/places/folder.png 48x48/actions/folder_new.png
+ln -s ../../64x64/places/folder.png 64x64/actions/folder_new.png
+ln -s ../../16x16/places/folder.png 16x16/actions/folder-new.png
+ln -s ../../22x22/places/folder.png 22x22/actions/folder-new.png
+ln -s ../../24x24/places/folder.png 24x24/actions/folder-new.png
+ln -s ../../32x32/places/folder.png 32x32/actions/folder-new.png
+ln -s ../../48x48/places/folder.png 48x48/actions/folder-new.png
+ln -s ../../64x64/places/folder.png 64x64/actions/folder-new.png
+
+
+ln -s ../../16x16/places/folder.png 16x16/actions/trinity1.png
+ln -s ../../16x16/places/folder.png 16x16/actions/trinity2.png
+ln -s ../../16x16/places/folder.png 16x16/actions/trinity3.png
+ln -s ../../16x16/places/folder.png 16x16/actions/trinity4.png
+ln -s ../../16x16/places/folder.png 16x16/actions/trinity5.png
+ln -s ../../16x16/places/folder.png 16x16/actions/trinity6.png
+ln -s ../../22x22/places/folder.png 22x22/actions/trinity1.png
+ln -s ../../22x22/places/folder.png 22x22/actions/trinity2.png
+ln -s ../../22x22/places/folder.png 22x22/actions/trinity3.png
+ln -s ../../22x22/places/folder.png 22x22/actions/trinity4.png
+ln -s ../../22x22/places/folder.png 22x22/actions/trinity5.png
+ln -s ../../22x22/places/folder.png 22x22/actions/trinity6.png
+ln -s ../../24x24/places/folder.png 24x24/actions/trinity1.png
+ln -s ../../24x24/places/folder.png 24x24/actions/trinity2.png
+ln -s ../../24x24/places/folder.png 24x24/actions/trinity3.png
+ln -s ../../24x24/places/folder.png 24x24/actions/trinity4.png
+ln -s ../../24x24/places/folder.png 24x24/actions/trinity5.png
+ln -s ../../24x24/places/folder.png 24x24/actions/trinity6.png
+
+ln -s ../../32x32/places/folder.png 32x32/actions/trinity1.png
+ln -s ../../32x32/places/folder.png 32x32/actions/trinity2.png
+ln -s ../../32x32/places/folder.png 32x32/actions/trinity3.png
+ln -s ../../32x32/places/folder.png 32x32/actions/trinity4.png
+ln -s ../../32x32/places/folder.png 32x32/actions/trinity5.png
+ln -s ../../32x32/places/folder.png 32x32/actions/trinity6.png
+
+
+
+ln -s ../../48x48/places/folder.png 48x48/actions/trinity1.png
+ln -s ../../48x48/places/folder.png 48x48/actions/trinity2.png
+ln -s ../../48x48/places/folder.png 48x48/actions/trinity3.png
+ln -s ../../48x48/places/folder.png 48x48/actions/trinity4.png
+ln -s ../../48x48/places/folder.png 48x48/actions/trinity5.png
+ln -s ../../48x48/places/folder.png 48x48/actions/trinity6.png
+
+
+
+ln -s ../../64x64/places/folder.png 64x64/actions/trinity1.png
+ln -s ../../64x64/places/folder.png 64x64/actions/trinity2.png
+ln -s ../../64x64/places/folder.png 64x64/actions/trinity3.png
+ln -s ../../64x64/places/folder.png 64x64/actions/trinity4.png
+ln -s ../../64x64/places/folder.png 64x64/actions/trinity5.png
+ln -s ../../64x64/places/folder.png 64x64/actions/trinity6.png
+
+
+cd - > /dev/null 2>&1
+#
+sudo sed -i "/Name=kde_ten/c\Name=kdeten_$iconth" /usr/share/icons/kdeten_$iconth/index.theme
+echo -n "       "
+gtk-update-icon-cache /usr/share/icons/kdeten_$iconth/
+echo "  \e[35m░▒▓█\033[0m copying cursors"
+rm -fr /usr/share/icons/Windows10Dark
+rm -fr /usr/share/icons/Windows10Light
+tar -xzf Windows10Light.tar.gz -C /usr/share/icons/
+tar -xzf Windows10Dark.tar.gz -C /usr/share/icons/
+create_links() {
+cd $1
+ln -s half-busy 00000000000000020006000e7e9ffc3f > /dev/null 2>&1
+ln -s half-busy 08e8e1c95fe2fc01f976f1e063a24ccd > /dev/null 2>&1
+ln -s half-busy 3ecb610c1bf2410f44200f48c40d3599 > /dev/null 2>&1
+ln -s half-busy left_ptr_watch > /dev/null 2>&1
+ln -s half-busy progress > /dev/null 2>&1
+ln -s half-busy work > /dev/null 2>&1
+ln -s size_ver 00008160000006810000408080010102 > /dev/null 2>&1
+ln -s circle 03b6e0fcb3499374a867c041f52298f0 > /dev/null 2>&1
+ln -s circle crossed_circle > /dev/null 2>&1
+ln -s circle dnd-no-drop > /dev/null 2>&1
+ln -s circle forbidden > /dev/null 2>&1
+ln -s circle no-drop > /dev/null 2>&1
+ln -s circle not-allowed > /dev/null 2>&1
+ln -s circle pirate > /dev/null 2>&1
+ln -s circle unavailiable > /dev/null 2>&1
+ln -s dnd-move 4498f0e0c1937ffe01fd06f973665830 > /dev/null 2>&1
+ln -s dnd-move 9081237383d90e509aa00f00170e968f > /dev/null 2>&1
+ln -s dnd-move fcf21c00b30f7e3f83fe0dfd12e71cff > /dev/null 2>&1
+ln -s dnd-move all-scroll > /dev/null 2>&1
+ln -s dnd-move closedhand > /dev/null 2>&1
+ln -s dnd-move dnd-none > /dev/null 2>&1
+ln -s dnd-move fleur > /dev/null 2>&1
+ln -s dnd-move grab > /dev/null 2>&1
+ln -s dnd-move grabbing > /dev/null 2>&1
+ln -s dnd-move move > /dev/null 2>&1
+ln -s dnd-move size_all > /dev/null 2>&1
+ln -s default 1081e37283d90000800003c07f3ef6bf > /dev/null 2>&1
+ln -s default 6407b0e94181790501fd1e167b474872 > /dev/null 2>&1
+ln -s default b66166c04f8c3109214a4fbd64a50fc8 > /dev/null 2>&1
+ln -s default 3085a0e285430894940527032f8b26df > /dev/null 2>&1
+ln -s default 640fb0e74195791501fd1ed57b41487f > /dev/null 2>&1
+ln -s default a2a266d0498c3104214a47bd64ab0fc8 > /dev/null 2>&1
+ln -s default x-cursor > /dev/null 2>&1
+ln -s default wayland-cursor > /dev/null 2>&1
+ln -s default context-menu > /dev/null 2>&1
+ln -s default alias > /dev/null 2>&1
+ln -s default copy > /dev/null 2>&1
+ln -s default left_ptr > /dev/null 2>&1
+ln -s default arrow > /dev/null 2>&1
+ln -s default top_left_arrow > /dev/null 2>&1
+ln -s default size-ver > /dev/null 2>&1
+ln -s default size-hor > /dev/null 2>&1
+ln -s default size-fdiag > /dev/null 2>&1
+ln -s default size-bdiag > /dev/null 2>&1
+ln -s default right_ptr > /dev/null 2>&1
+ln -s default plus > /dev/null 2>&1
+ln -s default openhand > /dev/null 2>&1
+ln -s default dnd-copy > /dev/null 2>&1
+ln -s cross crosshair > /dev/null 2>&1
+ln -s pencil cell > /dev/null 2>&1
+ln -s pencil hand > /dev/null 2>&1
+ln -s pencil draft > /dev/null 2>&1
+ln -s pointer 9d800788f1b08800ae810202380a0822 > /dev/null 2>&1
+ln -s pointer e29285e634086352946a0e7090d73106 > /dev/null 2>&1
+ln -s pointer hand1 > /dev/null 2>&1
+ln -s pointer hand2 > /dev/null 2>&1
+ln -s pointer link > /dev/null 2>&1
+ln -s pointer pointing_hand > /dev/null 2>&1
+ln -s help question_arrow > /dev/null 2>&1
+ln -s help left_ptr_help > /dev/null 2>&1
+ln -s help whats_this > /dev/null 2>&1
+ln -s top_right_corner sw-resize > /dev/null 2>&1
+ln -s top_right_corner size_bdiag > /dev/null 2>&1
+ln -s top_right_corner nesw-resize > /dev/null 2>&1
+ln -s top_right_corner ne-resize > /dev/null 2>&1
+ln -s top_right_corner dgn2 > /dev/null 2>&1
+ln -s top_right_corner bottom_left_corner > /dev/null 2>&1
+ln -s top_left_corner size_fdiag > /dev/null 2>&1
+ln -s top_left_corner se-resize > /dev/null 2>&1
+ln -s top_left_corner nwse-resize > /dev/null 2>&1
+ln -s top_left_corner nw-resize > /dev/null 2>&1
+ln -s top_left_corner dgn1 > /dev/null 2>&1
+ln -s top_left_corner bottom_right_corner > /dev/null 2>&1
+ln -s vert v_double_arrow > /dev/null 2>&1
+ln -s vert top_side > /dev/null 2>&1
+ln -s vert s-resize > /dev/null 2>&1
+ln -s vert split_v > /dev/null 2>&1
+ln -s vert size_ver > /dev/null 2>&1
+ln -s vert sb_v_double_arrow > /dev/null 2>&1
+ln -s vert row-resize > /dev/null 2>&1
+ln -s vert ns-resize > /dev/null 2>&1
+ln -s vert n-resize > /dev/null 2>&1
+ln -s vert down-arrow > /dev/null 2>&1
+ln -s vert bottom_side > /dev/null 2>&1
+ln -s size_hor w-resize > /dev/null 2>&1
+ln -s size_hor split_h > /dev/null 2>&1
+ln -s size_hor sb_h_double_arrow > /dev/null 2>&1
+ln -s size_hor right_side > /dev/null 2>&1
+ln -s size_hor right-arrow > /dev/null 2>&1
+ln -s size_hor left-arrow > /dev/null 2>&1
+ln -s size_hor left_side > /dev/null 2>&1
+ln -s size_hor horz > /dev/null 2>&1
+ln -s size_hor h_double_arrow > /dev/null 2>&1
+ln -s size_hor ew-resize > /dev/null 2>&1
+ln -s size_hor e-resize > /dev/null 2>&1
+ln -s size_hor col-resize > /dev/null 2>&1
+ln -s help 5c6cd98b3f3ebcb1f9c7f1c204630408 > /dev/null 2>&1
+ln -s help d9ce0ab605698f320427677b458ad60b > /dev/null 2>&1
+ln -s busy wait > /dev/null 2>&1
+ln -s busy watch > /dev/null 2>&1
+ln -s up-arrow center_ptr > /dev/null 2>&1
+ln -s up-arrow alternate > /dev/null 2>&1
+ln -s text xterm > /dev/null 2>&1
+ln -s text vertical-text > /dev/null 2>&1
+ln -s text ibeam > /dev/null 2>&1
+cd - > /dev/null 2>&1
+}
+create_links /usr/share/icons/Windows10Light/cursors
+create_links /usr/share/icons/Windows10Dark/cursors
+
+echo "  \e[35m░▒▓█\033[0m copying start menu files"
+if [ $1 -eq 1 ]
+then
+tar -xzf StartHere.png-dark.tar.gz -C /usr/share/pixmaps/
+else
+tar -xzf StartHere.png.tar.gz -C /usr/share/pixmaps/
+fi
+\cp StartHere_color.png /usr/share/pixmaps/
+#menu ala win10
+#backup previous menu
+sudo mkdir -p $USER_HOME/.local/share/desktop-directories/
+
+tar -xzf tde-settingsmenu.directory.tar.gz -C $USER_HOME/.local/share/desktop-directories/
+tar -xzf docs-images.desktop.tar.gz -C $USER_HOME/.local/share/applications/
+tar -xzf applications-tdemenu.tar.gz -C $USER_HOME/.configtde/menus/
+sudo chmod 600 $USER_HOME/.local/share/desktop-directories/tde-settingsmenu.directory
+sudo chmod 600 $USER_HOME/.local/share/applications/Documents.desktop
+sudo chmod 600 $USER_HOME/.local/share/applications/Images.desktop
+sudo chmod 666 $USER_HOME/.configtde/menus/applications-tdemenuedit.menu
+sudo chown $USER_SU $USER_HOME/.local/share/desktop-directories
+sudo chown $USER_SU $USER_HOME/.local/share/desktop-directories/tde-settingsmenu.directory
+sudo chown $USER_SU $USER_HOME/.local/share/applications/Documents.desktop
+sudo chown $USER_SU $USER_HOME/.local/share/applications/Images.desktop
+sudo chown $USER_SU $USER_HOME/.configtde/menus/applications-tdemenuedit.menu
+
+echo "  \e[35m░▒▓█\033[0m copying wallpapers"
+tar -xzf q4seb_wallpapers.tar.gz -C /opt/trinity/share/wallpapers/
+
+echo "  \e[35m░▒▓█\033[0m copying font"
+#tar -xzf Segoe_UI.tar.gz -C /usr/share/fonts/truetype/
+#tar -xzf consolas.tar.gz -C /usr/share/fonts/truetype/
+7z x -so Segoe_UI.tar.7z | tar xf - -C /usr/share/fonts/truetype/
+7z x -so consolas.tar.7z | tar xf - -C /usr/share/fonts/truetype/
+tar -xzf cascadia.tar.gz -C /usr/share/fonts/truetype/
+tar -xzf micross.tar.gz -C /usr/share/fonts/truetype/
+7z x -so cambria.tar.7z | tar xf - -C /usr/share/fonts/truetype/
+fc-cache
+tar -xzf fonts.conf.tar.gz -C $USER_HOME/.configtde/fontconfig/
+
+echo "  \e[35m░▒▓█\033[0m copying konqueror profiles & entries"
+tar -xzf konqueror.profiles.tar.gz -C $USER_HOME/.trinity/share/apps/
+mv $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/.version .version  > /dev/null 2>&1
+rm -f $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/*
+mv .version $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/.version  > /dev/null 2>&1
+tar -xzf konq_fm_entries.tar.gz -C $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/
+tar -xzf konqueror.profiles.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/
+sudo tar -xzf konqueror.profiles.tar.gz -C /root/.trinity/share/apps/konqueror/
+
+echo "  \e[35m░▒▓█\033[0m copying konqueror services menus"
+tar -xzf konqsvcmenus.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/servicemenus/
+tar -xzf localscripts.tar.gz -C /usr/local/bin/
+
+
+#theme files
+echo "  \e[35m░▒▓█\033[0m copying color scheme"
+mkdir -p $USER_HOME/.trinity/share/apps/tdedisplay/color-schemes/
+sudo mkdir -p /root/.trinity/share/apps/tdedisplay/color-schemes/
+if [ $1 -eq 1 ]
+then
+tar -xzf color-scheme-dark.tar.gz -C $USER_HOME/.trinity/share/apps/tdedisplay/color-schemes/
+tar -xzf color-scheme-dark.tar.gz -C /root/.trinity/share/apps/tdedisplay/color-schemes/
+else
+tar -xzf color-scheme.tar.gz -C $USER_HOME/.trinity/share/apps/tdedisplay/color-schemes/
+tar -xzf color-scheme.tar.gz -C /root/.trinity/share/apps/tdedisplay/color-schemes/
+fi
+
+echo "  \e[35m░▒▓█\033[0m copying style files"
+#\cp twinplastikrc $USER_HOME/.trinity/share/config/twinplastikrc
+if [ $1 -eq 1 ]
+then
+tar -xzf qtcurve_stylerc_dark.tar.gz -C $USER_HOME/.configtde/qtcurve/
+tar -xzf qtcurve_stylerc_dark.tar.gz -C /root/.config/qtcurve/
+else
+tar -xzf qtcurve_stylerc.tar.gz -C $USER_HOME/.configtde/qtcurve/
+tar -xzf qtcurve_stylerc.tar.gz -C /root/.config/qtcurve/
+fi
+tar -xzf tdestylerc.tar.gz -C $USER_HOME/.qt/
+tar -xzf tdestylerc.tar.gz -C /etc/tqt3/
+tar -xzf qtrc.tar.gz -C $USER_HOME/.qt/
+tar -xzf qtrc.tar.gz -C /etc/tqt3/
+
+echo "  \e[35m░▒▓█\033[0m copying sounds"
+#tar -xzf sounds.tar.gz -C /opt/trinity/share/sounds/
+7z x -so sounds.tar.7z | tar xf - -C /opt/trinity/share/sounds/
+tar -xzf knotify.eventsrc.tar.gz -C $USER_HOME/.trinity/share/config/
+#as I don't know yet to modify root apps sound scheme, I delete KDE_Error_x.ogg, because
+#sound doesn't seem to work right in root mode (awfull sounding with cracks)
+rm -f /opt/trinity/share/sounds/KDE_Error_1.ogg
+rm -f /opt/trinity/share/sounds/KDE_Error_2.ogg
+rm -f /opt/trinity/share/sounds/KDE_Error_3.ogg
+tar -xzf 90-usb.rules.tar.gz -C /etc/udev/rules.d/
+#binary
+if ( getconf LONG_BIT | grep -q 64 ); then
+tar -xzf usb_insert.tar.gz -C /usr/bin/
+else
+tar -xzf usb_insert_i386.tar.gz -C /usr/bin/
+fi
+udevadm control --reload-rules
+
+echo "  \e[35m░▒▓█\033[0m copying tdm windows theme..."
+Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
+Yres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
+if [ "$Xres" -lt 1920 ]; then
+lowres=1
+fi
+tar -xzf tdmwin.tar.gz -C /opt/trinity/share/apps/tdm/themes/
+if [ "${lowres:-0}" -eq 1 ]; then
+sudo tar -xzf tdmwin_lowres.tar.gz -C /opt/trinity/share/apps/tdm/themes/windows/
+fi
+
+loginpicsetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginpic")
+if [ -n "$loginpicsetting" ] && [ "$loginpicsetting" = "custom" ]; then
+echo "  ►►using previously defined login picture"
+else
+sudo \cp "/opt/trinity/share/apps/tdm/themes/windows/loginpic_default.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
+fi
+
+echo "  \e[35m░▒▓█\033[0m copying ksplash theme..."
+sudo mkdir -p "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU"
+tar -xzf Redmond10.tar.gz -C "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/"
+sudo sed -i "s/\[KSplash Theme: Redmond10\]/\[KSplash Theme: Redmond10_$USER_SU\]/" "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/Theme.rc"
+
+
+userpicsetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic")
+if [ "$userpicsetting" != "custom" ] || [ ! -e "$USER_HOME/.face.icon" ]; then
+echo "  \e[35m░▒▓█\033[0m copying default user picture"
+\cp "/usr/share/icons/kdeten_$iconth/48x48/actions/switchuser.png" "$USER_HOME/.face.icon"
+sudo \cp "/usr/share/icons/kdeten_$iconth/48x48/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
+sudo \cp "/opt/trinity/share/apps/tdm/themes/windows/loginpic_default.png" "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png"
+else
+echo "  ►►using previously defined user picture"
+fi
+
+
+mkdir -p $USER_HOME/.local/share/icons/kdeten_$iconth
+tar -xzf kdeten_local.tar.gz -C $USER_HOME/.local/share/icons/kdeten_$iconth/
+sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/16x16/actions/switchuser.png" > /dev/null 2>&1
+sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/22x22/actions/switchuser.png" > /dev/null 2>&1
+sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/24x24/actions/switchuser.png" > /dev/null 2>&1
+sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/32x32/actions/switchuser.png" > /dev/null 2>&1
+sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/48x48/actions/switchuser.png" > /dev/null 2>&1
+sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/64x64/actions/switchuser.png" > /dev/null 2>&1
+
+
+
+
+echo "  \e[35m░▒▓█\033[0m copying conf files..."
+if [ $1 -eq 1 ]
+then
+tar -xzf q4tde_dark.conf.tar.gz -C $USER_HOME/.configtde/q4tde/
+tar -xzf q4tde_dark.conf.tar.gz -C /root/.configtde/q4tde/
+else
+tar -xzf q4tde.conf.tar.gz -C $USER_HOME/.configtde/q4tde/
+tar -xzf q4tde.conf.tar.gz -C /root/.configtde/q4tde/
+fi
+
+echo "  \e[35m░▒▓█\033[0m copying user tiles"
+rm -f /opt/trinity/share/apps/tdm/pics/users/*
+tar -xzf usertiles.tar.gz -C /opt/trinity/share/apps/tdm/pics/users/
+
+
+#hide some login msg
+touch ~/.hushlogin
+echo
+echo "${BLUE}════════════════════════════════════════════════════════════════"
+echo "════════════════════════════════════════════════════════════════${NOCOLOR}"
+echo
+echo
+echo
+
+
