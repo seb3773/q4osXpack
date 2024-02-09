@@ -1659,9 +1659,9 @@ kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key Displ
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key MinimumButtonHeight 38
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key MinimumButtonWidth 80
 sed -i "/ShowButtonOnHover=/d" $TDEHOME/share/config/ktaskbarrc
-kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key ConserveSpace true
-kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key DragEnabled true
-kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key IconDim 30
+#kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key ConserveSpace true
+#kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key DragEnabled true
+#kwriteconfig --file $TDEHOME/share/config/launcher_panelapplet_modernui_rc --group General --key IconDim 30
 #kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BackgroundTheme "/opt/trinity/share/apps/kicker/pics/panel-win.png"
 ####kwriteconfig --file $TDEHOME/share/config/kickerrc --group Applet_1 --key 'ConfigFile[$e]' taskbar_panelapplet_rc
 sed -i '/^ConfigFile\[/d' $TDEHOME/share/config/kickerrc

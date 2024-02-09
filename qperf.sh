@@ -123,7 +123,7 @@ echo
 echo 
 echo -e "${RED}█${NOCOLOR} As you installed a new kernel, it is recommanded to reboot right now, before ${RED}█${NOCOLOR}"
 echo -e "${RED}█${NOCOLOR} trying to optimize further, and relaunch the script after rebooting.         ${RED}█${NOCOLOR}"
-echo " > Do you want to reboot now ? (y/n)" && read x && [[ "$x" == "y" ]] && sudo /sbin/reboot;
+echo " > Do you want to reboot now ? (y/n)" && read x && [[ "$x" == "y" ]] && sudo /sbin/reboot && exit;
 fi
 sep
 echo
@@ -684,7 +684,20 @@ echo
 progress "$script" 95
 
 
-
+#==================================================================================================================
+itemdisp "Redirecting some logs to /dev/null ..."
+echo
+sudo rm -f '/var/log/boot.log'
+sudo ln -s /dev/null '/var/log/boot.log'
+sudo rm -f '/var/log/Xorg.0.log'
+sudo ln -s /dev/null '/var/log/Xorg.0.log'
+sudo rm -f '/var/log/tdm.log'
+sudo ln -s /dev/null '/var/log/tdm.log'
+sep
+echo
+echo
+echo
+progress "$script" 100
 
 
 

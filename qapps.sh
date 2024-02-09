@@ -146,37 +146,28 @@ echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
 fi
 progress "$script" 25
 
-
-
-
-
 itemdisp "Installing Stacer..."
 installApp "stacer" "stacer/stable"
 progress "$script" 30
-
-
 
 itemdisp "Installing bleachbit..."
 installApp "bleachbit" "bleachbit/stable"
 progress "$script" 35
 
-
-
 itemdisp "Installing vlc..."
 installApp "vlc" "vlc/stable"
 progress "$script" 40
 
-
 itemdisp "Installing usefull console tools..."
-installApp "duf" "duf/stable"
+installApp "duf" "duf/stable" 0
 installApp "jdupes" "jdupes/stable"
 progress "$script" 45
 
-
-
 #classics tools, may be already installed with desktop version
-itemdisp "Installing Kolourpaint,KCharSelect,Ksnapshot,knotes,kcron, kdirstat, kpdf..."
+itemdisp "Installing Gwenview,Kolourpaint,KCharSelect,Ksnapshot,knotes,kcron, kdirstat, kpdf..."
 echo
+echo -e "  \e[35m░▒▓█\033[0m Installing Gwenview..."
+installApp "gwenview" "gwenview" 0
 echo -e "  \e[35m░▒▓█\033[0m Installing Kolourpaint..."
 installApp "kolourpaint-trinity" "kolourpaint-trinity" 0
 echo -e "  \e[35m░▒▓█\033[0m Installing KCharSelect..."
@@ -184,18 +175,14 @@ installApp "kcharselect-trinity" "kcharselect-trinity" 0
 echo -e " \e[35m░▒▓█\033[0m Installing Ksnapshot..."
 installApp "ksnapshot-trinity" "ksnapshot-trinity" 0
 echo -e " \e[35m░▒▓█\033[0m Installing Knotes..."
-installApp "knotes-trinity" "knotes-trinity"
+installApp "knotes-trinity" "knotes-trinity" 0
 echo -e " \e[35m░▒▓█\033[0m Installing Kcron..."
-installApp "kcron-trinity" "kcron-trinity"
+installApp "kcron-trinity" "kcron-trinity" 0
 echo -e " \e[35m░▒▓█\033[0m Installing kdirstat..."
-installApp "kdirstat-trinity" "kdirstat-trinity"
+installApp "kdirstat-trinity" "kdirstat-trinity" 0
 echo -e " \e[35m░▒▓█\033[0m Installing kpdf..."
 installApp "kpdf-trinity" "kpdf-trinity"
 progress "$script" 55
-
-
-
-
 
 #============== Install Apps (interactive) ======================================================================
 
@@ -337,12 +324,6 @@ done
 fi
 progress "$script" 70
 
-
-
-
-
-
-
 itemdisp "Installing S4 Snapshot"
 #q4os-s4-snapshot
 if [ "$installall" -eq 1 ]; then
@@ -382,9 +363,6 @@ progress "$script" 75
 
 
 
-
-
-
 itemdisp "Installing remmina"
 #remmina
 if [ "$installall" -eq 1 ]; then
@@ -413,10 +391,6 @@ do
 done
 fi
 progress "$script" 80
-
-
-
-
 
 
 
@@ -465,11 +439,6 @@ progress "$script" 85
 
 
 
-
-
-
-
-
 itemdisp "Installing bpytop"
 #bpytop
 if [ "$installall" -eq 1 ]; then
@@ -502,10 +471,6 @@ echo
 echo
 echo
 progress "$script" 90
-
-
-
-
 
 
 itemdisp "Installing virtualbox 7"
@@ -551,8 +516,6 @@ echo
 progress "$script" 95
 
 
-
-
 if ( getconf LONG_BIT | grep -q 64 ); then
 itemdisp "Installing Qtscrcpy"
 installQtscrcpy () {
@@ -596,12 +559,6 @@ echo
 echo
 progress "$script" 95
 fi
-
-
-
-
-
-
 
 
 itemdisp "Cleaning files..."
