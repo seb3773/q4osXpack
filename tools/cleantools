@@ -71,6 +71,9 @@ sudo swapon -a
 echo "Cleaning packages..."
 sudo apt clean
 sudo apt autoremove -y
+echo "Cleaning logs..."
+sudo chmod +x tools/removelogs.sh
+sudo tools/removelogs.sh
 echo
 echo Done.
 read -p "Press enter..."
