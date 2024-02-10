@@ -2040,7 +2040,12 @@ echo "  \e[35m░▒▓█\033[0m copying wallpapers"
 tar -xzf q4seb_wallpapers.tar.gz -C /opt/trinity/share/wallpapers/
 
 echo "  \e[35m░▒▓█\033[0m copying sw center splash"
+if [ $1 -eq 1 ]
+then
+tar -xzf swcentre_splash_dark.tar.gz -C /usr/share/apps/q4os_system/q4os_swcentre/resource/
+else
 tar -xzf swcentre_splash.tar.gz -C /usr/share/apps/q4os_system/q4os_swcentre/resource/
+fi
 
 echo "  \e[35m░▒▓█\033[0m copying font"
 #tar -xzf Segoe_UI.tar.gz -C /usr/share/fonts/truetype/
