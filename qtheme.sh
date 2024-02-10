@@ -226,11 +226,12 @@ fi
 
 echo " ► custom color specified, but no accent color given,"
 if [ -n "$accentsettings" ]; then 
-	echo "  do you want to use previous custom color ($accentsettings) for $themecolor ?)"
-        echo "  (y:use previous color/enter:skip) ?" && read x
-	if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
-        accent=$accentsettings
-	fi
+closest_color=$(find_closest_color "$accentsettings")
+echo -e "  do you want to use previous custom color \e[48;5;${closest_color}m($accentsettings)\e[0m for theme accent color?"
+echo -n "  (y:use previous color/enter:skip) ?" && read x
+if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
+accent=$accentsettings
+fi
 
 fi
 fi
