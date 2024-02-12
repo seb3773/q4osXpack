@@ -74,6 +74,9 @@ sudo apt autoremove -y
 echo "Cleaning logs..."
 sudo chmod +x tools/removelogs.sh
 sudo tools/removelogs.sh
+echo "Optimizing .svg files..."
+sudo chmod +x perfs/cleansvg.sh
+sudo perfs/cleansvg.sh
 echo
 echo Done.
 read -p "Press enter..."

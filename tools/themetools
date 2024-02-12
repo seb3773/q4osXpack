@@ -184,7 +184,7 @@ done
 randomwallp () {
 clear
 echo -e "  \e[35m░▒▓█\033[0m Selecting a random wallpaper"
-wallpn=$(( $RANDOM % 10 + 1 ))
+wallpn=$(( $RANDOM % 25 + 1 ))
 rwallp=q4seb_hd_win_$wallpn.jpg
 dcop kdesktop KBackgroundIface setWallpaper /opt/trinity/share/wallpapers/$rwallp 6
 echo "Wallpaper /opt/trinity/share/wallpapers/$rwallp set."
