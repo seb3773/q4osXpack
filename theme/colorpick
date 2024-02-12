@@ -116,6 +116,7 @@ printf "\n \x1b[48;5;%dm%*s\e[0m" "$selected_color" $((columns * 5 + 2)) " "
 printf "\n \x1b[48;5;%dm%*s\e[0m\n" "$selected_color" $((columns * 5 + 2)) " "
 }
 
+
 confirm_color_choice() {
 read -p " → Use this color (y/n) ? " confirm
 [[ "$confirm" == "y" || "$confirm" == "Y" ]]
