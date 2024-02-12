@@ -460,13 +460,14 @@ function resize_and_create_circle_image {
     local small_image_output="$3"
     local circle_size=$usz 
     local small_image_size=48
-    convert "$input_image" -resize $rsz1 -gravity center -extent $rsz2 "$input_image"
+local temp_image0=$(mktemp "${TMPDIR:-/tmp}/temp_image0.XXXXXXXXXX")    
+convert "$input_image" -resize $rsz1 -gravity center -extent $rsz2 "$temp_image0"
     local temp_image=$(mktemp "${TMPDIR:-/tmp}/temp_image.XXXXXXXXXX.png")
-    convert "$input_image" -alpha set -background none -virtual-pixel transparent -distort SRT 0 +repage \( -size "${circle_size}x${circle_size}" xc:none -fill white -draw "circle $((circle_size / 2)),$((circle_size / 2)) $((circle_size / 2)),0" \) -compose copy-opacity -composite "$temp_image"
+    convert "$temp_image0" -alpha set -background none -virtual-pixel transparent -distort SRT 0 +repage \( -size "${circle_size}x${circle_size}" xc:none -fill white -draw "circle $((circle_size / 2)),$((circle_size / 2)) $((circle_size / 2)),0" \) -compose copy-opacity -composite "$temp_image"
 
     convert "$temp_image" -trim -background none -flatten "$output_image"
     rm "$temp_image"
-
+rm "$temp_image0"
     convert "$output_image" -resize "${small_image_size}x${small_image_size}" "$small_image_output"
 }
 
