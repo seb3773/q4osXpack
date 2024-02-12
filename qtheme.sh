@@ -1286,7 +1286,7 @@ progress "$script" 65
 
 #========== Color scheme & win10 & 11 wallpapers ================================================================
 itemdisp "Applying color scheme & wallpaper..."
-wallpn=$(( $RANDOM % 10 + 1 ))
+wallpn=$(( $RANDOM % 25 + 1 ))
 rwallp=q4seb_hd_win_$wallpn.jpg
 dcop kdesktop KBackgroundIface setWallpaper /opt/trinity/share/wallpapers/$rwallp 6
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key alternateBackground "244,244,244"

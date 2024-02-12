@@ -32,7 +32,7 @@ begin "$script"
 #========== set subscripts perms ================================================================================
 progress "$script" 0
 #set perms
-sudo chmod +x perfs/check_x86-64_psabi.sh perfs/perfgrub perfs/repository.sh common/pklist
+sudo chmod +x perfs/check_x86-64_psabi.sh perfs/perfgrub perfs/repository.sh perfs/svgcleaner perfs/cleansvg.sh common/pklist 
 
 
 
@@ -693,12 +693,27 @@ sudo rm -f '/var/log/Xorg.0.log'
 sudo ln -s /dev/null '/var/log/Xorg.0.log'
 sudo rm -f '/var/log/tdm.log'
 sudo ln -s /dev/null '/var/log/tdm.log'
+sudo rm -f '/var/log/fontconfig.log'
+sudo ln -s /dev/null '/var/log/fontconfig.log'
+#a bit too much ? 
+#sudo rm -f '/var/log/lastlog'
+#sudo ln -s /dev/null '/var/log/lastlog'
 sep
 echo
 echo
 echo
 progress "$script" 100
 
+
+
+itemdisp "Optimizing svg images ..."
+echo
+sudo perfs/cleansvg.sh
+sep
+echo
+echo
+echo
+progress "$script" 100
 
 
 
