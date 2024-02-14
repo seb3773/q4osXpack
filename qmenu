@@ -83,10 +83,10 @@ do
 wmctrl -r :ACTIVE: -N "-=- Q4OS Seb Scripts -=-   Main menu"
 options=(
     " Qtheme" "   [      Theming « ala windows 10 »    ]"
+    " Qtools" "   [  Customize theme,system & more...  ]"
     " Qperf" "   [        Improve performances        ]"
     " Qlaptop" "   [    Laptop specific configuration   ]"
     " Qapps" "   [    Install selected applications   ]"
-    " Qtools" "   [  Customize theme,system & more...  ]"
     " " " "
 )
 
