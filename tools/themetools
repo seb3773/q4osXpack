@@ -471,34 +471,7 @@ rm "$temp_image0"
     convert "$output_image" -resize "${small_image_size}x${small_image_size}" "$small_image_output"
 }
 
-
-userpic () {
-
-while [ 1 ]
-do
-
-
-choice=$(whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "         Qtools Scripts - Theming tools - user picture" 25 70 15 "» Select" " Select your own image" "» Default" " restore default image" "«return" " <- return to previous menu" 3>&1 1>&2 2>&3)
-
-case $choice in
-"«return") return 1
-;;
-"» Select") 
-clear
-USER_HOME=$(eval echo ~${SUDO_USER})
-if file_select "-=- Q4OS Seb Scripts -=- select user picture" "/home" "*.jpg" ; then
-
-    echo "File Selected: \"$FILE_SELECTED\"."
-
-if check_image_size "$FILE_SELECTED"; then
-        echo "Picture size is conform."
-if ( getconf LONG_BIT | grep -q 64 ); then
-tools/tiv -0 -w 70 "$FILE_SELECTED"
-else tools/tiv32 -0 -w 70 "$FILE_SELECTED"; fi
-
-
-read -p "Use this image as user picture ? (y/n) " choix
-if [ "$choix" == "y" ] || [ "$choix" == "Y" ]; then
+function applyUserPic {
         rm -f "$USER_HOME/.face.icon"
         resize_and_create_circle_image "$FILE_SELECTED" "$USER_HOME/userpic.png" "$USER_HOME/faceicon.png"
         \cp "$USER_HOME/faceicon.png" "$USER_HOME/.face.icon"
@@ -516,6 +489,38 @@ if [ "$choix" == "y" ] || [ "$choix" == "Y" ]; then
         rm -f "$USER_HOME/userpic.png"
         rm -f "$USER_HOME/faceicon.png"
         echo "Done."
+}
+
+userpic () {
+
+while [ 1 ]
+do
+
+
+choice=$(whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "         Qtools Scripts - Theming tools - user picture" 25 70 15 "» Select custom" " Select your own image" "» Select windows classic" " Select a classic windows avatar" "» Default" " restore default image" "«return" " <- return to previous menu" 3>&1 1>&2 2>&3)
+
+
+
+case $choice in
+"«return") return 1
+;;
+"» Select custom") 
+clear
+USER_HOME=$(eval echo ~${SUDO_USER})
+if file_select "-=- Q4OS Seb Scripts -=- select user picture" "/home" "*.jpg" ; then
+
+    echo "File Selected: \"$FILE_SELECTED\"."
+
+if check_image_size "$FILE_SELECTED"; then
+        echo "Picture size is conform."
+if ( getconf LONG_BIT | grep -q 64 ); then
+tools/tiv -0 -w 70 "$FILE_SELECTED"
+else tools/tiv32 -0 -w 70 "$FILE_SELECTED"; fi
+
+
+read -p "Use this image as user picture ? (y/n) " choix
+if [ "$choix" == "y" ] || [ "$choix" == "Y" ]; then
+applyUserPic
 fi
     else
         echo "Picture size doesn't follow size requirements."
@@ -526,6 +531,53 @@ else
 fi
         read -p "Press enter..."
 ;;
+
+"» Select windows classic") 
+clear
+#veryfying /usr/share/avatars exist and not empty
+if [ -d "/usr/share/avatars" ]; then
+    jpg_count=$(find "/usr/share/avatars" -maxdepth 1 -type f -name "*.jpg" | wc -l)
+
+    if [ "$jpg_count" -gt 0 ]; then
+
+USER_HOME=$(eval echo ~${SUDO_USER})
+if file_select "-=- Q4OS Seb Scripts -=- select user picture" "/usr/share/avatars" "*.jpg" ; then
+
+    echo "File Selected: \"$FILE_SELECTED\"."
+
+if check_image_size "$FILE_SELECTED"; then
+        echo "Picture size is conform."
+if ( getconf LONG_BIT | grep -q 64 ); then
+tools/tiv -0 -w 70 "$FILE_SELECTED"
+else tools/tiv32 -0 -w 70 "$FILE_SELECTED"; fi
+
+
+read -p "Use this image as user picture ? (y/n) " choix
+if [ "$choix" == "y" ] || [ "$choix" == "Y" ]; then
+applyUserPic
+fi
+    else
+        echo "Picture size doesn't follow size requirements."
+    fi
+
+else
+    echo "No picture selected."
+fi
+        read -p "Press enter..."
+    else
+    echo "/usr/share/avatars doesn't contains any .jpg files... did you" 
+    echo "deleted something ?... You must re-apply your theme with qtheme to restore them."
+        read -p "Press enter..."
+    fi
+else
+    echo "/usr/share/avatars doesn't exist, did you have deleted it ?"
+    echo "You must re-apply your theme with qtheme to restore it."
+        read -p "Press enter..."
+fi
+
+;;
+
+
 "» Default") 
 clear
 rm -f "$USER_HOME/.face.icon"
@@ -537,8 +589,8 @@ iconth=$(kreadconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key
 sudo \cp "/usr/share/icons/$iconth/48x48/actions/switchuser.png" "$USER_HOME/.face.icon"
 sudo \cp "/usr/share/icons/$iconth/48x48/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
 kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic" "default"
-echo "Do you want to use the default image as login image too ?"
-read -p "(this will be global for all users in case of multi accounts usage (y/n) " uspic
+echo "  Do you want to use the default image as login image too ?"
+read -p "  (this will be global for all users in case of multi accounts usage (y/n) " uspic
 if [ "$uspic" == "y" ] || [ "$uspic" == "Y" ]; then
 sudo \cp "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
 sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*$fact]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
