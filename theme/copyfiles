@@ -2242,115 +2242,88 @@ ln -s zip.png 24x24/mimetypes/folder_tar.png
 ln -s zip.png 32x32/mimetypes/folder_tar.png
 ln -s zip.png 48x48/mimetypes/folder_tar.png
 ln -s zip.png 64x64/mimetypes/folder_tar.png
-
 ln -s ../../16x16/mimetypes/zip.png 16x16/places/folder_tar.png
 ln -s ../../22x22/mimetypes/zip.png 22x22/places/folder_tar.png
 ln -s ../../24x24/mimetypes/zip.png 24x24/places/folder_tar.png
 ln -s ../../32x32/mimetypes/zip.png 32x32/places/folder_tar.png
 ln -s ../../48x48/mimetypes/zip.png 48x48/places/folder_tar.png
 ln -s ../../64x64/mimetypes/zip.png 64x64/places/folder_tar.png
-
 ln -s text-x-script.png 16x16/mimetypes/shellscript.png
 ln -s text-x-script.png 22x22/mimetypes/shellscript.png
 ln -s text-x-script.png 24x24/mimetypes/shellscript.png
 ln -s text-x-script.png 32x32/mimetypes/shellscript.png
 ln -s text-x-script.png 48x48/mimetypes/shellscript.png
 ln -s text-x-script.png 64x64/mimetypes/shellscript.png
-
 ln -s application-x-bittorrent.png 16x16/mimetypes/application-torrent.png
 ln -s application-x-bittorrent.png 24x24/mimetypes/application-torrent.png
 ln -s application-x-bittorrent.png 32x32/mimetypes/application-torrent.png
 ln -s application-x-bittorrent.png 48x48/mimetypes/application-torrent.png
 ln -s application-x-bittorrent.png 64x64/mimetypes/application-torrent.png
-
-
 ln -s application-x-bittorrent.png 16x16/mimetypes/torrent.png
 ln -s application-x-bittorrent.png 24x24/mimetypes/torrent.png
 ln -s application-x-bittorrent.png 32x32/mimetypes/torrent.png
 ln -s application-x-bittorrent.png 48x48/mimetypes/torrent.png
 ln -s application-x-bittorrent.png 64x64/mimetypes/torrent.png
-
-
 ln -s application-x-xliff.svg 16x16/mimetypes/application-x-gettext-translation.svg
 ln -s application-x-xliff.svg 22x22/mimetypes/application-x-gettext-translation.svg
 ln -s application-x-xliff.svg 64x64/mimetypes/application-x-gettext-translation.svg
-
 ln -s application-x-xliff.svg 16x16/mimetypes/text-x-gettext-translation.svg
 ln -s application-x-xliff.svg 22x22/mimetypes/text-x-gettext-translation.svg
 ln -s application-x-xliff.svg 64x64/mimetypes/text-x-gettext-translation.svg
-
 ln -s video-x-generic.png 16x16/mimetypes/video.png
 ln -s video-x-generic.png 22x22/mimetypes/video.png
 ln -s video-x-generic.png 24x24/mimetypes/video.png
 ln -s video-x-generic.png 32x32/mimetypes/video.png
 ln -s video-x-generic.png 48x48/mimetypes/video.png
 ln -s video-x-generic.png 64x64/mimetypes/video.png
-
 ln -s libreoffice-oasis-drawing.png 16x16/mimetypes/libreoffice-oasis-drawing-template.png
 ln -s libreoffice-oasis-drawing.png 32x32/mimetypes/libreoffice-oasis-drawing-template.png
 ln -s libreoffice-oasis-drawing.png 48x48/mimetypes/libreoffice-oasis-drawing-template.png
 ln -s libreoffice-oasis-drawing.png 64x64/mimetypes/libreoffice-oasis-drawing-template.png
-
-
 ln -s application-pgp-signature.svg 16x16/mimetypes/application-pkcs7-signature.svg
 ln -s application-pgp-signature.svg 22x22/mimetypes/application-pkcs7-signature.svg
 ln -s application-pgp-signature.svg 64x64/mimetypes/application-pkcs7-signature.svg
-
-
 ln -s application-xml.png 16x16/mimetypes/application-xslt+xml.png
 ln -s application-xml.png 22x22/mimetypes/application-xslt+xml.png
 ln -s application-xml.png 24x24/mimetypes/application-xslt+xml.png
 ln -s application-xml.png 32x32/mimetypes/application-xslt+xml.png
 ln -s application-xml.png 48x48/mimetypes/application-xslt+xml.png
 ln -s application-xml.png 64x64/mimetypes/application-xslt+xml.png
-
 ln -s application-xml.png 16x16/mimetypes/text-rdf+xml.png
 ln -s application-xml.png 22x22/mimetypes/text-rdf+xml.png
 ln -s application-xml.png 24x24/mimetypes/text-rdf+xml.png
 ln -s application-xml.png 32x32/mimetypes/text-rdf+xml.png
 ln -s application-xml.png 48x48/mimetypes/text-rdf+xml.png
 ln -s application-xml.png 64x64/mimetypes/text-rdf+xml.png
-
 ln -s application-xml.png 16x16/mimetypes/text-xml.png
 ln -s application-xml.png 22x22/mimetypes/text-xml.png
 ln -s application-xml.png 24x24/mimetypes/text-xml.png
 ln -s application-xml.png 32x32/mimetypes/text-xml.png
 ln -s application-xml.png 48x48/mimetypes/text-xml.png
 ln -s application-xml.png 64x64/mimetypes/text-xml.png
-
 ln -s application-xml.png 16x16/mimetypes/text-x-opml+xml.png
 ln -s application-xml.png 22x22/mimetypes/text-x-opml+xml.png
 ln -s application-xml.png 24x24/mimetypes/text-x-opml+xml.png
 ln -s application-xml.png 32x32/mimetypes/text-x-opml+xml.png
 ln -s application-xml.png 48x48/mimetypes/text-x-opml+xml.png
 ln -s application-xml.png 64x64/mimetypes/text-x-opml+xml.png
-
-
 ln -s x-office-address-book.png 16x16/mimetypes/contents2.png
 ln -s x-office-address-book.png 22x22/mimetypes/contents2.png
 ln -s x-office-address-book.png 24x24/mimetypes/contents2.png
 ln -s x-office-address-book.png 32x32/mimetypes/contents2.png
 ln -s x-office-address-book.png 48x48/mimetypes/contents2.png
 ln -s x-office-address-book.png 64x64/mimetypes/contents2.png
-
-
-
 ln -s ../../16x16/mimetypes/x-office-address-book.png 16x16/actions/contents2.png
 ln -s ../../22x22/mimetypes/x-office-address-book.png 22x22/actions/contents2.png
 ln -s ../../24x24/mimetypes/x-office-address-book.png 24x24/actions/contents2.png
 ln -s ../../32x32/mimetypes/x-office-address-book.png 32x32/actions/contents2.png
 ln -s ../../48x48/mimetypes/x-office-address-book.png 48x48/actions/contents2.png
 ln -s ../../64x64/mimetypes/x-office-address-book.png 64x64/actions/contents2.png
-
 ln -s text-x-sass.svg 16x16/mimetypes/text-x-scss.svg
 ln -s text-x-sass.svg 64x64/mimetypes/text-x-scss.svg
-
-
 ln -s text-x-rust.svg 16x16/mimetypes/text-rust.svg
 ln -s text-x-rust.svg 22x22/mimetypes/text-rust.svg
 ln -s text-x-rust.svg 64x64/mimetypes/text-rust.svg
-
-
 ln -s text-html.png 16x16/mimetypes/www.png
 ln -s text-html.png 22x22/mimetypes/www.png
 ln -s text-html.png 24x24/mimetypes/www.png
@@ -2363,15 +2336,14 @@ ln -s ../../24x24/mimetypes/text-html.png 24x24/places/www.png
 ln -s ../../32x32/mimetypes/text-html.png 32x32/places/www.png
 ln -s ../../48x48/mimetypes/text-html.png 48x48/places/www.png
 ln -s ../../64x64/mimetypes/text-html.png 64x64/places/www.png
-
 ln -s application-rss+xml.png 16x16/news.png
 ln -s application-rss+xml.png 22x22/news.png
 ln -s application-rss+xml.png 24x24/news.png
 ln -s application-rss+xml.png 32x32/news.png
 ln -s application-rss+xml.png 48x48/news.png
 ln -s application-rss+xml.png 64x64/news.png
-
-
+ln -s ../../scalable/actions/nm_device_wired.png scalable/devices/nm_device_wired.png
+ln -s ../../scalable/actions/nm_device_wired.png scalable/status/nm_device_wired.png
 cd - > /dev/null 2>&1
 #
 sudo sed -i "/Name=kde_ten/c\Name=kdeten_$iconth" /usr/share/icons/kdeten_$iconth/index.theme
@@ -2633,15 +2605,15 @@ sudo sed -i "s/\[KSplash Theme: Redmond10\]/\[KSplash Theme: Redmond10_$USER_SU\
 userpicsetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic")
 if [ "$userpicsetting" != "custom" ]; then
 echo "  \e[35m░▒▓█\033[0m copying default user picture"
-\cp "/usr/share/icons/kdeten_$iconth/48x48/actions/switchuser.png" "$USER_HOME/.face.icon"
-sudo \cp "/usr/share/icons/kdeten_$iconth/48x48/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
+\cp "/usr/share/icons/kdeten_$iconth/64x64/actions/switchuser.png" "$USER_HOME/.face.icon"
+sudo \cp "/usr/share/icons/kdeten_$iconth/64x64/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
 sudo \cp "/opt/trinity/share/apps/tdm/themes/windows/loginpic_default.png" "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png"
 else
 if [ ! -e "$USER_HOME/.face.icon" ] || [ ! -e "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" ] || [ ! -e "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon" ]; then
 echo "  **Use previously defined user picture option in settings,"
 echo "    but images missing, using default image..."
-\cp "/usr/share/icons/kdeten_$iconth/48x48/actions/switchuser.png" "$USER_HOME/.face.icon"
-sudo \cp "/usr/share/icons/kdeten_$iconth/48x48/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
+\cp "/usr/share/icons/kdeten_$iconth/64x64/actions/switchuser.png" "$USER_HOME/.face.icon"
+sudo \cp "/usr/share/icons/kdeten_$iconth/64x64/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
 sudo \cp "/opt/trinity/share/apps/tdm/themes/windows/loginpic_default.png" "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png"
 else
 echo "  ►►using previously defined user picture"
@@ -2656,6 +2628,7 @@ mkdir -p "$USER_HOME/.local/share/icons/kdeten_$iconth/24x24/actions"
 mkdir -p "$USER_HOME/.local/share/icons/kdeten_$iconth/32x32/actions"
 mkdir -p "$USER_HOME/.local/share/icons/kdeten_$iconth/48x48/actions"
 mkdir -p "$USER_HOME/.local/share/icons/kdeten_$iconth/64x64/actions"
+mkdir -p "$USER_HOME/.local/share/icons/kdeten_$iconth/scalable/actions"
 #tar -xzf kdeten_local.tar.gz -C $USER_HOME/.local/share/icons/kdeten_$iconth/
 sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/16x16/actions/switchuser.png" > /dev/null 2>&1
 sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/22x22/actions/switchuser.png" > /dev/null 2>&1
@@ -2663,6 +2636,13 @@ sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth
 sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/32x32/actions/switchuser.png" > /dev/null 2>&1
 sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/48x48/actions/switchuser.png" > /dev/null 2>&1
 sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/64x64/actions/switchuser.png" > /dev/null 2>&1
+sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/scalable/actions/switchuser.png" > /dev/null 2>&1
+#convert "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -resize 16x16 "$USER_HOME/.local/share/icons/kdeten_$iconth/16x16/actions/switchuser.png"
+#convert "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -resize 22x22 "$USER_HOME/.local/share/icons/kdeten_$iconth/22x22/actions/switchuser.png"
+#convert "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -resize 24x24 "$USER_HOME/.local/share/icons/kdeten_$iconth/24x24/actions/switchuser.png"
+#convert "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -resize 32x32 "$USER_HOME/.local/share/icons/kdeten_$iconth/32x32/actions/switchuser.png"
+#convert "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -resize 48x48 "$USER_HOME/.local/share/icons/kdeten_$iconth/48x48/actions/switchuser.png"
+#convert "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -resize 64x64 "$USER_HOME/.local/share/icons/kdeten_$iconth/64x64/actions/switchuser.png"
 
 
 
