@@ -459,7 +459,7 @@ function resize_and_create_circle_image {
     local output_image="$2"
     local small_image_output="$3"
     local circle_size=$usz 
-    local small_image_size=48
+    local small_image_size=64
 local temp_image0=$(mktemp "${TMPDIR:-/tmp}/temp_image0.XXXXXXXXXX")    
 convert "$input_image" -resize $rsz1 -gravity center -extent $rsz2 "$temp_image0"
     local temp_image=$(mktemp "${TMPDIR:-/tmp}/temp_image.XXXXXXXXXX.png")
@@ -586,8 +586,8 @@ rm -f "$USER_HOME/.face.icon"
 sudo \cp /opt/trinity/share/apps/tdm/themes/windows/loginpic_default.png "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png"
 sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*$fact]" info:) -composite /opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/Background.png
 iconth=$(kreadconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme)
-sudo \cp "/usr/share/icons/$iconth/48x48/actions/switchuser.png" "$USER_HOME/.face.icon"
-sudo \cp "/usr/share/icons/$iconth/48x48/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
+sudo \cp "/usr/share/icons/$iconth/64x64/actions/switchuser.png" "$USER_HOME/.face.icon"
+sudo \cp "/usr/share/icons/$iconth/64x64/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
 kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic" "default"
 echo "  Do you want to use the default image as login image too ?"
 read -p "  (this will be global for all users in case of multi accounts usage (y/n) " uspic
