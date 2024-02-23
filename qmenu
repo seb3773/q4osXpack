@@ -107,10 +107,6 @@ ret=$(TERM=ansi whiptail --title "-=- Q4OS Seb Scripts -=-" --menu "Choose a scr
 
 
 
-
-
-          
-
 echo
 case $ret in
 " Qtheme")   

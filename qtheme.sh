@@ -228,7 +228,7 @@ echo " ► custom color specified, but no accent color given,"
 if [ -n "$accentsettings" ]; then 
 closest_color=$(find_closest_color "$accentsettings")
 echo -e "  do you want to use previous custom color \e[48;5;${closest_color}m($accentsettings)\e[0m for theme accent color?"
-echo -n "  (y:use previous color/enter:skip) ?" && read x
+echo -n "  (y:use previous color/enter:choose another color) ?" && read x
 if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
 accent=$accentsettings
 fi
@@ -539,18 +539,18 @@ if [[ -d $pathfold ]]; then
 cd $pathfold
 for FILE in *;
 do
-sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+sed -i '/Icon=/c\Icon=default-folder' "$pathfold$FILE"
 if [ "$FILE" = "tde-settingsmenu.directory" ]; then
 sed -i '/Icon=/c\Icon=menu-settings' "$pathfold$FILE"
 fi
 if [ "$FILE" = "chrome-apps.directory" ]; then
-sed -i '/Icon=/c\Icon=folder-html' "$pathfold$FILE"
+sed -i '/Icon=/c\Icon=folder_html' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-multimedia.directory" ]; then
 sed -i '/Icon=/c\Icon=default-folder-video' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-internet.directory" ]; then
-sed -i '/Icon=/c\Icon=folder-html' "$pathfold$FILE"
+sed -i '/Icon=/c\Icon=folder_html' "$pathfold$FILE"
 fi
 done
 cd - > /dev/null 2>&1
@@ -561,7 +561,7 @@ cd $pathfold
 for FILE in *;
 do
 if [ "$FILE" = "tde-system.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=default-folder' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-settingsmenu.directory" ]; then
 sudo sed -i '/Icon=/c\Icon=menu-settings' "$pathfold$FILE"
@@ -570,43 +570,51 @@ if [ "$FILE" = "tde-multimedia.directory" ]; then
 sudo sed -i '/Icon=/c\Icon=default-folder-video' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-utilities.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=default-folder' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-graphics.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=default-folder' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-internet.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=folder-html' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=folder_html' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-development.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=default-folder' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-editors.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=default-folder' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-games.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=default-folder' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-office.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=default-folder' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-science.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=default-folder' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-toys.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=default-folder' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-edutainment.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=default-folder' "$pathfold$FILE"
 fi
 if [ "$FILE" = "tde-unknown.directory" ]; then
-sudo sed -i '/Icon=/c\Icon=bookmarks' "$pathfold$FILE"
+sudo sed -i '/Icon=/c\Icon=default-folder' "$pathfold$FILE"
 fi
-
-
 done
 cd - > /dev/null 2>&1
 rota
+#config launcher_panelapplet_modernui_rc (add browser if one found)
+if (cat common/packages_list.tmp | grep -q "google-chrome-stable"); then
+    sed -i 's/\(Buttons=.*\)/\1,google-chrome.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
+elif (cat common/packages_list.tmp | grep -q "firefox/mozilla"); then
+    sed -i 's/\(Buttons=.*\)/\1,firefox.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
+elif (cat common/packages_list.tmp | grep -q "microsoft-edge-stable"); then
+    sed -i 's/\(Buttons=.*\)/\1,microsoft-edge.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
+elif (cat common/packages_list.tmp | grep -q "falkon/stable"); then
+    sed -i 's/\(Buttons=.*\)/\1,org.kde.falkon.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
+fi
 echo
 printf '\e[A\e[K'
 sep
@@ -708,8 +716,9 @@ fi
 sudo mkdir -p $TDEHOME/share/apps/kicker/pics
 sudo convert -size 24x340 xc:${accent} $TDEHOME/share/apps/kicker/pics/kside.png
 sudo convert -size 24x4 xc:${accent} $TDEHOME/share/apps/kicker/pics/kside_tile.png
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key SideName kside.png
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key SideTileName kside_tile.png
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ColorizeSidePixmap false
-
 
 #kickerbar rgb_accent
 #sudo convert -size 2x60 xc:${accent} $TDEHOME/share/apps/kicker/pics/panel-win.png
@@ -817,6 +826,7 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key Com
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandTitlebarWheel Nothing
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Toolbar style" --key TransparentMoving "true"
 ######### random bug with desktop redrawing icons - need to find out why. too bad as the text with shadows looks much better
+###seems to be related to Qtcurve style, this bug doesn't appear when using another style...
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
 #############
 
@@ -1028,6 +1038,7 @@ sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Trash --key ConfirmDelete true
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Trash --key ConfirmTrash false
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KFileDialog Settings" --key "Automatic Preview" true
+sudo kwriteconfig --file $TDEHOME/share/config/tdecmshellrc --group "KFileDialog Settings" --key "Automatic Preview" true
 rota
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key IconText IconOnly
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key Index 4
@@ -1054,6 +1065,14 @@ sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWind
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Hidden true
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key IconText IconTextRight
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Index 6
+rota
+sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key UseFileThumbnails true
+sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key BoostSize true
+sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key file true
+sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key home true
+sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key system true
+sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key MaximumSize 20971520
+rota
 deskfold=$(xdg-user-dir DESKTOP)
 picfold=$(xdg-user-dir PICTURES)
 docfold=$(xdg-user-dir DOCUMENTS)
@@ -1654,6 +1673,7 @@ kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key Ic
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key Q4ButtonFrameType 1
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key UseCustomColors true
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key ShowButtonOnHover ""
+kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key DrawButtons ""
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group Appearance --key HaloText true
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key CycleWheel false
 kwriteconfig --file $TDEHOME/share/config/ktaskbarrc --group General --key DisplayIconsNText DisplayIconsOnly
@@ -1954,6 +1974,8 @@ sudo ln -s /opt/trinity/bin/kcron /usr/local/bin/taskschd > /dev/null 2>&1
 sudo ln -s /usr/bin/lxtask /usr/local/bin/taskmgr > /dev/null 2>&1
 sudo ln -s /usr/bin/lxtask /usr/local/bin/ksysguard > /dev/null 2>&1
 cd - > /dev/null 2>&1
+#konsolerc transparency
+kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "RealTransparency" "true"
 sep
 echo
 echo

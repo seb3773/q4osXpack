@@ -152,78 +152,7 @@ echo
 progress "$script" 15
 
 
-#========== Disabling uneeded services ==========================================================================
-itemdisp "Disabling some services..."
-echo
-echo -e "  \e[35m░▒▓█\033[0m ModemManager.service"
-sudo systemctl stop ModemManager.service
-sudo systemctl disable ModemManager.service
-sudo systemctl mask ModemManager.service
-echo -e "  \e[35m░▒▓█\033[0m NetworkManager-wait-online service"
-sudo systemctl stop NetworkManager-wait-online.service
-sudo systemctl disable NetworkManager-wait-online.service
-sudo systemctl mask NetworkManager-wait-online.service
-echo -e "  \e[35m░▒▓█\033[0m rsyslog.service"
-sudo systemctl stop rsyslog
-sudo systemctl disable rsyslog
-sudo systemctl mask rsyslog
-progress "$script" 20
-echo -e "  \e[35m░▒▓█\033[0m avahi-daemon service"
-sudo systemctl stop avahi-daemon
-sudo systemctl disable avahi-daemon
-sudo systemctl mask avahi-daemon
-echo -e "  \e[35m░▒▓█\033[0m smbd service"
-sudo systemctl stop smbd.service
-sudo systemctl disable smbd.service
-sudo systemctl mask smbd.service
-echo -e "  \e[35m░▒▓█\033[0m nmbd service"
-sudo systemctl stop nmbd.service
-sudo systemctl disable nmbd.service
-sudo systemctl mask nmbd.service
-echo -e "  \e[35m░▒▓█\033[0m apparmor service"
-sudo systemctl stop apparmor
-sudo systemctl disable apparmor
-sudo systemctl mask apparmor
-echo -e "  \e[35m░▒▓█\033[0m serial-getty service"
-sudo systemctl stop serial-getty@ttyS0.service
-sudo systemctl disable serial-getty@ttyS0.service
-sudo systemctl mask serial-getty@ttyS0.service
-echo -e "  \e[35m░▒▓█\033[0m logrotate service"
-sudo systemctl stop logrotate.service
-sudo systemctl disable logrotate.service
-sudo systemctl mask logrotate.service
-sudo systemctl stop logrotate.timer
-sudo systemctl disable logrotate.timer
-sudo systemctl mask logrotate.timer
-#--nosyslog for dbus.service
-sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/system/dbus.service
-sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/user/dbus.service
-echo
-echo -e "${RED}█ ${ORANGE}Disable bluetooth service ? (if you don't need it :p)${NOCOLOR}"
-optionz=("Disable bluetooth" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Disable bluetooth")
-            echo -e "  \e[35m░▒▓█\033[0m Disabling bluetooth service..."
-            sudo systemctl stop bluetooth.service
-            sudo systemctl disable bluetooth.service
-            sudo systemctl mask bluetooth.service
-            sudo sed -i -e 's/^AutoEnable=true/AutoEnable=false/' /etc/bluetooth/main.conf
-            sudo sed -i -e 's/^BLUETOOTH_ENABLED=1/BLUETOOTH_ENABLED=0/' /etc/default/bluetooth
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-sep
-echo
-echo
-echo
-progress "$script" 20
+
 
 
 
@@ -236,7 +165,7 @@ sep
 echo
 echo
 echo
-progress "$script" 25
+progress "$script" 20
 
 
 
@@ -253,7 +182,7 @@ sep
 echo
 echo
 echo
-progress "$script" 30
+progress "$script" 20
 
 
 
@@ -283,7 +212,7 @@ sep
 echo
 echo
 echo
-progress "$script" 35
+progress "$script" 25
 
 
 #========== Removing tdecryptocardwatcher =======================================================================
@@ -301,7 +230,7 @@ sep
 echo
 echo
 echo
-progress "$script" 40
+progress "$script" 25
 
 
 
@@ -314,7 +243,7 @@ sep
 echo
 echo
 echo
-progress "$script" 45
+progress "$script" 30
 
 
 
@@ -324,11 +253,12 @@ echo
 cd perfs
 sudo tar -xzf 22-perfs.conf.tar.gz -C /etc/sysctl.d/
 cd ..
+sudo sed -ine '/::/s/^/# /' /etc/hosts
 sep
 echo
 echo
 echo
-progress "$script" 50
+progress "$script" 35
 
 
 
@@ -364,7 +294,7 @@ sep
 echo
 echo
 echo
-progress "$script" 55
+progress "$script" 40
 
 
 
@@ -385,7 +315,7 @@ sep
 echo
 echo
 echo
-progress "$script" 60
+progress "$script" 45
 
 
 
@@ -412,7 +342,7 @@ sep
 echo
 echo
 echo
-progress "$script" 65
+progress "$script" 50
 
 
 
@@ -436,8 +366,118 @@ sep
 echo
 echo
 echo
-progress "$script" 70
+progress "$script" 55
 
+
+
+
+
+#========== Disabling uneeded services ==========================================================================
+itemdisp "Disabling some services..."
+echo
+echo -e "  \e[35m░▒▓█\033[0m ModemManager.service"
+sudo systemctl stop ModemManager.service
+sudo systemctl disable ModemManager.service
+sudo systemctl mask ModemManager.service
+echo -e "  \e[35m░▒▓█\033[0m NetworkManager-wait-online service"
+sudo systemctl stop NetworkManager-wait-online.service
+sudo systemctl disable NetworkManager-wait-online.service
+sudo systemctl mask NetworkManager-wait-online.service
+echo -e "  \e[35m░▒▓█\033[0m rsyslog.service"
+sudo systemctl stop rsyslog
+sudo systemctl disable rsyslog
+sudo systemctl mask rsyslog
+sudo systemctl stop syslog.socket
+sudo systemctl disable syslog.socket
+sudo systemctl mask syslog.socket
+progress "$script" 20
+echo -e "  \e[35m░▒▓█\033[0m smbd service"
+sudo systemctl stop smbd.service
+sudo systemctl disable smbd.service
+sudo systemctl mask smbd.service
+echo -e "  \e[35m░▒▓█\033[0m nmbd service"
+sudo systemctl stop nmbd.service
+sudo systemctl disable nmbd.service
+sudo systemctl mask nmbd.service
+echo -e "  \e[35m░▒▓█\033[0m apparmor service"
+sudo systemctl stop apparmor
+sudo systemctl disable apparmor
+sudo systemctl mask apparmor
+echo -e "  \e[35m░▒▓█\033[0m serial-getty service"
+sudo systemctl stop serial-getty@ttyS0.service
+sudo systemctl disable serial-getty@ttyS0.service
+sudo systemctl mask serial-getty@ttyS0.service
+echo -e "  \e[35m░▒▓█\033[0m logrotate service"
+sudo systemctl stop logrotate.service
+sudo systemctl disable logrotate.service
+sudo systemctl mask logrotate.service
+sudo systemctl stop logrotate.timer
+sudo systemctl disable logrotate.timer
+sudo systemctl mask logrotate.timer
+#--nosyslog for dbus.service
+sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/system/dbus.service
+sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/user/dbus.service
+echo
+echo -e "${RED}█ ${ORANGE}Disable bluetooth ? (if you don't need it :p)${NOCOLOR}"
+optionz=("Disable bluetooth" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Disable bluetooth")
+            echo -e "  \e[35m░▒▓█\033[0m Disabling bluetooth..."
+            sudo systemctl stop bluetooth.service
+            sudo systemctl disable bluetooth.service
+            sudo systemctl mask bluetooth.service
+            sudo sed -i -e 's/^AutoEnable=true/AutoEnable=false/' /etc/bluetooth/main.conf
+            sudo sed -i -e 's/^BLUETOOTH_ENABLED=1/BLUETOOTH_ENABLED=0/' /etc/default/bluetooth
+            break
+            ;;
+        "Skip")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+echo
+echo -e "${RED}█ ${ORANGE}Disable printing related services ? (if you don't need to print)${NOCOLOR}"
+optionz=("Disable print" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Disable print")
+            echo -e "  \e[35m░▒▓█\033[0m Disabling printing related services..."
+            echo -e "  \e[35m░▒▓█\033[0m avahi-daemon service"
+            sudo systemctl stop cups
+            sudo systemctl disable cups
+            sudo systemctl mask cups
+            sudo systemctl stop cups-browsed
+            sudo systemctl disable cups-browsed
+            sudo systemctl mask cups-browsed
+            sudo systemctl stop avahi-daemon
+            sudo systemctl disable avahi-daemon
+            sudo systemctl mask avahi-daemon
+            sudo systemctl stop avahi-utils
+            sudo systemctl disable avahi-utils
+            sudo systemctl mask avahi-utils
+            break
+            ;;
+        "Skip")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+echo
+
+
+
+sep
+echo
+echo
+echo
+progress "$script" 60
+
+#============================================================================================
 
 itemdisp "check if firmwares missing & try autoinstall..."
 echo -e "  \e[35m░▒▓█\033[0m Installing isenkram-cli..."
@@ -489,7 +529,7 @@ sep
 echo
 echo
 echo
-progress "$script" 75
+progress "$script" 65
 
 
 
@@ -498,6 +538,9 @@ progress "$script" 75
 
 #========== install zram ===========================================================================================
 itemdisp "Installing zram"
+if systemctl is-active --quiet zramswap.service; then
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+else
 echo
 echo -e "${RED}█ ${ORANGE}Install zram ? (recommended if ram <= 8Go)${NOCOLOR}"
 optionz=("Install zram" "Skip zram install")
@@ -522,11 +565,12 @@ do
         *) echo "invalid option $REPLY";;
     esac
 done
+fi
 sep
 echo
 echo
 echo
-progress "$script" 80
+progress "$script" 70
 
 
 
@@ -535,8 +579,11 @@ progress "$script" 80
 
 #========== trim initramfs for faster boot =========================================================================
 # faster boot, drawbacks: system will not be 'portable' with this setting as initramfs is build with only the needed
-# modules for this computer.However perfectly suitable for desktop usage.
+# modules for this computer.However, this is perfectly suitable for desktop usage.
 itemdisp "Trim initramfs"
+if grep -q "MODULES=dep" "/etc/initramfs-tools/initramfs.conf"; then
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+else
 echo
 echo -e "${RED}█ ${ORANGE}Trim initramfs ?"
 echo -e "(faster boot, but system will not be 'portable')${NOCOLOR}"
@@ -559,11 +606,12 @@ do
         *) echo "invalid option $REPLY";;
     esac
 done
+fi
 sep
 echo
 echo
 echo
-progress "$script" 85
+progress "$script" 75
 
 
 
@@ -613,7 +661,7 @@ sep
 echo
 echo
 echo
-progress "$script" 90
+progress "$script" 80
 
 
 
@@ -636,7 +684,7 @@ sep
 echo
 echo
 echo
-progress "$script" 90
+progress "$script" 85
 
 
 #========== tuning compton tde =====================================================================================
@@ -681,11 +729,11 @@ sep
 echo
 echo
 echo
-progress "$script" 95
+progress "$script" 90
 
 
 #==================================================================================================================
-itemdisp "Redirecting some logs to /dev/null ..."
+itemdisp "Disabling/Redirecting some logs to /dev/null ..."
 echo
 sudo rm -f '/var/log/boot.log'
 sudo ln -s /dev/null '/var/log/boot.log'
@@ -695,14 +743,18 @@ sudo rm -f '/var/log/tdm.log'
 sudo ln -s /dev/null '/var/log/tdm.log'
 sudo rm -f '/var/log/fontconfig.log'
 sudo ln -s /dev/null '/var/log/fontconfig.log'
-#a bit too much ? 
-#sudo rm -f '/var/log/lastlog'
-#sudo ln -s /dev/null '/var/log/lastlog'
+sudo rm -f '/var/log/lastlog'
+sudo ln -s /dev/null '/var/log/lastlog'
+lastlogline=$(grep "pam_lastlog.so" "/etc/pam.d/login");if [[ -n "$lastlogline" && "$lastlogline" != \#* ]]; then sudo sed -i "/$lastlogline/s/^/#/" "/etc/pam.d/login"; fi
+sudo rm -f '/var/log/wtmp'
+sudo ln -s /dev/null '/var/log/wtmp'
+sudo rm -f '/var/log/preload.log'
+sudo ln -s /dev/null '/var/log/preload.log'
 sep
 echo
 echo
 echo
-progress "$script" 100
+progress "$script" 95
 
 
 

@@ -295,6 +295,67 @@ fi
 
 
 
+
+
+if ( getconf LONG_BIT | grep -q 64 ); then
+itemdisp "Installing Microsoft Edge Browser"
+installEdge () {
+            if ! isinstalled "microsoft-edge-stable/stable" "common/packages_list.tmp"; then
+            echo -e "${YELLOW}"
+            sudo apt install software-properties-common apt-transport-https ca-certificates 
+            curl -fSsL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /usr/share/keyrings/microsoft-edge.gpg > /dev/null
+            echo 'deb [signed-by=/usr/share/keyrings/microsoft-edge.gpg] https://packages.microsoft.com/repos/edge stable main' | sudo tee /etc/apt/sources.list.d/microsoft-edge.list
+            sudo apt update
+            sudo apt install microsoft-edge-stable
+            echo -e "${NOCOLOR}"
+            else
+            echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+            fi
+}
+if [ "$installall" -eq 1 ]; then
+    installEdge
+else
+echo
+echo -e "${RED}█ ${ORANGE}Install Edge Browser ?${NOCOLOR}"
+optionz=("Install Edge" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install Edge")
+            echo -e "  \e[35m░▒▓█\033[0m Installing Microsoft Edge Browser..."
+            installEdge
+            break
+            ;;
+        "Skip")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+sep
+echo
+echo
+echo
+progress "$script" 65
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 itemdisp "Installing gparted"
 if [ "$installall" -eq 1 ]; then
     installApp "gparted" "gparted/stable"
