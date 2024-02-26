@@ -167,7 +167,7 @@ progress "$script" 45
 itemdisp "Installing Gwenview,Kolourpaint,KCharSelect,Ksnapshot,knotes,kcron, kdirstat, kpdf..."
 echo
 echo -e "  \e[35m░▒▓█\033[0m Installing Gwenview..."
-installApp "gwenview" "gwenview" 0
+installApp "gwenview-trinity" "gwenview-trinity" 0
 echo -e "  \e[35m░▒▓█\033[0m Installing Kolourpaint..."
 installApp "kolourpaint-trinity" "kolourpaint-trinity" 0
 echo -e "  \e[35m░▒▓█\033[0m Installing KCharSelect..."

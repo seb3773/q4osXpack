@@ -465,7 +465,7 @@ progress "$script" 40
 
 #========== Start menu configuration ============================================================================
 itemdisp "Configuring start menu..."
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key CustomSize 38
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key CustomSize 40
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BourbonMenu false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key LegacyKMenu true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Locked true
@@ -1940,6 +1940,25 @@ echo
 echo
 echo
 
+
+
+itemdisp "Installing gwenview (image viewer)..."
+if ! (cat common/packages_list.tmp | grep -q "gwenview-trinity/"); then
+echo -e "${YELLOW}"
+sudo apt install -y gwenview-trinity
+echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed."
+fi
+sep
+echo
+echo
+echo
+
+
+
+
+
 itemdisp "Installing .themepack/.deskthemepack installer..."
 sudo \cp apps/themeinst.sh /usr/local/bin/themeinst.sh
 cd /usr/local/bin/
@@ -1955,6 +1974,98 @@ itemdisp "Configuring global shortcuts & default apps integration..."
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
 kwriteconfig --file $TDEHOME/share/config/profilerc --group "application/x-deb - 1" --key Application appsetup2.exu.desktop
+#gwenview integration
+sudo mkdir -p "$USER_HOME/.trinity/share/apps/gwenview"
+sudo tar -xzf theme/gwenviewui.tar.gz -C $USER_HOME/.trinity/share/apps/gwenview/
+sudo chown -R $USER: $USER_HOME/.trinity/share/apps/gwenview
+sudo tar -xzf theme/mimelnk_image.tar.gz -C $USER_HOME/.trinity/share/mimelnk/image/
+sudo chown -R $USER: $USER_HOME/.trinity/share/mimelnk/image
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "KFileDialog Settings" --key "Automatic Preview" true
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar locationToolBar" --key Hidden true
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar locationToolBar" --key IconText IconOnly
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar locationToolBar" --key Index 0
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar locationToolBar" --key NewLine true
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar mainToolBar" --key IconSize 32
+#this setting doesn't 'stick' after first launch of gwenview, why ?
+#kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar mainToolBar" --key IconText IconOnly
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar mainToolBar" --key Index 1
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "file widget" --key "item text pos" 0
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "file widget" --key "start with thumbnails" false
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "file widget" --key "thumbnail size" 116
+if [[ $dark -eq 1 ]]; then
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "pixmap widget" --key "background color" "39,41,42"
+else
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "pixmap widget" --key "background color" "244,244,244"
+fi
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "pixmap widget" --key "delayed smoothing" true
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "pixmap widget" --key "max repaint size" 10000000
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "pixmap widget" --key "max scale repaint size" 10000000
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "pixmap widget" --key "max smooth repaint size" 7172575
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "pixmap widget" --key "smooth scale" Fast
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "slide show" --key delay 8
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "slide show" --key loop true
+kwriteconfig --file "$USER_HOME/.local/share/applications/tde-gwenview.desktop" --group "Desktop Entry" --key "MimeType" "image/gif;image/x-xpm;image/x-xbm;image/jpeg;image/x-pcx;image/x-bmp;image/png;image/x-ico;image/x-portable-bitmap;image/x-portable-pixmap;image/x-portable-greymap;image/tiff;image/x-targa;image/svg+xml;image/jp2"
+#
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/gif - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/gif - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/gif - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/gif - 1" --key ServiceType "image/gif"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/jpeg - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/jpeg - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/jpeg - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/jpeg - 1" --key ServiceType "image/jpeg"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/jp2 - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/jp2 - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/jp2 - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/jp2 - 1" --key ServiceType "image/jp2"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/png - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/png - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/png - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/png - 1" --key ServiceType "image/png"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-bmp - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-bmp - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-bmp - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-bmp - 1" --key ServiceType "image/x-bmp"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-xpm - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-xpm - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-xpm - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-xpm - 1" --key ServiceType "image/x-xpm"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-xbm - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-xbm - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-xbm - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-xbm - 1" --key ServiceType "image/x-xbm"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-pcx - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-pcx - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-pcx - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-pcx - 1" --key ServiceType "image/x-pcx"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-ico - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-ico - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-ico - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-ico - 1" --key ServiceType "image/x-ico"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-bitmap - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-bitmap - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-bitmap - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-bitmap - 1" --key ServiceType "image/x-portable-bitmap"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-pixmap - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-pixmap - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-pixmap - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-pixmap - 1" --key ServiceType "image/x-portable-pixmap"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-greymap - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-greymap - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-greymap - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-greymap - 1" --key ServiceType "image/x-portable-greymap"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/tiff - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/tiff - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/tiff - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/tiff - 1" --key ServiceType "image/tiff"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-targa - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-targa - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-targa - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-targa - 1" --key ServiceType "image/x-targa"
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/svg+xml - 1" --key Application tde-gwenview.desktop
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/svg+xml - 1" --key AllowAsDefault true
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/svg+xml - 1" --key GenericServiceType Application
+kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/svg+xml - 1" --key ServiceType "image/svg+xml"
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
