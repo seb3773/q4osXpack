@@ -1985,9 +1985,8 @@ kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar
 kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar locationToolBar" --key IconText IconOnly
 kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar locationToolBar" --key Index 0
 kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar locationToolBar" --key NewLine true
-kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar mainToolBar" --key IconSize 32
-#this setting doesn't 'stick' after first launch of gwenview, why ?
-#kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar mainToolBar" --key IconText IconOnly
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar mainToolBar" --key IconSize 22
+kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar mainToolBar" --key IconText IconTextBottom
 kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar mainToolBar" --key Index 1
 kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "file widget" --key "item text pos" 0
 kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "file widget" --key "start with thumbnails" false
