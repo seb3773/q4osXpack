@@ -1858,8 +1858,12 @@ sudo kwriteconfig --file /root/.trinity/share/config/systemtray_panelappletrc --
 sudo kwriteconfig --file /root/.qt/qtrc --group General --key font "Segoe UI,9,-1,5,50,0,0,0,0,0"
 if ! grep -q "xterm\\*faceName" "$USER_HOME/.Xresources"; then echo "xterm*faceName: Consolas" | sudo tee -a $USER_HOME/.Xresources ; fi
 sudo sed -i "/xterm*faceName:/c\xterm*faceName: Consolas" $USER_HOME/.Xresources
-if ! grep -q "xterm\\*faceSize" "$USER_HOME/.Xresources"; then echo "xterm*faceSize: 10" | sudo tee -a $USER_HOME/.Xresources ; fi
+if ! grep -q "xterm\\*faceSize" "$USER_HOME/.Xresources"; then echo "xterm*faceSize: 12" | sudo tee -a $USER_HOME/.Xresources ; fi
 sudo sed -i "/xterm*faceSize:/c\xterm*faceSize: 10" $USER_HOME/.Xresources
+if ! grep -q "xterm\\*foreground" "$USER_HOME/.Xresources"; then echo "xterm*foreground: grey" | sudo tee -a $USER_HOME/.Xresources ; fi
+sudo sed -i "/xterm*foreground:/c\xterm*foreground: grey" $USER_HOME/.Xresources
+if ! grep -q "xterm\\*background" "$USER_HOME/.Xresources"; then echo "xterm*background: black" | sudo tee -a $USER_HOME/.Xresources ; fi
+sudo sed -i "/xterm*background:/c\xterm*background: black" $USER_HOME/.Xresources
 #
 kwriteconfig --file $TDEHOME/share/config/kcmfonts --group General --key dontChangeAASettings false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key XftSubPixel none
@@ -2072,6 +2076,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global 
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop Icons" --key "Preview" "svgthumbnail,imagethumbnail"
 #usuals win commands
 cd /usr/local/bin/
+sudo rm calc charmap cmd ksysguard notepad paint snapshot stickynotes taskmgr taskschd > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/kwrite /usr/local/bin/notepad > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/kcharselect /usr/local/bin/charmap > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/kcalc /usr/local/bin/calc > /dev/null 2>&1
@@ -2084,8 +2089,13 @@ sudo ln -s /opt/trinity/bin/kcron /usr/local/bin/taskschd > /dev/null 2>&1
 sudo ln -s /usr/bin/lxtask /usr/local/bin/taskmgr > /dev/null 2>&1
 sudo ln -s /usr/bin/lxtask /usr/local/bin/ksysguard > /dev/null 2>&1
 cd - > /dev/null 2>&1
-#konsolerc transparency
+#konsolerc settings
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "RealTransparency" "true"
+kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "MenuBar" "Disabled"
+kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "tabbar" 0
+kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "has frame" "false"
+kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "AllowResize" "true"
+kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "TabsCycleWheel" "false"
 sep
 echo
 echo
