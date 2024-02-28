@@ -61,11 +61,7 @@ kwriteconfig --file $USER_HOME/.trinity/share/config/kdesktoprc --group Desktop0
 kwriteconfig --file $USER_HOME/.trinity/share/config/kdesktoprc --group Desktop0 --key MultiWallpaperMode Random
 kwriteconfig --file $USER_HOME/.trinity/share/config/kdesktoprc --group Desktop0 --key CrossFadeBg true
 kwriteconfig --file $USER_HOME/.trinity/share/config/kdesktoprc --group Desktop0 --key ChangeInterval 10
-if  [ $interm -eq 1 ]; then echo "MS Themepack $filename installed.";echo "Restarting kdesktop..."
-else dcop knotify Notify notify "Themepack installation" "knotify" "Restarting kdesktop..." "" "" 16 0
-fi
-#refresh desktop - dirty kill... maybe there's another solution to force kdesktop to re-read config ?
-killall -w -q kdesktop > /dev/null 2>&1 && kdesktop &> /dev/null 2>&1
-if  [ $interm -eq 1 ]; then echo "Done."; else
-dcop knotify Notify notify "Themepack installation" "knotify" "Themepack $filename Applied." "" "" 16 2
+dcop kdesktop KBackgroundIface configure
+if  [ $interm -eq 1 ]; then echo "Themepack $filename installed."
+else dcop knotify Notify notify "Themepack installation" "knotify" "Themepack $filename Applied." "" "" 16 2
 fi
