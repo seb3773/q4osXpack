@@ -290,6 +290,36 @@ fi
 sudo sed -i "/LogLevel=/c\LogLevel=warning" /etc/systemd/system.conf
 sudo sed -i "/#LogLevel=/c\LogLevel=warning" /etc/systemd/system.conf
 
+
+if ! grep -q "DefaultTimeoutStopSec=" "/etc/systemd/user.conf"; then
+echo "DefaultTimeoutStopSec=10" | sudo tee -a /etc/systemd/user.conf
+fi
+sudo sed -i "/DefaultTimeoutStopSec=/c\DefaultTimeoutStopSec=10" /etc/systemd/user.conf
+sudo sed -i "/#DefaultTimeoutStopSec=/c\DefaultTimeoutStopSec=10" /etc/systemd/user.conf
+
+if ! grep -q "DefaultTimeoutAbortSec=" "/etc/systemd/user.conf"; then
+echo "DefaultTimeoutAbortSec=10" | sudo tee -a /etc/systemd/user.conf
+fi
+sudo sed -i "/DefaultTimeoutAbortSec=/c\DefaultTimeoutAbortSec=10" /etc/systemd/user.conf
+sudo sed -i "/#DefaultTimeoutAbortSec=/c\DefaultTimeoutAbortSec=10" /etc/systemd/user.conf
+
+if ! grep -q "DefaultDeviceTimeoutSec=" "/etc/systemd/user.conf"; then
+echo "DefaultDeviceTimeoutSec=10" | sudo tee -a /etc/systemd/user.conf
+fi
+sudo sed -i "/DefaultDeviceTimeoutSec=/c\DefaultDeviceTimeoutSec=10" /etc/systemd/user.conf
+sudo sed -i "/#DefaultDeviceTimeoutSec=/c\DefaultDeviceTimeoutSec=10" /etc/systemd/user.conf
+
+if ! grep -q "LogLevel=" "/etc/systemd/user.conf"; then
+echo "LogLevel=warning" | sudo tee -a /etc/systemd/user.conf
+fi
+sudo sed -i "/LogLevel=/c\LogLevel=warning" /etc/systemd/user.conf
+sudo sed -i "/#LogLevel=/c\LogLevel=warning" /etc/systemd/user.conf
+
+
+#using $UID for user system conf overrride
+
+
+
 sep
 echo
 echo
@@ -735,10 +765,13 @@ progress "$script" 90
 #==================================================================================================================
 itemdisp "Disabling/Redirecting some logs to /dev/null ..."
 echo
+sudo rm -f '/var/log/*.old'
 sudo rm -f '/var/log/boot.log'
 sudo ln -s /dev/null '/var/log/boot.log'
 sudo rm -f '/var/log/Xorg.0.log'
 sudo ln -s /dev/null '/var/log/Xorg.0.log'
+sudo rm -f '/var/log/Xorg.1.log'
+sudo ln -s /dev/null '/var/log/Xorg.1.log'
 sudo rm -f '/var/log/tdm.log'
 sudo ln -s /dev/null '/var/log/tdm.log'
 sudo rm -f '/var/log/fontconfig.log'
