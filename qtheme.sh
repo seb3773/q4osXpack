@@ -1775,6 +1775,7 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key menuF
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key taskbarFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key toolBarFont "Segoe UI,9,-1,5,50,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key desktopFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Consolas,11,-1,5,50,0,0,0,0,0"
 #kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Cascadia Code,10,-1,5,50,0,0,0,0,0"
@@ -1827,7 +1828,8 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General 
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key toolBarFont "Segoe UI,9,-1,5,50,0,0,0,0,0"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key activeFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
 sudo kwriteconfig --file /root/.trinity/share/config/kdesktoprc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
-kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Consolas,11,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key desktopFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Consolas,11,-1,5,50,0,0,0,0,0"
 #kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Cascadia Code,10,-1,5,50,0,0,0,0,0"
 if [[ $dark -eq 1 ]]; then
 sudo kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key TabColor "255,255,255"
