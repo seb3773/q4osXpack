@@ -608,6 +608,8 @@ rota
 #config launcher_panelapplet_modernui_rc (add browser if one found)
 if (cat common/packages_list.tmp | grep -q "google-chrome-stable"); then
     sed -i 's/\(Buttons=.*\)/\1,google-chrome.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
+elif (cat common/packages_list.tmp | grep -q "chromium/stable"); then
+    sed -i 's/\(Buttons=.*\)/\1,chromium.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
 elif (cat common/packages_list.tmp | grep -q "firefox/mozilla"); then
     sed -i 's/\(Buttons=.*\)/\1,firefox.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
 elif (cat common/packages_list.tmp | grep -q "microsoft-edge-stable"); then
@@ -1621,6 +1623,11 @@ sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" col
 fi
 if (( $(echo "$lightamount_center > 30" | bc -l) )); then
 sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#333333" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo kwriteconfig --file "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER/Theme.rc" --group "KSplash Theme: Redmond10_$USER" --key "Username Text Color" "35,35,35"
+sudo kwriteconfig --file "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER/Theme.rc" --group "KSplash Theme: Redmond10_$USER" --key "Action Text Color" "65,65,65"
+else
+sudo kwriteconfig --file "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER/Theme.rc" --group "KSplash Theme: Redmond10_$USER" --key "Username Text Color" "255,255,255"
+sudo kwriteconfig --file "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER/Theme.rc" --group "KSplash Theme: Redmond10_$USER" --key "Action Text Color" "180,180,180"
 fi
 
 ## here imagemagick apply userpic
