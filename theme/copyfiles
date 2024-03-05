@@ -2752,9 +2752,12 @@ tar -xzf Redmond10.tar.gz -C "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$
 sudo sed -i "s/\[KSplash Theme: Redmond10\]/\[KSplash Theme: Redmond10_$USER_SU\]/" "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/Theme.rc"
 user_length=${#USER_SU}
 Xpos=$(( (Xres - (24 * user_length)) / 2 ))
+Ypos=$(echo "$Yres * 0.473" | bc)
+Ypos_rounded=$(printf "%.0f" "$Ypos")
+Ypos2=$((Ypos_rounded + 20))
 txpos () {
-echo "Username Text Position $Xres = $Xpos,510" | sudo tee -a "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/Theme.rc" 
-echo "Action Text Position $Xres = $Xpos,530" | sudo tee -a "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/Theme.rc"
+echo "Username Text Position $Xres = $Xpos,$Ypos_rounded" | sudo tee -a "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/Theme.rc" 
+echo "Action Text Position $Xres = $Xpos,$Ypos2" | sudo tee -a "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/Theme.rc"
 }
 txpos > /dev/null 2>&1
 userpicsetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic")
@@ -2775,7 +2778,7 @@ echo "  ►►using previously defined user picture"
 fi
 fi
 
-sudo rm -r "$USER_HOME/.local/share/icons/kdeten_$iconth"
+sudo rm -r "$USER_HOME/.local/share/icons/kdeten_$iconth" > /dev/null 2>&1
 mkdir -p "$USER_HOME/.local/share/icons/kdeten_$iconth"
 mkdir -p "$USER_HOME/.local/share/icons/kdeten_$iconth/16x16/actions"
 mkdir -p "$USER_HOME/.local/share/icons/kdeten_$iconth/22x22/actions"
