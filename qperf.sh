@@ -69,7 +69,7 @@ echo
 #========== Install optimized Kernel ============================================================================
 itemdisp "Install Optimized Kernel..."
 echo
-echo "> Current Kernel version:"
+echo -n "> Current Kernel version:"
 echo -e "${ORANGE}"
 cat /proc/version
 echo -e "${NOCOLOR}"
@@ -77,44 +77,57 @@ echo -e "${NOCOLOR}"
 xanver=$(./perfs/check_x86-64_psabi.sh)
 vnum="${xanver: -2}"
 kerninst=0
-echo
-echo -e "${RED}█ ${ORANGE}Please select option:${NOCOLOR}"
-options=("install Liquorix Kernel" "install linux-xanmod-x64$vnum [MAIN]" "install linux-xanmod-x64$vnum [LTS]" "Skip kernel install")
-select opt in "${options[@]}"
-do
-    case $opt in
-        "install Liquorix Kernel")
-            echo -e "  \e[35m░▒▓█\033[0m Installing Liquorix Kernel"
-            echo -e "${YELLOW}"
-            curl -s 'https://liquorix.net/install-liquorix.sh' | sudo bash
-            echo -e "${NOCOLOR}"
-            kerninst=1
-            break
-            ;;
-        "install linux-xanmod-x64$vnum [MAIN]")
-            echo -e "  \e[35m░▒▓█\033[0m Installing linux-xanmod-x64$vnum [MAIN]"
-            ./perfs/repository.sh
-            echo -e "${YELLOW}"
-            sudo apt update && sudo apt install -y linux-xanmod-x64$vnum
-            echo -e "${NOCOLOR}"
-            kerninst=1
-            break
-            ;;
-        "install linux-xanmod-x64$vnum [LTS]")
-            echo -e "  \e[35m░▒▓█\033[0m Installing linux-xanmod-lts-x64$vnum [LTS]"
-            ./perfs/repository.sh
-            echo -e "${YELLOW}"
-            sudo apt update && sudo apt install -y linux-xanmod-lts-x64$vnum
-            echo -e "${NOCOLOR}"
-            kerninst=1
-            break
-            ;;
-        "Skip kernel install")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
+echo -n -e "${LIGHTGREEN}"
+echo "1. install Liquorix Kernel"
+echo "2. install linux-xanmod-x64$vnum [MAIN]"
+echo "3. install linux-xanmod-x64$vnum [LTS]"
+echo -e "${NOCOLOR}4. Skip kernel install ${WHITE}[>${NOCOLOR}"
+echo -e -n "${RED}█ ${ORANGE}Please select option (or press enter to skip):${NOCOLOR}"
+while true; do
+    read x
+    if [ -z "$x" ]; then
+        echo "Skipping optimized kernel install"
+        break
+    elif [[ "$x" == [1-4] ]]; then
+        case "$x" in
+            1)
+                echo -e "  \e[35m░▒▓█\033[0m Installing Liquorix Kernel"
+                echo -e "${YELLOW}"
+                curl -s 'https://liquorix.net/install-liquorix.sh' | sudo bash
+                echo -e "${NOCOLOR}"
+                kerninst=1
+                break
+                ;;
+            2)
+                echo -e "  \e[35m░▒▓█\033[0m Installing linux-xanmod-x64$vnum [MAIN]"
+                ./perfs/repository.sh
+                echo -e "${YELLOW}"
+                sudo apt update && sudo apt install -y linux-xanmod-x64$vnum
+                echo -e "${NOCOLOR}"
+                kerninst=1
+                break
+                ;;
+            3)
+                echo -e "  \e[35m░▒▓█\033[0m Installing linux-xanmod-lts-x64$vnum [LTS]"
+                ./perfs/repository.sh
+                echo -e "${YELLOW}"
+                sudo apt update && sudo apt install -y linux-xanmod-lts-x64$vnum
+                echo -e "${NOCOLOR}"
+                kerninst=1
+                break
+                ;;
+            4)
+                echo "Skipping optimized kernel install"
+                break
+                ;;
+        esac
+    else
+        echo "Invalid option $x"
+        echo -e -n "${RED}█ ${ORANGE}Please select option (or press enter to skip):${NOCOLOR}"
+    fi
 done
+
+
 #if kerninst=1 then propose reboot
 if [[ $kerninst -eq 1 ]]
 then
@@ -132,11 +145,85 @@ echo
 progress "$script" 5
 
 
+#=========== some questions :p
+itemdisp "Bluetooth / printing / initramfs trimming"
+disblue=0
+disprint=0
+irtrim=0
+enazram=0
+
+echo
+echo -e "${RED}█ ${ORANGE}Disable bluetooth services ? (if you don't need it :p)${NOCOLOR}"
+echo -n "(y:disable/enter:skip) ?" && read x
+if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
+echo "Bluetooth services will be disabled."
+disblue=1
+else
+echo "Skipping bluetooth services disabling."
+fi
+echo
+
+echo -e "${RED}█ ${ORANGE}Disable print services ?${NOCOLOR}"
+echo -n "(y:disable/enter:skip) ?" && read x
+if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
+echo "Print services will be disabled."
+disprint=1
+else
+echo "Skipping print services disabling."
+fi
+
+echo
+echo -e "${RED}█ ${ORANGE}initramfs Trimming${NOCOLOR}"
+if ! grep -q "MODULES=dep" "/etc/initramfs-tools/initramfs.conf"; then
+echo "Do you want to trim initramfs (faster boot, but system will not be 'portable')"
+echo -n "(y:trim initramfs/enter:skip) ?" && read x
+
+if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
+echo "Initramfs trimming enabled."
+irtrim=1
+else
+echo "Skipping initramfs trimming."
+fi
+
+else
+echo "initramfs trimming already enabled."
+fi
+
+
+
+echo
+echo -e "${RED}█ ${ORANGE}Installing zram${NOCOLOR}"
+if ! systemctl is-active --quiet zramswap.service; then
+echo "Do you want to install zram (recommended if ram <= 8Go)"
+echo -n "(y:install zram/enter:skip) ?" && read x
+
+if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
+echo "zram will be enabled."
+enazram=1
+else
+echo "Skipping zram installation."
+fi
+
+else
+echo "zram already enabled."
+fi
+
+
+
+
+
+sep
+echo
+echo
+echo
+progress "$script" 10
+
+
 #========== Customize Kernel command line =======================================================================
 cd perfs
 sudo ./perfgrub
 cd ..
-progress "$script" 10
+progress "$script" 15
 
 
 
@@ -149,7 +236,7 @@ sep
 echo
 echo
 echo
-progress "$script" 15
+progress "$script" 20
 
 
 
@@ -165,7 +252,7 @@ sep
 echo
 echo
 echo
-progress "$script" 20
+progress "$script" 25
 
 
 
@@ -182,8 +269,16 @@ sep
 echo
 echo
 echo
-progress "$script" 20
+progress "$script" 25
 
+
+#========== Reducing available consoles number  ===================================================================
+sudo sed -i 's/^ACTIVE_CONSOLES=.*/ACTIVE_CONSOLES="\/dev\/tty[1-2]"/' /etc/default/console-setup
+if ! grep -q "NAutoVTs=" "/etc/systemd/logind.conf"; then
+echo "NAutoVTs=2" | sudo tee -a /etc/systemd/logind.conf
+fi
+sudo sed -i "/NAutoVTs=/c\NAutoVTs=2" /etc/systemd/logind.conf
+sudo sed -i "/#NAutoVTs=/c\NAutoVTs=2" /etc/systemd/logind.conf
 
 
 #=================== this doesn't work now, need to find out why =================
@@ -212,7 +307,7 @@ sep
 echo
 echo
 echo
-progress "$script" 25
+progress "$script" 30
 
 
 #========== Removing tdecryptocardwatcher =======================================================================
@@ -230,7 +325,7 @@ sep
 echo
 echo
 echo
-progress "$script" 25
+progress "$script" 30
 
 
 
@@ -243,7 +338,7 @@ sep
 echo
 echo
 echo
-progress "$script" 30
+progress "$script" 35
 
 
 
@@ -444,37 +539,24 @@ sudo systemctl mask logrotate.service
 sudo systemctl stop logrotate.timer
 sudo systemctl disable logrotate.timer
 sudo systemctl mask logrotate.timer
+echo -e "  \e[35m░▒▓█\033[0m colord service"
+sudo systemctl stop colord
+sudo systemctl disable colord
+sudo systemctl mask colord
 #--nosyslog for dbus.service
 sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/system/dbus.service
 sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/user/dbus.service
 echo
-echo -e "${RED}█ ${ORANGE}Disable bluetooth ? (if you don't need it :p)${NOCOLOR}"
-optionz=("Disable bluetooth" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Disable bluetooth")
+if [ "$disblue" == "1" ]; then
             echo -e "  \e[35m░▒▓█\033[0m Disabling bluetooth..."
             sudo systemctl stop bluetooth.service
             sudo systemctl disable bluetooth.service
             sudo systemctl mask bluetooth.service
             sudo sed -i -e 's/^AutoEnable=true/AutoEnable=false/' /etc/bluetooth/main.conf
             sudo sed -i -e 's/^BLUETOOTH_ENABLED=1/BLUETOOTH_ENABLED=0/' /etc/default/bluetooth
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
+fi
 echo
-echo -e "${RED}█ ${ORANGE}Disable printing related services ? (if you don't need to print)${NOCOLOR}"
-optionz=("Disable print" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Disable print")
+if [ "$disprint" == "1" ]; then
             echo -e "  \e[35m░▒▓█\033[0m Disabling printing related services..."
             echo -e "  \e[35m░▒▓█\033[0m avahi-daemon service"
             sudo systemctl stop cups
@@ -489,18 +571,8 @@ do
             sudo systemctl stop avahi-utils
             sudo systemctl disable avahi-utils
             sudo systemctl mask avahi-utils
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
+fi
 echo
-
-
-
 sep
 echo
 echo
@@ -526,13 +598,7 @@ echo
 sudo update-initramfs -u 2>&1 | sudo tee perfs/outfile
 if (grep "Possible missing firmware" "perfs/outfile")|grep -q "module i915"; then
 echo
-echo -e "${RED}█ ${ORANGE}i915 modules missing, try to fix ?${NOCOLOR}"
-optionz=("Yes, try to fix it" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Yes, try to fix it")
-            echo -e "  \e[35m░▒▓█\033[0m Fixing i915 missing modules..."
+echo -e "  \e[35m░▒▓█\033[0m Trying to fix i915 missing modules..."
 echo -e "${YELLOW}"
 sudo mkdir firmware
 cd firmware
@@ -542,14 +608,6 @@ sudo update-initramfs -c -k all
 cd ..
 sudo rm -r firmware
 echo -e "${NOCOLOR}"
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
 else
 echo
 echo "no i915 modules firmwares missing."
@@ -567,17 +625,8 @@ progress "$script" 65
 
 
 #========== install zram ===========================================================================================
+if [ "$enazram" == "1" ]; then
 itemdisp "Installing zram"
-if systemctl is-active --quiet zramswap.service; then
-echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install zram ? (recommended if ram <= 8Go)${NOCOLOR}"
-optionz=("Install zram" "Skip zram install")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install zram")
             echo -e "  \e[35m░▒▓█\033[0m Installing zram..."
             echo -e "${YELLOW}"
             sudo apt install -y zram-tools
@@ -587,22 +636,12 @@ do
             sudo tar -xzf 21-swappiness.conf.tar.gz -C /etc/sysctl.d/
             cd ..
             systemctl reload zramswap.service
-            break
-            ;;
-        "Skip zram install")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
 sep
 echo
 echo
 echo
+fi
 progress "$script" 70
-
-
 
 
 
@@ -610,39 +649,20 @@ progress "$script" 70
 #========== trim initramfs for faster boot =========================================================================
 # faster boot, drawbacks: system will not be 'portable' with this setting as initramfs is build with only the needed
 # modules for this computer.However, this is perfectly suitable for desktop usage.
+if [ "$irtrim" == "1" ]; then
 itemdisp "Trim initramfs"
-if grep -q "MODULES=dep" "/etc/initramfs-tools/initramfs.conf"; then
-echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
-else
-echo
-echo -e "${RED}█ ${ORANGE}Trim initramfs ?"
-echo -e "(faster boot, but system will not be 'portable')${NOCOLOR}"
-optionz=("Trim initramfs" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Trim initramfs")
             echo -e "  \e[35m░▒▓█\033[0m Trimming initramfs..."
             sudo sed -i "/MODULES=/c\MODULES=dep" /etc/initramfs-tools/initramfs.conf
             sudo sed -i "/COMPRESS=/c\COMPRESS=zstd" /etc/initramfs-tools/initramfs.conf
             sudo sed -i "/COMPRESSLEVEL=/c\COMPRESSLEVEL=12" /etc/initramfs-tools/initramfs.conf
             #sudo update-initramfs -c -k $(uname -r)
             sudo update-initramfs -c -k all
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
 sep
 echo
 echo
 echo
+fi
 progress "$script" 75
-
 
 
 #========== install kexec for fast reboots  =========================================================================
@@ -783,6 +803,18 @@ sudo rm -f '/var/log/wtmp'
 sudo ln -s /dev/null '/var/log/wtmp'
 sudo rm -f '/var/log/preload.log'
 sudo ln -s /dev/null '/var/log/preload.log'
+sudo rm -f '/var/log/apt/term.log'
+sudo ln -s /dev/null '/var/log/apt/term.log'
+sudo rm -f '/var/log/cups/error_log'
+sudo ln -s /dev/null '/var/log/cups/error_log'
+sudo rm -f '/var/log/cups/access_log.1'
+sudo rm -f '/var/log/cups/access_log'
+sudo ln -s /dev/null '/var/log/cups/access_log'
+if ! grep -q "Storage=" "/etc/systemd/journald.conf"; then
+echo "Storage=none" | sudo tee -a /etc/systemd/journald.conf
+fi
+sudo sed -i "/Storage=/c\Storage=none" /etc/systemd/journald.conf
+sudo sed -i "/#Storage=/c\Storage=none" /etc/systemd/journald.conf
 sep
 echo
 echo
@@ -793,7 +825,9 @@ progress "$script" 95
 
 itemdisp "Optimizing svg images ..."
 echo
-sudo perfs/cleansvg.sh
+cd perfs
+sudo ./cleansvg.sh
+cd ..
 sep
 echo
 echo

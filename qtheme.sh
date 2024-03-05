@@ -2091,6 +2091,9 @@ sudo ln -s /opt/trinity/bin/kcron /usr/local/bin/taskschd > /dev/null 2>&1
 sudo ln -s /usr/bin/lxtask /usr/local/bin/taskmgr > /dev/null 2>&1
 sudo ln -s /usr/bin/lxtask /usr/local/bin/ksysguard > /dev/null 2>&1
 cd - > /dev/null 2>&1
+#ipconfig :p (kind of)
+sudo \cp apps/ipconfig /usr/local/bin/ipconfig
+sudo chmod +x /usr/local/bin/ipconfig
 #konsolerc settings
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "RealTransparency" "true"
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "MenuBar" "Disabled"
@@ -2098,6 +2101,18 @@ kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --ke
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "has frame" "false"
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "AllowResize" "true"
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "TabsCycleWheel" "false"
+#default root apps icon overlay
+sudo kwriteconfig --file "/opt/trinity/share/applications/tde/konsolesu.desktop" --group "Desktop Entry" --key Icon xconsole_root
+sudo kwriteconfig --file "/opt/trinity/share/applications/tde/konquerorsu.desktop" --group "Desktop Entry" --key Icon kfm_root
+rooticons () {
+find ${HOME} -type f -name "konquerorsu.desktop" | while read -r fichier; do
+sudo kwriteconfig --file "$fichier" --group "Desktop Entry" --key Icon kfm_root
+done
+find ${HOME} -type f -name "konsolesu.desktop" | while read -r fichier; do
+sudo kwriteconfig --file "$fichier" --group "Desktop Entry" --key Icon xconsole_root
+done
+}
+rooticons > /dev/null 2>&1
 sep
 echo
 echo
