@@ -2775,7 +2775,7 @@ echo "  ►►using previously defined user picture"
 fi
 fi
 
-sudo rm -r "$USER_HOME/.local/share/icons/kdeten_$iconth" > /dev/null 2>&1
+sudo rm -r "$USER_HOME/.local/share/icons/kdeten_$iconth"
 mkdir -p "$USER_HOME/.local/share/icons/kdeten_$iconth"
 mkdir -p "$USER_HOME/.local/share/icons/kdeten_$iconth/16x16/actions"
 mkdir -p "$USER_HOME/.local/share/icons/kdeten_$iconth/22x22/actions"
