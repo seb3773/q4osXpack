@@ -1,0 +1,29 @@
+#!/bin/sh
+#check root
+if [ "$(id -u)" -ne 0 ]; then
+        echo 'This script must be run by root' >&2
+        exit 1
+fi
+#
+NOCOLOR='\033[0m'
+RED='\033[0;31m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;96m'
+SEPL="${ORANGE}════════════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
+echo "${RED}== ${BLUE}\e[1m\e[4mQuiet printk\e[21m"
+echo "${SEPL}"
+tar -xzf 20-quiet-printk.conf.tar.gz -C /etc/sysctl.d/
+echo "${BLUE}════════════════════════════════════════════════════════════════════════════════"
+echo        "════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
+echo
+echo
+echo
+echo "${RED}== ${BLUE}\e[1m\e[4mCustomizing grub scripts..\e[21m"
+echo "${SEPL}"
+tar -xzf grub_linux.tar.gz -C /etc/grub.d/
+echo "${BLUE}════════════════════════════════════════════════════════════════════════════════"
+echo "════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
+echo
+echo
+echo
+
