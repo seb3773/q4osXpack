@@ -56,6 +56,8 @@ sudo chmod +x theme/grubscripts theme/themegrub theme/copyfiles theme/createdeko
 #========== Retrieve resolution for res dependent elements ======================================================
 Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
 Yres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
+Ypos=$(echo "$Yres * 0.473" | bc)
+Ypos_rounded=$(awk 'BEGIN { printf "%.0f\n", '"$Ypos"' }')
 if (( $Xres < 1920 )); then
 lowres=1
 usz=180
@@ -1617,19 +1619,26 @@ sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trini
 
 lightamount_up=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -crop x260+0+0 -threshold 50% -format "%[fx:100*image.mean]" info:)
 lightamount_center=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -crop x300+0+400 -threshold 50% -format "%[fx:100*image.mean]" info:)
-if (( $(echo "$lightamount_up > 30" | bc -l) )); then
+lightamount_user=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -crop x$Ypos_rounded+0+40 -threshold 50% -format "%[fx:100*image.mean]" info:)
+if (( $(echo "$lightamount_up > 70" | bc -l) )); then
 sudo sed -i '/<normal font="Segoe UI 58" color=/c\<normal font="Segoe UI 58" color="#444444"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" color="#444444"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+else
+sudo sed -i '/<normal font="Segoe UI 58" color=/c\<normal font="Segoe UI 58" color="#EEEEEE"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" color="#EEEEEE"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 fi
-if (( $(echo "$lightamount_center > 30" | bc -l) )); then
+if (( $(echo "$lightamount_center > 70" | bc -l) )); then
 sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#333333" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+else
+sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#FFFFFF" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+fi
+if (( $(echo "$lightamount_user > 70" | bc -l) )); then
 sudo kwriteconfig --file "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER/Theme.rc" --group "KSplash Theme: Redmond10_$USER" --key "Username Text Color" "35,35,35"
 sudo kwriteconfig --file "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER/Theme.rc" --group "KSplash Theme: Redmond10_$USER" --key "Action Text Color" "65,65,65"
 else
 sudo kwriteconfig --file "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER/Theme.rc" --group "KSplash Theme: Redmond10_$USER" --key "Username Text Color" "255,255,255"
 sudo kwriteconfig --file "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER/Theme.rc" --group "KSplash Theme: Redmond10_$USER" --key "Action Text Color" "180,180,180"
 fi
-
 ## here imagemagick apply userpic
 base_bg="/opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg"
 user_directories=(/opt/trinity/share/apps/ksplash/Themes/Redmond10_*/)
@@ -1991,6 +2000,7 @@ kwriteconfig --file $TDEHOME/share/config/profilerc --group "application/x-deb -
 sudo mkdir -p "$USER_HOME/.trinity/share/apps/gwenview"
 sudo tar -xzf theme/gwenviewui.tar.gz -C $USER_HOME/.trinity/share/apps/gwenview/
 sudo chown -R $USER: $USER_HOME/.trinity/share/apps/gwenview
+sudo mkdir -p $USER_HOME/.trinity/share/mimelnk/image/
 sudo tar -xzf theme/mimelnk_image.tar.gz -C $USER_HOME/.trinity/share/mimelnk/image/
 sudo chown -R $USER: $USER_HOME/.trinity/share/mimelnk/image
 kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "KFileDialog Settings" --key "Automatic Preview" true
@@ -2111,12 +2121,17 @@ kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --ke
 #default root apps icon overlay
 sudo kwriteconfig --file "/opt/trinity/share/applications/tde/konsolesu.desktop" --group "Desktop Entry" --key Icon xconsole_root
 sudo kwriteconfig --file "/opt/trinity/share/applications/tde/konquerorsu.desktop" --group "Desktop Entry" --key Icon kfm_root
+sudo kwriteconfig --file "/usr/share/applications/bleachbit-root.desktop" --group "Desktop Entry" --key Icon bleachbit_root > /dev/null 2>&1
+sudo kwriteconfig --file "/usr/share/applications/htop_root-mode.desktop" --group "Desktop Entry" --key Icon htop_root
 rooticons () {
 find ${HOME} -type f -name "konquerorsu.desktop" | while read -r fichier; do
 sudo kwriteconfig --file "$fichier" --group "Desktop Entry" --key Icon kfm_root
 done
 find ${HOME} -type f -name "konsolesu.desktop" | while read -r fichier; do
 sudo kwriteconfig --file "$fichier" --group "Desktop Entry" --key Icon xconsole_root
+done
+find ${HOME} -type f -name "bleachbit-root.desktop" | while read -r fichier; do
+sudo kwriteconfig --file "$fichier" --group "Desktop Entry" --key Icon bleachbit_root
 done
 }
 rooticons > /dev/null 2>&1

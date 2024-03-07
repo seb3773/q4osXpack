@@ -799,6 +799,7 @@ sudo ln -s /dev/null '/var/log/fontconfig.log'
 sudo rm -f '/var/log/lastlog'
 sudo ln -s /dev/null '/var/log/lastlog'
 lastlogline=$(grep "pam_lastlog.so" "/etc/pam.d/login");if [[ -n "$lastlogline" && "$lastlogline" != \#* ]]; then sudo sed -i "/$lastlogline/s/^/#/" "/etc/pam.d/login"; fi
+maillogline=$(grep "pam_mail.so" "/etc/pam.d/login");if [[ -n "$maillogline" && "$maillogline" != \#* ]]; then sudo sed -i "/$maillogline/s/^/#/" "/etc/pam.d/login"; fi
 sudo rm -f '/var/log/wtmp'
 sudo ln -s /dev/null '/var/log/wtmp'
 sudo rm -f '/var/log/preload.log'
@@ -810,6 +811,10 @@ sudo ln -s /dev/null '/var/log/cups/error_log'
 sudo rm -f '/var/log/cups/access_log.1'
 sudo rm -f '/var/log/cups/access_log'
 sudo ln -s /dev/null '/var/log/cups/access_log'
+sudo rm -f '/var/log/kern.log'
+sudo ln -s /dev/null '/var/log/kern.log'
+sudo rm -f '/var/log/syslog'
+sudo ln -s /dev/null '/var/log/syslog'
 if ! grep -q "Storage=" "/etc/systemd/journald.conf"; then
 echo "Storage=none" | sudo tee -a /etc/systemd/journald.conf
 fi
