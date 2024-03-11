@@ -190,7 +190,6 @@ echo "initramfs trimming already enabled."
 fi
 
 
-
 echo
 echo -e "${RED}█ ${ORANGE}Installing zram${NOCOLOR}"
 if ! systemctl is-active --quiet zramswap.service; then
@@ -543,6 +542,10 @@ echo -e "  \e[35m░▒▓█\033[0m colord service"
 sudo systemctl stop colord
 sudo systemctl disable colord
 sudo systemctl mask colord
+echo -e "  \e[35m░▒▓█\033[0m smartd service"
+sudo systemctl stop smartd
+sudo systemctl disable smartd
+sudo systemctl mask smartd
 #--nosyslog for dbus.service
 sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/system/dbus.service
 sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/user/dbus.service
@@ -654,7 +657,7 @@ itemdisp "Trim initramfs"
             echo -e "  \e[35m░▒▓█\033[0m Trimming initramfs..."
             sudo sed -i "/MODULES=/c\MODULES=dep" /etc/initramfs-tools/initramfs.conf
             sudo sed -i "/COMPRESS=/c\COMPRESS=zstd" /etc/initramfs-tools/initramfs.conf
-            sudo sed -i "/COMPRESSLEVEL=/c\COMPRESSLEVEL=12" /etc/initramfs-tools/initramfs.conf
+            sudo sed -i "/COMPRESSLEVEL=/c\COMPRESSLEVEL=14" /etc/initramfs-tools/initramfs.conf
             #sudo update-initramfs -c -k $(uname -r)
             sudo update-initramfs -c -k all
 sep
@@ -805,7 +808,7 @@ sudo ln -s /dev/null '/var/log/wtmp'
 sudo rm -f '/var/log/preload.log'
 sudo ln -s /dev/null '/var/log/preload.log'
 sudo rm -f '/var/log/apt/term.log'
-sudo ln -s /dev/null '/var/log/apt/term.log'
+#sudo ln -s /dev/null '/var/log/apt/term.log'
 sudo rm -f '/var/log/cups/error_log'
 sudo ln -s /dev/null '/var/log/cups/error_log'
 sudo rm -f '/var/log/cups/access_log.1'
@@ -820,6 +823,7 @@ echo "Storage=none" | sudo tee -a /etc/systemd/journald.conf
 fi
 sudo sed -i "/Storage=/c\Storage=none" /etc/systemd/journald.conf
 sudo sed -i "/#Storage=/c\Storage=none" /etc/systemd/journald.conf
+sudo sed -i '/module(load="imklog")/c\#module(load="imklog")' /etc/rsyslog.conf
 sep
 echo
 echo
