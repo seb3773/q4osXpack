@@ -21,7 +21,7 @@ iconth="dark"
 else
 iconth="light"
 fi
-rm -fr /usr/share/icons/kdeten_$iconth
+rm -fr /usr/share/icons/kdeten_$iconth > /dev/null 2>&1
 mkdir -p /usr/share/icons/kdeten_$iconth
 #tar -xzf kdeten_icons.tar.gz -C /usr/share/icons/kdeten_light/
 7z x -so kdeten_icons.tar.7z | tar xf - -C /usr/share/icons/kdeten_$iconth/
@@ -1663,13 +1663,13 @@ ln -s kexi.svg 64x64/apps/calligrakexi.svg
 ln -s google-chrome.svg 64x64/apps/chrome.svg
 ln -s google-chrome.svg 64x64/apps/google-chrome-beta.svg
 ln -s google-chrome.svg 64x64/apps/google-chrome-unstable.svg
-ln -s software-center.svg 64x64/apps/software-store.svg
-ln -s software-center.svg 64x64/apps/swcentre.svg
-ln -s software-center.svg 64x64/apps/x-content-software.svg
-ln -s software-center.svg 64x64/apps/x-content-unix-software.svg
-ln -s software-center.svg 64x64/apps/yast-sw_single.svg
-ln -s software-center.svg 64x64/apps/softwarecenter-debian.svg
-ln -s software-center.svg 64x64/apps/muondiscover.svg
+ln -s software-center.png 64x64/apps/software-store.png
+ln -s software-center.png 64x64/apps/swcentre.png
+ln -s software-center.png 64x64/apps/x-content-software.png
+ln -s software-center.png 64x64/apps/x-content-unix-software.png
+ln -s software-center.png 64x64/apps/yast-sw_single.png
+ln -s software-center.png 64x64/apps/softwarecenter-debian.png
+ln -s software-center.png 64x64/apps/muondiscover.png
 ln -s gtkconfig.svg 64x64/apps/kde-gtk-config.svg
 ln -s gtkconfig.svg 64x64/apps/preferences-gtk-config.svg
 ln -s kdeconnect.svg 64x64/apps/preferences-kde-connect.svg
@@ -1952,7 +1952,7 @@ ln -s zoom-out-x.svg 16x16/actions/x-zoom-out.svg
 ln -s zoom-out-x.svg 24x24/actions/x-zoom-out.svg
 ln -s zoom-out-x.svg 16x16/actions/labplot-zoom-out-x.svg
 ln -s zoom-out-x.svg 24x24/actions/labplot-zoom-out-x.svg
-ln -s software-center.svg 64x64/apps/softwarecenter.svg
+ln -s software-center.png 64x64/apps/softwarecenter.png
 ln -s weather-showers.png 16x16/status/weather-showers-day.png
 ln -s weather-showers.png 22x22/status/weather-showers-day.png
 ln -s weather-showers.png 24x24/status/weather-showers-day.png
@@ -2494,6 +2494,11 @@ ln -s media-floppy.png 64x64/devices/kfloppy.png
 ln -s media-floppy.png 16x16/devices/media-floppy-3_5-mounted.png
 ln -s media-floppy.png 32x32/devices/media-floppy-3_5-mounted.png
 ln -s media-floppy.png 48x48/devices/media-floppy-3_5-mounted.png
+ln -s ../../16x16/categories/systemsettings.png 16x16/actions/configure.png
+ln -s ../../22x22/categories/systemsettings.png 22x22/actions/configure.png
+ln -s ../../24x24/categories/systemsettings.png 24x24/actions/configure.png
+ln -s ../../32x32/categories/systemsettings.png 32x32/actions/configure.png
+ln -s ../../48x48/categories/systemsettings.png 48x48/actions/configure.png
 cd - > /dev/null 2>&1
 #
 sudo sed -i "/Name=kde_ten/c\Name=kdeten_$iconth" /usr/share/icons/kdeten_$iconth/index.theme
@@ -2673,13 +2678,14 @@ fc-cache
 tar -xzf fonts.conf.tar.gz -C $USER_HOME/.configtde/fontconfig/
 
 echo "  \e[35m░▒▓█\033[0m copying konqueror profiles & entries"
-tar -xzf konqueror.profiles.tar.gz -C $USER_HOME/.trinity/share/apps/
 mv $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/.version .version  > /dev/null 2>&1
 rm -f $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/*
 mv .version $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/.version  > /dev/null 2>&1
 tar -xzf konq_fm_entries.tar.gz -C $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/
 tar -xzf konqueror.profiles.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/
+tar -xzf konq_iconview.tar.gz -C $USER_HOME/.trinity/share/apps/konqiconview/
 sudo tar -xzf konqueror.profiles.tar.gz -C /root/.trinity/share/apps/konqueror/
+sudo tar -xzf konq_iconview.tar.gz -C /root/.trinity/share/apps/konqiconview/
 
 echo "  \e[35m░▒▓█\033[0m copying konqueror services menus"
 tar -xzf konqsvcmenus.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/servicemenus/
