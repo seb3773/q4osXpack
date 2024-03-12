@@ -1978,7 +1978,18 @@ echo
 echo
 
 
-
+itemdisp "Installing admin tools..."
+if ! (cat common/packages_list.tmp | grep -q "tde-guidance-trinity/"); then
+echo -e "${YELLOW}"
+sudo apt install -y tde-guidance-trinity
+echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed."
+fi
+sep
+echo
+echo
+echo
 
 
 itemdisp "Installing .themepack/.deskthemepack installer..."
@@ -2110,6 +2121,7 @@ sudo ln -s /usr/bin/lxtask /usr/local/bin/ksysguard > /dev/null 2>&1
 cd - > /dev/null 2>&1
 #ipconfig :p (kind of)
 sudo \cp apps/ipconfig /usr/local/bin/ipconfig
+sudo tar -xzf theme/services.msc.tar.gz -C /usr/local/bin/
 sudo chmod +x /usr/local/bin/ipconfig
 #konsolerc settings
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "RealTransparency" "true"
