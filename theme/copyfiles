@@ -2499,6 +2499,17 @@ ln -s ../../22x22/categories/systemsettings.png 22x22/actions/configure.png
 ln -s ../../24x24/categories/systemsettings.png 24x24/actions/configure.png
 ln -s ../../32x32/categories/systemsettings.png 32x32/actions/configure.png
 ln -s ../../48x48/categories/systemsettings.png 48x48/actions/configure.png
+ln -s systemsettings.png 16x16/categories/preferences-other.png
+ln -s systemsettings.png 22x22/categories/preferences-other.png
+ln -s systemsettings.png 24x24/categories/preferences-other.png
+ln -s systemsettings.png 32x32/categories/preferences-other.png
+ln -s systemsettings.png 48x48/categories/preferences-other.png
+ln -s ../../16x16/apps/launch.png 16x16/actions/launch.png
+ln -s ../../32x32/apps/launch.png 32x32/actions/launch.png
+ln -s ../../48x48/apps/launch.png 48x48/actions/launch.png
+ln -s ../../16x16/apps/daemons.png 16x16/actions/services.png
+ln -s ../../32x32/apps/daemons.png 32x32/actions/services.png
+ln -s ../../32x32/apps/daemons.png 48x48/actions/services.png
 cd - > /dev/null 2>&1
 #
 sudo sed -i "/Name=kde_ten/c\Name=kdeten_$iconth" /usr/share/icons/kdeten_$iconth/index.theme
@@ -2687,9 +2698,13 @@ tar -xzf konq_iconview.tar.gz -C $USER_HOME/.trinity/share/apps/konqiconview/
 sudo tar -xzf konqueror.profiles.tar.gz -C /root/.trinity/share/apps/konqueror/
 sudo tar -xzf konq_iconview.tar.gz -C /root/.trinity/share/apps/konqiconview/
 
+
 echo "  \e[35m░▒▓█\033[0m copying konqueror services menus"
 tar -xzf konqsvcmenus.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/servicemenus/
 tar -xzf localscripts.tar.gz -C /usr/local/bin/
+
+echo "  \e[35m░▒▓█\033[0m copying settings icons & desktop files"
+tar -xzf settingspannel.tar.gz -C /opt/trinity/share/applications/tde/
 
 
 #theme files
