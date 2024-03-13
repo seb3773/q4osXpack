@@ -239,6 +239,17 @@ select optz in "${optionz[@]}"
 do
     case $optz in
         "Install swap file")
+            #test if zram installed, if not, install it :p
+            #this is because we can't use the swap file for swapping and hibernation at the same time, so my choice is to use zram for kernel swapping
+            #and the swap file for hibernation
+            if ! systemctl is-active --quiet zramswap.service; then
+            echo  "-- Installing zram first..."
+            sudo apt install -y zram-tools
+            echo -e "ALGO=lz4\nPERCENT=50\nPRIORITY=100" | sudo tee -a /etc/default/zramswap
+            echo "vm.swappiness=180" | sudo tee -a /etc/sysctl.d/21-swappiness.conf
+            echo "vm.page-cluster = 0" | sudo tee -a /etc/sysctl.d/21-swappiness.conf
+            systemctl reload zramswap.service
+            fi
             echo -e "  \e[35m░▒▓█\033[0m Installing swap file..."
             #do it
             fileszm=$(expr $filesz / 1024)
