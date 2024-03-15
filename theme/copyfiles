@@ -12,6 +12,7 @@ RED='\033[0;31m'
 ORANGE='\033[0;33m'
 BLUE='\033[0;96m'
 SEPL="${ORANGE}════════════════════════════════════════════════════════════════════════════════════════${NOCOLOR}"
+osarch=$(dpkg --print-architecture)
 echo "${RED}== ${BLUE}\e[1m\e[4mCopying various files...\e[21m"
 echo "${SEPL}"
 echo "  \e[35m░▒▓█\033[0m copying icons"
@@ -537,9 +538,6 @@ ln -s checkbox.png 24x24/actions/blueman-trust.png
 ln -s checkbox.png 16x16/actions/dialog-ok-apply.png
 ln -s checkbox.png 22x22/actions/dialog-ok-apply.png
 ln -s checkbox.png 24x24/actions/dialog-ok-apply.png
-ln -s checkbox.png 16x16/actions/kr_mountman.png
-ln -s checkbox.png 22x22/actions/kr_mountman.png
-ln -s checkbox.png 24x24/actions/kr_mountman.png
 ln -s zip.png 16x16/mimetypes/application-x-tarz.png
 ln -s zip.png 22x22/mimetypes/application-x-tarz.png
 ln -s zip.png 24x24/mimetypes/application-x-tarz.png
@@ -2510,6 +2508,9 @@ ln -s ../../48x48/apps/launch.png 48x48/actions/launch.png
 ln -s ../../16x16/apps/daemons.png 16x16/actions/services.png
 ln -s ../../32x32/apps/daemons.png 32x32/actions/services.png
 ln -s ../../32x32/apps/daemons.png 48x48/actions/services.png
+ln -s ../../16x16/apps/disksfilesystems.png 16x16/actions/kr_mountman.png
+ln -s ../../32x32/apps/disksfilesystems.png 32x32/actions/kr_mountman.png
+ln -s ../../48x48/apps/disksfilesystems.png 48x48/actions/kr_mountman.png
 cd - > /dev/null 2>&1
 #
 sudo sed -i "/Name=kde_ten/c\Name=kdeten_$iconth" /usr/share/icons/kdeten_$iconth/index.theme
@@ -2746,10 +2747,14 @@ rm -f /opt/trinity/share/sounds/KDE_Error_2.ogg
 rm -f /opt/trinity/share/sounds/KDE_Error_3.ogg
 tar -xzf 90-usb.rules.tar.gz -C /etc/udev/rules.d/
 #binary
-if ( getconf LONG_BIT | grep -q 64 ); then
+if [ "$osarch" = "amd64" ]; then
 tar -xzf usb_insert.tar.gz -C /usr/bin/
-else
+fi
+if [ "$osarch" = "i386" ]; then
 tar -xzf usb_insert_i386.tar.gz -C /usr/bin/
+fi
+if [ "$osarch" = "armhf" ]; then
+tar -xzf usb_insert_armhf.tar.gz -C /usr/bin/
 fi
 udevadm control --reload-rules
 
