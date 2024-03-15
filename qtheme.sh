@@ -71,6 +71,7 @@ rsz2="220x220"
 fact="0.2"
 fi
 
+osarch=$(dpkg --print-architecture)
 
 #========== CREATE BACKUP FOLDER & backup files to be modified ==================================================
 create_backup() {
@@ -727,8 +728,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ColorizeS
 #kickerbar rgb_accent
 #sudo convert -size 2x60 xc:${accent} $TDEHOME/share/apps/kicker/pics/panel-win.png
 
-#showdeskten icon
-sudo convert -size 5x64 xc:${accent} /opt/trinity/share/apps/kicker/pics/showdesk10.png
+
 
 echo
 echo -e "  \e[35m░▒▓█\033[0m configuring style..."
@@ -1718,11 +1718,49 @@ sed -i '/^\[Applet_7\]/d' $TDEHOME/share/config/kickerrc
 sed -i '/^\[Applet_8\]/d' $TDEHOME/share/config/kickerrc
 sed -i '/^\[Applet_9\]/d' $TDEHOME/share/config/kickerrc
 cat theme/kickpart >> $TDEHOME/share/config/kickerrc
-kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Applets2 "KMenuButton_1,ExtensionButton_1,WindowListButton_1,Applet_4,Applet_1,Applet_2,Applet_3,Applet_5"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Applets2 "KMenuButton_1,ExtensionButton_1,WindowListButton_1,Applet_4,Applet_1,Applet_2,Applet_3,Applet_6,Applet_5"
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key UseResizeHandle false
 #echo -e ">> Wait for kicker to restart..."
 #dcop kicker kicker restart
 #sleep 10
+
+#installing showdeskten applet
+echo -e "  \e[35m░▒▓█\033[0m installing showdeskten kicker applet"
+sudo tar -xzf theme/showdeskten_applet.desktop.tar.gz -C /opt/trinity/share/apps/kicker/applets/
+if [ "$osarch" = "amd64" ]; then
+sudo tar -xzf theme/showdeskten_libs.tar.gz -C /opt/trinity/lib/trinity/
+fi
+if [ "$osarch" = "i386" ]; then
+sudo tar -xzf theme/showdeskten_libs_32.tar.gz -C /opt/trinity/lib/trinity/
+fi
+if [ "$osarch" = "armhf" ]; then
+sudo tar -xzf theme/showdeskten_libs_armhf.tar.gz -C /opt/trinity/lib/trinity/
+fi
+sudo convert -size 5x64 xc:${accent} /opt/trinity/share/apps/kicker/pics/showdesk10.png
+#installing actioncenter applet
+echo -e "  \e[35m░▒▓█\033[0m installing actioncenter kicker applet"
+sudo tar -xzf theme/actioncenter_applet.desktop.tar.gz -C /opt/trinity/share/apps/kicker/applets/
+sudo tar -xzf theme/actioncenter_assets.tar.gz -C /opt/trinity/share/apps/
+if [ "$osarch" = "amd64" ]; then
+sudo tar -xzf theme/actioncenter_libs.tar.gz -C /opt/trinity/lib/trinity/
+fi
+if [ "$osarch" = "i386" ]; then
+sudo tar -xzf theme/actioncenter_libs_32.tar.gz -C /opt/trinity/lib/trinity/
+fi
+if [ "$osarch" = "armhf" ]; then
+sudo tar -xzf theme/actioncenter_libs_armhf.tar.gz -C /opt/trinity/lib/trinity/
+fi
+echo -e "  \e[35m░▒▓█\033[0m installing xdotool"
+if ! (cat common/packages_list.tmp | grep -q "xdotool/stable"); then
+cd apps
+echo -e "${YELLOW}"
+sudo apt install -y xdotool
+cd ..
+echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed."
+fi
+
 sep
 echo
 echo
@@ -1942,6 +1980,7 @@ sep
 echo
 echo
 echo
+
 
 itemdisp "Installing lxtask-mod (taskmanager)..."
 if ! (cat common/packages_list.tmp | grep -q "lxtask-mod/now"); then

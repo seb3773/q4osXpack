@@ -42,6 +42,12 @@ create_backup() {
     sudo tar -zcvf "$backup_path" "$2" > /dev/null 2>&1
     rota
 }
+
+
+osarch=$(dpkg --print-architecture)
+if [ ! "$osarch" = "armhf" ]; then
+
+
 echo -e "${RED}░░▒▒▓▓██\033[0m Backup...${NOCOLOR}"
 now=$(date +"%Y-%m-%d_%I-%M%p")
 sudo mkdir -p "backups/$now" > /dev/null 2>&1
@@ -305,4 +311,14 @@ progress "$script" 100
 #========== DONE. ==================================================================================================
 alldone
 exit 2
+
+else
+
+echo "   This script is designed for laptop configuration, it seems you're running Rapsberry pi"
+echo "   version of q4os, so it's not possible to execute the script."
+echo
+read -p "Press enter..."
+echo
+exit 2
+fi
 

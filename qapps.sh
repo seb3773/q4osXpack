@@ -68,6 +68,8 @@ echo
 fi
 }
 
+osarch=$(dpkg --print-architecture)
+
 #========== retrieve packages list ==============================================================================
 progress "$script" 0
 echo -e "    ${ORANGE}░▒▓█\033[0m Retrieve packages list...${NOCOLOR}"
@@ -109,11 +111,19 @@ installApp "system-config-printer" "system-config-printer/stable"
 progress "$script" 15
 
 
-if ( getconf LONG_BIT | grep -q 64 ); then
+
 itemdisp "Installing flashfetch"
 cd apps
 echo -e "${YELLOW}"
+if [ "$osarch" = "amd64" ]; then
 sudo tar -xzf flashfetch.tar.gz -C /usr/bin/
+fi
+if [ "$osarch" = "i386" ]; then
+sudo tar -xzf flashfetch_32.tar.gz -C /usr/bin/
+fi
+if [ "$osarch" = "armhf" ]; then
+sudo tar -xzf flashfetch_arm.tar.gz -C /usr/bin/
+fi
 echo "flashfetch binary copied in /usr/bin/"
 cd ..
 echo -e "${NOCOLOR}"
@@ -122,8 +132,10 @@ sep
 echo
 echo
 echo
-fi
 progress "$script" 20
+
+
+
 
 
 itemdisp "Installing lxtask-mod (simple lightweight taskmgr)"

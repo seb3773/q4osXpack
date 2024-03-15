@@ -65,8 +65,10 @@ printf '\e[A\e[K'
 echo
 echo
 
+osarch=$(dpkg --print-architecture)
 
 #========== Install optimized Kernel ============================================================================
+if [ ! "$osarch" = "armhf" ]; then
 itemdisp "Install Optimized Kernel..."
 echo
 echo -n "> Current Kernel version:"
@@ -143,6 +145,7 @@ echo
 echo
 echo
 progress "$script" 5
+fi
 
 
 #=========== some questions :p
@@ -220,7 +223,12 @@ progress "$script" 10
 
 #========== Customize Kernel command line =======================================================================
 cd perfs
+if [ ! "$osarch" = "armhf" ]; then
 sudo ./perfgrub
+else
+sudo ./perfpiboot
+fi
+
 cd ..
 progress "$script" 15
 
