@@ -345,7 +345,7 @@ sep
 echo
 echo
 echo
-progress "$script" 35
+progress "$script" 30
 
 
 
@@ -356,6 +356,19 @@ cd perfs
 sudo tar -xzf 22-perfs.conf.tar.gz -C /etc/sysctl.d/
 cd ..
 sudo sed -ine '/::/s/^/# /' /etc/hosts
+sep
+echo
+echo
+echo
+progress "$script" 35
+
+itemdisp "Set scheduler for removable drives to none for max throughput"
+echo
+cd perfs
+sudo tar -xzf 91-removable_media.rules.tar.gz -C /etc/udev/rules.d/
+cd ..
+sudo udevadm control --reload-rules
+sudo udevadm trigger
 sep
 echo
 echo
