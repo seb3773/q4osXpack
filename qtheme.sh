@@ -1761,6 +1761,17 @@ else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
 
+echo -e "  \e[35m░▒▓█\033[0m installing xsel"
+if ! (cat common/packages_list.tmp | grep -q "xsel/stable"); then
+cd apps
+echo -e "${YELLOW}"
+sudo apt install -y xsel
+cd ..
+echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed."
+fi
+
 sep
 echo
 echo
