@@ -70,6 +70,13 @@ fi
 
 osarch=$(dpkg --print-architecture)
 
+itemdisp "Fetching latest version of the package list..."
+sudo apt update > /dev/null 2>&1
+sep
+echo
+echo
+echo
+
 #========== retrieve packages list ==============================================================================
 progress "$script" 0
 echo -e "    ${ORANGE}░▒▓█\033[0m Retrieve packages list...${NOCOLOR}"

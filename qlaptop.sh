@@ -69,6 +69,12 @@ echo
 echo
 
 
+itemdisp "Fetching latest version of the package list..."
+sudo apt update > /dev/null 2>&1
+sep
+echo
+echo
+echo
 
 
 #========== Touchpad config =====================================================================================

@@ -67,6 +67,16 @@ echo
 
 osarch=$(dpkg --print-architecture)
 
+itemdisp "Checking & installing system updates..."
+sudo apt update > /dev/null 2>&1
+sudo apt upgrade -y --fix-missing
+sudo apt install -y --fix-broken
+sudo apt -y autoremove
+sep
+echo
+echo
+echo
+
 #========== Install optimized Kernel ============================================================================
 if [ ! "$osarch" = "armhf" ]; then
 itemdisp "Install Optimized Kernel..."
@@ -646,6 +656,17 @@ progress "$script" 65
 
 
 
+itemdisp "checking if i915 is the kernel driver in use..."
+vidadapt=$(lspci -k | grep -EA3 'VGA|3D|Display')
+if (echo $vidadapt | grep -q "Kernel driver in use: i915"); then
+echo "> Kernel driver in use: i915 - applying tweaking"
+sudo tar -xzf laptop/i915.conf.tar.gz -C /etc/modprobe.d/
+fi
+sep
+echo
+echo
+echo
+progress "$script" 65
 
 
 

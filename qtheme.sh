@@ -173,6 +173,7 @@ echo
 printf '\e[A\e[K'
 echo
 
+
 hex_to_rgb() {
 local hex_color="$1"
 local r=$(printf "%d" 0x${hex_color:1:2})
@@ -206,6 +207,13 @@ gray_value=$(( 144 + ((result - 180) * (240 - 144)) / 75 ))
 fi
 echo $gray_value
 }
+
+itemdisp "Fetching latest version of the package list..."
+sudo apt update > /dev/null 2>&1
+sep
+echo
+echo
+echo
 
 
 #======== check if customcolor option specified and if there is a color specified
