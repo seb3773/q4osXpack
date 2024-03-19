@@ -641,6 +641,52 @@ progress "$script" 95
 fi
 
 
+
+itemdisp "Installing Angry IP sanner"
+function installangryip() {
+           if ! isinstalled "ipscan/" "common/packages_list.tmp"; then
+            echo -e "${YELLOW}"
+cd apps
+if ( getconf LONG_BIT | grep -q 64 ); then
+sudo apt install -y ./ipscan_3.9.1_amd64.deb
+else
+sudo apt install -y ./ipscan_3.9.1_all.deb
+fi
+cd ..
+            echo -e "${NOCOLOR}"
+            else
+            echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+            fi
+}
+if [ "$installall" -eq 1 ]; then
+installangryip
+else
+echo
+echo -e "${RED}█ ${ORANGE}Install Angry IP sanner ?${NOCOLOR}"
+optionz=("Install angryip" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install angryip")
+            echo -e "  \e[35m░▒▓█\033[0m Installing Angry IP sanner..."
+            installangryip
+            break
+            ;;
+        "Skip")
+            sep
+            echo
+            echo
+            echo
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+progress "$script" 95
+
+
+
 itemdisp "Cleaning files..."
 echo
 sudo rm -f common/packages_list.tmp
