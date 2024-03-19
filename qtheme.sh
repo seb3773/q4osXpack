@@ -1748,6 +1748,24 @@ sudo convert -size 5x64 xc:${accent} /opt/trinity/share/apps/kicker/pics/showdes
 #installing actioncenter applet
 echo -e "  \e[35m░▒▓█\033[0m installing actioncenter kicker applet"
 sudo tar -xzf theme/actioncenter_applet.desktop.tar.gz -C /opt/trinity/share/apps/kicker/applets/
+
+if [[ $dark -eq 1 ]] then cmode="dark";else cmode="light";fi
+if (echo $LANG | grep -q "fr") then codlang="fr"
+elif (echo $LANG | grep -q "de") then codlang="de"
+else codlang="en";fi
+foldpix="$codlang""_""$cmode"
+foldproj="proj_""$cmode"
+foldscripts="scripts_""$codlang"
+iconbase="actioncenter_icon_""$cmode"".png"
+sudo mkdir -p /opt/trinity/share/apps/actioncenter_applet
+sudo tar -xzvf theme/actioncenter_assets.tar.gz -C /opt/trinity/share/apps/actioncenter_applet/ --wildcards --strip-components=1 "$foldpix"/* > /dev/null 2>&1
+sudo tar -xzvf theme/actioncenter_assets.tar.gz -C /opt/trinity/share/apps/actioncenter_applet/ --wildcards --strip-components=1 "$foldproj"/* > /dev/null 2>&1
+sudo tar -xzvf theme/actioncenter_assets.tar.gz -C /opt/trinity/share/apps/actioncenter_applet/ --wildcards --strip-components=1 "$foldscripts"/* > /dev/null 2>&1
+sudo tar -xzvf theme/actioncenter_assets.tar.gz -C /opt/trinity/share/apps/actioncenter_applet/ "$iconbase" > /dev/null 2>&1
+#create icon
+sudo convert -size 34x34 xc:"$accent" /opt/trinity/share/apps/actioncenter_applet/$iconbase -composite /opt/trinity/share/apps/actioncenter_applet/actioncenter.png
+sudo rm -f /opt/trinity/share/apps/actioncenter_applet/$iconbase
+#lib
 sudo tar -xzf theme/actioncenter_assets.tar.gz -C /opt/trinity/share/apps/
 if [ "$osarch" = "amd64" ]; then
 sudo tar -xzf theme/actioncenter_libs.tar.gz -C /opt/trinity/lib/trinity/
@@ -2173,6 +2191,7 @@ sudo ln -s /opt/trinity/bin/konsole /usr/local/bin/cmd > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/ksnapshot /usr/local/bin/snapshot > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/knotes /usr/local/bin/stickynotes > /dev/null 2>&1
 sudo ln -s /opt/trinity/bin/kcron /usr/local/bin/taskschd > /dev/null 2>&1
+sudo ln -s /usr/bin/systemctl /usr/local/bin/sc > /dev/null 2>&1
 #default task manager (CTRL+ESC)
 sudo ln -s /usr/bin/lxtask /usr/local/bin/taskmgr > /dev/null 2>&1
 sudo ln -s /usr/bin/lxtask /usr/local/bin/ksysguard > /dev/null 2>&1
