@@ -30,8 +30,8 @@ read -p "Press enter..."
 exit
 fi
 
-
-sudo chmod +x tools/tiv tools/tiv32
+osarch=$(dpkg --print-architecture)
+sudo chmod +x tools/tiv tools/tiv32 tools/tivarmhf
 lowres=0
 Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
 Yres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
@@ -531,10 +531,12 @@ if file_select "-=- Q4OS Seb Scripts -=- select user picture" "/home" "*.jpg" ; 
 
 if check_image_size "$FILE_SELECTED"; then
         echo "Picture size is conform."
+
+if [ "$osarch" = "armhf" ]; then tools/tivarmhf -0 -w 70 "$FILE_SELECTED" else
 if ( getconf LONG_BIT | grep -q 64 ); then
 tools/tiv -0 -w 70 "$FILE_SELECTED"
 else tools/tiv32 -0 -w 70 "$FILE_SELECTED"; fi
-
+fi
 
 read -p "Use this image as user picture ? (y/n) " choix
 if [ "$choix" == "y" ] || [ "$choix" == "Y" ]; then
