@@ -608,7 +608,7 @@ rota
 if (cat common/packages_list.tmp | grep -q "google-chrome-stable"); then
     sed -i 's/\(Buttons=.*\)/\1,google-chrome.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
 elif (cat common/packages_list.tmp | grep -q "chromium/stable"); then
-    sed -i 's/\(Buttons=.*\)/\1,chromium.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
+    sed -i 's/\(Buttons=.*\)/\1,chromium-browser.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
 elif (cat common/packages_list.tmp | grep -q "firefox/mozilla"); then
     sed -i 's/\(Buttons=.*\)/\1,firefox.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
 elif (cat common/packages_list.tmp | grep -q "microsoft-edge-stable"); then
@@ -1038,7 +1038,7 @@ sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Trash --key ConfirmDelete true
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Trash --key ConfirmTrash false
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KFileDialog Settings" --key "Automatic Preview" true
-sudo kwriteconfig --file $TDEHOME/share/config/tdecmshellrc --group "KFileDialog Settings" --key "Automatic Preview" true
+kwriteconfig --file $TDEHOME/share/config/tdecmshellrc --group "KFileDialog Settings" --key "Automatic Preview" true
 rota
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key IconText IconOnly
 sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key Index 4
@@ -1097,6 +1097,7 @@ if [[ -f "$TDEHOME/share/config/d3lphinrc" ]]; then
 echo -e "  \e[35m░▒▓█\033[0m Configuring Dolphin ui..."
 mkdir -p $TDEHOME/share/apps/d3lphin/
 sudo tar -xzf theme/d3lphinui.rc.tar.gz -C $TDEHOME/share/apps/d3lphin/
+sudo chown -R $USER: $TDEHOME/share/apps/d3lphin/d3lphinui.rc
 kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "D3lphin Toolbar style" --key IconSize 32
 kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "Details Mode" --key "Font Family" "Segoe UI"
 kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "Details Mode" --key "Font Size" 10
