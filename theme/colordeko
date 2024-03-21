@@ -1,0 +1,54 @@
+#!/bin/bash
+darken_color() {
+local color=$1;local factor=$2
+local r=$(echo $color | cut -c2-3)
+local g=$(echo $color | cut -c4-5)
+local b=$(echo $color | cut -c6-7)
+local r_decimal=$((16#${r}))
+local g_decimal=$((16#${g}))
+local b_decimal=$((16#${b}))
+local new_r_decimal=$(echo "($r_decimal * $factor + 0.5) / 1" | bc)
+local new_g_decimal=$(echo "($g_decimal * $factor + 0.5) / 1" | bc)
+local new_b_decimal=$(echo "($b_decimal * $factor + 0.5) / 1" | bc)
+local new_r=$(printf "%02X" $new_r_decimal)
+local new_g=$(printf "%02X" $new_g_decimal)
+local new_b=$(printf "%02X" $new_b_decimal)
+echo "#${new_r}${new_g}${new_b}"
+}
+
+lighten_color() {
+local color=$1;local factor=$2
+local r=$(echo $color | cut -c2-3)
+local g=$(echo $color | cut -c4-5)
+local b=$(echo $color | cut -c6-7)
+local r_decimal=$((16#${r}))
+local g_decimal=$((16#${g}))
+local b_decimal=$((16#${b}))
+local new_r_decimal=$(echo "($r_decimal + 255 * $factor + 0.5) / 1" | bc)
+local new_g_decimal=$(echo "($g_decimal + 255 * $factor + 0.5) / 1" | bc)
+local new_b_decimal=$(echo "($b_decimal + 255 * $factor + 0.5) / 1" | bc)
+local new_r_decimal=$(echo "scale=2; if ($new_r_decimal > 255) 255 else $new_r_decimal" | bc)
+local new_g_decimal=$(echo "scale=2; if ($new_g_decimal > 255) 255 else $new_g_decimal" | bc)
+local new_b_decimal=$(echo "scale=2; if ($new_b_decimal > 255) 255 else $new_b_decimal" | bc)
+local new_r=$(printf "%02X" $(echo "$new_r_decimal" | bc))
+local new_g=$(printf "%02X" $(echo "$new_g_decimal" | bc))
+local new_b=$(printf "%02X" $(echo "$new_b_decimal" | bc))
+local new_hex_color="#${new_r}${new_g}${new_b}"
+echo "$new_hex_color"
+}
+
+# input color base
+color1=$1 # "#xxxxxx" format, ex : "#FFFFFF" - double quotes are mandatory
+action=$2 # d or l
+
+dark_factor=0.66
+light_factor=0.38
+if [ "$action" = "d" ]; then
+color2=$(darken_color $color1 $dark_factor)
+echo "$color2"
+elif [ "$action" = "l" ]; then
+color2=$(lighten_color $color1 $light_factor)
+echo "$color2"
+else
+echo "Invalid action. Use 'd' for darkening or 'l' for lightening."
+fi
