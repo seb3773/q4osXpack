@@ -142,6 +142,7 @@ CURRENT_USER=$(whoami)
 \cp "common/shortcut.desktop" "$deskfold/Q4OS seb Scripts.desktop"
 sed -i "s|XxXxXxXx|$SCRIPT_DIR|g" "$deskfold/Q4OS seb Scripts.desktop"
 sudo chown "$CURRENT_USER:$CURRENT_USER" "$deskfold/Q4OS seb Scripts.desktop"
+\cp "$deskfold/Q4OS seb Scripts.desktop" "$USER_HOME/.local/share/applications/Q4OS seb Scripts.desktop"
 echo Done.
 read -p "Press enter..."
 return 0

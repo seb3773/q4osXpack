@@ -203,6 +203,12 @@ echo -e " \e[35m░▒▓█\033[0m Installing kpdf..."
 installApp "kpdf-trinity" "kpdf-trinity"
 progress "$script" 55
 
+itemdisp "Installing Strawberry..."
+installApp "strawberry" "strawberry/stable"
+mkdir -p $USER_HOME/.configtde/strawberry/
+tar -xzf theme/strawberry.conf.tar.gz -C $USER_HOME/.configtde/strawberry/
+echo
+
 #============== Install Apps (interactive) ======================================================================
 
 itemdisp "Installing qbittorent"

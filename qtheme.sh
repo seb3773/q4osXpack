@@ -71,8 +71,6 @@ rsz2="220x220"
 fact="0.2"
 fi
 
-osarch=$(dpkg --print-architecture)
-
 #========== CREATE BACKUP FOLDER & backup files to be modified ==================================================
 create_backup() {
 local backup_path="backups/$now/$1.tar.gz"
@@ -440,23 +438,15 @@ cd theme
 sudo ./grubscripts
 progress "$script" 25
 
-
-
 #========== tuning grub for a quiet boot process ================================================================
 sudo ./themegrub
 progress "$script" 30
 
 
-
-
 #========== copying all files needed ============================================================================
-sudo ./copyfiles $dark
+sudo ./copyfiles $dark $codlang
 progress "$script" 35
 cd ..
-
-
-
-
 
 
 
@@ -469,8 +459,6 @@ echo
 echo
 echo
 progress "$script" 40
-
-
 
 
 
@@ -1094,6 +1082,16 @@ vidfoldroot=$(sudo xdg-user-dir VIDEOS)
 downlfold=$(xdg-user-dir DOWNLOAD)
 usrfold=$(xdg-user-dir USER)
 downlfoldroot=$(xdg-user-dir DOWNLOAD)
+sudo find $TDEHOME/share/apps/konqsidebartng/filemanagement/entries -type f ! -name '.version' -exec rm {} +
+sudo tar -xzf theme/konqueror_dirtree.tar.gz -C $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/
+sudo sed -i "s/^Name=.*/Name=$(basename "$docfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree0.desktop"
+sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${docfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree0.desktop"
+sudo sed -i "s/^Name=.*/Name=$(basename "$picfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree1.desktop"
+sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${picfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree1.desktop"
+sudo sed -i "s/^Name=.*/Name=$(basename "$musicfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree2.desktop"
+sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${musicfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree2.desktop"
+sudo sed -i "s/^Name=.*/Name=$(basename "$downlfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree3.desktop"
+sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${downlfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree3.desktop"
 #~~~~~~~~~~~~~~~~~~~~~ if dolphin is installed
 if [[ -f "$TDEHOME/share/config/d3lphinrc" ]]; then
 echo -e "  \e[35m░▒▓█\033[0m Configuring Dolphin ui..."
@@ -1750,9 +1748,6 @@ echo -e "  \e[35m░▒▓█\033[0m installing actioncenter kicker applet"
 sudo tar -xzf theme/actioncenter_applet.desktop.tar.gz -C /opt/trinity/share/apps/kicker/applets/
 
 if [[ $dark -eq 1 ]] then cmode="dark";else cmode="light";fi
-if (echo $LANG | grep -q "fr") then codlang="fr"
-elif (echo $LANG | grep -q "de") then codlang="de"
-else codlang="en";fi
 foldpix="$codlang""_""$cmode"
 foldproj="proj_""$cmode"
 foldscripts="scripts_""$codlang"
@@ -2228,6 +2223,15 @@ sep
 echo
 echo
 echo
+progress "$script" 95
+
+#theming other apps if installed
+if (cat common/packages_list.tmp | grep -q "strawberry/stable"); then
+echo -e "  \e[35m░▒▓█\033[0m strawberry installed - Applying strawberry theme..."
+mkdir -p $USER_HOME/.configtde/strawberry/
+tar -xzf theme/strawberry.conf.tar.gz -C $USER_HOME/.configtde/strawberry/
+echo
+fi
 progress "$script" 95
 
 
