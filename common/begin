@@ -14,9 +14,7 @@ else codlang="en";fi
 #user home
 USER_HOME=$(eval echo ~${SUDO_USER})
 begin () {
-if [ "$osarch" = "amd64" ]; then common/wmctrl -r :ACTIVE: -N "$1";fi
-if [ "$osarch" = "i386" ]; then common/wmctrl32 -r :ACTIVE: -N "$1";fi
-if [ "$osarch" = "armhf" ]; then common/wmctrlarmhf -r :ACTIVE: -N "$1";fi
+wmctrl -r :ACTIVE: -N "$1"
 
 echo -e "${LIGHTGRAY} "
 echo -e "$(cat common/title)"
