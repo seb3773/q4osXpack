@@ -1073,6 +1073,7 @@ sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSetting
 sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key system true
 sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key MaximumSize 20971520
 rota
+xdg-user-dirs-update
 deskfold=$(xdg-user-dir DESKTOP)
 picfold=$(xdg-user-dir PICTURES)
 docfold=$(xdg-user-dir DOCUMENTS)
