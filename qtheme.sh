@@ -1083,16 +1083,21 @@ vidfoldroot=$(sudo xdg-user-dir VIDEOS)
 downlfold=$(xdg-user-dir DOWNLOAD)
 usrfold=$(xdg-user-dir USER)
 downlfoldroot=$(xdg-user-dir DOWNLOAD)
+#konqueror --preload
 sudo find $TDEHOME/share/apps/konqsidebartng/filemanagement/entries -type f ! -name '.version' -exec rm {} +
 sudo tar -xzf theme/konqueror_dirtree.tar.gz -C $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/
-sudo sed -i "s/^Name=.*/Name=$(basename "$docfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree0.desktop"
-sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${docfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree0.desktop"
-sudo sed -i "s/^Name=.*/Name=$(basename "$picfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree1.desktop"
-sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${picfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree1.desktop"
-sudo sed -i "s/^Name=.*/Name=$(basename "$musicfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree2.desktop"
-sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${musicfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree2.desktop"
-sudo sed -i "s/^Name=.*/Name=$(basename "$downlfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree3.desktop"
-sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${downlfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree3.desktop"
+sudo sed -i "s/^Name=.*/Name=$(basename "$deskfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree0.desktop"
+sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${deskfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree0.desktop"
+sudo sed -i "s/^Name=.*/Name=$(basename "$docfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree1.desktop"
+sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${docfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree1.desktop"
+sudo sed -i "s/^Name=.*/Name=$(basename "$picfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree2.desktop"
+sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${picfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree2.desktop"
+sudo sed -i "s/^Name=.*/Name=$(basename "$musicfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree3.desktop"
+sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${musicfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree3.desktop"
+sudo sed -i "s/^Name=.*/Name=$(basename "$downlfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree4.desktop"
+sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${downlfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree4.desktop"
+sudo sed -i "s/^Name=.*/Name=$(basename "$vidfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree5.desktop"
+sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${vidfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree5.desktop"
 #~~~~~~~~~~~~~~~~~~~~~ if dolphin is installed
 if [[ -f "$TDEHOME/share/config/d3lphinrc" ]]; then
 echo -e "  \e[35m░▒▓█\033[0m Configuring Dolphin ui..."
@@ -2175,6 +2180,7 @@ kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/svg+xml - 1" 
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Run Command" "default(Alt+F2);Alt+R"
 #desktop images preview
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop Icons" --key "Preview" "svgthumbnail,imagethumbnail"
 #usuals win commands
