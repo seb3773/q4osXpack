@@ -608,7 +608,12 @@ rota
 if (cat common/packages_list.tmp | grep -q "google-chrome-stable"); then
     sed -i 's/\(Buttons=.*\)/\1,google-chrome.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
 elif (cat common/packages_list.tmp | grep -q "chromium/stable"); then
+    if [ -e "/usr/share/applications/chromium.desktop" ]; then
+    sed -i 's/\(Buttons=.*\)/\1,chromium.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
+    fi
+    if [ -e "/usr/share/applications/chromium-browser.desktop" ]; then
     sed -i 's/\(Buttons=.*\)/\1,chromium-browser.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
+    fi
 elif (cat common/packages_list.tmp | grep -q "firefox/mozilla"); then
     sed -i 's/\(Buttons=.*\)/\1,firefox.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
 elif (cat common/packages_list.tmp | grep -q "microsoft-edge-stable"); then
@@ -1010,12 +1015,22 @@ echo -e "  \e[35m░▒▓█\033[0m configuring compton-tde..."
 if [[ $dark -eq 1 ]]; then
 #sudo is needed for this extraction as we want the root user owner for this file, this is is
 #because without that, the configuration (especially the exclude part) is destroyed by trinity if we want to adjust something
-#from the cli configuration panel. We don't want that. But by doing this, the configuration panel can't be used to ajust settings.
-sudo tar -xzf theme/compton-tde.conf-dark.tar.gz -C $USER_HOME/
-sudo tar -xzf theme/compton-tde.conf-dark.tar.gz -C /root
+#from the cli configuration panel. We don't want that. But by doing this, the configuration panel can't be used to ajust these settings...
+ if [ "$osarch" = "armhf" ]; then
+ sudo tar -xzf theme/compton-tde.conf-dark_pi.tar.gz -C $USER_HOME/
+ sudo tar -xzf theme/compton-tde.conf-dark_pi.tar.gz -C /root
+ else
+ sudo tar -xzf theme/compton-tde.conf-dark.tar.gz -C $USER_HOME/
+ sudo tar -xzf theme/compton-tde.conf-dark.tar.gz -C /root
+ fi
 else
-sudo tar -xzf theme/compton-tde.conf.tar.gz -C $USER_HOME/
-sudo tar -xzf theme/compton-tde.conf.tar.gz -C /root
+ if [ "$osarch" = "armhf" ]; then
+ sudo tar -xzf theme/compton-tde.conf_pi.tar.gz -C $USER_HOME/
+ sudo tar -xzf theme/compton-tde.conf_pi.tar.gz -C /root
+ else
+ sudo tar -xzf theme/compton-tde.conf.tar.gz -C $USER_HOME/
+ sudo tar -xzf theme/compton-tde.conf.tar.gz -C /root
+ fi
 fi
 echo -e "  \e[35m░▒▓█\033[0m disable screensaver & lock after suspend..."
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group ScreenSaver --key Enabled false
@@ -1084,8 +1099,10 @@ downlfold=$(xdg-user-dir DOWNLOAD)
 usrfold=$(xdg-user-dir USER)
 downlfoldroot=$(xdg-user-dir DOWNLOAD)
 #konqueror --preload
+konqueror --profile "filemanagement" & foo=$! && kill -15 $foo
 sudo find $TDEHOME/share/apps/konqsidebartng/filemanagement/entries -type f ! -name '.version' -exec rm {} +
 sudo tar -xzf theme/konqueror_dirtree.tar.gz -C $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/
+sudo chown -R $USER: $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/*
 sudo sed -i "s/^Name=.*/Name=$(basename "$deskfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree0.desktop"
 sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${deskfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree0.desktop"
 sudo sed -i "s/^Name=.*/Name=$(basename "$docfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree1.desktop"
@@ -2025,10 +2042,14 @@ itemdisp "Installing lxtask-mod (taskmanager)..."
 if ! (cat common/packages_list.tmp | grep -q "lxtask-mod/now"); then
 cd apps
 echo -e "${YELLOW}"
+if [ "$osarch" = "armhf" ]; then
+sudo apt install -y ./lxtask-mod_armhf.deb
+else
 if ( getconf LONG_BIT | grep -q 64 ); then
 sudo apt install -y ./lxtask-mod.deb
 else
 sudo apt install -y ./lxtask-mod_i386.deb
+fi
 fi
 cd ..
 echo -e "${NOCOLOR}"

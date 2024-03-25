@@ -149,10 +149,14 @@ itemdisp "Installing lxtask-mod (simple lightweight taskmgr)"
 if ! isinstalled "lxtask-mod/now" "common/packages_list.tmp"; then
 cd apps
 echo -e "${YELLOW}"
+if [ "$osarch" = "armhf" ]; then
+sudo apt install -y ./lxtask-mod_armhf.deb
+else
 if ( getconf LONG_BIT | grep -q 64 ); then
 sudo apt install -y ./lxtask-mod.deb
 else
 sudo apt install -y ./lxtask-mod_i386.deb
+fi
 fi
 cd ..
 echo -e "${NOCOLOR}"
@@ -368,19 +372,6 @@ fi
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 itemdisp "Installing gparted"
 if [ "$installall" -eq 1 ]; then
     installApp "gparted" "gparted/stable"
@@ -445,6 +436,53 @@ sep
 echo
 echo
 echo
+progress "$script" 75
+
+
+
+
+
+
+
+itemdisp "Installing Web app manager"
+function installwebappman() {
+           if ! isinstalled "webapp-manager/" "common/packages_list.tmp"; then
+            echo -e "${YELLOW}"
+cd apps
+sudo apt install -y ./webapp-manager_1.3.4_all.deb
+cd ..
+#deleting redundant entry
+sudo rm -f /usr/share/applications/kde4/webapp-manager.desktop
+            echo -e "${NOCOLOR}"
+            else
+            echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+            fi
+}
+if [ "$installall" -eq 1 ]; then
+installwebappman
+else
+echo
+echo -e "${RED}█ ${ORANGE}Install Web app manager ?${NOCOLOR}"
+optionz=("Install web app manager" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install web app manager")
+            echo -e "  \e[35m░▒▓█\033[0m Installing Web app manager..."
+            installwebappman
+            break
+            ;;
+        "Skip")
+            sep
+            echo
+            echo
+            echo
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
 progress "$script" 75
 
 
@@ -559,6 +597,7 @@ echo
 progress "$script" 90
 
 
+if ( getconf LONG_BIT | grep -q 64 ); then
 itemdisp "Installing virtualbox 7"
 #spotify
 installVbox () {
@@ -600,6 +639,7 @@ echo
 echo
 echo
 progress "$script" 95
+fi
 
 
 if ( getconf LONG_BIT | grep -q 64 ); then
@@ -647,7 +687,7 @@ progress "$script" 95
 fi
 
 
-
+if [ ! "$osarch" = "armhf" ]; then
 itemdisp "Installing Angry IP sanner"
 function installangryip() {
            if ! isinstalled "ipscan/" "common/packages_list.tmp"; then
@@ -689,9 +729,8 @@ do
     esac
 done
 fi
+fi
 progress "$script" 95
-
-
 
 itemdisp "Cleaning files..."
 echo

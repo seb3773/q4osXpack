@@ -258,8 +258,6 @@ progress "$script" 20
 
 
 
-
-
 #========== Disabling Konqueror javascript ======================================================================
 itemdisp "Disabling javascript in Konqueror..."
 echo
@@ -514,10 +512,11 @@ echo
 
 
 
-#========== no klipper autostart ===================================================================================
-itemdisp "Disabling Klipper autostart..."
+#========== no klipper/tdehwdevicetrayrc autostart ===================================================================================
+itemdisp "Disabling Klipper/tdehwdevicetrayrc autostart..."
 echo
 sudo sed -i 's/AutoStart=true/AutoStart=false/' $USER_HOME/.trinity/share/config/klipperrc
+sudo sed -i 's/AutoStart=true/AutoStart=false/' $USER_HOME/.trinity/share/config/tdehwdevicetrayrc
 sep
 echo
 echo
@@ -627,6 +626,7 @@ echo
 echo
 echo
 
+if [ ! "$osarch" = "armhf" ]; then
 #========== fix i915 modules missing on some intel machines ========================================================
 itemdisp "testing if i915 modules firmwares missing..."
 echo
@@ -667,7 +667,7 @@ echo
 echo
 echo
 progress "$script" 65
-
+fi
 
 
 #========== install zram ===========================================================================================
@@ -765,16 +765,20 @@ progress "$script" 80
 itemdisp "Installing ananicy"
 
 cd perfs
+if [ "$osarch" = "armhf" ]; then
+sudo tar -xzf ananicy-cpp_bin_armhf.tar.gz -C /usr/local/bin/
+else
 if ( getconf LONG_BIT | grep -q 64 ); then
 sudo tar -xzf ananicy-cpp_bin_64.tar.gz -C /usr/local/bin/
 else
 sudo tar -xzf ananicy-cpp_bin_32.tar.gz -C /usr/local/bin/
-fi
+fi;fi
 sudo mkdir -p /usr/local/lib/systemd/system
 sudo tar -xzf ananicy-cpp.service.tar.gz -C /usr/local/lib/systemd/system/
 sudo mkdir -p /etc/ananicy.d
 sudo tar -xzf ananicy.rules.tar.gz -C /etc/ananicy.d/
 cd ..
+sudo chmod +x /usr/local/bin/ananicy-cpp
 sudo systemctl enable --now ananicy-cpp.service
 sep
 echo
