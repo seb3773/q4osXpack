@@ -1,0 +1,19 @@
+[Desktop Entry]
+Comment=theme/configure Q4OS Trinity
+Comment[fr]=theme/configure Q4OS Trinity
+Exec[$e]='XxXxXxXx/qmenu'
+GenericName=Q4OS Seb Scripts
+GenericName[fr]=Q4OS Seb Scripts
+Icon=XxXxXxXx/common/Q4OSsebicon.png
+MimeType=
+Name=Q4OS seb Scripts
+Name[fr]=Q4OS seb Scripts
+Path[$e]=XxXxXxXx
+StartupNotify=true
+Terminal=true
+TerminalOptions=
+Type=Application
+X-DCOP-ServiceType=
+X-TDE-SubstituteUID=false
+X-TDE-Username=
+Categories=Utility;
