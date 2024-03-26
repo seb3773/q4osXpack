@@ -32,7 +32,7 @@ begin "$script"
 #========== set subscripts perms ================================================================================
 progress "$script" 0
 #set perms
-sudo chmod +x perfs/check_x86-64_psabi.sh perfs/perfgrub perfs/repository.sh perfs/svgcleaner perfs/cleansvg.sh common/pklist 
+sudo chmod +x perfs/check_x86-64_psabi.sh perfs/perfgrub perfs/piboot perfs/repository.sh perfs/svgcleaner perfs/cleansvg.sh common/pklist 
 
 
 
@@ -76,6 +76,15 @@ sep
 echo
 echo
 echo
+
+#========== retrieve packages list ==============================================================================
+echo -e "   ${ORANGE}░▒▓█\033[0m Retrieve packages list..."
+echo
+cd common
+sudo ./pklist
+cd ..
+echo
+
 
 #========== Install optimized Kernel ============================================================================
 if [ ! "$osarch" = "armhf" ]; then
@@ -159,11 +168,10 @@ fi
 
 
 #=========== some questions :p
+if [ ! "$osarch" = "armhf" ]; then
 itemdisp "Bluetooth / printing / initramfs trimming"
-disblue=0
-disprint=0
-irtrim=0
-enazram=0
+else itemdisp "Bluetooth / printing / initramfs trimming / overclocking";fi
+disblue=0;disprint=0;irtrim=0;enazram=0;raspoc=0
 
 echo
 echo -e "${RED}█ ${ORANGE}Disable bluetooth services ? (if you don't need it :p)${NOCOLOR}"
@@ -221,6 +229,27 @@ echo "zram already enabled."
 fi
 
 
+if [ "$osarch" = "armhf" ]; then
+echo
+echo -e "${RED}█ ${ORANGE}Raspberry overclocking${NOCOLOR}"
+
+
+echo "Do you want to apply a little overclock"
+echo "(based on stable values, as long as you use at least an heatsink)"
+echo -n "(y:apply overclock/enter:skip) ?" && read x
+
+if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
+echo "Overclocking enabled.."
+raspoc=1
+else
+echo "Skipping overclocking."
+fi
+
+
+
+fi
+
+
 
 
 
@@ -238,7 +267,6 @@ sudo ./perfgrub
 else
 sudo ./perfpiboot
 fi
-
 cd ..
 progress "$script" 15
 
@@ -681,7 +709,16 @@ itemdisp "Installing zram"
             cd perfs
             sudo tar -xzf 21-swappiness.conf.tar.gz -C /etc/sysctl.d/
             cd ..
-            systemctl reload zramswap.service
+            sudo systemctl reload zramswap.service
+#raspberry
+if [ "$osarch" = "armhf" ]; then
+echo -e "  \e[35m░▒▓█\033[0m Disabling the swap file..."
+sudo dphys-swapfile swapoff
+sudo dphys-swapfile uninstall
+sudo update-rc.d dphys-swapfile remove
+sudo systemctl disable dphys-swapfile
+sudo systemctl mask dphys-swapfile
+fi
 sep
 echo
 echo
@@ -790,6 +827,8 @@ progress "$script" 85
 #========== tuning compton tde =====================================================================================
 itemdisp "Tuning compton tde..."
 echo
+
+if [ ! "$osarch" = "armhf" ]; then
 #glx backend
 if grep -q "backend =" "$USER_HOME/.compton-tde.conf" || grep -q "backend=" "$USER_HOME/.compton-tde.conf"; then
 sudo sed -i '/backend =/c\backend = "glx";' $USER_HOME/.compton-tde.conf
@@ -825,11 +864,83 @@ sudo sed -i '/vsync=/c\vsync = "opengl-swc";' $USER_HOME/.compton-tde.conf
 else
 echo 'vsync = "opengl-swc";' | sudo tee -a $USER_HOME/.compton-tde.conf
 fi
+
+else
+#xrender backend for raspberry as gl seems bugged
+if grep -q "backend =" "$USER_HOME/.compton-tde.conf" || grep -q "backend=" "$USER_HOME/.compton-tde.conf"; then
+sudo sed -i '/backend =/c\backend = "xrender";' $USER_HOME/.compton-tde.conf
+sudo sed -i '/backend=/c\backend = "xrender";' $USER_HOME/.compton-tde.conf
+else
+echo 'backend = "xrender";' | sudo tee -a $USER_HOME/.compton-tde.conf
+fi
+
+fi
 sep
 echo
 echo
 echo
 progress "$script" 90
+
+
+if [ "$osarch" = "armhf" ]; then
+itemdisp "Check if we need to apply chromium tweaks ..."
+echo
+if (cat common/packages_list.tmp | grep -q "chromium/stable"); then
+if [ -e "/usr/share/applications/chromium.desktop" ]; then
+sudo perfs/chromium_perfs.sh
+fi
+if [ -e "/usr/share/applications/chromium-browser.desktop" ]; then
+sudo perfs/chromium_perfs.sh
+fi
+fi
+fi
+sep
+echo
+echo
+echo
+progress "$script" 90
+fi
+
+
+if [ "$raspoc" == "1" ]; then
+itemdisp "Overclocking"
+fichier="/boot/config.txt"
+ocapply=0
+model=$(cat /sys/firmware/devicetree/base/model)
+#pi 4 > over_voltage=6   ;   arm_freq=1800   ; gpu_freq=700
+#pi 400 > over_voltage=6   ;   arm_freq=2000   ; gpu_freq=750
+#pi 3 > over_voltage=5   ;   arm_freq=1300   ; gpu_freq=500
+#pi 3B+ > over_voltage=5   ;   arm_freq=1450   ; gpu_freq=500
+#pi 5 ? (is it needed ?)
+model="Raspberry Pi 4 blabla"
+if [[ $model =~ "Pi 400 " ]]; then
+over_voltage=6;arm_freq=2000;gpu_freq=750;ocapply=1
+elif [[ $model =~ "Pi 4 " ]]; then
+over_voltage=6;arm_freq=1800;gpu_freq=700;ocapply=1
+fi
+if [ "$ocapply" -eq 1 ]; then
+if grep -q "^over_voltage=[0-9]\+" "$fichier"; then
+sudo sed -i "s/^over_voltage=[0-9]\+/over_voltage=$over_voltage/" "$fichier"
+else
+echo "over_voltage=$over_voltage" | sudo tee -a "$fichier" > /dev/null
+fi
+if grep -q "^arm_freq=[0-9]\+" "$fichier"; then
+sudo sed -i "s/^arm_freq=[0-9]\+/arm_freq=$arm_freq/" "$fichier"
+else
+echo "arm_freq=$arm_freq" | sudo tee -a "$fichier" > /dev/null
+fi
+if grep -q "^gpu_freq=[0-9]\+" "$fichier"; then
+sudo sed -i "s/^gpu_freq=[0-9]\+/gpu_freq=$gpu_freq/" "$fichier"
+else
+echo "gpu_freq=$gpu_freq" | sudo tee -a "$fichier" > /dev/null
+fi;fi
+sep
+echo
+echo
+echo
+fi
+progress "$script" 75
+
 
 
 #==================================================================================================================

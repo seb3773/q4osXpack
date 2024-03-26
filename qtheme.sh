@@ -50,7 +50,7 @@ begin "   $script   "
 
 #========== set subscripts perms ================================================================================
 progress "$script" 0
-sudo chmod +x theme/grubscripts theme/themegrub theme/copyfiles theme/createdeko theme/colordeko common/pklist
+sudo chmod +x theme/grubscripts theme/themegrub theme/pitheme theme/copyfiles theme/createdeko theme/colordeko common/pklist
 
 
 #========== Retrieve resolution for res dependent elements ======================================================
@@ -439,7 +439,11 @@ sudo ./grubscripts
 progress "$script" 25
 
 #========== tuning grub for a quiet boot process ================================================================
+if [ ! "$osarch" = "armhf" ]; then
 sudo ./themegrub
+else
+sudo ./pitheme
+fi
 progress "$script" 30
 
 
@@ -1008,9 +1012,15 @@ kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --k
 
 
 echo -e "  \e[35m░▒▓█\033[0m configuring xcompmgr..."
+if [ ! "$osarch" = "armhf" ]; then
 #sudo kwriteconfig --file $USER_HOME/.xcompmgrrc --group xcompmgr --key useOpenGL true
 sudo tar -xzf theme/xcompmgrrc.tar.gz -C $USER_HOME/
 sudo tar -xzf theme/xcompmgrrc.tar.gz -C /root/
+else
+sudo tar -xzf theme/xcompmgrrc_pi.tar.gz -C $USER_HOME/
+sudo tar -xzf theme/xcompmgrrc_pi.tar.gz -C /root/
+fi
+
 echo -e "  \e[35m░▒▓█\033[0m configuring compton-tde..."
 if [[ $dark -eq 1 ]]; then
 #sudo is needed for this extraction as we want the root user owner for this file, this is is
