@@ -707,15 +707,21 @@ fi
 #========== install zram ===========================================================================================
 if [ "$enazram" == "1" ]; then
 itemdisp "Installing zram"
-            echo -e "  \e[35m░▒▓█\033[0m Installing zram..."
-            echo -e "${YELLOW}"
-            sudo apt install -y zram-tools
-            echo -e "${NOCOLOR}"
-            echo -e "ALGO=lz4\nPERCENT=50\nPRIORITY=100" | sudo tee -a /etc/default/zramswap
-            cd perfs
-            sudo tar -xzf 21-swappiness.conf.tar.gz -C /etc/sysctl.d/
-            cd ..
-            sudo systemctl reload zramswap.service
+echo -e "  \e[35m░▒▓█\033[0m Installing zram..."
+echo -e "${YELLOW}"
+sudo apt install -y zram-tools
+echo -e "${NOCOLOR}"
+mem_kb=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+mem_go=$(echo "scale=2; $mem_kb / 1024 / 1024" | bc)
+if (( $(echo "$mem_go < 2" | bc -l) )); then
+echo -e "ALGO=lz4\nPERCENT=70\nPRIORITY=100" | sudo tee -a /etc/default/zramswap
+elif (( $(echo "$mem_go >= 2" | bc -l) )); then
+echo -e "ALGO=lz4\nPERCENT=50\nPRIORITY=100" | sudo tee -a /etc/default/zramswap
+fi
+cd perfs
+sudo tar -xzf 21-swappiness.conf.tar.gz -C /etc/sysctl.d/
+cd ..
+sudo systemctl reload zramswap.service
 #raspberry
 if [ "$osarch" = "armhf" ]; then
 echo -e "  \e[35m░▒▓█\033[0m Disabling the swap file..."
@@ -917,7 +923,6 @@ model=$(cat /sys/firmware/devicetree/base/model)
 #pi 3 > over_voltage=5   ;   arm_freq=1300   ; gpu_freq=500
 #pi 3B+ > over_voltage=5   ;   arm_freq=1450   ; gpu_freq=500
 #pi 5 ? (is it needed ?)
-model="Raspberry Pi 4 blabla"
 if [[ $model =~ "Pi 400 " ]]; then
 over_voltage=6;arm_freq=2000;gpu_freq=750;ocapply=1
 elif [[ $model =~ "Pi 4 " ]]; then
