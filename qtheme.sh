@@ -1109,7 +1109,7 @@ downlfold=$(xdg-user-dir DOWNLOAD)
 usrfold=$(xdg-user-dir USER)
 downlfoldroot=$(xdg-user-dir DOWNLOAD)
 #konqueror --preload
-konqueror --profile "filemanagement" & foo=$! && kill -15 $foo
+konqueror system:/ --profile "filemanagement" & foo=$! && sleep 0.25 && kill -15 $foo
 sudo find $TDEHOME/share/apps/konqsidebartng/filemanagement/entries -type f ! -name '.version' -exec rm {} +
 sudo tar -xzf theme/konqueror_dirtree.tar.gz -C $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/
 sudo chown -R $USER: $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/*
@@ -2212,6 +2212,9 @@ kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/svg+xml - 1" 
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Popup Launch Menu" "Super_L"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Show Taskmanager" "default(Ctrl+Escape)"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group "Global Shortcuts" --key "Run Command" "default(Alt+F2);Alt+R"
+#all settings
+kwriteconfig --file $TDEHOME/share/config/kcontrolrc --group "Index" --key "ViewMode" "Icon"
+kwriteconfig --file $TDEHOME/share/config/kcontrolrc --group "Index" --key "IconSize" "Medium"
 #desktop images preview
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop Icons" --key "Preview" "svgthumbnail,imagethumbnail"
 #usuals win commands
