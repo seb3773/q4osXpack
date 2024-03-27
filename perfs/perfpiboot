@@ -1,6 +1,6 @@
 #!/bin/bash
 #config.txt disable_splash=1
-fichier="/boot/config.txt"
+fichier="/boot/firmware/config.txt"
 if grep -q "^disable_splash=[0-9]\+" "$fichier"; then
 sed -i 's/^disable_splash=[0-9]\+/disable_splash=1/' "$fichier"
 fi
