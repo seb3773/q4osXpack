@@ -927,6 +927,10 @@ if [[ $model =~ "Pi 400 " ]]; then
 over_voltage=6;arm_freq=2000;gpu_freq=750;ocapply=1
 elif [[ $model =~ "Pi 4 " ]]; then
 over_voltage=6;arm_freq=1800;gpu_freq=700;ocapply=1
+elif [[ $model =~ "3 Model B Plus Rev" ]]; then
+over_voltage=5;arm_freq=1460;gpu_freq=500;ocapply=1
+elif [[ $model =~ "3 Model B Rev" ]]; then
+over_voltage=5;arm_freq=1310;gpu_freq=500;ocapply=1
 fi
 if [ "$ocapply" -eq 1 ]; then
 if grep -q "^over_voltage=[0-9]\+" "$fichier"; then
