@@ -1466,6 +1466,17 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectFad
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key OpaqueResize false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key contrast 5
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key macStyle false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowDeleteCommand false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowKonqIconActivationEffect false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key SingleClick false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectAnimateCombo false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectAnimateMenu false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectAnimateTooltip false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectFadeMenu false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectFadeTooltip false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group Keyboard --key Gestures false
+
 rota
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key ActiveEffect none
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group MainToolbarIcons --key ActiveSemiTransparent false
@@ -1490,6 +1501,22 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key De
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DisabledEffect togray
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DisabledSemiTransparent true
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DisabledValue 1
+rota
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key Animated false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key ActiveColor invalid
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key ActiveColor2 invalid
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key ActiveEffect none
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key DefaultColor invalid
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key DefaultColor2 invalid
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key DefaultEffect none
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key DefaultSemiTransparent false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key DisabledColor invalid
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key DisabledColor2 invalid
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key DisabledEffect togray
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key DisabledSemiTransparent false
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key DisabledValue 32
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key DoublePixels false
+
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key alternateBackground "244,244,244"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key background "244,244,244"
@@ -1599,6 +1626,16 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --ke
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key OpaqueResize false
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key contrast 5
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key macStyle false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowDeleteCommand false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key ShowKonqIconActivationEffect false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key SingleClick false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectAnimateCombo false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectAnimateMenu false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectAnimateTooltip false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectFadeMenu false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group KDE --key EffectFadeTooltip false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group Keyboard --key Gestures false
 rota
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key ActiveEffect none
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group MainToolbarIcons --key ActiveSemiTransparent false
@@ -1623,6 +1660,21 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIco
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DisabledEffect togray
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DisabledSemiTransparent true
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PanelIcons --key DisabledValue 1
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key Animated false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key ActiveColor invalid
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key ActiveColor2 invalid
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key ActiveEffect none
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key DefaultColor invalid
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key DefaultColor2 invalid
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key DefaultEffect none
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key DefaultSemiTransparent false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key DisabledColor invalid
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key DisabledColor2 invalid
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key DisabledEffect togray
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key DisabledSemiTransparent false
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key DisabledValue 32
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group DesktopIcons --key DoublePixels false
 rota
 echo
 printf '\e[A\e[K'
