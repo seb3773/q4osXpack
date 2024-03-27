@@ -899,7 +899,6 @@ if [ -e "/usr/share/applications/chromium-browser.desktop" ]; then
 sudo perfs/chromium_perfs.sh
 fi
 fi
-fi
 sep
 echo
 echo
