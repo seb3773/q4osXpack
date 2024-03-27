@@ -442,8 +442,10 @@ progress "$script" 20
 # - modifications of '10_linux' & '30_uefi-firmware' to have nice icons in boot menu (classes added)
 #   add shutdown option to grub menu
 cd theme
+if [ ! "$osarch" = "armhf" ]; then
 sudo ./grubscripts
 progress "$script" 25
+fi
 
 #========== tuning grub for a quiet boot process ================================================================
 if [ ! "$osarch" = "armhf" ]; then
