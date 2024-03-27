@@ -915,7 +915,7 @@ fi
 
 if [ "$raspoc" == "1" ]; then
 itemdisp "Overclocking"
-fichier="/boot/config.txt"
+fichier="/boot/firmware/config.txt"
 ocapply=0
 model=$(cat /sys/firmware/devicetree/base/model)
 #pi 4 > over_voltage=6   ;   arm_freq=1800   ; gpu_freq=700
