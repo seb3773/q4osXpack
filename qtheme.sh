@@ -208,6 +208,13 @@ echo $gray_value
 
 itemdisp "Fetching latest version of the package list..."
 sudo apt update > /dev/null 2>&1
+aptup=1;for (( i=5; i>0; i--)); do
+printf "\rRunning apt upgrade in $i seconds.  Hit any key to cancel..."
+read -s -n 1 -t 1 key
+if [ $? -eq 0 ];then aptup=0;break;fi;done
+if [[ $aptup -eq 1 ]];then echo;echo "processing..."
+sudo apt upgrade -y
+else echo;echo "canceled.";fi
 sep
 echo
 echo
@@ -1109,7 +1116,7 @@ downlfold=$(xdg-user-dir DOWNLOAD)
 usrfold=$(xdg-user-dir USER)
 downlfoldroot=$(xdg-user-dir DOWNLOAD)
 #konqueror --preload
-konqueror system:/ --profile "filemanagement" & foo=$! && sleep 0.25 && kill -15 $foo
+konqueror system:/ --profile "filemanagement" > /dev/null 2>&1 & foo=$! && sleep 0.5 && kill -15 $foo
 sudo find $TDEHOME/share/apps/konqsidebartng/filemanagement/entries -type f ! -name '.version' -exec rm {} +
 sudo tar -xzf theme/konqueror_dirtree.tar.gz -C $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/
 sudo chown -R $USER: $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/*
