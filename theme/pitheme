@@ -43,11 +43,9 @@ fi
 fichier="/boot/firmware/config.txt"
 if grep -q "^disable_splash=[0-9]\+" "$fichier"; then
 sed -i 's/^disable_splash=[0-9]\+/disable_splash=1/' "$fichier"
-    echo "L'option 'disable_splash' a été changée en 'disable_splash=1' dans $fichier"
 fi
 if ! grep -q "^disable_splash=1$" "$fichier"; then
-    echo "disable_splash=1" | tee -a "$fichier" > /dev/null
-    echo "La ligne 'disable_splash=1' a été ajoutée à $fichier"
+echo "disable_splash=1" | tee -a "$fichier" > /dev/null
 fi
 
 
