@@ -2694,7 +2694,6 @@ echo "  \e[35m░▒▓█\033[0m copying konqueror profiles & entries"
 mv $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/.version .version  > /dev/null 2>&1
 rm -f $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/*
 mv .version $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/.version  > /dev/null 2>&1
-tar -xzf konq_fm_entries.tar.gz -C $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/
 tar -xzf konqueror.profiles.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/
 tar -xzf konq_iconview.tar.gz -C $USER_HOME/.trinity/share/apps/konqiconview/
 sudo tar -xzf konqueror.profiles.tar.gz -C /root/.trinity/share/apps/konqueror/
