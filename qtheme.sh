@@ -1021,14 +1021,8 @@ kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --k
 
 
 echo -e "  \e[35m░▒▓█\033[0m configuring xcompmgr..."
-if [ ! "$osarch" = "armhf" ]; then
-#sudo kwriteconfig --file $USER_HOME/.xcompmgrrc --group xcompmgr --key useOpenGL true
 sudo tar -xzf theme/xcompmgrrc.tar.gz -C $USER_HOME/
 sudo tar -xzf theme/xcompmgrrc.tar.gz -C /root/
-else
-sudo tar -xzf theme/xcompmgrrc_pi.tar.gz -C $USER_HOME/
-sudo tar -xzf theme/xcompmgrrc_pi.tar.gz -C /root/
-fi
 
 echo -e "  \e[35m░▒▓█\033[0m configuring compton-tde..."
 if [[ $dark -eq 1 ]]; then
@@ -1118,7 +1112,7 @@ downlfold=$(xdg-user-dir DOWNLOAD)
 usrfold=$(xdg-user-dir USER)
 downlfoldroot=$(xdg-user-dir DOWNLOAD)
 #konqueror --preload
-konqueror system:/ --profile "filemanagement" > /dev/null 2>&1 & foo=$! && sleep 0.5 && kill -15 $foo
+#konqueror system:/ --profile "filemanagement" > /dev/null 2>&1 & foo=$! && sleep 0.5 && kill -15 $foo
 sudo find $TDEHOME/share/apps/konqsidebartng/filemanagement/entries -type f ! -name '.version' -exec rm {} +
 sudo tar -xzf theme/konqueror_dirtree.tar.gz -C $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/
 sudo chown -R $USER: $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/*
