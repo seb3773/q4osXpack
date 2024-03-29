@@ -550,7 +550,7 @@ echo
 itemdisp "Disabling Klipper/tdehwdevicetrayrc autostart..."
 echo
 sudo sed -i 's/AutoStart=true/AutoStart=false/' $USER_HOME/.trinity/share/config/klipperrc
-sudo sed -i 's/AutoStart=true/AutoStart=false/' $USER_HOME/.trinity/share/config/tdehwdevicetrayrc
+echo -e "[General]\nAutostart=false\n" > $USER_HOME/.trinity/share/config/tdehwdevicetrayrc
 sep
 echo
 echo

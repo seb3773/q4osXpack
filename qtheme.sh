@@ -1049,57 +1049,207 @@ echo -e "  \e[35m░▒▓█\033[0m disable screensaver & lock after suspend...
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group ScreenSaver --key Enabled false
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group ScreenSaver --key Lock false
 echo -e "  \e[35m░▒▓█\033[0m Configuring Konqueror ui..."
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key AlwaysNewWin false
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key DisplayFileSizeInBytes false
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key DoubleClickMoveToParent false
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key HoverCloseButton true
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key MMBOpensTab false
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowFileTips true
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowPreviewsInFileTips false
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
-sudo kwriteconfig --file $TDEHOME/share/config/konqiconviewrc --group Settings --key IconSize 48
-
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key AlwaysNewWin false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key DisplayFileSizeInBytes false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key DoubleClickMoveToParent false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key HoverCloseButton true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key MMBOpensTab false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowFileTips true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowPreviewsInFileTips false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "MainView Settings" --key SaveViewPropertiesLocally true
+kwriteconfig --file $TDEHOME/share/config/konqiconviewrc --group Settings --key IconSize 48
 rota
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key TabCloseActivatePrevious true
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key TextHeight 2
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key UnderlineLinks false
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Trash --key ConfirmDelete true
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Trash --key ConfirmTrash false
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KFileDialog Settings" --key "Automatic Preview" true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key TabCloseActivatePrevious true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key TextHeight 2
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key UnderlineLinks false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Trash --key ConfirmDelete true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Trash --key ConfirmTrash false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KFileDialog Settings" --key "Automatic Preview" true
 kwriteconfig --file $TDEHOME/share/config/tdecmshellrc --group "KFileDialog Settings" --key "Automatic Preview" true
 rota
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key IconText IconOnly
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key Index 4
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Hidden true
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key IconText IconTextRight
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Index 1
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key IconText IconOnly
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key Index 2
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key IconText IconOnly
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key Index 4
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Hidden true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key IconText IconTextRight
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Index 1
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key IconText IconOnly
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key Index 2
 rota
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key IconText IconOnly
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key Index 3
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconSize 32
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconText IconTextBottom
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key Index 0
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key Offset 19
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key IconText IconTextRight
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key Index 2
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key IconText IconOnly
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key Index 3
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconSize 32
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconText IconTextBottom
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key Index 0
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key Offset 19
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key IconText IconTextRight
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key Index 2
 rota
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key IconText IconOnly
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key Index 4
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Hidden true
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key IconText IconTextRight
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Index 5
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Hidden true
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key IconText IconTextRight
-sudo kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Index 6
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key IconText IconOnly
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key Index 4
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Hidden true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key IconText IconTextRight
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Index 5
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Hidden true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key IconText IconTextRight
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Index 6
 rota
-sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key UseFileThumbnails true
-sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key BoostSize true
-sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key file true
-sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key home true
-sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key system true
-sudo kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key MaximumSize 20971520
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key UseFileThumbnails true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key BoostSize true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key file true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key home true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key system true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key MaximumSize 20971520
+rota
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key AlwaysNewWin false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key DisplayFileSizeInBytes false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key DoubleClickMoveToParent false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key HoverCloseButton true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key MMBOpensTab false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowFileTips true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key ShowPreviewsInFileTips false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "MainView Settings" --key SaveViewPropertiesLocally true
+kwriteconfig --file $TDEHOME/share/config/konqiconviewrc --group Settings --key IconSize 48
+rota
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key TabCloseActivatePrevious true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key TextHeight 2
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key UnderlineLinks false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Trash --key ConfirmDelete true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Trash --key ConfirmTrash false
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KFileDialog Settings" --key "Automatic Preview" true
+kwriteconfig --file $TDEHOME/share/config/tdecmshellrc --group "KFileDialog Settings" --key "Automatic Preview" true
+rota
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key IconText IconOnly
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key Index 4
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Hidden true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key IconText IconTextRight
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Index 1
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key IconText IconOnly
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key Index 2
+rota
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key IconText IconOnly
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key Index 3
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconSize 32
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconText IconTextBottom
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key Index 0
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key Offset 19
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key IconText IconTextRight
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key Index 2
+rota
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key IconText IconOnly
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key Index 4
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Hidden true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key IconText IconTextRight
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Index 5
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Hidden true
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key IconText IconTextRight
+kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Index 6
+rota
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key UseFileThumbnails true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key BoostSize true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key file true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key home true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key system true
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key MaximumSize 20971520
+rota
+#konqueror root
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key AlwaysNewWin false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key DisplayFileSizeInBytes false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key DoubleClickMoveToParent false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key HoverCloseButton true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key MMBOpensTab false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key ShowFileTips true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key ShowPreviewsInFileTips false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "MainView Settings" --key SaveViewPropertiesLocally true
+sudo kwriteconfig --file /root/.trinity/share/config/konqiconviewrc --group Settings --key IconSize 48
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key TabCloseActivatePrevious true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key TextHeight 2
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key UnderlineLinks false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group Trash --key ConfirmDelete true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group Trash --key ConfirmTrash false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KFileDialog Settings" --key "Automatic Preview" true
+sudo kwriteconfig --file /root/.trinity/share/config/tdecmshellrc --group "KFileDialog Settings" --key "Automatic Preview" true
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key IconText IconOnly
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key Index 4
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Hidden true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key IconText IconTextRight
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Index 1
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key IconText IconOnly
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key Index 2
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key IconText IconOnly
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key Index 3
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconSize 32
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconText IconTextBottom
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key Index 0
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key Offset 19
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key IconText IconTextRight
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key Index 2
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key IconText IconOnly
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key Index 4
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Hidden true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key IconText IconTextRight
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Index 5
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Hidden true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key IconText IconTextRight
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Index 6
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PreviewSettings --key UseFileThumbnails true
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PreviewSettings --key BoostSize true
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PreviewSettings --key file true
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PreviewSettings --key home true
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PreviewSettings --key system true
+sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PreviewSettings --key MaximumSize 20971520
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key AlwaysNewWin false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key DisplayFileSizeInBytes false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key DoubleClickMoveToParent false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key HoverCloseButton true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key MMBOpensTab false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key ShowFileTips true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key ShowPreviewsInFileTips false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "MainView Settings" --key SaveViewPropertiesLocally true
+sudo kwriteconfig --file /root/.trinity/share/config/konqiconviewrc --group Settings --key IconSize 48
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key TabCloseActivatePrevious true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key TextHeight 2
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key UnderlineLinks false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group Trash --key ConfirmDelete true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group Trash --key ConfirmTrash false
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KFileDialog Settings" --key "Automatic Preview" true
+sudo kwriteconfig --file /root/.trinity/share/config/tdecmshellrc --group "KFileDialog Settings" --key "Automatic Preview" true
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key IconText IconOnly
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key Index 4
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Hidden true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key IconText IconTextRight
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Index 1
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key IconText IconOnly
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key Index 2
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key IconText IconOnly
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key Index 3
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconSize 32
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconText IconTextBottom
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key Index 0
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key Offset 19
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key IconText IconTextRight
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key Index 2
+rota
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key IconText IconOnly
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key Index 4
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Hidden true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key IconText IconTextRight
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Index 5
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Hidden true
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key IconText IconTextRight
+sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Index 6
 rota
 xdg-user-dirs-update
 deskfold=$(xdg-user-dir DESKTOP)
@@ -1751,8 +1901,8 @@ sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key GUIS
 sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key BackgroundMode Flat
 sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key WallpaperMode NoWallpaper
 sudo kwriteconfig --file /etc/trinity/tdm/backgroundrc --group Desktop0 --key Color1 "0,0,0"
-sudo kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFadeaway false
-sudo kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFancyLogout false
+kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFadeaway false
+kwriteconfig --file $TDEHOME/share/config/ksmserverrc --group Logout --key doFancyLogout false
 sudo rm -f /opt/trinity/share/apps/ksmserver/pics/shutdown.jpg
 #tdmtheme
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key UseTheme true
