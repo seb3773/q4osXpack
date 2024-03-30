@@ -812,7 +812,6 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MaximizeB
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveResizeMaximizedWindows false
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key Placement Smart
 rota
-kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ResetMaximizedWindowGeometry false
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ResizeMode Transparent
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key RollOverDesktops true
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key SeparateScreenFocus false
@@ -822,7 +821,7 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key TitlebarD
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key WindowSnapZone 10
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveResizeMaximizedWindows true
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ResetMaximizedWindowGeometry true
-kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key Placement Centered
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key Placement Random
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Desktops --key Number 1
 rota
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow1 "Activate, raise and pass click"
@@ -919,7 +918,6 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --ke
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveResizeMaximizedWindows false
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key Placement Smart
 rota
-sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ResetMaximizedWindowGeometry false
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ResizeMode Transparent
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key RollOverDesktops true
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key SeparateScreenFocus false
@@ -930,7 +928,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --ke
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key WindowSnapZone 10
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveResizeMaximizedWindows true
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ResetMaximizedWindowGeometry true
-sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key Placement Centered
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key Placement Random
 #sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveMode Opaque
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Desktops --key Number 1
 #sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group "Notification Messages" --key UseTranslucency true
