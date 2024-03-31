@@ -279,16 +279,17 @@ progress "$script" 15
 
 
 #========== Install Preload =====================================================================================
-itemdisp "Installing preload..."
-echo -e "${YELLOW}"
-sudo apt-get -y install preload
-echo -e "${NOCOLOR}"
-sep
-echo
-echo
-echo
-progress "$script" 20
-
+#only relevant for hdd
+#itemdisp "Installing preload..."
+#echo -e "${YELLOW}"
+#sudo apt-get -y install preload
+#echo -e "${NOCOLOR}"
+#sep
+#echo
+#echo
+#echo
+#progress "$script" 20
+#
 
 
 
@@ -302,7 +303,7 @@ sep
 echo
 echo
 echo
-progress "$script" 25
+progress "$script" 20
 
 
 
