@@ -71,6 +71,13 @@ echo
 
 itemdisp "Fetching latest version of the package list..."
 sudo apt update > /dev/null 2>&1
+aptup=1;for (( i=5; i>0; i--)); do
+printf "\rRunning apt upgrade in $i seconds.  Hit any key to cancel..."
+read -s -n 1 -t 1 key
+if [ $? -eq 0 ];then aptup=0;break;fi;done
+if [[ $aptup -eq 1 ]];then echo;echo "processing..."
+sudo apt upgrade -y
+else echo;echo "canceled.";fi
 sep
 echo
 echo

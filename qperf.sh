@@ -240,8 +240,8 @@ echo
 echo -e "${RED}█ ${ORANGE}Raspberry overclocking${NOCOLOR}"
 
 
-echo "Do you want to apply a little overclock"
-echo "(based on stable values, as long as you use at least an heatsink)"
+echo "Do you want to apply overclock"
+echo "(based on stable values, as long as you use proper cooling)"
 echo -n "(y:apply overclock/enter:skip) ?" && read x
 
 if [ "$x" == "y" ] || [ "$x" == "Y" ]; then
@@ -919,19 +919,19 @@ itemdisp "Overclocking"
 fichier="/boot/firmware/config.txt"
 ocapply=0
 model=$(cat /sys/firmware/devicetree/base/model)
-#pi 4 > over_voltage=6   ;   arm_freq=1800   ; gpu_freq=700
-#pi 400 > over_voltage=6   ;   arm_freq=2000   ; gpu_freq=750
+#pi 4 > over_voltage=6   ;   arm_freq=1850   ; gpu_freq=750
+#pi 400 > over_voltage=6   ;   arm_freq=2000   ; gpu_freq=800
 #pi 3 > over_voltage=5   ;   arm_freq=1300   ; gpu_freq=500
 #pi 3B+ > over_voltage=5   ;   arm_freq=1450   ; gpu_freq=500
 #pi 5 ? (is it needed ?)
 if [[ $model =~ "Pi 400 " ]]; then
-over_voltage=6;arm_freq=2000;gpu_freq=750;ocapply=1
+over_voltage=6;arm_freq=2000;gpu_freq=800;ocapply=1
 elif [[ $model =~ "Pi 4 " ]]; then
-over_voltage=6;arm_freq=1800;gpu_freq=700;ocapply=1
+over_voltage=6;arm_freq=1850;gpu_freq=750;ocapply=1
 elif [[ $model =~ "3 Model B Plus Rev" ]]; then
-over_voltage=5;arm_freq=1460;gpu_freq=500;ocapply=1
+over_voltage=5;arm_freq=1450;gpu_freq=500;ocapply=1
 elif [[ $model =~ "3 Model B Rev" ]]; then
-over_voltage=5;arm_freq=1310;gpu_freq=500;ocapply=1
+over_voltage=5;arm_freq=1300;gpu_freq=500;ocapply=1
 fi
 if [ "$ocapply" -eq 1 ]; then
 if grep -q "^over_voltage=[0-9]\+" "$fichier"; then
