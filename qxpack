@@ -9,9 +9,6 @@ cd "$script_directory"
 kdicon="$script_directory/common/Q4OSsebicon.png"
 osarch=$(dpkg --print-architecture)
 #------------------
-
-
-#-------------------
 QAPPS() {
 
 defaultapps=(
@@ -189,18 +186,7 @@ apps/qapps.sh > common/qapps.log 2>&1
 
 }
 
-
-
 #-----------------------------------------------
-
-
-
-
-
-
-
-
-
 
 
 
@@ -335,14 +321,6 @@ perfs/qperf.sh > common/qperf.log 2>&1
 
 
 
-
-
-
-
-
-
-
-
 #===============================================================================================================================
 QLAPTOP() {
 ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack Laptop configuration ⏺</strong></font><br><br>"
@@ -430,24 +408,6 @@ laptop/qlaptop.sh > common/qlaptop.log 2>&1
 
 }
 #===============================================================================================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -621,30 +581,18 @@ theme/qtheme.sh > common/qtheme.log 2>&1
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#############################################################################################################
 ###################################################" MAIN MENU ##############################################
-#Check if executed as root, if so, error msg to explain that "This script must not be run as root. Please run it as normal user, elevated rights will be asked when needed. "
-
-while true; do
-
 ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack ⏺</strong></font><br><br>"
 kdtitle="■■ q4osXpack "
 kdcaption="main menu"
+if [ "$EUID" -eq 0 ]
+then
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --error "This script must not be run as root. Please run it as normal user, elevated rights will be asked when needed. "
+exit
+fi
+
+while true; do
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 kdtext="$ktext
 <font style='color:#828282'>►</font> Choose a script to launch:<br>
@@ -654,23 +602,16 @@ menuchoice=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" 
 if [ $? -eq 1 ];then
 break
 else
-if [ "$menuchoice" = "qtheme" ]; then QTHEME;fi
-if [ "$menuchoice" = "qperf" ]; then QPERF;fi
-if [ "$menuchoice" = "qapps" ]; then QAPPS;fi
-if [ "$menuchoice" = "qlaptop" ]; then QLAPTOP;fi
+case "$menuchoice" in
+qtheme) QTHEME ;;
+qperf) QPERF ;;
+qapps) QAPPS ;;
+qlaptop) QLAPTOP ;;
+*) ;;
+esac
 fi
 
 
-
 done
-
-
-
-
-#QPERF
-#QTHEME
-#QAPPS
-
-
 
 
