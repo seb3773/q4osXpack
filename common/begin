@@ -1,0 +1,147 @@
+#!/bin/bash
+LIGHTGRAY='\033[0;37m';GRAY='\033[0;90m'
+NOCOLOR='\033[0m';RED='\033[0;31m'
+REDL='\033[0;91m';ORANGE='\033[0;33m'
+BLUE='\033[0;96m';LIGHTGREEN='\033[1;32m'
+YELLOW='\033[0;93m';WHITE='\033[0;97m'
+SEPL="${ORANGE}";for ((i = 0; i < 80; i++)); do  SEPL+="═";done;SEPL+="${NOCOLOR}";vm=""
+osarch=$(dpkg --print-architecture)
+qver=$(get-q4os-version)
+if (echo $LANG | grep -q "fr") then codlang="fr"
+elif (echo $LANG | grep -q "de") then codlang="de"
+elif (echo $LANG | grep -q "ru") then codlang="ru"
+else codlang="en";fi
+#user home
+USER_HOME=$(eval echo ~${SUDO_USER})
+begin () {
+if [ -z "$2" ]; then 
+wmctrl -r :ACTIVE: -N "$1"
+else
+if [ ! $2 = "conf" ]; then
+wmctrl -r :ACTIVE: -N "$1"
+fi
+fi
+echo -e "${LIGHTGRAY} "
+echo -e "$(cat common/title)"
+echo
+echo -en "  "
+for i in {18..21} {21..18} ; do echo -en "\e[48;5;${i}m \e[0m\e[48;5;${i}m \e[0m\e[48;5;${i}m \e[0m" ; done ;
+echo -en "\e[97m\e[1;4m$1\e[21m${LIGHTGRAY} "
+for i in {18..21} {21..18} ; do echo -en "\e[48;5;${i}m \e[0m\e[48;5;${i}m \e[0m\e[48;5;${i}m \e[0m" ; done ;
+echo -e "${NOCOLOR}"
+echo
+
+case "$1" in
+  "   Help Qtheme   ") echo -e "$(cat common/doc.qtheme)"; echo -e "$(cat common/atyourownrisk)";exit ;;
+  "Help Qapps") echo -e "$(cat common/doc.qapps)";exit ;;
+  "Help Qperfs") echo -e "$(cat common/doc.qperfs)";echo -e "$(cat common/atyourownrisk)" ;;
+  "Help Qlaptop") echo -e "$(cat common/doc.qlaptop)";echo -e "$(cat common/atyourownrisk)";;
+  "Help Qkids") ;;
+  *) ;;
+esac
+
+conf=0
+if [ -z "$2" ]; then 
+opt=0
+else
+if [ $2 = "backup" ]; then
+opt=1
+fi
+if [ $2 = "conf" ]; then
+conf=1
+dcopR=$3
+opt=0
+fi
+fi
+
+
+isvm=$(systemd-detect-virt)
+if [ "$isvm" != "none" ]; then
+vm="Virtual machine detected"
+if [ "$isvm" = "oracle" ]; then
+vmsys="(VirtualBox)"
+fi
+fi
+
+
+
+if [ $opt -eq 0 ]; then
+#test $TDEHOME
+if [ -z "$TDEHOME" ]
+then
+      echo -e "          ${RED}^-^"
+      echo -e "         (x X)${GRAY}"
+      echo -e "   ══${RED}ooO${GRAY}══${RED}(_)${GRAY}══${RED}Ooo${GRAY}══════ ${NOCOLOR}Error :-( ${GRAY}════════${NOCOLOR}"
+msg_err_root1="   \$TDEHOME is empty, cannot continue. This script is designed only for Q4OS Trinity Desktop."
+msg_err_root2="   If Trinity is installed, maybe this error is because you're launching this script with "
+msg_err_root3="   root rights. Please try to run it with normal user rights."
+if [ $conf -eq 0 ]; then
+echo $msg_err_root1
+echo $msg_err_root2
+echo $msg_err_root3
+      echo -en "\033]0;$script - Error\a"
+      echo
+      read -p "Press enter..."
+      echo
+      exit
+else
+dcop "$dcopR" close
+kdialog --error "Error:
+$msg_err_root1
+$msg_err_root2
+$msg_err_root3
+"
+exit
+fi
+
+
+else
+      echo -e "  ${LIGHTGRAY}█${NOCOLOR} User Home is ${ORANGE}$USER_HOME ${NOCOLOR} / ${BLUE}▒ Q4os version: $qver ${NOCOLOR}"
+      echo -e "  ${GRAY}█${NOCOLOR} TDEHOME is ${ORANGE}$TDEHOME ${NOCOLOR} / ${BLUE}▒ Architecture: $osarch ${NOCOLOR}"
+      if [ -n "$vm" ]; then
+      echo -e "  ${GRAY}█${YELLOW} ${LIGHTGREEN}$vm $vmsys ${NOCOLOR}"
+      fi
+#
+               if [[ $dark -eq 1 ]]
+               then
+                echo -e "  ${BLUE}█${NOCOLOR} Dark theme selected"
+               fi
+               if [[ $customcolor -eq 1 ]]
+               then
+                if [ -z "$accent" ]; then ccust="none selected yet"; else ccust=$accent; fi
+                echo -e "  ${YELLOW}█${NOCOLOR} Custom accent color:$ccust"
+               fi
+               if [[ $installall -eq 1 ]]
+               then
+                echo -e "  ${LIGHTGREEN}█${NOCOLOR} Install everything whithout asking"
+               fi
+      echo
+fi
+echo -e "          ${LIGHTGREEN}^-^"
+echo -e "         (o o)${GRAY}"
+echo -e "   ══${LIGHTGREEN}ooO${GRAY}══${LIGHTGREEN}(_)${GRAY}══${LIGHTGREEN}Ooo${GRAY}══════ ${NOCOLOR}Ready :-) ${GRAY}════════${NOCOLOR}"
+else
+echo -e "         ${GRAY}     █████                                                    "          
+echo -e "             ██${REDL}▒▒▒${GRAY}██                                                    "        
+echo -e "             ██${REDL}▒▒▒${GRAY}██                                                      "      
+echo -e "        ███████${REDL}▒▒▒${GRAY}███████     "
+echo -e "        █${REDL}▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒${GRAY}█     "
+echo -e "        ███████${REDL}▒▒▒${GRAY}███████    ${WHITE}___${GRAY}"
+echo -e "             ██${REDL}▒▒▒${GRAY}██        ${WHITE}<_${REDL}╋${WHITE}_>                                               "          
+echo -e "             ${GRAY}██${REDL}▒▒▒${GRAY}██        ${WHITE}(o o)${GRAY}                                                   "         
+echo -e "              ${GRAY}█████   ══${WHITE}ooO${GRAY}══${WHITE}(_)${GRAY}══${WHITE}Ooo${GRAY}══════ ${NOCOLOR}Ready :-) ${GRAY}════════${NOCOLOR}    "
+echo
+fi
+if [ $conf -eq 0 ]; then
+echo -en "\e[5m   Press enter to start (or esc to quit) \e[25m"
+read -s -n1 key
+ case $key in
+     $'\e') echo;printf '\e[A\e[K';echo;wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz;exit 2;;
+ esac
+echo
+printf '\e[A\e[K'
+fi
+echo
+echo
+}
+
