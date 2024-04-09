@@ -1,0 +1,36 @@
+#!/bin/bash
+#config.txt disable_splash=1
+fichier="/boot/firmware/config.txt"
+if grep -q "^disable_splash=[0-9]\+" "$fichier"; then
+sed -i 's/^disable_splash=[0-9]\+/disable_splash=1/' "$fichier"
+fi
+if ! grep -q "^disable_splash=1$" "$fichier"; then
+echo "disable_splash=1" | tee -a "$fichier" > /dev/null
+fi
+
+if grep -q "^arm_boost=[0-9]\+" "$fichier"; then
+sed -i 's/^arm_boost=[0-9]\+/arm_boost=1/' "$fichier"
+fi
+if ! grep -q "^arm_boost=1$" "$fichier"; then
+    echo "arm_boost=1" | tee -a "$fichier" > /dev/null
+fi
+
+#gpu mem
+mem_kb=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+mem_go=$(echo "scale=2; $mem_kb / 1024 / 1024" | bc)
+if (( $(echo "$mem_go < 2" | bc -l) )); then
+    gpumem=128
+elif (( $(echo "$mem_go >= 2 && $mem_go < 4" | bc -l) )); then
+    gpumem=256
+else
+    gpumem=320
+fi
+echo "Total ram: $mem_go Go"
+echo "GPU ram allocated: $gpumem Mo"
+if grep -q "^gpu_mem=[0-9]\+" "$fichier"; then
+sed -i "s/^gpu_mem=[0-9]\+/gpu_mem=$gpumem/" "$fichier"
+else
+echo "gpu_mem=$gpumem" | tee -a "$fichier" > /dev/null
+fi
+
+
