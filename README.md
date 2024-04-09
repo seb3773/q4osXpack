@@ -103,6 +103,8 @@ Login screen (sorry for the bad quality)
 Scripts menu:
 ![Alt text](/screenshots/q4osXpack_menu1.jpg?raw=true "main menu")
 ![Alt text](/screenshots/q4osXpack_menu2.jpg?raw=true "theming menu")
+![Alt text](/screenshots/q4osXpack_menu3.jpg?raw=true "theming menu")
+![Alt text](/screenshots/q4osXpack_menu4.jpg?raw=true "perfs menu")
 
 
 
