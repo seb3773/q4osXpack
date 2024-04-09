@@ -70,10 +70,10 @@ And then launch the main menu:
 ./qxpack
 
 You can launch directly the script you want too via terminal, from the q4osXpack folder:
-theme/qtheme.sh
-perfs/qperf.sh
-laptop/qlaptop.sh
-apps/qapps.sh
+theme/qtheme.sh 
+perfs/qperf.sh 
+laptop/qlaptop.sh 
+apps/qapps.sh 
 
 Parameters for all scripts:  -h  (display a little description of the script)  
   
