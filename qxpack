@@ -1,0 +1,676 @@
+#!/bin/bash
+centerk(){ ressc=$(xrandr | grep '*' | awk '{print $1}');screenw=$(echo $ressc | cut -d 'x' -f 1);screenh=$(echo $ressc | cut -d 'x' -f 2)
+center_x=$(( ($screenw - $1) / 2 ));center_y=$(( ($screenh - $2) / 2 ));kgeo="${1}x${2}+$center_x+$center_y";echo "$kgeo";}
+#----------------------------------------
+script_path="$0"
+script_full_path=$(realpath "$script_path")
+script_directory=$(dirname "$script_full_path")
+cd "$script_directory"
+kdicon="$script_directory/common/Q4OSsebicon.png"
+osarch=$(dpkg --print-architecture)
+#------------------
+
+
+#-------------------
+QAPPS() {
+
+defaultapps=(
+"Dolphin" "Dolphin                                      ••• [file manager]"
+"Ark" "Ark                                              ••• [archives manager]"
+"system-config-printer" "system-config-printer                ••• [printer manager]"
+"flashfetch" "flashfetch                                    ••• [cli system info]"
+"Stacer" "Stacer                                          ••• [system tools/task manager]"
+"bleachbit" "bleachbit                                     ••• [cleaner]"
+"vlc" "vlc                                                ••• [multimedia player]"
+"Strawberry" "Strawberry                                  ••• [music player]"
+"console tools" "console tools                              ••• [usefull cli tools]"
+"Gwenview" "Gwenview                                   ••• [image viewer]"
+"Kolourpaint" "Kolourpaint                                ••• [drawing app ala ms paint]"
+"KCharSelect" "KCharSelect                                ••• [char selector]"
+"Ksnapshot" "Ksnapshot                                  ••• [screen snapshot]"
+"Knotes" "Knotes                                        ••• [sticky notes]"
+"Kcron" "Kcron                                          ••• [tasks scheduler]"
+"kdirstat" "kdirstat                                       ••• [dirs sizes statistics]"
+"kpdf" "kpdf                                            ••• [pdf viewer]"
+)
+nbrDefault=$(( ${#defaultapps[@]} / 2 ))
+
+extraapps=(
+"qBittorent" "qBittorent                                          ••• [torrents client]"
+"Guvcview" "Guvcview                                           ••• [webcam tool]"
+"Spotify" "Spotify                                               ••• [spotify client]"
+"Microsoft Edge Browser" "Microsoft Edge Browser                   ••• [internet browser]"
+"Gparted" "Gparted                                             ••• [partitions manager]"
+"S4 Snapshot" "S4 Snapshot                                      ••• [backup/imaging tool]"
+"Web app manager" "Web app manager                           ••• [webapp manager]"
+"Remmina" "Remmina                                           ••• [rdp/vnc/ssh remote desktop client]"
+"Free Office" "Free Office                                        ••• [office suite]"
+"OnlyOffice" "OnlyOffice                                         ••• [office suite]"
+"Bpytop" "Bpytop                                              ••• [cli task manager]"
+"Virtualbox 7" "Virtualbox 7                                      ••• [virtualization tool]"
+"Qtscrcpy" "Qtscrcpy                                            ••• [android phone manager]"
+"Angry IP scanner" "Angry IP scanner                               ••• [ip scanner]"
+"Pinta" "Pinta                                                  ••• [paint.net like]"
+)
+
+kdtitle="■■ q4osXpack"
+kdcaption="qapps"
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+qapps1 () {
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack Apps ⏺</strong></font><br><br>
+<font style='color:#1a7c17'><em><strong>Default applications</strong></em></font><br><br>
+Most of them are usefull for the win theme,<br>
+but you can choose to not install some apps.<em><font style='color:red'> (not recommended)</font></em>
+<br><br><em>*Please note that if some apps are already installed,<br>
+unselecting them will not uninstall them.</em><br>
+─────────────────────<br>
+<font style='color:#828282'>►</font> <strong>Unselect</strong> the apps you <strong>don't want to install</strong>:<br>
+<font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>
+"
+kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 600 600) --checklist \"$kdtext\" "
+for ((i = 0; i < ${#defaultapps[@]}; i+=2)); do
+    kcmd+="\"${defaultapps[i]}\" \"${defaultapps[i+1]}\" on "
+done
+eval "$kcmd --separate-output"
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if [ $? -eq 1 ];then
+echo "Canceled.";return 1
+fi
+}
+
+
+qapps2() {
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack Apps ⏺</strong></font><br><br>
+<font style='color:#1a7c17'><em><strong>Additional applications</strong></em></font><br><br>
+─────────────────────<br>
+<font style='color:#828282'>►</font> <strong>Select</strong> the other apps you want to <strong>install</strong>:<br>
+<font style='color:#828282'><em>(or hit cancel to return to previous choice)</em></font><br>
+"
+kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 600 600) --checklist \"$kdtext\" "
+for ((i = 0; i < ${#extraapps[@]}; i+=2)); do
+    kcmd+="\"${extraapps[i]}\" \"${extraapps[i+1]}\" off "
+done
+eval "$kcmd --separate-output"
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if [ $? -eq 1 ];then
+echo "Canceled.";return 1
+fi
+}
+
+qapps3() {
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack Apps ⏺</strong></font><br><br>
+═══════════════════════════<br>
+<em>$msgDef1</em><br><br>
+<em>$msgDef2</em><br>
+═══════════════════════════<br><br>
+<font style='color:#828282'>►</font> Proceed with these settings ?<br>
+<font style='color:#828282'><em>(or hit cancel to return)</em></font>
+"
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --warningcontinuecancel "$kdtext"
+}
+
+
+################################################################################################
+while true; do
+while true; do
+
+Applist1=$(qapps1)
+if [ "$Applist1" = "Canceled." ]; then echo "Canceled by user.";return;fi
+
+Applist2=$(qapps2)
+if [ ! "$Applist2" = "Canceled." ]; then break;fi
+
+done
+
+IFS=$'\n'
+count1=$(echo "$Applist1" | wc -l)
+nbrdef=$((nbrDefault - count1))
+nbrextra=$(echo "$Applist2" | wc -l)
+
+
+app_names=()
+for ((i = 0; i < ${#defaultapps[@]}; i+=2)); do
+app_name="${defaultapps[i]}"
+app_names+=("$app_name")
+done
+not_selected_apps=()
+for app_name in "${app_names[@]}"; do
+if ! grep -q "$app_name" <<< "$Applist1"; then
+not_selected_apps+=("$app_name")
+fi
+done
+not_selected_apps_str=$(printf "%s\n" "${not_selected_apps[@]}")
+
+if [ $nbrdef -eq 0 ]; then
+msgDef1="►install all defaults apps"
+else
+msgDef1="►don't install $nbrdef of the defaults apps ($not_selected_apps_str)"
+fi
+
+if [ $nbrextra -eq 0 ]; then
+msgDef2="►don't install any extra apps"
+else
+msgDef2="►install $nbrextra other apps ($Applist2)"
+fi
+
+
+setok=$(qapps3)
+if [ $? -eq 0 ]; then
+break
+fi
+
+done
+
+tdesudo -c ls /dev/null > /dev/null 2>&1 -d -i password --comment "Administrator rights needed to run qapps"
+sudo rm -f "$script_directory/common/conf.qapps.tmp"
+sudo rm -f "$script_directory/common/qapps.log"
+sudo touch "$script_directory/common/qapps.log"
+sudo chmod 666 "$script_directory/common/qapps.log"
+sudo kwriteconfig --file "$script_directory/common/conf.qapps.tmp" --group "Infos" --key "comment" "This temporary conf file was generated by qXpack menu, it can be deleted."
+
+
+IFS=$'\n'
+for app in $Applist1; do
+sudo kwriteconfig --file "$script_directory/common/conf.qapps.tmp" --group "Default Apps" --key "$app" 1
+done
+
+for app in $Applist2; do
+sudo kwriteconfig --file "$script_directory/common/conf.qapps.tmp" --group "Extra Apps" --key "$app" 1
+done
+
+dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 20)
+sudo kwriteconfig --file "$script_directory/common/conf.qapps.tmp" --group "Settings" --key "progressref" "$dcopRef"
+
+sudo chmod +x apps/qapps.sh
+apps/qapps.sh > common/qapps.log 2>&1
+
+}
+
+
+
+#-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+QPERF() {
+
+#__________________________________________________________________________________________________________________________________________________________________________________________
+ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack Perf optimizations ⏺</strong></font><br><br>"
+kdtitle="■■ q4osXpack"
+kdcaption="qperf"
+instoptkern=0;instzram=0;disbluet=0;disprint=0;triminitram=0;raspoc=0;killlogs=0
+
+qperf1() {
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+kdtext="$ktext
+─────────────────────<br>
+Here are a few additional optimizations that you may toggle,<br>alongside the other optimizations set to be implemented.<br>
+(Recommended options are preselected)<br><br>
+<font style='color:#828282'>►</font> Select the options you want to apply:<br>
+<font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>"
+Sperf=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 650 550) --checklist "$kdtext" "optimized_kernel" "Install optimized kernel" off "install_zram" "Install zram" on "disable_bluetooth" "Disable bluetooth services" off "disable_print" "Disable print services" off "initramfs_trim" "initramfs Trimming" on "rasp_oc" "Raspberry overclocking" off "disable_logs" "disable logs" on --separate-output )
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if [ $? -eq 1 ];then
+echo "Canceled.";return 1
+else
+echo $Sperf
+fi
+}
+
+
+
+qperf2() {
+ikern=$(cat /proc/version)
+ikernv=$(echo "$ikern" | cut -d' ' -f1-3)
+xanver=$(./perfs/check_x86-64_psabi.sh)
+vnum="${xanver: -2}"
+kdtext="$ktext
+─────────────────────<br>
+Current kernel installed:<br>$ikernv<br>
+─────────────────────<br>
+<font style='color:#828282'>►</font> Select a kernel to install:<br>
+<font style='color:#828282'><em>(or hit cancel to return to previous choice)</em></font><br>"
+Skern=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 400 350) --menu "$kdtext" "Liquorix" "install Liquorix Kernel" "linux-xanmod-x64$vnum" "install linux-xanmod-x64$vnum [MAIN]" "linux-xanmod-lts-x64$vnum" "install linux-xanmod-x64$vnum [LTS]")
+#~~~~~~~~~~~~~
+if [ $? -eq 1 ];then
+echo "Canceled.";return 1
+else
+echo $Skern
+fi
+}
+
+
+qperf3(){
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+kdtext="$ktext
+additional optimizations selected:<br>
+═══════════════════════════<br>"
+if echo $PerfOpt1 | grep -q "optimized_kernel"; then
+kdtext="$kdtext""<em>►install optimized kernel</em><br>";fi
+if echo $PerfOpt1 | grep -q "install_zram"; then
+kdtext="$kdtext""<em>►install zram</em><br>";fi
+if echo $PerfOpt1 | grep -q "disable_bluetooth"; then
+kdtext="$kdtext""<em>►disable bluetooth services</em><br>";fi
+if echo $PerfOpt1 | grep -q "disable_bluetooth"; then
+kdtext="$kdtext""<em>►disable print services</em><br>";fi
+if echo $PerfOpt1 | grep -q "initramfs_trim"; then
+kdtext="$kdtext""<em>►trim initramfs</em><br>";fi
+if echo $PerfOpt1 | grep -q "rasp_oc"; then
+kdtext="$kdtext""<em>►raspberry overclocking</em><br>";fi
+if echo $PerfOpt1 | grep -q "disable_logs"; then
+kdtext="$kdtext""<em>►disable logs</em><br>";fi
+kdtext="$kdtext""═══════════════════════════<br><br>
+<font style='color:#828282'>►</font> Proceed with these settings ?<br>
+<font style='color:#828282'><em>(or hit cancel to return to perf options choice)</em></font>
+"
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --warningcontinuecancel "$kdtext"
+}
+
+while true; do
+while true; do
+
+PerfOpt1=$(qperf1)
+if [ "$PerfOpt1" = "Canceled." ]; then echo "Canceled by user.";return;fi
+
+if echo $PerfOpt1 | grep -q "optimized_kernel"; then
+
+PerfOpt2=$(qperf2)
+if [ "$PerfOpt2" = "Canceled." ]; then echo "Canceled."
+else
+break
+fi
+
+else
+break
+fi
+
+done
+
+setok=$(qperf3)
+if [ $? -eq 0 ]; then
+break
+fi
+
+done
+
+
+tdesudo -c ls /dev/null > /dev/null 2>&1 -d -i password --comment "Administrator rights needed to run qperf"
+sudo rm -f "$script_directory/common/conf.qperf.tmp"
+sudo rm -f "$script_directory/common/qperf.log"
+sudo touch "$script_directory/common/qperf.log"
+sudo chmod 666 "$script_directory/common/qperf.log"
+sudo kwriteconfig --file "$script_directory/common/conf.qperf.tmp" --group "Infos" --key "comment" "This temporary conf file was generated by qXpack menu, it can be deleted."
+
+IFS=$' '
+for optperf in $PerfOpt1; do
+sudo kwriteconfig --file "$script_directory/common/conf.qperf.tmp" --group "Optimizations" --key "$optperf" 1
+done
+
+if echo $PerfOpt1 | grep -q "optimized_kernel"; then
+sudo kwriteconfig --file "$script_directory/common/conf.qperf.tmp" --group "Optimizations" --key "Kernel" "$PerfOpt2"
+fi
+
+dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 20)
+sudo kwriteconfig --file "$script_directory/common/conf.qperf.tmp" --group "Settings" --key "progressref" "$dcopRef"
+
+sudo chmod +x perfs/qperf.sh
+perfs/qperf.sh > common/qperf.log 2>&1
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+#===============================================================================================================================
+QLAPTOP() {
+ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack Laptop configuration ⏺</strong></font><br><br>"
+kdtitle="■■ q4osXpack"
+kdcaption="qlaptop"
+insttlpui=0;insthiber=0
+
+qlap1() {
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+kdtext="$ktext
+─────────────────────<br>
+This script will apply a specific configuration for laptop.<br><br>
+As TLP (power management daemon) will be installed, you can select<br>
+to install TLPui too, a nice gui to control the TLP settings.<br><br>
+You can choose to install hibernation function too<br>
+(this will imply setting up a swap file)<br><br>
+<font style='color:#828282'>►</font> Select the options you want to apply:<br>
+<font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>"
+Slap=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 450) --checklist "$kdtext" "insttlpui" "Install TLP ui" off "insthiber" "Install hibernation function" on --separate-output )
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if [ $? -eq 1 ];then
+echo "Canceled.";return 1
+else
+echo $Slap
+fi
+}
+
+
+
+qlap2(){
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+kdtext="$ktext
+options selected:<br>
+═══════════════════════════<br>"
+if echo $LaptOpt | grep -q "insttlpui"; then
+kdtext="$kdtext""<em>►install TLP ui</em><br>"
+else
+kdtext="$kdtext""<em>►don't install TLP ui</em><br>"
+fi
+
+if echo $LaptOpt | grep -q "insthiber"; then
+kdtext="$kdtext""<em>►install hibernation</em><br>"
+else
+kdtext="$kdtext""<em>►don't install hibernation</em><br>"
+fi
+
+kdtext="$kdtext""═══════════════════════════<br><br>
+<font style='color:#828282'>►</font> Proceed ?<br>
+<font style='color:#828282'><em>(or hit cancel to return to previous choices)</em></font>
+"
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --warningcontinuecancel "$kdtext"
+}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+while true; do
+
+LaptOpt=$(qlap1)
+if [ "$LaptOpt" = "Canceled." ]; then echo "Canceled by user.";return;fi
+
+setok=$(qlap2)
+if [ $? -eq 0 ]; then
+break
+fi
+
+done
+
+tdesudo -c ls /dev/null > /dev/null 2>&1 -d -i password --comment "Administrator rights needed to run qlaptop"
+sudo rm -f "$script_directory/common/conf.qlaptop.tmp"
+sudo rm -f "$script_directory/common/qlaptop.log"
+sudo touch "$script_directory/common/qlaptop.log"
+sudo chmod 666 "$script_directory/common/qlaptop.log"
+sudo kwriteconfig --file "$script_directory/common/conf.qlaptop.tmp" --group "Infos" --key "comment" "This temporary conf file was generated by qXpack menu, it can be deleted."
+
+IFS=$' '
+for optlap in $LaptOpt; do
+sudo kwriteconfig --file "$script_directory/common/conf.qlaptop.tmp" --group "Settings" --key "$optlap" 1
+done
+
+dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 20)
+sudo kwriteconfig --file "$script_directory/common/conf.qlaptop.tmp" --group "Settings" --key "progressref" "$dcopRef"
+
+sudo chmod +x laptop/qlaptop.sh
+laptop/qlaptop.sh > common/qlaptop.log 2>&1
+
+}
+#===============================================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+QTHEME() {
+#__________________________________________________________________________________________________________________________________________________________________________________________
+ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack Win10 Theme ⏺</strong></font><br><br>"
+kdtitle="■■ q4osXpack"
+kdcaption="qtheme"
+qtheme1() {
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+kdtext="$ktext
+─────────────────────<br>
+<font style='color:#828282'>►</font> Choose your theme mode:<br>
+<font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>"
+Fthememode=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --menu "$kdtext" "Classic windows 10 theme" "Classic windows 10 theme" "Dark windows 10 theme" "Dark windows 10 theme" --default "Classic windows 10 theme")
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if [ $? -eq 1 ];then
+echo "Canceled."
+else echo $Fthememode
+fi
+}
+
+
+qtheme2() {
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+kdtext="$ktext
+═══════════════════════════<br>
+<em>►$thememode selected.</em><br>
+═══════════════════════════<br>
+<font style='color:#828282'>►</font> Choose your theme accent color:<br>
+<font style='color:#828282'><em>(or hit cancel to return to previous choice)</em></font><br>"
+Fthemecolor=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --menu "$kdtext" "Theme default color accent" "Theme default color accent" "Custom color accent" "Custom color accent" --default "Theme default color accent")
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if [ $? -eq 1 ];then
+echo "Canceled."
+else
+echo $Fthemecolor
+fi
+}
+
+
+
+
+qtheme3() {
+kdtext="$ktext
+═══════════════════════════<br>
+<em>►$thememode selected.</em><br>
+<em>►$themecolor</em><br>
+═══════════════════════════<br><br>
+<font style='color:#828282'>►</font> Please select an accent color on the next window, then close it then you're done.
+"
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --msgbox "$kdtext"
+if [ "$osarch" = "amd64" ]; then
+theme/kcolorchooser --print
+fi
+if [ "$osarch" = "i386" ]; then
+theme/kcolorchooser32 --print
+fi
+if [ "$osarch" = "armhf" ]; then
+theme/kcolorchooserarmhf --print
+fi
+}
+
+
+qtheme4() {
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#ask if color ok (show with block char in dialog)
+kdtext="$ktext
+═══════════════════════════<br>
+<em>►$thememode selected.</em><br>
+<em>►$themecolor</em><br>
+<em>►Accent color:</em> <font style='color:$themeaccolor'> ████ </font> ($themeaccolor)<br>
+═══════════════════════════<br><br>
+<font style='color:#828282'>►</font> Proceed with these settings ?<br>
+<font style='color:#828282'><em>(or hit cancel to return to theme choice)</em></font>
+"
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --warningcontinuecancel "$kdtext"
+}
+
+
+qtheme5() {
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+kdtext="$ktext
+═══════════════════════════<br>
+<em>►$thememode selected.</em><br>
+<em>►$themecolor</em><br>
+═══════════════════════════<br><br>
+<font style='color:#828282'>►</font> Proceed with these settings ?<br>
+<font style='color:#828282'><em>(or hit cancel to return to theme choice)</em></font>
+"
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --warningcontinuecancel "$kdtext"
+}
+
+
+
+################################################################################################
+thememode="";themecolor="";themeaccolor=""
+
+while true; do
+while true; do
+
+thememode=$(qtheme1)
+case "$thememode" in
+    "Canceled.")
+        echo "Canceled by user.";return
+        ;;
+    "Classic windows 10 theme")
+        ;;
+    "Dark windows 10 theme")
+        ;;
+esac
+
+themecolor=$(qtheme2)
+case "$themecolor" in
+    "Canceled.")
+        ;;
+    "Theme default color accent")
+        break
+        ;;
+    "Custom color accent")
+        break
+        ;;
+esac
+
+done
+
+if [ "$themecolor" = "Custom color accent" ]; then
+themeaccolor=$(qtheme3)
+setok=$(qtheme4)
+if [ $? -eq 0 ]; then
+break
+fi
+else
+setok=$(qtheme5)
+if [ $? -eq 0 ]; then
+break
+fi
+fi
+
+done
+
+tdesudo -c ls /dev/null > /dev/null 2>&1 -d -i password --comment "Administrator rights needed to run qtheme"
+sudo rm -f "$script_directory/common/conf.qtheme.tmp"
+sudo rm -f "$script_directory/common/qtheme.log"
+sudo touch "$script_directory/common/qtheme.log"
+sudo chmod 666 "$script_directory/common/qtheme.log"
+sudo kwriteconfig --file "$script_directory/common/conf.qtheme.tmp" --group "Infos" --key "comment" "This temporary conf file was generated by qXpack menu, it can be deleted."
+if [ "$thememode" = "Dark windows 10 theme" ]; then
+sudo kwriteconfig --file "$script_directory/common/conf.qtheme.tmp" --group "Settings" --key "darkmode" 1
+else
+sudo kwriteconfig --file "$script_directory/common/conf.qtheme.tmp" --group "Settings" --key "darkmode" 0
+fi
+
+if [ "$themecolor" = "Custom color accent" ]; then
+sudo kwriteconfig --file "$script_directory/common/conf.qtheme.tmp" --group "Settings" --key "custom" 1
+sudo kwriteconfig --file "$script_directory/common/conf.qtheme.tmp" --group "Settings" --key "customcolor" "$themeaccolor"
+else
+sudo kwriteconfig --file "$script_directory/common/conf.qtheme.tmp" --group "Settings" --key "custom" 0
+fi
+
+dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 20)
+sudo kwriteconfig --file "$script_directory/common/conf.qtheme.tmp" --group "Settings" --key "progressref" "$dcopRef"
+
+
+sudo chmod +x theme/qtheme.sh
+theme/qtheme.sh > common/qtheme.log 2>&1
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###################################################" MAIN MENU ##############################################
+#Check if executed as root, if so, error msg to explain that "This script must not be run as root. Please run it as normal user, elevated rights will be asked when needed. "
+
+while true; do
+
+ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack ⏺</strong></font><br><br>"
+kdtitle="■■ q4osXpack "
+kdcaption="main menu"
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+kdtext="$ktext
+<font style='color:#828282'>►</font> Choose a script to launch:<br>
+<font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>"
+menuchoice=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 450 480) --menu "$kdtext" "qtheme" " ▬▬▬  Win10 Theme" "qperf" " ▬▬▬  Perf optimizations" "qapps" " ▬▬▬  Essential apps" "qlaptop" " ▬▬▬  Laptop configuration" "qthtools" " ════  Theme tools  ☺" "qsytools" " ════  System tools  ⌂" "qshcut"   " …………  Create shortcuts  →" "qhelp" " …………  Help  ○")
+
+if [ $? -eq 1 ];then
+break
+else
+if [ "$menuchoice" = "qtheme" ]; then QTHEME;fi
+if [ "$menuchoice" = "qperf" ]; then QPERF;fi
+if [ "$menuchoice" = "qapps" ]; then QAPPS;fi
+if [ "$menuchoice" = "qlaptop" ]; then QLAPTOP;fi
+fi
+
+
+
+done
+
+
+
+
+#QPERF
+#QTHEME
+#QAPPS
+
+
+
+
