@@ -100,9 +100,9 @@ Classic light theme
 Login screen (sorry for the bad quality)
 ![Alt text](/screenshots/q5os_seb_screenshot_login.jpg?raw=true "login screen")
 
-Scripts command line interface
-![Alt text](/screenshots/q5os_seb_screenshot_scripts.jpg?raw=true "dark theme")
-![Alt text](/screenshots/q5os_seb_screenshot_scripts_2.jpg?raw=true "dark theme")
+Scripts menu:
+![Alt text](/screenshots/q4osXpack_menu1.jpg?raw=true "main menu")
+![Alt text](/screenshots/q4osXpack_menu2.jpg?raw=true "theming menu")
 
 
 
