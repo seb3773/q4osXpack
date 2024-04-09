@@ -106,6 +106,8 @@ Scripts menus:
 ![Alt text](/screenshots/q4osXpack_menu2.jpg?raw=true "theming menu")
 ![Alt text](/screenshots/q4osXpack_menu3.jpg?raw=true "theming menu")
 ![Alt text](/screenshots/q4osXpack_menu4.jpg?raw=true "perfs menu")
+![Alt text](/screenshots/q4osXpack_menu5.jpg?raw=true "apps menu")
+![Alt text](/screenshots/q4osXpack_menu6.jpg?raw=true "laptop menu")
 
 
 
