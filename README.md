@@ -69,7 +69,7 @@ sudo chmod +x qxpack
 And then launch the main menu:
 ./qxpack
 
-You can launch directly the script you want too via terminal, from the q4osXpack folder:
+You can launch directly the script you want too via terminal, from the q4osXpack folder:  
 theme/qtheme.sh  
 perfs/qperf.sh  
 laptop/qlaptop.sh  
