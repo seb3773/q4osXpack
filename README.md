@@ -24,7 +24,6 @@ I try to keep all differents parts of the theme as lightweight as possible as it
 ## ▓▓ Qperf script:
 This one is designed to try to improve performances of your system. If you have a very recent computer, you maybe don't need it. But my testing on differents systems shows that even modern computers can gain some benefits from it. You can install a new optimized kernel (choice between xanmod & liquorix), optional of course. It will disable some services not really needed for classic desktop usage, disable javascript in libre office (if installed),tune compton-tde conf, removes ufw & some fonts, do some sysctl tweaks, disable core dump, setup temp directories as tmps, disabling some logging, install zram, trim initramfs size and finally some cleaning.  
 I tested it a lot, but if something horrible happens, you can restore the backup created in the folder backup/ , by simply launching the restore script.
-This script can be lanched via terminal directly too: in the q4osXpack folder, type: theme/qperf.sh
 
 
 ## ▒▒ Qlaptop:
