@@ -1,9 +1,0 @@
- \e[39m  Qlaptop script is designed to configure the Q4OS Trinity system for usage on
-   a laptop by installing some tools like TLP and changing TDEpowersave (which doesn't
-   work well on some systems I tried) for the xfce4-power-manager. It will setup
-   lid action too, swap if doesn't exist yet and suspend-then-hibernate action.
-   Complete description in the main read.me
-\e[0m
-
-
-
