@@ -100,7 +100,8 @@ Classic light theme
 Login screen (sorry for the bad quality)
 ![Alt text](/screenshots/q5os_seb_screenshot_login.jpg?raw=true "login screen")
 
-Scripts menu:
+Scripts menus:
+
 ![Alt text](/screenshots/q4osXpack_menu1.jpg?raw=true "main menu")
 ![Alt text](/screenshots/q4osXpack_menu2.jpg?raw=true "theming menu")
 ![Alt text](/screenshots/q4osXpack_menu3.jpg?raw=true "theming menu")
