@@ -228,7 +228,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 20
+qprogress "$script" 15
 
 
 #---------------------------------------lx-taskmod
@@ -255,20 +255,7 @@ echo
 else
 echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
 fi
-qprogress "$script" 25
-
-
-#---------------------------------------Stacer
-if [[ $conffile -eq 1 ]]; then
-inststac=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "Stacer")
-else inststac=1;fi
-
-if [[ $inststac -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Stacer...";fi
-itemdisp "Installing Stacer..."
-installApp "stacer" "stacer/stable"
-fi
-qprogress "$script" 30
+qprogress "$script" 20
 
 
 #---------------------------------------bleachbit
@@ -281,7 +268,7 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing bleachbit...
 itemdisp "Installing bleachbit..."
 installApp "bleachbit" "bleachbit/stable"
 fi
-qprogress "$script" 35
+qprogress "$script" 25
 
 
 #---------------------------------------vlc
@@ -294,7 +281,7 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing vlc...";fi
 itemdisp "Installing vlc..."
 installApp "vlc" "vlc/stable"
 fi
-qprogress "$script" 40
+qprogress "$script" 30
 
 
 #---------------------------------------console tools
@@ -308,7 +295,7 @@ itemdisp "Installing usefull console tools..."
 installApp "duf" "duf/stable" 0
 installApp "jdupes" "jdupes/stable"
 fi
-qprogress "$script" 45
+qprogress "$script" 35
 
 
 #---------classics tools, may be already installed with desktop version
@@ -415,7 +402,7 @@ tar -xzf theme/strawberry.conf.tar.gz -C $USER_HOME/.configtde/strawberry/
 echo
 fi
 
-qprogress "$script" 55
+qprogress "$script" 40
 
 
 #============== Install Apps (interactive) ======================================================================
@@ -456,7 +443,7 @@ do
 done
 fi
 fi
-qprogress "$script" 60
+qprogress "$script" 45
 
 
 #---------------------------------------Guvcview
@@ -494,7 +481,7 @@ done
 fi
 
 fi
-qprogress "$script" 60
+qprogress "$script" 50
 
 
 
@@ -549,7 +536,7 @@ echo
 
 fi
 fi
-qprogress "$script" 65
+qprogress "$script" 55
 
 
 
@@ -603,7 +590,7 @@ echo
 echo
 fi
 fi
-qprogress "$script" 65
+qprogress "$script" 60
 
 
 #---------------------------------------Gparted
@@ -641,7 +628,47 @@ do
 done
 fi
 fi
-qprogress "$script" 70
+qprogress "$script" 60
+
+
+
+#---------------------------------------Stacer
+if [[ $conffile -eq 1 ]]; then
+inststac=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Stacer")
+else inststac=1;fi
+if [[ $inststac -eq 1 ]]; then
+
+itemdisp "Installing Stacer"
+if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Stacer...";fi
+    installApp "stacer" "stacer/stable"
+else
+
+echo
+echo -e "${RED}█ ${ORANGE}Install Stacer ? (task/system manager)${NOCOLOR}"
+optionz=("Install Stacer" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install Stacer")
+            echo -e "  \e[35m░▒▓█\033[0m Installing Stacer..."
+            installApp "stacer" "stacer/stable"
+            break
+            ;;
+        "Skip")
+            sep
+            echo
+            echo
+            echo
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+fi
+qprogress "$script" 65
+
 
 
 #---------------------------------------S4 Snapshot
@@ -687,7 +714,7 @@ echo
 echo
 echo
 fi 
-qprogress "$script" 75
+qprogress "$script" 70
 
 
 #---------------------------------------Web app manager
@@ -875,7 +902,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 85
+qprogress "$script" 80
 
 
 #---------------------------------------OnlyOffice
@@ -967,7 +994,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 90
+qprogress "$script" 85
 
 
 
@@ -1023,7 +1050,7 @@ echo
 
 fi
 fi
-qprogress "$script" 95
+qprogress "$script" 90
 
 
 
@@ -1080,7 +1107,7 @@ echo
 echo
 fi
 fi
-qprogress "$script" 95
+qprogress "$script" 90
 
 
 
@@ -1133,6 +1160,59 @@ do
     esac
 done
 fi
+fi
+fi
+qprogress "$script" 95
+
+
+#---------------------------------------Kdiskmark
+if [[ $conffile -eq 1 ]]; then
+instkdiskm=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Kdiskmark")
+else instkdiskm=1;fi
+if [[ $instkdiskm -eq 1 ]]; then
+
+if ( getconf LONG_BIT | grep -q 64 ); then
+itemdisp "Installing Kdiskmark"
+installKdisk () {
+            if ! isinstalled "kdiskmark/" "common/packages_list.tmp"; then
+            echo -e "${YELLOW}"
+            cd apps
+            sudo apt install -y fio
+            sudo apt install -y ./kdiskmark_3.1.4-debian_amd64.deb
+            sudo sed -i 's/^Exec=.*/Exec=tdesudo kdiskmark/' /usr/share/applications/kdiskmark.desktop
+            sudo sed -i 's/^Exec=.*/Exec=tdesudo kdiskmark/' "$USER_HOME/KDiskMark/data/kdiskmark.desktop"
+            cd ..
+            echo -e "${NOCOLOR}"
+            else
+            echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+            fi
+}
+if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Kdiskmark...";fi
+    installKdisk
+else
+echo
+echo -e "${RED}█ ${ORANGE}Install Kdiskmark ? (disks speed benchmark tool)${NOCOLOR}"
+optionz=("Install Kdiskmark" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install Kdiskmark")
+            echo -e "  \e[35m░▒▓█\033[0m Installing Kdiskmark..."
+            installKdisk
+            break
+            ;;
+        "Skip")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+sep
+echo
+echo
+echo
 fi
 fi
 qprogress "$script" 95
