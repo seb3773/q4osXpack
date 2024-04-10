@@ -16,7 +16,6 @@ defaultapps=(
 "Ark" "Ark                                              ••• [archives manager]"
 "system-config-printer" "system-config-printer                ••• [printer manager]"
 "flashfetch" "flashfetch                                    ••• [cli system info]"
-"Stacer" "Stacer                                          ••• [system tools/task manager]"
 "bleachbit" "bleachbit                                     ••• [cleaner]"
 "vlc" "vlc                                                ••• [multimedia player]"
 "Strawberry" "Strawberry                                  ••• [music player]"
@@ -36,18 +35,21 @@ extraapps=(
 "qBittorent" "qBittorent                                          ••• [torrents client]"
 "Guvcview" "Guvcview                                           ••• [webcam tool]"
 "Spotify" "Spotify                                               ••• [spotify client]"
+"Pinta" "Pinta                                                  ••• [paint.net like]"
 "Microsoft Edge Browser" "Microsoft Edge Browser                   ••• [internet browser]"
-"Gparted" "Gparted                                             ••• [partitions manager]"
-"S4 Snapshot" "S4 Snapshot                                      ••• [backup/imaging tool]"
 "Web app manager" "Web app manager                           ••• [webapp manager]"
-"Remmina" "Remmina                                           ••• [rdp/vnc/ssh remote desktop client]"
 "Free Office" "Free Office                                        ••• [office suite]"
 "OnlyOffice" "OnlyOffice                                         ••• [office suite]"
+"Qtscrcpy" "Qtscrcpy                                            ••• [android phone manager]"
+"Gparted" "Gparted                                             ••• [partitions manager]"
+"Stacer" "Stacer                                                ••• [system tools/task manager]"
+"S4 Snapshot" "S4 Snapshot                                      ••• [backup/imaging tool]"
+"Remmina" "Remmina                                           ••• [rdp/vnc/ssh remote desktop client]"
 "Bpytop" "Bpytop                                              ••• [cli task manager]"
 "Virtualbox 7" "Virtualbox 7                                      ••• [virtualization tool]"
-"Qtscrcpy" "Qtscrcpy                                            ••• [android phone manager]"
+"Kdiskmark" "Kdiskmark                                         ••• [disk speed benchmark tool]"
 "Angry IP scanner" "Angry IP scanner                               ••• [ip scanner]"
-"Pinta" "Pinta                                                  ••• [paint.net like]"
+
 )
 
 kdtitle="■■ q4osXpack"
@@ -58,7 +60,7 @@ qapps1 () {
 kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack Apps ⏺</strong></font><br><br>
 <font style='color:#1a7c17'><em><strong>Default applications</strong></em></font><br><br>
 Most of them are usefull for the win theme,<br>
-but you can choose to not install some apps.<em><font style='color:red'> (not recommended)</font></em>
+but you can choose to not install some apps.
 <br><br><em>*Please note that if some apps are already installed,<br>
 unselecting them will not uninstall them.</em><br>
 ─────────────────────<br>
