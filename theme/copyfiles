@@ -2726,14 +2726,19 @@ echo "  \e[35m░▒▓█\033[0m copying style files"
 if [ $1 -eq 1 ]
 then
 tar -xzf qtcurve_stylerc_dark.tar.gz -C $USER_HOME/.configtde/qtcurve/
+chown $USER_SU $USER_HOME/.configtde/qtcurve/stylerc
 tar -xzf qtcurve_stylerc_dark.tar.gz -C /root/.config/qtcurve/
 else
 tar -xzf qtcurve_stylerc.tar.gz -C $USER_HOME/.configtde/qtcurve/
+chown $USER_SU $USER_HOME/.configtde/qtcurve/stylerc
 tar -xzf qtcurve_stylerc.tar.gz -C /root/.config/qtcurve/
 fi
 tar -xzf tdestylerc.tar.gz -C $USER_HOME/.qt/
+chown $USER_SU $USER_HOME/.qt/tdestylerc
 tar -xzf tdestylerc.tar.gz -C /etc/tqt3/
 tar -xzf qtrc.tar.gz -C $USER_HOME/.qt/
+chown $USER_SU $USER_HOME/.qt/qtrc
+
 tar -xzf qtrc.tar.gz -C /etc/tqt3/
 
 echo "  \e[35m░▒▓█\033[0m copying sounds"
@@ -2825,12 +2830,6 @@ sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth
 sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/48x48/actions/switchuser.png" > /dev/null 2>&1
 sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/64x64/actions/switchuser.png" > /dev/null 2>&1
 sudo ln -s "$USER_HOME/.face.icon" "$USER_HOME/.local/share/icons/kdeten_$iconth/scalable/actions/switchuser.png" > /dev/null 2>&1
-#convert "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -resize 16x16 "$USER_HOME/.local/share/icons/kdeten_$iconth/16x16/actions/switchuser.png"
-#convert "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -resize 22x22 "$USER_HOME/.local/share/icons/kdeten_$iconth/22x22/actions/switchuser.png"
-#convert "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -resize 24x24 "$USER_HOME/.local/share/icons/kdeten_$iconth/24x24/actions/switchuser.png"
-#convert "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -resize 32x32 "$USER_HOME/.local/share/icons/kdeten_$iconth/32x32/actions/switchuser.png"
-#convert "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -resize 48x48 "$USER_HOME/.local/share/icons/kdeten_$iconth/48x48/actions/switchuser.png"
-#convert "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -resize 64x64 "$USER_HOME/.local/share/icons/kdeten_$iconth/64x64/actions/switchuser.png"
 
 echo "  \e[35m░▒▓█\033[0m copying conf files..."
 if [ $1 -eq 1 ]
