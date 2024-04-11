@@ -50,8 +50,7 @@ source common/progress
 if [[ $conffile -eq 1 ]]; then
 begin "$script" "conf" "$dcopRef"
 qprogress () {
-pro=$(( $2 / 5 ))
-dcop "$dcopRef" setProgress $pro
+dcop "$dcopRef" setProgress $2
 }
 else
 begin "$script"
@@ -139,8 +138,9 @@ echo
 echo
 echo
 
+qprogress "$script" 3
+
 #========== retrieve packages list ==============================================================================
-qprogress "$script" 0
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Retrieve installed packages list...";fi
 echo -e "    ${ORANGE}░▒▓█\033[0m Retrieve installed packages list...${NOCOLOR}"
 echo
@@ -148,7 +148,7 @@ cd common
 sudo ./pklist
 cd ..
 echo
-
+qprogress "$script" 4
 
 #============== Install Apps (automatic) ========================================================================
 itemdisp "Installing GIT..."
@@ -159,7 +159,7 @@ qprogress "$script" 5
 itemdisp "Installing 7zip..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing 7zip...";fi
 installApp "7z" "p7zip-full/stable"
-qprogress "$script" 5
+qprogress "$script" 6
 
 
 #---------------------------------------Ark
@@ -172,7 +172,7 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Ark...";fi
 itemdisp "Installing Ark..."
 installApp "ark" "ark/stable"
 fi
-qprogress "$script" 5
+qprogress "$script" 7
 
 
 #---------------------------------------Dolphin
@@ -185,7 +185,7 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Dolphin...";
 itemdisp "Installing Dolphin..."
 installApp "dolphin-trinity" "dolphin-trinity/"
 fi
-qprogress "$script" 10
+qprogress "$script" 8
 
 
 #---------------------------------------system-config-printer
@@ -198,7 +198,7 @@ itemdisp "Installing system-config-printer..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing system-config-printer...";fi
 installApp "system-config-printer" "system-config-printer/stable"
 fi
-qprogress "$script" 15
+qprogress "$script" 9
 
 #---------------------------------------flashfetch
 if [[ $conffile -eq 1 ]]; then
@@ -228,7 +228,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 15
+qprogress "$script" 10
 
 
 #---------------------------------------lx-taskmod
@@ -255,7 +255,7 @@ echo
 else
 echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
 fi
-qprogress "$script" 20
+qprogress "$script" 12
 
 
 #---------------------------------------bleachbit
@@ -268,7 +268,7 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing bleachbit...
 itemdisp "Installing bleachbit..."
 installApp "bleachbit" "bleachbit/stable"
 fi
-qprogress "$script" 25
+qprogress "$script" 15
 
 
 #---------------------------------------vlc
@@ -281,7 +281,7 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing vlc...";fi
 itemdisp "Installing vlc..."
 installApp "vlc" "vlc/stable"
 fi
-qprogress "$script" 30
+qprogress "$script" 18
 
 
 #---------------------------------------console tools
@@ -295,7 +295,7 @@ itemdisp "Installing usefull console tools..."
 installApp "duf" "duf/stable" 0
 installApp "jdupes" "jdupes/stable"
 fi
-qprogress "$script" 35
+qprogress "$script" 19
 
 
 #---------classics tools, may be already installed with desktop version
@@ -313,6 +313,7 @@ echo -e "  \e[35m░▒▓█\033[0m Installing Gwenview..."
 installApp "gwenview-trinity" "gwenview-trinity" 0
 fi
 
+qprogress "$script" 20
 
 #---------------------------------------Kolourpaint
 if [[ $conffile -eq 1 ]]; then
@@ -324,6 +325,7 @@ echo -e "  \e[35m░▒▓█\033[0m Installing Kolourpaint..."
 installApp "kolourpaint-trinity" "kolourpaint-trinity" 0
 fi
 
+qprogress "$script" 21
 
 #---------------------------------------KCharSelect
 if [[ $conffile -eq 1 ]]; then
@@ -335,6 +337,8 @@ echo -e "  \e[35m░▒▓█\033[0m Installing KCharSelect..."
 installApp "kcharselect-trinity" "kcharselect-trinity" 0
 fi
 
+qprogress "$script" 22
+
 #---------------------------------------Ksnapshot
 if [[ $conffile -eq 1 ]]; then
 instksnap=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "Ksnapshot")
@@ -345,6 +349,7 @@ echo -e " \e[35m░▒▓█\033[0m Installing Ksnapshot..."
 installApp "ksnapshot-trinity" "ksnapshot-trinity" 0
 fi
 
+qprogress "$script" 23
 
 #---------------------------------------Knotes
 if [[ $conffile -eq 1 ]]; then
@@ -355,7 +360,7 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Knotes...";f
 echo -e " \e[35m░▒▓█\033[0m Installing Knotes..."
 installApp "knotes-trinity" "knotes-trinity" 0
 fi
-
+qprogress "$script" 24
 
 #---------------------------------------Kcron
 if [[ $conffile -eq 1 ]]; then
@@ -366,7 +371,7 @@ echo -e " \e[35m░▒▓█\033[0m Installing Kcron..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Kcron...";fi
 installApp "kcron-trinity" "kcron-trinity" 0
 fi
-
+qprogress "$script" 25
 
 #---------------------------------------kdirstat
 if [[ $conffile -eq 1 ]]; then
@@ -377,6 +382,7 @@ echo -e " \e[35m░▒▓█\033[0m Installing kdirstat..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing kdirstat...";fi
 installApp "kdirstat-trinity" "kdirstat-trinity" 0
 fi
+qprogress "$script" 26
 
 #---------------------------------------kpdf
 if [[ $conffile -eq 1 ]]; then
@@ -387,7 +393,7 @@ echo -e " \e[35m░▒▓█\033[0m Installing kpdf..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing kpdf...";fi
 installApp "kpdf-trinity" "kpdf-trinity"
 fi
-
+qprogress "$script" 27
 
 #---------------------------------------Strawberry
 if [[ $conffile -eq 1 ]]; then
@@ -402,7 +408,7 @@ tar -xzf theme/strawberry.conf.tar.gz -C $USER_HOME/.configtde/strawberry/
 echo
 fi
 
-qprogress "$script" 40
+qprogress "$script" 30
 
 
 #============== Install Apps (interactive) ======================================================================
@@ -443,7 +449,7 @@ do
 done
 fi
 fi
-qprogress "$script" 45
+qprogress "$script" 32
 
 
 #---------------------------------------Guvcview
@@ -481,7 +487,54 @@ done
 fi
 
 fi
-qprogress "$script" 50
+qprogress "$script" 33
+
+
+
+#SMPLayer/MPV
+confsm() {
+mkdir -p "$USER_HOME/.configtde/smplayer/"
+tar -xzf apps/smplayer.conf.tar.gz -C "$USER_HOME/.configtde/smplayer/"
+sudo chown -R $USER: "$USER_HOME/.configtde/smplayer/smplayer.ini"
+}
+
+if [[ $conffile -eq 1 ]]; then
+instsmp=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "SMPlayer")
+else instsmp=1;fi
+if [[ $instsmp -eq 1 ]]; then
+
+itemdisp "Installing SMPlayer/MPV"
+if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing SMPlayer/MPV...";fi
+    installApp "smplayer" "smplayer/"
+    confsm
+else
+echo
+echo -e "${RED}█ ${ORANGE}Install SMPlayer/MPV ?${NOCOLOR}"
+optionz=("Install SMPlayer" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install SMPlayer")
+            echo -e "  \e[35m░▒▓█\033[0m Installing SMPlayer/MPV..."
+            installApp "smplayer" "smplayer/"
+            confsm
+            break
+            ;;
+        "Skip")
+            sep
+            echo
+            echo
+            echo
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+
+fi
+qprogress "$script" 34
 
 
 
@@ -501,6 +554,7 @@ installSpoty () {
             curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
             echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
             sudo apt-get update
+            qprogress "$script" 35
             sudo apt-get install -y spotify-client
             echo -e "${NOCOLOR}"
             else
@@ -536,7 +590,7 @@ echo
 
 fi
 fi
-qprogress "$script" 55
+qprogress "$script" 38
 
 
 
@@ -556,6 +610,7 @@ installEdge () {
             curl -fSsL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /usr/share/keyrings/microsoft-edge.gpg > /dev/null
             echo 'deb [signed-by=/usr/share/keyrings/microsoft-edge.gpg] https://packages.microsoft.com/repos/edge stable main' | sudo tee /etc/apt/sources.list.d/microsoft-edge.list
             sudo apt update
+            qprogress "$script" 40
             sudo apt install microsoft-edge-stable
             echo -e "${NOCOLOR}"
             else
@@ -590,7 +645,7 @@ echo
 echo
 fi
 fi
-qprogress "$script" 60
+qprogress "$script" 42
 
 
 #---------------------------------------Gparted
@@ -628,7 +683,7 @@ do
 done
 fi
 fi
-qprogress "$script" 60
+qprogress "$script" 45
 
 
 
@@ -667,7 +722,7 @@ do
 done
 fi
 fi
-qprogress "$script" 65
+qprogress "$script" 47
 
 
 
@@ -714,7 +769,7 @@ echo
 echo
 echo
 fi 
-qprogress "$script" 70
+qprogress "$script" 50
 
 
 #---------------------------------------Web app manager
@@ -764,7 +819,7 @@ do
 done
 fi
 fi
-qprogress "$script" 75
+qprogress "$script" 52
 
 
 #---------------------------------------Pinta
@@ -813,7 +868,7 @@ do
 done
 fi
 fi
-qprogress "$script" 75
+qprogress "$script" 53
 
 
 
@@ -851,7 +906,7 @@ do
 done
 fi
 fi
-qprogress "$script" 80
+qprogress "$script" 55
 
 
 #---------------------------------------Free Office
@@ -869,6 +924,7 @@ function installFreeO() {
             sudo bash -c 'wget -qO- https://shop.softmaker.com/repo/linux-repo-public.key | gpg --dearmor > /etc/apt/keyrings/softmaker.gpg'
             sudo bash -c 'echo "deb [signed-by=/etc/apt/keyrings/softmaker.gpg] https://shop.softmaker.com/repo/apt stable non-free" > /etc/apt/sources.list.d/softmaker.list'
             sudo apt update
+            qprogress "$script" 56
             sudo apt install -y softmaker-freeoffice-2021
             echo -e "${NOCOLOR}"
             else
@@ -902,7 +958,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 80
+qprogress "$script" 58
 
 
 #---------------------------------------OnlyOffice
@@ -917,6 +973,7 @@ function installOnlyO() {
             echo -e "  \e[35m░▒▓█\033[0m Installing OnlyOffice..."
             echo -e "${YELLOW}"
             sudo wget https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb
+            qprogress "$script" 60
             sudo apt install -y ./onlyoffice-desktopeditors_amd64.deb
             sudo rm -f ./onlyoffice-desktopeditors_amd64.deb
             echo -e "${NOCOLOR}"
@@ -950,7 +1007,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 85
+qprogress "$script" 65
 
 
 
@@ -994,7 +1051,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 85
+qprogress "$script" 67
 
 
 
@@ -1014,6 +1071,7 @@ installVbox () {
             wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
             echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
             sudo apt update
+            qprogress "$script" 70
             sudo apt install -y virtualbox-7.0
             sudo usermod -G vboxusers -a $USER
             echo -e "${NOCOLOR}"
@@ -1050,7 +1108,7 @@ echo
 
 fi
 fi
-qprogress "$script" 90
+qprogress "$script" 75
 
 
 
@@ -1069,6 +1127,7 @@ installQtscrcpy () {
             echo -e "${YELLOW}"
             cd apps
             sudo apt install -y libqt5multimedia5
+            qprogress "$script" 76
             sudo 7z x -so qtscrcpy.tar.7z | sudo tar xf - -C $USER_HOME/
             sudo mkdir -p $USER_HOME/.local/bin
             sudo ln -s $USER_HOME/qtscrcpy/QtScrcpy $USER_HOME/.local/bin/QtScrcpy
@@ -1107,7 +1166,7 @@ echo
 echo
 fi
 fi
-qprogress "$script" 90
+qprogress "$script" 78
 
 
 
@@ -1162,7 +1221,7 @@ done
 fi
 fi
 fi
-qprogress "$script" 95
+qprogress "$script" 80
 
 
 #---------------------------------------Kdiskmark
@@ -1178,6 +1237,7 @@ installKdisk () {
             echo -e "${YELLOW}"
             cd apps
             sudo apt install -y fio
+            qprogress "$script" 83
             sudo apt install -y ./kdiskmark_3.1.4-debian_amd64.deb
             sudo sed -i 's/^Exec=.*/Exec=tdesudo kdiskmark/' /usr/share/applications/kdiskmark.desktop
             sudo sed -i 's/^Exec=.*/Exec=tdesudo kdiskmark/' "$USER_HOME/KDiskMark/data/kdiskmark.desktop"
@@ -1215,7 +1275,7 @@ echo
 echo
 fi
 fi
-qprogress "$script" 95
+qprogress "$script" 85
 
 
 
@@ -1225,7 +1285,9 @@ itemdisp "Cleaning files..."
 echo
 sudo rm -f common/packages_list.tmp
 sudo apt clean
+qprogress "$script" 86
 sudo apt autoremove -y
+qprogress "$script" 88
 sep
 echo
 echo
