@@ -35,7 +35,8 @@ extraapps=(
 "qBittorent" "qBittorent                                          ••• [torrents client]"
 "Guvcview" "Guvcview                                           ••• [webcam tool]"
 "Spotify" "Spotify                                               ••• [spotify client]"
-"Pinta" "Pinta                                                  ••• [paint.net like]"
+"SMPlayer" "SMPlayer/MPV                                   ••• [multimedia player]"
+"Pinta" "Pinta                                                   ••• [paint.net like]"
 "Microsoft Edge Browser" "Microsoft Edge Browser                   ••• [internet browser]"
 "Web app manager" "Web app manager                           ••• [webapp manager]"
 "Free Office" "Free Office                                        ••• [office suite]"
@@ -67,7 +68,7 @@ unselecting them will not uninstall them.</em><br>
 <font style='color:#828282'>►</font> <strong>Unselect</strong> the apps you <strong>don't want to install</strong>:<br>
 <font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>
 "
-kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 600 600) --checklist \"$kdtext\" "
+kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 550 600) --checklist \"$kdtext\" "
 for ((i = 0; i < ${#defaultapps[@]}; i+=2)); do
     kcmd+="\"${defaultapps[i]}\" \"${defaultapps[i+1]}\" on "
 done
@@ -87,7 +88,7 @@ kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack Apps ⏺</strong></fon
 <font style='color:#828282'>►</font> <strong>Select</strong> the other apps you want to <strong>install</strong>:<br>
 <font style='color:#828282'><em>(or hit cancel to return to previous choice)</em></font><br>
 "
-kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 600 600) --checklist \"$kdtext\" "
+kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 550 600) --checklist \"$kdtext\" "
 for ((i = 0; i < ${#extraapps[@]}; i+=2)); do
     kcmd+="\"${extraapps[i]}\" \"${extraapps[i+1]}\" off "
 done
@@ -180,7 +181,7 @@ for app in $Applist2; do
 sudo kwriteconfig --file "$script_directory/common/conf.qapps.tmp" --group "Extra Apps" --key "$app" 1
 done
 
-dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 20)
+dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 100)
 sudo kwriteconfig --file "$script_directory/common/conf.qapps.tmp" --group "Settings" --key "progressref" "$dcopRef"
 
 sudo chmod +x apps/qapps.sh
@@ -208,7 +209,11 @@ Here are a few additional optimizations that you may toggle,<br>alongside the ot
 (Recommended options are preselected)<br><br>
 <font style='color:#828282'>►</font> Select the options you want to apply:<br>
 <font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>"
-Sperf=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 650 550) --checklist "$kdtext" "optimized_kernel" "Install optimized kernel" off "install_zram" "Install zram" on "disable_bluetooth" "Disable bluetooth services" off "disable_print" "Disable print services" off "initramfs_trim" "initramfs Trimming" on "rasp_oc" "Raspberry overclocking" off "disable_logs" "disable logs" on --separate-output )
+if [ ! "$osarch" = "armhf" ]; then
+Sperf=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 450 550) --checklist "$kdtext" "optimized_kernel" "Install optimized kernel" off "install_zram" "Install zram" on "disable_bluetooth" "Disable bluetooth services" off "disable_print" "Disable print services" off "initramfs_trim" "initramfs Trimming" on "disable_logs" "disable logs" on --separate-output )
+else
+Sperf=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 450 550) --checklist "$kdtext" "install_zram" "Install zram" on "disable_bluetooth" "Disable bluetooth services" off "disable_print" "Disable print services" off "initramfs_trim" "initramfs Trimming" on "rasp_oc" "Raspberry overclocking" off "disable_logs" "disable logs" on --separate-output )
+fi
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if [ $? -eq 1 ];then
 echo "Canceled.";return 1
@@ -311,7 +316,7 @@ if echo $PerfOpt1 | grep -q "optimized_kernel"; then
 sudo kwriteconfig --file "$script_directory/common/conf.qperf.tmp" --group "Optimizations" --key "Kernel" "$PerfOpt2"
 fi
 
-dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 20)
+dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 100)
 sudo kwriteconfig --file "$script_directory/common/conf.qperf.tmp" --group "Settings" --key "progressref" "$dcopRef"
 
 sudo chmod +x perfs/qperf.sh
@@ -402,7 +407,7 @@ for optlap in $LaptOpt; do
 sudo kwriteconfig --file "$script_directory/common/conf.qlaptop.tmp" --group "Settings" --key "$optlap" 1
 done
 
-dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 20)
+dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 100)
 sudo kwriteconfig --file "$script_directory/common/conf.qlaptop.tmp" --group "Settings" --key "progressref" "$dcopRef"
 
 sudo chmod +x laptop/qlaptop.sh
@@ -427,7 +432,7 @@ kdtext="$ktext
 ─────────────────────<br>
 <font style='color:#828282'>►</font> Choose your theme mode:<br>
 <font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>"
-Fthememode=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --menu "$kdtext" "Classic windows 10 theme" "Classic windows 10 theme" "Dark windows 10 theme" "Dark windows 10 theme" --default "Classic windows 10 theme")
+Fthememode=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 400 350) --menu "$kdtext" "Classic windows 10 theme" "Classic windows 10 theme" "Dark windows 10 theme" "Dark windows 10 theme" --default "Classic windows 10 theme")
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if [ $? -eq 1 ];then
 echo "Canceled."
@@ -444,7 +449,7 @@ kdtext="$ktext
 ═══════════════════════════<br>
 <font style='color:#828282'>►</font> Choose your theme accent color:<br>
 <font style='color:#828282'><em>(or hit cancel to return to previous choice)</em></font><br>"
-Fthemecolor=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --menu "$kdtext" "Theme default color accent" "Theme default color accent" "Custom color accent" "Custom color accent" --default "Theme default color accent")
+Fthemecolor=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 400 350) --menu "$kdtext" "Theme default color accent" "Theme default color accent" "Custom color accent" "Custom color accent" --default "Theme default color accent")
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if [ $? -eq 1 ];then
 echo "Canceled."
@@ -489,7 +494,7 @@ kdtext="$ktext
 <font style='color:#828282'>►</font> Proceed with these settings ?<br>
 <font style='color:#828282'><em>(or hit cancel to return to theme choice)</em></font>
 "
-kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --warningcontinuecancel "$kdtext"
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 450 350) --warningcontinuecancel "$kdtext"
 }
 
 
@@ -503,7 +508,7 @@ kdtext="$ktext
 <font style='color:#828282'>►</font> Proceed with these settings ?<br>
 <font style='color:#828282'><em>(or hit cancel to return to theme choice)</em></font>
 "
-kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --warningcontinuecancel "$kdtext"
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 450 350) --warningcontinuecancel "$kdtext"
 }
 
 
@@ -573,7 +578,7 @@ else
 sudo kwriteconfig --file "$script_directory/common/conf.qtheme.tmp" --group "Settings" --key "custom" 0
 fi
 
-dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 20)
+dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 100)
 sudo kwriteconfig --file "$script_directory/common/conf.qtheme.tmp" --group "Settings" --key "progressref" "$dcopRef"
 
 
@@ -599,7 +604,7 @@ while true; do
 kdtext="$ktext
 <font style='color:#828282'>►</font> Choose a script to launch:<br>
 <font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>"
-menuchoice=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 450 480) --menu "$kdtext" "qtheme" " ▬▬▬  Win10 Theme" "qperf" " ▬▬▬  Perf optimizations" "qapps" " ▬▬▬  Essential apps" "qlaptop" " ▬▬▬  Laptop configuration" "qthtools" " ════  Theme tools  ☺" "qsytools" " ════  System tools  ⌂" "qshcut"   " …………  Create shortcuts  →" "qhelp" " …………  Help  ○")
+menuchoice=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 300 400) --menu "$kdtext" "qtheme" " ▬  Win10 Theme" "qperf" " ▬  Perf optimizations" "qapps" " ▬  Essential apps" "qlaptop" " ▬  Laptop configuration" "qthtools" " ═  Theme tools  ☺" "qsytools" " ═  System tools  ⌂" "qshcut"   " …  Create shortcuts  →" "qhelp" " …  Help  ○")
 
 if [ $? -eq 1 ];then
 break
@@ -609,6 +614,7 @@ qtheme) QTHEME ;;
 qperf) QPERF ;;
 qapps) QAPPS ;;
 qlaptop) QLAPTOP ;;
+qthtools) tools/themetools.sh ;;
 *) ;;
 esac
 fi
