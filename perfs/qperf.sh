@@ -53,8 +53,7 @@ source common/progress
 if [[ $conffile -eq 1 ]]; then
 begin "$script" "conf" "$dcopRef"
 qprogress () {
-pro=$(( $2 / 5 ))
-dcop "$dcopRef" setProgress $pro
+dcop "$dcopRef" setProgress $2
 }
 else
 begin "$script"
@@ -105,6 +104,8 @@ printf '\e[A\e[K'
 echo
 echo
 
+qprogress "$script" 1
+
 osarch=$(dpkg --print-architecture)
 
 
@@ -143,6 +144,7 @@ echo
 echo
 echo
 
+qprogress "$script" 3
 
 #========== retrieve packages list ==============================================================================
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Retrieve installed packages list...";fi
@@ -152,7 +154,7 @@ cd common
 sudo ./pklist
 cd ..
 echo
-
+qprogress "$script" 4
 
 #========== Install optimized Kernel ============================================================================
 if [ ! "$osarch" = "armhf" ]; then
@@ -435,7 +437,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 10
+qprogress "$script" 6
 
 
 #========== Customize Kernel command line =======================================================================
@@ -447,7 +449,7 @@ else
 sudo ./perfpiboot
 fi
 cd ..
-qprogress "$script" 15
+qprogress "$script" 8
 
 
 
@@ -477,7 +479,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 20
+qprogress "$script" 10
 
 
 
@@ -492,7 +494,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 25
+qprogress "$script" 15
 
 
 #========== Reducing available consoles number  ===================================================================
@@ -514,7 +516,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 30
+qprogress "$script" 20
 
 
 #========== Removing tdecryptocardwatcher =======================================================================
@@ -533,7 +535,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 35
+qprogress "$script" 22
 
 
 
@@ -547,7 +549,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 40
+qprogress "$script" 24
 
 
 
@@ -563,7 +565,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 40
+qprogress "$script" 25
 
 itemdisp "Set scheduler for removable drives to none for max throughput"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Set scheduler for removable drives to none...";fi
@@ -577,7 +579,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 45
+qprogress "$script" 28
 
 
 
@@ -591,24 +593,29 @@ echo "DefaultTimeoutStopSec=10" | sudo tee -a /etc/systemd/system.conf
 fi
 sudo sed -i "/DefaultTimeoutStopSec=/c\DefaultTimeoutStopSec=10" /etc/systemd/system.conf
 sudo sed -i "/#DefaultTimeoutStopSec=/c\DefaultTimeoutStopSec=10" /etc/systemd/system.conf
+qprogress "$script" 29
+
 
 if ! grep -q "DefaultTimeoutAbortSec=" "/etc/systemd/system.conf"; then
 echo "DefaultTimeoutAbortSec=10" | sudo tee -a /etc/systemd/system.conf
 fi
 sudo sed -i "/DefaultTimeoutAbortSec=/c\DefaultTimeoutAbortSec=10" /etc/systemd/system.conf
 sudo sed -i "/#DefaultTimeoutAbortSec=/c\DefaultTimeoutAbortSec=10" /etc/systemd/system.conf
+qprogress "$script" 30
 
 if ! grep -q "DefaultDeviceTimeoutSec=" "/etc/systemd/system.conf"; then
 echo "DefaultDeviceTimeoutSec=10" | sudo tee -a /etc/systemd/system.conf
 fi
 sudo sed -i "/DefaultDeviceTimeoutSec=/c\DefaultDeviceTimeoutSec=10" /etc/systemd/system.conf
 sudo sed -i "/#DefaultDeviceTimeoutSec=/c\DefaultDeviceTimeoutSec=10" /etc/systemd/system.conf
+qprogress "$script" 31
 
 if ! grep -q "LogLevel=" "/etc/systemd/system.conf"; then
 echo "LogLevel=warning" | sudo tee -a /etc/systemd/system.conf
 fi
 sudo sed -i "/LogLevel=/c\LogLevel=warning" /etc/systemd/system.conf
 sudo sed -i "/#LogLevel=/c\LogLevel=warning" /etc/systemd/system.conf
+qprogress "$script" 31
 
 
 if ! grep -q "DefaultTimeoutStopSec=" "/etc/systemd/user.conf"; then
@@ -616,35 +623,36 @@ echo "DefaultTimeoutStopSec=10" | sudo tee -a /etc/systemd/user.conf
 fi
 sudo sed -i "/DefaultTimeoutStopSec=/c\DefaultTimeoutStopSec=10" /etc/systemd/user.conf
 sudo sed -i "/#DefaultTimeoutStopSec=/c\DefaultTimeoutStopSec=10" /etc/systemd/user.conf
+qprogress "$script" 32
 
 if ! grep -q "DefaultTimeoutAbortSec=" "/etc/systemd/user.conf"; then
 echo "DefaultTimeoutAbortSec=10" | sudo tee -a /etc/systemd/user.conf
 fi
 sudo sed -i "/DefaultTimeoutAbortSec=/c\DefaultTimeoutAbortSec=10" /etc/systemd/user.conf
 sudo sed -i "/#DefaultTimeoutAbortSec=/c\DefaultTimeoutAbortSec=10" /etc/systemd/user.conf
+qprogress "$script" 33
 
 if ! grep -q "DefaultDeviceTimeoutSec=" "/etc/systemd/user.conf"; then
 echo "DefaultDeviceTimeoutSec=10" | sudo tee -a /etc/systemd/user.conf
 fi
 sudo sed -i "/DefaultDeviceTimeoutSec=/c\DefaultDeviceTimeoutSec=10" /etc/systemd/user.conf
 sudo sed -i "/#DefaultDeviceTimeoutSec=/c\DefaultDeviceTimeoutSec=10" /etc/systemd/user.conf
+qprogress "$script" 34
 
 if ! grep -q "LogLevel=" "/etc/systemd/user.conf"; then
 echo "LogLevel=warning" | sudo tee -a /etc/systemd/user.conf
 fi
 sudo sed -i "/LogLevel=/c\LogLevel=warning" /etc/systemd/user.conf
 sudo sed -i "/#LogLevel=/c\LogLevel=warning" /etc/systemd/user.conf
-
+qprogress "$script" 35
 
 #using $UID for user system conf overrride
-
-
 
 sep
 echo
 echo
 echo
-qprogress "$script" 50
+
 
 
 
@@ -666,7 +674,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 50
+qprogress "$script" 40
 
 
 
@@ -684,6 +692,7 @@ sep
 echo
 echo
 echo
+qprogress "$script" 42
 
 
 itemdisp "change commit interval for ext4 partitions"
@@ -695,7 +704,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 55
+qprogress "$script" 45
 
 
 
@@ -709,7 +718,7 @@ sep
 echo
 echo
 echo
-
+qprogress "$script" 47
 
 
 #========== no klipper/tdehwdevicetrayrc autostart ===================================================================================
@@ -722,8 +731,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 55
-
+qprogress "$script" 50
 
 
 
@@ -736,11 +744,15 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Disabling ModemManager 
 sudo systemctl stop ModemManager.service
 sudo systemctl disable ModemManager.service
 sudo systemctl mask ModemManager.service
+qprogress "$script" 52
+
 echo -e "  \e[35m░▒▓█\033[0m NetworkManager-wait-online service"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Disabling NetworkManager-wait-online service...";fi
 sudo systemctl stop NetworkManager-wait-online.service
 sudo systemctl disable NetworkManager-wait-online.service
 sudo systemctl mask NetworkManager-wait-online.service
+qprogress "$script" 54
+
 echo -e "  \e[35m░▒▓█\033[0m rsyslog.service"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Disabling rsyslog service...";fi
 sudo systemctl stop rsyslog
@@ -749,27 +761,36 @@ sudo systemctl mask rsyslog
 sudo systemctl stop syslog.socket
 sudo systemctl disable syslog.socket
 sudo systemctl mask syslog.socket
-qprogress "$script" 60
+qprogress "$script" 56
+
 echo -e "  \e[35m░▒▓█\033[0m smbd service"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Disabling smbd service...";fi
 sudo systemctl stop smbd.service
 sudo systemctl disable smbd.service
 sudo systemctl mask smbd.service
+qprogress "$script" 58
+
 echo -e "  \e[35m░▒▓█\033[0m nmbd service"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Disabling nmbd service...";fi
 sudo systemctl stop nmbd.service
 sudo systemctl disable nmbd.service
 sudo systemctl mask nmbd.service
+qprogress "$script" 60
+
 echo -e "  \e[35m░▒▓█\033[0m apparmor service"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Disabling apparmor service...";fi
 sudo systemctl stop apparmor
 sudo systemctl disable apparmor
 sudo systemctl mask apparmor
+qprogress "$script" 62
+
 echo -e "  \e[35m░▒▓█\033[0m serial-getty service"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Disabling serial-getty service...";fi
 sudo systemctl stop serial-getty@ttyS0.service
 sudo systemctl disable serial-getty@ttyS0.service
 sudo systemctl mask serial-getty@ttyS0.service
+qprogress "$script" 64
+
 echo -e "  \e[35m░▒▓█\033[0m logrotate service"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Disabling logrotate service...";fi
 sudo systemctl stop logrotate.service
@@ -778,19 +799,26 @@ sudo systemctl mask logrotate.service
 sudo systemctl stop logrotate.timer
 sudo systemctl disable logrotate.timer
 sudo systemctl mask logrotate.timer
+qprogress "$script" 66
+
 echo -e "  \e[35m░▒▓█\033[0m colord service"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Disabling colord service...";fi
 sudo systemctl stop colord
 sudo systemctl disable colord
 sudo systemctl mask colord
+qprogress "$script" 68
+
 echo -e "  \e[35m░▒▓█\033[0m smartd service"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Disabling colord service...";fi
 sudo systemctl stop smartd
 sudo systemctl disable smartd
 sudo systemctl mask smartd
+qprogress "$script" 70
+
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Disabling syslog for dbus service...";fi
 sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/system/dbus.service
 sudo sed -i 's/--syslog-only/--nosyslog/g' /lib/systemd/user/dbus.service
+qprogress "$script" 71
 echo
 if [ "$disblue" == "1" ]; then
             echo -e "  \e[35m░▒▓█\033[0m Disabling bluetooth..."
@@ -800,6 +828,7 @@ if [ "$disblue" == "1" ]; then
             sudo systemctl mask bluetooth.service
             sudo sed -i -e 's/^AutoEnable=true/AutoEnable=false/' /etc/bluetooth/main.conf
             sudo sed -i -e 's/^BLUETOOTH_ENABLED=1/BLUETOOTH_ENABLED=0/' /etc/default/bluetooth
+            qprogress "$script" 72
 fi
 echo
 if [ "$disprint" == "1" ]; then
@@ -811,19 +840,21 @@ if [ "$disprint" == "1" ]; then
             sudo systemctl stop cups-browsed
             sudo systemctl disable cups-browsed
             sudo systemctl mask cups-browsed
+            qprogress "$script" 73
             sudo systemctl stop avahi-daemon
             sudo systemctl disable avahi-daemon
             sudo systemctl mask avahi-daemon
             sudo systemctl stop avahi-utils
             sudo systemctl disable avahi-utils
             sudo systemctl mask avahi-utils
+            qprogress "$script" 74
 fi
 echo
 sep
 echo
 echo
 echo
-qprogress "$script" 65
+qprogress "$script" 75
 
 #============================================================================================
 
@@ -838,6 +869,8 @@ sep
 echo
 echo
 echo
+qprogress "$script" 78
+
 
 if [ ! "$osarch" = "armhf" ]; then
 #========== fix i915 modules missing on some intel machines ========================================================
@@ -854,6 +887,7 @@ sudo mkdir firmware
 cd firmware
 sudo wget -r -nd -e robots=no -A '*.bin' --accept-regex '/plain/' https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/i915/
 sudo mv *.bin /lib/firmware/i915/
+qprogress "$script" 79
 sudo update-initramfs -c -k all
 cd ..
 sudo rm -r firmware
@@ -867,7 +901,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 70
+qprogress "$script" 80
 
 
 
@@ -883,7 +917,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 75
+qprogress "$script" 82
 fi
 
 
@@ -921,7 +955,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 80
+qprogress "$script" 85
 
 
 
@@ -943,7 +977,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 85
+qprogress "$script" 87
 
 
 #========== disabling iwl-debug-yoyo.bin =====================================================================================
@@ -964,7 +998,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 85
+qprogress "$script" 88
 
 
 
@@ -1051,7 +1085,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 90
+qprogress "$script" 91
 
 
 if [ "$osarch" = "armhf" ]; then
@@ -1070,7 +1104,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 90
+qprogress "$script" 92
 fi
 
 
@@ -1115,7 +1149,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 95
+qprogress "$script" 93
 
 
 #==================================================================================================================
@@ -1178,7 +1212,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 100
+qprogress "$script" 98
 
 
 
@@ -1188,6 +1222,7 @@ itemdisp "Cleaning system..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Cleaning system...";fi
 echo
 sudo apt clean
+qprogress "$script" 99
 sudo apt autoremove -y
 sep
 echo
