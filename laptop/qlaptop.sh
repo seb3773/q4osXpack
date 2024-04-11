@@ -48,8 +48,7 @@ source common/progress
 if [[ $conffile -eq 1 ]]; then
 begin "$script" "conf" "$dcopRef"
 qprogress () {
-pro=$(( $2 / 5 ))
-dcop "$dcopRef" setProgress $pro
+dcop "$dcopRef" setProgress $2
 }
 else
 begin "$script"
@@ -66,7 +65,7 @@ qprogress "$script" 0
 sudo chmod +x laptop/tlpui_setup.sh
 
 
-
+qprogress "$script" 5
 #========== CREATE BACKUP FOLDER & backup files to be modified ==================================================
 create_backup() {
     local backup_path="backups/$now/$1.tar.gz"
@@ -98,6 +97,8 @@ echo
 printf '\e[A\e[K'
 echo
 echo
+
+qprogress "$script" 10
 
 
 itemdisp "Fetching latest version of the package list..."
@@ -141,6 +142,7 @@ echo
 echo
 echo
 
+qprogress "$script" 15
 
 #========== Touchpad config =====================================================================================
 # I want two fingers scroll !!
@@ -204,7 +206,7 @@ qprogress "$script" 40
 #fine battery saver :)
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing TLP..."
 sudo apt install -y tlp tlp-rdw
-qprogress "$script" 50
+qprogress "$script" 45
 sudo tlp start
 
 #if selected
@@ -254,7 +256,7 @@ echo
 
 fi
 
-qprogress "$script" 60
+qprogress "$script" 55
 
 
 
@@ -269,7 +271,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 70
+qprogress "$script" 60
 
 
 
@@ -311,7 +313,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 75
+qprogress "$script" 70
 
 if [[ $conffile -eq 1 ]]; then
 kdialog --icon "$kdicon"  --msgbox "Xfce4-power-manager settings panel will open now,\nso you can adjust your preferences.\nJust close the panel once finished."  --caption "qlaptop" --title "■■ q4osXpack"
@@ -327,47 +329,22 @@ qprogress "$script" 80
 
 #========== swap file for hibernation ===========================================================================
 itemdisp "Installing swap file for hibernation"
-echo
-if (grep "GRUB_CMDLINE_LINUX_DEFAULT" "/etc/default/grub")|grep -q "resume_offset="; then
-echo "**  resume function seems to be already activated, skipping this part."
-else 
-if grep -q "/swap" "/etc/fstab"; then
-echo "**  /swap already exist, skipping this part."
-#TO DO:
-#test if resume fonction exist,and in this case propose to adjust parameters for hibernation 
-#
-else
-phymem=$(LANG=C free|awk '/^Mem:/{print $2}')
-square_root=$(echo "$phymem" | awk '{print sqrt($1)}')
-sqint=$( printf "%.0f" $square_root )
-sqintd=$(expr $sqint \* 5)
-filesz=$(expr $phymem + $sqintd)
-needed=$(expr $filesz + 1048576)
-echo " > Total physical memory: $phymem"
-echo " > File size needed: $filesz"
-dskfree=$(df -k / | tail -1 | awk '{print $4}')
-echo " > disk space available: $dskfree"
-if [ "$dskfree" -lt "$needed" ]; then
-  echo "** sorry not enough disk space free (we must keep at least 1Gb free on the disk :p)"
-else
- echo
- echo "${RED}█ ${ORANGE}Proceed ?${NOCOLOR}"
-optionz=("Install swap file" "Skip swap file install")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install swap file")
-            #test if zram installed, if not, install it :p
+if [[ $insthiber -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing swap file for hibernation...";fi
+
+instswp() {
+           #test if zram installed, if not, install it :p
             #this is because we can't use the swap file for swapping and hibernation at the same time, so my choice is to use zram for kernel swapping
             #and the swap file for hibernation
             if ! systemctl is-active --quiet zramswap.service; then
             echo -e "  \e[35m░▒▓█\033[0m Installing zram first..."
+            if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing zram first...";fi
             sudo apt install -y zram-tools
             echo -e "ALGO=lz4\nPERCENT=50\nPRIORITY=100" | sudo tee -a /etc/default/zramswap
             sudo tar -xzf perfs/21-swappiness.conf.tar.gz -C /etc/sysctl.d/
             systemctl reload zramswap.service
             fi
             echo -e "  \e[35m░▒▓█\033[0m Installing swap file..."
+            if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing swap file...";fi
             #do it
             fileszm=$(expr $filesz / 1024)
             sudo fallocate -l "$fileszm"m /swap
@@ -396,6 +373,54 @@ do
             echo -e "  \e[35m░▒▓█\033[0m Set lid close action to suspend then hibernate..."
             #lidswitch action
             sudo sed -i '/HandleLidSwitch=/c\HandleLidSwitch=suspend-then-hibernate' /etc/systemd/logind.conf
+}
+
+
+echo
+if (grep "GRUB_CMDLINE_LINUX_DEFAULT" "/etc/default/grub")|grep -q "resume_offset="; then
+echo "**  resume function seems to be already activated, skipping this part."
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing swap file..."
+kdialog --icon "$kdicon" --caption "qlaptop" --title "■■ q4osXpack" --error "resume function seems to be already activated, skipping swap file install"
+fi
+else 
+if grep -q "/swap" "/etc/fstab"; then
+echo "**  /swap already exist, skipping this part."
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing swap file..."
+kdialog --icon "$kdicon" --caption "qlaptop" --title "■■ q4osXpack" --error "/swap already exist, skipping swap file install"
+fi
+#TO DO:
+#test if resume fonction exist,and in this case propose to adjust parameters for hibernation 
+#
+else
+phymem=$(LANG=C free|awk '/^Mem:/{print $2}')
+square_root=$(echo "$phymem" | awk '{print sqrt($1)}')
+sqint=$( printf "%.0f" $square_root )
+sqintd=$(expr $sqint \* 5)
+filesz=$(expr $phymem + $sqintd)
+needed=$(expr $filesz + 1048576)
+echo " > Total physical memory: $phymem"
+echo " > File size needed: $filesz"
+dskfree=$(df -k / | tail -1 | awk '{print $4}')
+echo " > disk space available: $dskfree"
+if [ "$dskfree" -lt "$needed" ]; then
+  echo "** sorry not enough disk space free (we must keep at least 1Gb free on the disk :p)"
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing swap file..."
+kdialog --icon "$kdicon" --caption "qlaptop" --title "■■ q4osXpack" --error "sorry not enough disk space free for swap file (we must keep at least 1Gb free on the disk)"
+fi
+else
+ echo
+
+if [[ $insthiber -eq 1 ]]; then
+instswp
+else
+
+ echo "${RED}█ ${ORANGE}Proceed ?${NOCOLOR}"
+optionz=("Install swap file" "Skip swap file install")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install swap file")
+            instswp
             break
             ;;
         "Skip swap file install")
@@ -406,13 +431,32 @@ do
 done
 
 fi
+
 fi
 fi
+fi
+
+
+
+
 sep
 echo
 echo
 echo
 qprogress "$script" 90
+
+#---------------------------------------
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Cleaning files...";fi
+itemdisp "Cleaning..."
+echo
+sudo apt clean
+qprogress "$script" 92
+sudo apt autoremove -y
+qprogress "$script" 95
+sep
+echo
+echo
+echo
 
 
 
