@@ -68,8 +68,7 @@ source common/progress
 if [[ $conffile -eq 1 ]]; then
 begin "   $script   " "conf" "$dcopRef"
 qprogress () {
-pro=$(( $2 / 5 ))
-dcop "$dcopRef" setProgress $pro
+dcop "$dcopRef" setProgress $2
 }
 else
 begin "   $script   "
@@ -151,6 +150,10 @@ create_backup "twinrc" "$TDEHOME/share/config/twinrc"
 create_backup "twinrc_root" "/root/.trinity/share/config/twinrc"
 #create_backup "GTK3-Q4OS02" "/usr/share/themes/Q4OS02/gtk-3.0"
 #create_backup "GTK2-Q4OS02" "/usr/share/themes/Q4OS02/gtk-2.0"
+
+qprogress "$script" 1
+
+
 create_backup "xcompmgrrc" "$USER_HOME/.xcompmgrrc"
 create_backup "xcompmgrrc_root" "/root/.xcompmgrrc"
 create_backup "compton-tde" "$USER_HOME/.compton-tde.conf"
@@ -206,6 +209,9 @@ rota
 echo
 printf '\e[A\e[K'
 echo
+
+qprogress "$script" 2
+
 
 
 hex_to_rgb() {
@@ -288,6 +294,8 @@ echo
 echo
 echo
 
+
+qprogress "$script" 3
 
 #======== check if customcolor option specified and if there is a color specified
 #================= if customcolor is 1 and there is no color given, show the 'color picker'
@@ -401,7 +409,7 @@ sudo ./pklist
 cd ..
 echo
 
-
+qprogress "$script" 4
 
 #========== Check if 7z is available, else install it ===========================================================
 if ! (cat common/packages_list.tmp | grep -q "p7zip-full/stable"); then
@@ -428,6 +436,7 @@ echo
 echo
 echo
 
+qprogress "$script" 5
 
 #========== Installing plymouth themes ==========================================================================
 #not sure if really needed, maybe only creating the theme folder is ok ? Anyway it doesn't take too much disk space...
@@ -444,7 +453,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 5
+qprogress "$script" 6
 
 
 
@@ -462,7 +471,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 10
+qprogress "$script" 7
 
 
 
@@ -487,7 +496,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 15
+qprogress "$script" 8
 
 
 
@@ -508,7 +517,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 20
+qprogress "$script" 9
 
 
 
@@ -520,7 +529,7 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Configuring boot settin
 cd theme
 if [ ! "$osarch" = "armhf" ]; then
 sudo ./grubscripts
-qprogress "$script" 25
+qprogress "$script" 10
 fi
 
 #========== tuning grub for a quiet boot process ================================================================
@@ -529,13 +538,13 @@ sudo ./themegrub
 else
 sudo ./pitheme
 fi
-qprogress "$script" 30
+qprogress "$script" 11
 
 
 #========== copying all files needed ============================================================================
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Copying files...";fi
 sudo ./copyfiles $dark $codlang
-qprogress "$script" 35
+qprogress "$script" 13
 cd ..
 
 
@@ -549,7 +558,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 40
+qprogress "$script" 14
 
 
 
@@ -571,6 +580,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ExpandS
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowLeftHideButton false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRightHideButton false
 rota
+qprogress "$script" 15
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Size 4
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key SizePercentage 100
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key TintValue 91
@@ -590,6 +600,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key CustomIco
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ShowText false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableBrowserTiles false
 rota
+qprogress "$script" 16
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableDesktopButtonTiles false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableKMenuTiles false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key EnableURLTiles false
@@ -604,6 +615,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group buttons --key EnableT
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group menus --key MenuEntryHeight 28
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group menus --key ShowMenuTitles false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group button_tiles --key KMenuTileColor "218,83,34"
+qprogress "$script" 17
 if [[ $dark -eq 1 ]]
 then
  if [[ $customcolor -eq 1 ]]; then
@@ -622,6 +634,9 @@ else
  kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ClassicKMenuBackgroundColor "248,248,248"
  fi
 fi
+
+qprogress "$script" 18
+
 #menu with categories (& kmenuedit available)
 rm -f $USER_HOME/.configtde/menus/tde-applications.menu
 rota
@@ -696,6 +711,7 @@ fi
 done
 cd - > /dev/null 2>&1
 rota
+qprogress "$script" 20
 #config launcher_panelapplet_modernui_rc (add browser if one found)
 if (cat common/packages_list.tmp | grep -q "google-chrome-stable"); then
     sed -i 's/\(Buttons=.*\)/\1,google-chrome.desktop/' "$TDEHOME/share/config/launcher_panelapplet_modernui_rc"
@@ -719,7 +735,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 45
+qprogress "$script" 22
 
 
 
@@ -740,6 +756,9 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key widge
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowIconsOnPushButtons false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectsEnabled false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key ShowKonqIconActivationEffect false
+
+qprogress "$script" 25
+
 if [ ! -f "$USER_HOME/.gtkrc-2.0" ]; then
 \cp theme/gtkrc2 "$USER_HOME/.gtkrc-2.0"
 fi
@@ -764,7 +783,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 50
+qprogress "$script" 30
 
 
 
@@ -782,6 +801,9 @@ echo -e "${NOCOLOR}"
 else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
+
+qprogress "$script" 32
+
 echo -e "  \e[35m░▒▓█\033[0m installing imagemagick..."
 if ! (cat common/packages_list.tmp | grep -q "imagemagick/stable" ); then
 echo -e "${YELLOW}"
@@ -790,6 +812,9 @@ echo -e "${NOCOLOR}"
 else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
+
+qprogress "$script" 35
+
 echo -e "  \e[35m░▒▓█\033[0m Generating windows decorations..."
 if [[ $dark -eq 1 ]]; then
 sudo theme/createdeko "$accent" "$accent2" "WinTenBasedark"
@@ -801,6 +826,7 @@ sudo theme/createdeko "$accent" "$accent2" "WinTenBaselight"
 sudo tar -xzf theme/twindeKoratorrc.tar.gz -C $USER_HOME/.trinity/share/config/
 fi
 
+qprogress "$script" 38
 #---- kside custom accent color
 
 ## old method (try to generate a grey image which will be near to accent color when colorized)
@@ -823,7 +849,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group KMenu --key ColorizeS
 #kickerbar rgb_accent
 #sudo convert -size 2x60 xc:${accent} $TDEHOME/share/apps/kicker/pics/panel-win.png
 
-
+qprogress "$script" 40
 
 echo
 echo -e "  \e[35m░▒▓█\033[0m configuring style..."
@@ -862,6 +888,7 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key Menu
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key MovingWindowOpacity 70
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key OnlyDecoTranslucent false
 rota
+qprogress "$script" 41
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key RemoveShadowsOnMove true
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key RemoveShadowsOnResize true
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key ResetKompmgr false
@@ -894,6 +921,7 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MaximizeB
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key MoveResizeMaximizedWindows false
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key Placement Smart
 rota
+qprogress "$script" 42
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ResizeMode Transparent
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key RollOverDesktops true
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key SeparateScreenFocus false
@@ -931,6 +959,7 @@ kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key Sh
 
 
 rota
+qprogress "$script" 43
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key InactiveShadowColour "0,0,0"
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Style --key ShadowColour "0,0,0"
@@ -964,6 +993,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key InactiveWindowOpacity 85
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key InactiveWindowShadowSize 100
 rota
+qprogress "$script" 44
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key MenuShadowSize 0
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key MovingWindowOpacity 70
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key OnlyDecoTranslucent false
@@ -1000,6 +1030,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --ke
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key MoveResizeMaximizedWindows false
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key Placement Smart
 rota
+qprogress "$script" 45
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ResizeMode Transparent
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key RollOverDesktops true
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key SeparateScreenFocus false
@@ -1035,6 +1066,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group MouseBinding
 sudo kwriteconfig --file /root/.trinity/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
 #######
 rota
+qprogress "$script" 46
 echo
 printf '\e[A\e[K'
 
@@ -1042,6 +1074,8 @@ echo -e "  \e[35m░▒▓█\033[0m enabling compton-tde compositing..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Enabling compton-tde compositing...";fi
 kwriteconfig --file $TDEHOME/share/config/twinrc --group "Windows" --key "MoveMode" "Opaque"
 kwriteconfig --file $TDEHOME/share/config/twinrc --group "Notification Messages" --key "UseTranslucency" true
+
+qprogress "$script" 47
 
 echo -e "  \e[35m░▒▓█\033[0m configuring GTK2/GTK3/GTK4 styles..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "configuring GTK2/GTK3/GTK4 styles...";fi
@@ -1074,6 +1108,9 @@ sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/hover
 sudo \cp /opt/trinity/share/apps/deKorator/themes/WinTen-seb-theme/buttons/normal/* $USER_HOME/.configtde/gtk-4.0/assets
 fi
 
+
+qprogress "$script" 50
+
 #ADJUST GTK3 colors (+selected color GTK2)
 #if [[ $customcolor -eq 1 ]]; then
 sudo sed -E -i 's/(selected_bg_color:#)[0-9A-Fa-f]+/\1'"${accent3/#\#/}"'/g' /usr/share/themes/Q4OSWIN10/gtk-2.0/gtkrc
@@ -1100,12 +1137,14 @@ sudo sed -E -i '/^window\.maximized[[:space:]]*\{/ s/(box-shadow:[[:space:]]*[^;
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-theme-name Q4OSWIN10
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-theme-name Q4OSWIN10
 
-
+qprogress "$script" 51
 
 echo -e "  \e[35m░▒▓█\033[0m configuring xcompmgr..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "configuring xcompmgr...";fi
 sudo tar -xzf theme/xcompmgrrc.tar.gz -C $USER_HOME/
 sudo tar -xzf theme/xcompmgrrc.tar.gz -C /root/
+
+qprogress "$script" 52
 
 echo -e "  \e[35m░▒▓█\033[0m configuring compton-tde..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "configuring compton-tde...";fi
@@ -1129,6 +1168,10 @@ else
  sudo tar -xzf theme/compton-tde.conf.tar.gz -C /root
  fi
 fi
+
+qprogress "$script" 55
+
+
 echo -e "  \e[35m░▒▓█\033[0m disable screensaver & lock after suspend..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "disabling screensaver...";fi
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group ScreenSaver --key Enabled false
@@ -1161,6 +1204,8 @@ kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow To
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key IconText IconOnly
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key Index 2
 rota
+qprogress "$script" 56
+
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key IconText IconOnly
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key Index 3
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconSize 32
@@ -1186,6 +1231,8 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --k
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key system true
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PreviewSettings --key MaximumSize 20971520
 rota
+qprogress "$script" 57
+
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key AlwaysNewWin false
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key DisplayFileSizeInBytes false
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group FMSettings --key DoubleClickMoveToParent false
@@ -1222,6 +1269,7 @@ kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow To
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key IconText IconTextRight
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar1" --key Index 2
 rota
+qprogress "$script" 58
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key IconText IconOnly
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4fmToolBar2" --key Index 4
 kwriteconfig --file $TDEHOME/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar1" --key Hidden true
@@ -1258,6 +1306,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group Trash -
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KFileDialog Settings" --key "Automatic Preview" true
 sudo kwriteconfig --file /root/.trinity/share/config/tdecmshellrc --group "KFileDialog Settings" --key "Automatic Preview" true
 rota
+qprogress "$script" 59
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key IconText IconOnly
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar Speech Toolbar" --key Index 4
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar bookmarkToolBar" --key Hidden true
@@ -1284,6 +1333,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMa
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key IconText IconTextRight
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar q4wbToolBar2" --key Index 6
 rota
+qprogress "$script" 60
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PreviewSettings --key UseFileThumbnails true
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PreviewSettings --key BoostSize true
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group PreviewSettings --key file true
@@ -1318,6 +1368,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMa
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key IconText IconOnly
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar extraToolBar" --key Index 2
 rota
+qprogress "$script" 61
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key IconText IconOnly
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar locationToolBar" --key Index 3
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group "KonqMainWindow Toolbar mainToolBar" --key IconSize 32
@@ -1347,10 +1398,12 @@ downlfold=$(xdg-user-dir DOWNLOAD)
 usrfold=$(xdg-user-dir USER)
 downlfoldroot=$(xdg-user-dir DOWNLOAD)
 #konqueror --preload
-#konqueror system:/ --profile "filemanagement" > /dev/null 2>&1 & foo=$! && sleep 0.5 && kill -15 $foo
-sudo find $TDEHOME/share/apps/konqsidebartng/filemanagement/entries -type f ! -name '.version' -exec rm {} +
+#test if $TDEHOME/share/apps/konqsidebartng/filemanagement/entries  exist, if not:
+#konqueror system:/ --profile "filemanagement" > /dev/null 2>&1 & foo=$! && sleep 1 && kill -15 $foo
+#sudo find $TDEHOME/share/apps/konqsidebartng/filemanagement/entries -type f ! -name '.version' -exec rm {} +
 sudo tar -xzf theme/konqueror_dirtree.tar.gz -C $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/
 sudo chown -R $USER: $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/*
+sudo chown -R $USER: $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/.version
 sudo sed -i "s/^Name=.*/Name=$(basename "$deskfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree0.desktop"
 sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${deskfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree0.desktop"
 sudo sed -i "s/^Name=.*/Name=$(basename "$docfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree1.desktop"
@@ -1363,6 +1416,10 @@ sudo sed -i "s/^Name=.*/Name=$(basename "$downlfold")/" "$TDEHOME/share/apps/kon
 sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${downlfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree4.desktop"
 sudo sed -i "s/^Name=.*/Name=$(basename "$vidfold")/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree5.desktop"
 sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${vidfold//\//\\/}/" "$TDEHOME/share/apps/konqsidebartng/filemanagement/entries/home_dirtree5.desktop"
+
+
+qprogress "$script" 62
+
 #~~~~~~~~~~~~~~~~~~~~~ if dolphin is installed
 if [[ -f "$TDEHOME/share/config/d3lphinrc" ]]; then
 echo -e "  \e[35m░▒▓█\033[0m Configuring Dolphin ui..."
@@ -1467,7 +1524,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 55
+qprogress "$script" 64
 
 
 
@@ -1483,7 +1540,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 60
+qprogress "$script" 65
 
 
 
@@ -1537,6 +1594,9 @@ if ! grep -q "Xcursor.theme" "/root/.Xresources"; then
 echo "Xcursor.theme: Windows10$pc" | sudo tee -a /root/.Xresources
 fi
 sudo sed -i "/Xcursor.theme:/c\Xcursor.theme: Windows10$pc" /root/.Xresources
+
+qprogress "$script" 66
+
 #
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$pc
 kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key Acceleration 1
@@ -1582,7 +1642,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 65
+qprogress "$script" 67
 
 
 
@@ -1599,6 +1659,9 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key backg
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key buttonBackground "240,240,240"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key linkColor "0,0,192"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectForeground "255,255,255"
+
+qprogress "$script" 68
+
 if [[ $customcolor -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key selectBackground "$rgb_accent3"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group WM --key activeBackground "$rgb_accent"
@@ -1651,6 +1714,9 @@ kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "kwrite - Normal"
 kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "krusader - Normal" --key "Color Background" "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kateschemarc --group "krusader - Normal" --key "Color Highlighted Line" "255,255,255"
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key colorScheme q4seb-color-scheme.kcsrc
+
+qprogress "$script" 69
+
 #~~~~~~~~~~~~~ dark mods ~~~~~~~~~~~~~~~~~
                if [[ $dark -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key alternateBackground "32,33,34"
@@ -1694,6 +1760,8 @@ kwriteconfig --file $TDEHOME/share/config/konquerorrc --group Settings --key BgC
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key colorScheme q4seb-dark-color-scheme.kcsrc
                fi
 #~~~~~~~~~~~~~ end dark mods ~~~~~~~~~~~~~
+qprogress "$script" 70
+
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key shadeSortColumn true
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectsEnabled false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group KDE --key EffectFadeMenu false
@@ -1737,6 +1805,8 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key Di
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DisabledSemiTransparent true
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group PanelIcons --key DisabledValue 1
 rota
+qprogress "$script" 71
+
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key Animated false
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key ActiveColor invalid
 kwriteconfig --file $TDEHOME/share/config/kdeglobals --group DesktopIcons --key ActiveColor2 invalid
@@ -1771,6 +1841,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/kickerrc --group WM --key a
 sudo kwriteconfig --file /root/.trinity/share/config/kickerrc --group WM --key inactiveBackground "240,240,240"
 fi
 rota
+qprogress "$script" 72
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key visitedLinkColor "128,0,128"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key windowBackground "255,255,255"
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key buttonForeground "0,0,0"
@@ -1804,6 +1875,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group WM --key
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group FMSettings --key NormalTextColor "0,0,0"
 sudo kwriteconfig --file /root/.trinity/share/config/konquerorrc --group Settings --key BgColor "255,255,255"
 rota
+qprogress "$script" 73
 sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kate - Normal" --key "Color Background" "255,255,255"
 sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kate - Normal" --key "Color Highlighted Line" "255,255,255"
 sudo kwriteconfig --file /root/.trinity/share/config/kateschemarc --group "kwrite - Normal" --key "Color Background" "255,255,255"
@@ -1917,7 +1989,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 70
+qprogress "$script" 75
 
 
 
@@ -1935,6 +2007,7 @@ echo -e "${NOCOLOR}"
 else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
+qprogress "$script" 77
 
 
 
@@ -1944,11 +2017,12 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "configuring wallpaper f
 #sudo convert /opt/trinity/share/wallpapers/$rwallp -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/background.jpg
 #sudo convert /opt/trinity/share/wallpapers/$rwallp -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg
 sudo convert /opt/trinity/share/wallpapers/$rwallp -resize ${Xres}x${Yres}! -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg
+qprogress "$script" 79
 ## here imagemagick apply loginpic
 sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*$fact]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
 
 
-
+qprogress "$script" 80
 #test dark or light
 #lightamount=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -threshold 50% -format "%[fx:100*image.mean]" info:)
 
@@ -1985,6 +2059,8 @@ output_bg="/opt/trinity/share/apps/ksplash/Themes/$(basename "$user_dir")/Backgr
 sudo convert "$base_bg" "$userpic" -geometry +$(convert "$base_bg" -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert "$base_bg" -ping -format "%[fx:h*$fact]" info:) -composite "$output_bg"
 done
 ############
+qprogress "$script" 81
+
 
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoPixmap "/opt/trinity/share/apps/tdm/pics/tuxlogo.png"
 sudo kwriteconfig --file /etc/trinity/tdm/tdmrc --group "X-*-Greeter" --key LogoArea Logo
@@ -2002,7 +2078,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 75
+qprogress "$script" 82
 
 
 
@@ -2045,6 +2121,7 @@ sed -i '/^WidthForHeightHint=/d' $TDEHOME/share/config/kickerrc
 sed -i '/^\[KMenuButton_1\]/d' $TDEHOME/share/config/kickerrc
 sed -i '/^\[WindowListButton_1\]/d' $TDEHOME/share/config/kickerrc
 sed -i '/^\[ExtensionButton_1\]/d' $TDEHOME/share/config/kickerrc
+qprogress "$script" 83
 sed -i '/^\[Applet_1\]/d' $TDEHOME/share/config/kickerrc
 sed -i '/^\[Applet_2\]/d' $TDEHOME/share/config/kickerrc
 sed -i '/^\[Applet_3\]/d' $TDEHOME/share/config/kickerrc
@@ -2060,6 +2137,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key UseResi
 #echo -e ">> Wait for kicker to restart..."
 #dcop kicker kicker restart
 #sleep 10
+qprogress "$script" 84
 
 #installing showdeskten applet
 echo -e "  \e[35m░▒▓█\033[0m installing showdeskten kicker applet"
@@ -2075,6 +2153,7 @@ if [ "$osarch" = "armhf" ]; then
 sudo tar -xzf theme/showdeskten_libs_armhf.tar.gz -C /opt/trinity/lib/trinity/
 fi
 sudo convert -size 5x64 xc:${accent} /opt/trinity/share/apps/kicker/pics/showdesk10.png
+qprogress "$script" 85
 #installing actioncenter applet
 echo -e "  \e[35m░▒▓█\033[0m installing actioncenter kicker applet"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "installing actioncenter kicker applet";fi
@@ -2104,6 +2183,8 @@ fi
 if [ "$osarch" = "armhf" ]; then
 sudo tar -xzf theme/actioncenter_libs_armhf.tar.gz -C /opt/trinity/lib/trinity/
 fi
+
+qprogress "$script" 86
 echo -e "  \e[35m░▒▓█\033[0m installing xdotool"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "installing xdotool";fi
 if ! (cat common/packages_list.tmp | grep -q "xdotool/stable"); then
@@ -2115,6 +2196,8 @@ echo -e "${NOCOLOR}"
 else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
+
+qprogress "$script" 87
 
 echo -e "  \e[35m░▒▓█\033[0m installing xsel"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "installing xsel";fi
@@ -2128,11 +2211,12 @@ else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
 
+
 sep
 echo
 echo
 echo
-qprogress "$script" 80
+qprogress "$script" 88
 
 
 
@@ -2181,7 +2265,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 85
+qprogress "$script" 89
 
 
 
@@ -2202,6 +2286,7 @@ kwriteconfig --file $TDEHOME/share/config/kdeglobals --group General --key deskt
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key StandardFont "Segoe UI,10,-1,5,63,0,0,0,0,0"
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Consolas,11,-1,5,50,0,0,0,0,0"
 #kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Cascadia Code,10,-1,5,50,0,0,0,0,0"
+qprogress "$script" 90
 if [[ $dark -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key TabColor "255,255,255"
 else
@@ -2254,6 +2339,7 @@ sudo kwriteconfig --file /root/.trinity/share/config/kdesktoprc --group FMSettin
 sudo kwriteconfig --file /root/.trinity/share/config/kdeglobals --group General --key desktopFont "Segoe UI,10,-1,5,50,0,0,0,0,0"
 sudo kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Consolas,11,-1,5,50,0,0,0,0,0"
 #kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key defaultfont "Cascadia Code,10,-1,5,50,0,0,0,0,0"
+qprogress "$script" 91
 if [[ $dark -eq 1 ]]; then
 sudo kwriteconfig --file /root/.trinity/share/config/konsolerc --group "Desktop Entry" --key TabColor "255,255,255"
 else
@@ -2299,7 +2385,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 90
+qprogress "$script" 92
 
 
 
@@ -2337,6 +2423,7 @@ sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --k
 sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' /root/.gtkrc-q4os
 sudo sed -i '/gtk-icon-theme-name="/c\gtk-icon-theme-name="kdeten_light"' /root/.gtkrc-2.0
 fi
+qprogress "$script" 93
 sep
 echo
 echo
@@ -2351,7 +2438,7 @@ sep
 echo
 echo
 echo
-
+qprogress "$script" 94
 
 itemdisp "Installing lxtask-mod (taskmanager)..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing lxtask-mod...";fi
@@ -2376,7 +2463,7 @@ sep
 echo
 echo
 echo
-
+qprogress "$script" 95
 
 
 itemdisp "Installing gwenview (image viewer)..."
@@ -2392,6 +2479,7 @@ sep
 echo
 echo
 echo
+qprogress "$script" 96
 
 
 itemdisp "Installing admin tools..."
@@ -2407,7 +2495,7 @@ sep
 echo
 echo
 echo
-
+qprogress "$script" 97
 
 itemdisp "Installing .themepack/.deskthemepack installer..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing themepack/.deskthemepack installer...";fi
@@ -2420,6 +2508,7 @@ sep
 echo
 echo
 echo
+qprogress "$script" 98
 
 itemdisp "Configuring global shortcuts & default apps integration..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Configuring global shortcuts & default apps integration...";fi
@@ -2575,7 +2664,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 95
+qprogress "$script" 99
 
 #theming other apps if installed
 if (cat common/packages_list.tmp | grep -q "strawberry/stable"); then
@@ -2584,7 +2673,20 @@ mkdir -p $USER_HOME/.configtde/strawberry/
 tar -xzf theme/strawberry.conf.tar.gz -C $USER_HOME/.configtde/strawberry/
 echo
 fi
-qprogress "$script" 95
+if (cat common/packages_list.tmp | grep -q "smplayer/"); then
+echo -e "  \e[35m░▒▓█\033[0m SMPlayer installed - Applying theme..."
+if [ ! -e "$USER_HOME/.configtde/smplayer/smplayer.ini" ]; then
+mkdir -p $USER_HOME/.configtde/smplayer/
+tar -xzf apps/smplayer.conf.tar.gz -C "$USER_HOME/.configtde/smplayer/"
+sudo chown -R $USER: "$USER_HOME/.configtde/smplayer/smplayer.ini"
+else
+sed -i 's/^gui=.*/gui=DefaultGUI/' "$USER_HOME/.configtde/smplayer/smplayer.ini"
+sed -i 's/^iconset=.*/iconset=Monochrome/' "$USER_HOME/.configtde/smplayer/smplayer.ini"
+sed -i 's/^qt_style=.*/qt_style=QtCurve/' "$USER_HOME/.configtde/smplayer/smplayer.ini"
+fi
+echo
+fi
+qprogress "$script" 100
 
 
 #========== Cleaning ============================================================================================
