@@ -2745,6 +2745,7 @@ echo "  \e[35m░▒▓█\033[0m copying sounds"
 #tar -xzf sounds.tar.gz -C /opt/trinity/share/sounds/
 7z x -so sounds.tar.7z | tar xf - -C /opt/trinity/share/sounds/
 tar -xzf knotify.eventsrc.tar.gz -C $USER_HOME/.trinity/share/config/
+chown $USER_SU $USER_HOME/.trinity/share/config/knotify.eventsrc
 #as I don't know yet to modify root apps sound scheme, I delete KDE_Error_x.ogg, because
 #sound doesn't seem to work right in root mode (awfull sounding with cracks)
 rm -f /opt/trinity/share/sounds/KDE_Error_1.ogg

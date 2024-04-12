@@ -309,10 +309,10 @@ if [ -z "$accent" ]; then
 
 if [[ $dark -eq 1 ]]
 then
-accentsettings=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "dark_custom_color")
+accentsettings=$(kreadconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "dark_custom_color")
 themecolor="dark theme"
 else
-accentsettings=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "light_custom_color")
+accentsettings=$(kreadconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "light_custom_color")
 themecolor="light theme"
 fi
 
@@ -363,9 +363,9 @@ fi
 
 if [[ $dark -eq 1 ]]
 then
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "dark_custom_color" "$accent"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "dark_custom_color" "$accent"
 else
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "light_custom_color" "$accent"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "light_custom_color" "$accent"
 fi
 
 else
@@ -825,6 +825,7 @@ sudo theme/createdeko "$accent" "$accent2" "WinTenBaselight"
 #sudo tar -xzf theme/WinTen-seb-theme.tar.gz -C /opt/trinity/share/apps/deKorator/themes
 sudo tar -xzf theme/twindeKoratorrc.tar.gz -C $USER_HOME/.trinity/share/config/
 fi
+sudo chown -R $USER: $USER_HOME/.trinity/share/config/twindeKoratorrc
 
 qprogress "$script" 38
 #---- kside custom accent color
@@ -1550,8 +1551,8 @@ itemdisp "Configuring pointers & set acceleration to 1"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Configuring pointers...";fi
 #pointer size
 #32 /48 /64 /
-pointersizesetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointersize")
-pointercolorsetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointercolor")
+pointersizesetting=$(kreadconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "pointersize")
+pointercolorsetting=$(kreadconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "pointercolor")
 
 if [ -n "$pointersizesetting" ]; then
 if [ "$pointersizesetting" == "default" ]; then
@@ -2016,7 +2017,7 @@ echo "       (please be patient this could take some time...)"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "configuring wallpaper for login & ksplash...";fi
 #sudo convert /opt/trinity/share/wallpapers/$rwallp -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/background.jpg
 #sudo convert /opt/trinity/share/wallpapers/$rwallp -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg
-sudo convert /opt/trinity/share/wallpapers/$rwallp -resize ${Xres}x${Yres}! -filter Gaussian -blur 0x40 /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg
+sudo convert /opt/trinity/share/wallpapers/$rwallp -resize ${Xres}x${Yres}! -filter Gaussian -blur 0x30 /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg
 qprogress "$script" 79
 ## here imagemagick apply loginpic
 sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*$fact]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
@@ -2030,6 +2031,7 @@ qprogress "$script" 80
 lightamount_up=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -crop x260+0+0 -threshold 50% -format "%[fx:100*image.mean]" info:)
 lightamount_center=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -crop x300+0+400 -threshold 50% -format "%[fx:100*image.mean]" info:)
 lightamount_user=$(sudo convert /opt/trinity/share/apps/tdm/themes/windows/background.jpg -crop x$Ypos_rounded+0+40 -threshold 50% -format "%[fx:100*image.mean]" info:)
+
 if (( $(echo "$lightamount_up > 70" | bc -l) )); then
 sudo sed -i '/<normal font="Segoe UI 58" color=/c\<normal font="Segoe UI 58" color="#444444"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 sudo sed -i '/<normal font="Segoe UI 48" color=/c\<normal font="Segoe UI 48" color="#444444"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
@@ -2040,8 +2042,9 @@ fi
 if (( $(echo "$lightamount_center > 70" | bc -l) )); then
 sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#333333" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 else
-sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#FFFFFF" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo sed -i '/<normal color="#333333" font="Segoe UI 14"/c\<normal color="#FFFFFF" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 fi
+
 if (( $(echo "$lightamount_user > 70" | bc -l) )); then
 sudo kwriteconfig --file "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER/Theme.rc" --group "KSplash Theme: Redmond10_$USER" --key "Username Text Color" "35,35,35"
 sudo kwriteconfig --file "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER/Theme.rc" --group "KSplash Theme: Redmond10_$USER" --key "Action Text Color" "65,65,65"
@@ -2700,7 +2703,7 @@ echo
 echo
 qprogress "$script" 100
 
-touch $USER_HOME/.q4oswin10.conf
+touch $USER_HOME/.q4osXpack.conf
 #========== DONE. ==================================================================================================
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" close
 else
