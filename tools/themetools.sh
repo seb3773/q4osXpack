@@ -46,7 +46,7 @@ fi
 if (( $(echo "$lightamount_center > 70" | bc -l) )); then
 sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#333333" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 else
-sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#FFFFFF" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo sed -i '/<normal color="#333333" font="Segoe UI 14"/c\<normal color="#FFFFFF" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 fi
 
 if (( $(echo "$lightamount_user > 70" | bc -l) )); then
@@ -93,6 +93,77 @@ return 1
 
 
 
+setcursz() {
+ptsize=$1
+tdesudo -c ls /dev/null > /dev/null 2>&1 -d -i password --comment "Administrator rights needed"
+if ! grep -q "Xcursor.size" "$USER_HOME/.Xresources"; then
+echo "Xcursor.size: $ptsize" | sudo tee -a $USER_HOME/.Xresources
+fi
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" $USER_HOME/.Xresources
+
+if ! grep -q "Xcursor.size" "/root/.Xresources"; then
+echo "Xcursor.size: $ptsize" | sudo tee -a /root/.Xresources
+fi
+sudo sed -i "/Xcursor.size:/c\Xcursor.size: $ptsize" /root/.Xresources
+
+echo Done.
+echo You need to logout for this to be active.
+read -p "Press enter..."
+}
+
+
+
+POINTSZ () {
+logmsg="(you need to logout to see the effect)."
+while true; do
+
+cursorsz=$(xrdb -query | awk '/Xcursor.size/ {print $2}')
+a32="";a48="";a64=""
+if [ "$cursorsz" -eq 32 ]; then
+    a32=" (current size)"
+elif [ "$cursorsz" -eq 48 ]; then
+    a48=" (current size)"
+elif [ "$cursorsz" -eq 64 ]; then
+    a64=" (current size)"
+fi
+
+
+
+kdtext="$ktext
+<font style='color:#828282'>►</font>Choose a pointer size:<br>
+<font style='color:#828282'><em>(or hit cancel to return)</em></font><br>"
+choix=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 400 280) --menu "$kdtext" "Default (32)" "Default (32) $a32" "Large (48)" "Large (48) $a48" "XL (64)" "XL (64) $a64")
+if [ $? -eq 1 ];then
+break
+else
+
+case $choix in
+"Default (32)") 
+setcursz 32
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "pointersize" "default"
+kdialog --title "$kdtitle" --caption "$kdcaption" --icon "$kdicon" --msgbox "Pointer size set to default $logmsg"⠀
+break
+;;
+"Large (48)") 
+setcursz 48
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "pointersize" "48"
+kdialog --title "$kdtitle" --caption "$kdcaption" --icon "$kdicon" --msgbox "Pointer size set to large size (48) $logmsg"⠀
+break
+;;
+"XL (64)") 
+setcursz 64
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "pointersize" "64"
+kdialog --title "$kdtitle" --caption "$kdcaption" --icon "$kdicon" --msgbox "Pointer size set to xl size (64) $logmsg"⠀
+break
+;;
+esac
+fi
+
+done
+
+}
+
+
 
 
 LOGBK() {
@@ -111,6 +182,108 @@ dcop kdesktop KBackgroundIface setWallpaper /opt/trinity/share/wallpapers/$rwall
 logbck
 kdialog --title "$kdtitle" --caption "$kdcaption" --icon "$kdicon" --msgbox "Random wallpaper applied to login & desktop."⠀
 }
+
+
+
+
+LOGINCLK() {
+while true; do
+#check clock status
+actclock="Show"
+if grep -q '<item type="rect" id="clock">' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+then
+actclock="Hide"
+fi
+
+kdtext="$ktext
+<font style='color:#828282'>►</font> click ok to $actclock clock at login screen:<br>
+<font style='color:#828282'><em>(or hit cancel to return)</em></font><br>"
+choix=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 400 280) --menu "$kdtext" "$actclock" "$actclock clock at login screen")
+if [ $? -eq 1 ];then
+break
+else
+
+if [ $actclock = "Hide" ]; then
+tdesudo -c ls /dev/null > /dev/null 2>&1 -d -i password --comment "Administrator rights needed"
+sudo sed -i '/<!-- clock -->/,/<!-- endclock -->/{//!d}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginclock" "hide"
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --msgbox "$actclock clock at login screen applied."
+actclock="Show"
+break
+else
+tdesudo -c ls /dev/null > /dev/null 2>&1 -d -i password --comment "Administrator rights needed"
+  if [[ $lowres -eq 1 ]]; then
+sudo sed -i '/<!-- clock -->/{N;s/<!-- clock -->\n<!-- endclock -->/<!-- clock -->\n<item type="rect" id="clock">\n<pos anchor="n" x="100%" y="140" width="box" \/>\n<item type="label">\n<pos anchor="n" x="50%" y="5"\/>\n<normal font="Segoe UI 48" color="#EEEEEE"\/>\n<text>%c<\/text>\n<\/item>\n<\/item>\n<!-- endclock -->/}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+  else
+sudo sed -i '/<!-- clock -->/{N;s/<!-- clock -->\n<!-- endclock -->/<!-- clock -->\n<item type="rect" id="clock">\n<pos anchor="n" x="100%" y="150" width="box" \/>\n<item type="label">\n<pos anchor="n" x="50%" y="20"\/>\n<normal font="Segoe UI 58" color="#EEEEEE"\/>\n<text>%c<\/text>\n<\/item>\n<\/item>\n<!-- endclock -->/}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+  fi
+testlight
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginclock" "default"
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --msgbox "$actclock clock at login screen applied."
+actclock="Hide"
+break
+fi
+
+fi
+done
+}
+
+
+USRLST() {
+
+while true; do
+
+#check userlist status
+actulist="Show"
+if grep -q '<bgmodifier value="5"' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+then
+actulist="Hide"
+fi
+
+kdtext="$ktext
+<font style='color:#828282'>►</font> click ok to $actulist user list at login screen:<br>
+<font style='color:#828282'><em>(or hit cancel to return)</em></font><br>"
+choix=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 400 280) --menu "$kdtext" "$actulist" "$actulist users list at login screen")
+if [ $? -eq 1 ];then
+break
+else
+
+tdesudo -c ls /dev/null > /dev/null 2>&1 -d -i password --comment "Administrator rights needed"
+if [ $actulist = "Hide" ]; then
+sudo sed -i '/<!-- userslist -->/,/<!-- enduserslist -->/{//!d}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginuserslist" "hide"
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --msgbox "$actulist user list at login screen applied."
+actulist="Show"
+break
+else
+sudo sed -i '/<!-- userslist -->/,/<!-- enduserslist -->/c\
+<!-- userslist -->\
+<item type="rect">\
+<pos anchor="nw" x="0" y="80%" height="100%" width="180"/>\
+<fixed>\
+<item type="rect" id="userlist">\
+<pos anchor="c" x="50%" y="50%" height="100%" width="100%"/>\
+<bgmodifier value="5"/>\
+</item>\
+</fixed>\
+</item>\
+<!-- enduserslist -->' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginuserslist" "default"
+kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --msgbox "$actulist user list at login screen applied."
+actulist="Hide"
+break
+fi
+
+fi
+
+
+
+done
+
+
+}
+
+
 
 
 
@@ -161,14 +334,14 @@ function applyUserPic {
         sudo \cp "$USER_HOME/faceicon.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
         sudo \cp "$USER_HOME/userpic.png" "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png"
         sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*$fact]" info:) -composite /opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/Background.png
-        kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic" "custom"
+        kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "userpic" "custom"
 
         kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --yesno "Do you want to use this image for login screen user picture too ?\n(this will be global for all users in case of multi accounts usage)"
 
         if [[ $? -eq 0 ]]; then
         sudo \cp "$USER_HOME/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
         sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*$fact]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
-        kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginpic" "custom"
+        kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginpic" "custom"
         fi
         rm -f "$USER_HOME/userpic.png"
         rm -f "$USER_HOME/faceicon.png"
@@ -262,10 +435,10 @@ sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg "/opt/trin
 iconth=$(kreadconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme)
 sudo \cp "/usr/share/icons/$iconth/64x64/actions/switchuser.png" "$USER_HOME/.face.icon"
 sudo \cp "/usr/share/icons/$iconth/64x64/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic" "default"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "userpic" "default"
 sudo \cp "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
 sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*$fact]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginpic" "default"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginpic" "default"
 kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --msgbox "Default user picture restored."
 }
 
@@ -315,6 +488,9 @@ case "$menuchoice" in
 loginbg) LOGBK ;;
 randombg) RANDWP ;;
 userpic) USRPC ;;
+userlist) USRLST ;;
+clock) LOGINCLK ;;
+pointersz) POINTSZ ;;
 *) ;;
 esac
 fi

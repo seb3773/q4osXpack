@@ -21,7 +21,7 @@ echo "   try from a normal user shell."
 read -p "Press enter..."
 exit
 fi
-if [ ! -e "$USER_HOME/.q4oswin10.conf" ]; then
+if [ ! -e "$USER_HOME/.q4osXpack.conf" ]; then
 clear
 echo "   These scripts are designed to customize the"
 echo "   q4osSeb theme, you need to run the Qtheme script"
@@ -65,7 +65,7 @@ fi
 if (( $(echo "$lightamount_center > 70" | bc -l) )); then
 sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#333333" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 else
-sudo sed -i '/<normal color="#FFFFFF" font="Segoe UI 14"/c\<normal color="#FFFFFF" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
+sudo sed -i '/<normal color="#333333" font="Segoe UI 14"/c\<normal color="#FFFFFF" font="Segoe UI 14"/>' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
 fi
 
 if (( $(echo "$lightamount_user > 70" | bc -l) )); then
@@ -173,7 +173,7 @@ case $choice in
 clear
 if [ $actclock = "Hide" ]; then
 sudo sed -i '/<!-- clock -->/,/<!-- endclock -->/{//!d}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginclock" "hide"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginclock" "hide"
 actclock="Show"
 else
   if [[ $lowres -eq 1 ]]; then
@@ -182,7 +182,7 @@ sudo sed -i '/<!-- clock -->/{N;s/<!-- clock -->\n<!-- endclock -->/<!-- clock -
 sudo sed -i '/<!-- clock -->/{N;s/<!-- clock -->\n<!-- endclock -->/<!-- clock -->\n<item type="rect" id="clock">\n<pos anchor="n" x="100%" y="150" width="box" \/>\n<item type="label">\n<pos anchor="n" x="50%" y="20"\/>\n<normal font="Segoe UI 58" color="#EEEEEE"\/>\n<text>%c<\/text>\n<\/item>\n<\/item>\n<!-- endclock -->/}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
   fi
 testlight
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginclock" "default"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginclock" "default"
 actclock="Hide"
 fi
 
@@ -231,7 +231,7 @@ case $choice in
 clear
 if [ $actulist = "Hide" ]; then
 sudo sed -i '/<!-- userslist -->/,/<!-- enduserslist -->/{//!d}' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginuserslist" "hide"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginuserslist" "hide"
 actulist="Show"
 else
 sudo sed -i '/<!-- userslist -->/,/<!-- enduserslist -->/c\
@@ -246,7 +246,7 @@ sudo sed -i '/<!-- userslist -->/,/<!-- enduserslist -->/c\
 </fixed>\
 </item>\
 <!-- enduserslist -->' /opt/trinity/share/apps/tdm/themes/windows/windows.xml
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginuserslist" "default"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginuserslist" "default"
 actulist="Hide"
 fi
 
@@ -301,19 +301,19 @@ case $choice in
 "» Default (32)") 
 clear
 setcursz 32
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointersize" "default"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "pointersize" "default"
 a32="";a48="";a64=""
 ;;
 "» Large (48)") 
 clear
 setcursz 48
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointersize" "48"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "pointersize" "48"
 a32="";a48="";a64=""
 ;;
 "» XL (64)") 
 clear
 setcursz 64
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointersize" "64"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "pointersize" "64"
 a32="";a48="";a64=""
 ;;
 esac
@@ -359,7 +359,7 @@ sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "/ro
 fi
 fi
 
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "pointercolor" $1
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "pointercolor" $1
 
 
 echo Done.
@@ -496,13 +496,13 @@ function applyUserPic {
         sudo \cp "$USER_HOME/faceicon.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
         sudo \cp "$USER_HOME/userpic.png" "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png"
         sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*$fact]" info:) -composite /opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/Background.png
-        kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic" "custom"
+        kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "userpic" "custom"
         echo "  Do you want to use this image as login image too ?"
         read -p "  this will be global for all users in case of multi accounts usage (y/n) " uspic
         if [ "$uspic" == "y" ] || [ "$uspic" == "Y" ]; then
         sudo \cp "$USER_HOME/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
         sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*$fact]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
-        kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginpic" "custom"
+        kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginpic" "custom"
         fi
         rm -f "$USER_HOME/userpic.png"
         rm -f "$USER_HOME/faceicon.png"
@@ -608,13 +608,13 @@ sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg "/opt/trin
 iconth=$(kreadconfig --file $TDEHOME/share/config/kdeglobals --group Icons --key Theme)
 sudo \cp "/usr/share/icons/$iconth/64x64/actions/switchuser.png" "$USER_HOME/.face.icon"
 sudo \cp "/usr/share/icons/$iconth/64x64/actions/switchuser.png" "/opt/trinity/share/apps/tdm/faces/$USER_SU.face.icon"
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic" "default"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "userpic" "default"
 echo "  Do you want to use the default image as login image too ?"
 read -p "  (this will be global for all users in case of multi accounts usage (y/n) " uspic
 if [ "$uspic" == "y" ] || [ "$uspic" == "Y" ]; then
 sudo \cp "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/userpic.png" "/opt/trinity/share/apps/tdm/themes/windows/userpic.png"
 sudo convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg /opt/trinity/share/apps/tdm/themes/windows/userpic.png -geometry +$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:(w-$usz)/2]" info:)+$(convert /opt/trinity/share/apps/tdm/themes/windows/_base_bkg.jpg -ping -format "%[fx:h*$fact]" info:) -composite /opt/trinity/share/apps/tdm/themes/windows/background.jpg
-kwriteconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginpic" "default"
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginpic" "default"
 fi
 echo "Done."
 read -p "Press enter..."
