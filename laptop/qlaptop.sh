@@ -105,7 +105,7 @@ itemdisp "Fetching latest version of the package list..."
 
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Fetching latest version of the package list..."
 
-konsole --nomenubar --nohist --notabbar --noframe --noscrollbar -e common/apt_update.sh "$dcopRef" "laptop" -- &
+konsole --nomenubar --nohist --notabbar --noframe --noscrollbar --vt_sz 56x24 -e common/apt_update.sh "$dcopRef" "laptop" -- &
 kid=konsole-$!
 session_count=$(dcop $kid konsole sessionCount 2>/dev/null)
 while [[ $session_count -ne 1 ]]
@@ -113,7 +113,7 @@ do
 sleep 0.1
 session_count=$(dcop $kid konsole sessionCount)
 done
-dcop $kid konsole-mainwindow#1 setGeometry 5 5 600 500
+dcop $kid konsole-mainwindow#1 move 5 5
 dcop $kid konsole-mainwindow#1 lower
 session_count=$(dcop $kid konsole sessionCount 2>/dev/null)
 while [[ $session_count -eq 1 ]]
@@ -214,7 +214,7 @@ if [[ $insttlpui -eq 1 ]]; then
 dcop "$dcopRef" setLabel "Installing TLP ui..."
 cd laptop
 
-konsole --nomenubar --nohist --notabbar --noframe --noscrollbar -e ./tlpui_setup.sh "yes" -- &
+konsole --nomenubar --nohist --notabbar --noframe --noscrollbar --vt_sz 56x24 -e ./tlpui_setup.sh "yes" -- &
 kid=konsole-$!
 session_count=$(dcop $kid konsole sessionCount 2>/dev/null)
 while [[ $session_count -ne 1 ]]
@@ -222,7 +222,7 @@ do
 sleep 0.1
 session_count=$(dcop $kid konsole sessionCount)
 done
-dcop $kid konsole-mainwindow#1 setGeometry 5 5 600 500
+dcop $kid konsole-mainwindow#1 move 5 5
 dcop $kid konsole-mainwindow#1 lower
 session_count=$(dcop $kid konsole sessionCount 2>/dev/null)
 while [[ $session_count -eq 1 ]]
