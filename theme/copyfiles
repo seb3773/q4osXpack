@@ -2775,7 +2775,7 @@ if [ "${lowres:-0}" -eq 1 ]; then
 sudo tar -xzf tdmwin_lowres.tar.gz -C /opt/trinity/share/apps/tdm/themes/windows/
 fi
 
-loginpicsetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "loginpic")
+loginpicsetting=$(kreadconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "loginpic")
 if [ -n "$loginpicsetting" ] && [ "$loginpicsetting" = "custom" ]; then
 echo "  ►►using previously defined login picture"
 else
@@ -2796,7 +2796,7 @@ echo "Username Text Position $Xres = $Xpos,$Ypos_rounded" | sudo tee -a "/opt/tr
 echo "Action Text Position $Xres = $Xpos,$Ypos2" | sudo tee -a "/opt/trinity/share/apps/ksplash/Themes/Redmond10_$USER_SU/Theme.rc"
 }
 txpos > /dev/null 2>&1
-userpicsetting=$(kreadconfig --file $USER_HOME/.q4oswin10.conf --group "Settings" --key "userpic")
+userpicsetting=$(kreadconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "userpic")
 if [ "$userpicsetting" != "custom" ]; then
 echo "  \e[35m░▒▓█\033[0m copying default user picture"
 \cp "/usr/share/icons/kdeten_$iconth/64x64/actions/switchuser.png" "$USER_HOME/.face.icon"

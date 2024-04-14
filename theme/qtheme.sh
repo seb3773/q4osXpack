@@ -257,15 +257,15 @@ itemdisp "Fetching latest version of the package list..."
 
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Fetching latest version of the package list..."
 
-konsole --nomenubar --nohist --notabbar --noframe --noscrollbar -e common/apt_update.sh "$dcopRef" "theme" -- &
+konsole --nomenubar --nohist --notabbar --noframe --noscrollbar --vt_sz 56x24 -e common/apt_update.sh "$dcopRef" "theme" -- &
 kid=konsole-$!
-session_count=$(dcop $kid konsole sessionCount 2>/dev/null)
+session_count=$(dcop $kid konsole sessionCount 2>/dev/null)600 500
 while [[ $session_count -ne 1 ]]
 do
 sleep 0.1
 session_count=$(dcop $kid konsole sessionCount)
 done
-dcop $kid konsole-mainwindow#1 setGeometry 5 5 600 500
+dcop $kid konsole-mainwindow#1 move 5 5
 dcop $kid konsole-mainwindow#1 lower
 session_count=$(dcop $kid konsole sessionCount 2>/dev/null)
 while [[ $session_count -eq 1 ]]
