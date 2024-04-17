@@ -457,7 +457,7 @@ qprogress "$script" 6
 
 
 
-
+#-----osx mod---***#
 #========== Installing plymouth theme ala windows10 =============================================================
 itemdisp "Install Q4Win10 plymouth theme..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Install Q4Win10 plymouth theme...";fi
@@ -474,7 +474,7 @@ echo
 qprogress "$script" 7
 
 
-
+#-----osx mod---***# (font)
 #========== Installing grub theme ===============================================================================
 itemdisp "Install grub theme..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Install grub theme...";fi
@@ -500,7 +500,7 @@ qprogress "$script" 8
 
 
 
-
+#-----osx mod---***#
 #========== Shutdown images =====================================================================================
 itemdisp "Copying shutdown image..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Install shutdown image...";fi
@@ -548,7 +548,7 @@ qprogress "$script" 13
 cd ..
 
 
-
+#-----osx mod---***#
 #========== splash screen =======================================================================================
 itemdisp "Configuring splash screen at desktop loading..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Install desktop splash screen...";fi
@@ -579,6 +579,7 @@ kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Coloriz
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ExpandSize true
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowLeftHideButton false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key ShowRightHideButton false
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Alignment 0
 rota
 qprogress "$script" 15
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Size 4
@@ -1402,6 +1403,7 @@ downlfoldroot=$(xdg-user-dir DOWNLOAD)
 #test if $TDEHOME/share/apps/konqsidebartng/filemanagement/entries  exist, if not:
 #konqueror system:/ --profile "filemanagement" > /dev/null 2>&1 & foo=$! && sleep 1 && kill -15 $foo
 #sudo find $TDEHOME/share/apps/konqsidebartng/filemanagement/entries -type f ! -name '.version' -exec rm {} +
+sudo rm -f $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/
 sudo tar -xzf theme/konqueror_dirtree.tar.gz -C $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/
 sudo chown -R $USER: $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/*
 sudo chown -R $USER: $TDEHOME/share/apps/konqsidebartng/filemanagement/entries/.version
