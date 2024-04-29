@@ -597,9 +597,9 @@ sudo kwriteconfig --file "$script_directory/common/conf.qtheme.tmp" --group "Set
 
 
 sudo chmod +x theme/qtheme.sh
-#theme/qtheme.sh > common/qtheme.log 2>&1
+theme/qtheme.sh > common/qtheme.log 2>&1
 #for terminal debug
-theme/qtheme.sh
+#theme/qtheme.sh
 }
 
 
