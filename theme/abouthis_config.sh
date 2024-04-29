@@ -52,3 +52,6 @@ gpu=$(echo "$gpu_info" | awk -F 'VGA compatible controller:' '{print $2}')
 gpu=$(echo "$gpu" | sed 's/^[[:space:]]*//')
 new_value="\"graphics\": \"            $gpu\","
 sed -i "s#\"graphics\":.*#$new_value#" "$USER_HOME/.local/share/about-this-mac/overview-conf.json"
+seria=$(sudo dmidecode -s system-serial-number)
+new_value="\"serial_num\": \"$seria\","
+sed -i "s#\"serial_num\":.*#$new_value#" "$USER_HOME/.local/share/about-this-mac/overview-conf.json"
