@@ -1,0 +1,51 @@
+#!/bin/bash
+fichier="/boot/firmware/cmdline.txt"
+#quiet
+if ! grep -q "quiet" "$fichier"; then
+sed -i '/^console=/s/$/ quiet/' "$fichier"
+fi
+#splash
+if ! grep -q "splash" "$fichier"; then
+sed -i '/^console=/s/$/ splash/' "$fichier"
+fi
+#plymouth.ignore-serial-consoles
+if ! grep -q "plymouth.ignore-serial-consoles" "$fichier"; then
+sed -i '/^console=/s/$/ plymouth.ignore-serial-consoles/' "$fichier"
+fi
+#console=tty3 > tty1
+if grep -q "console=tty3" "$fichier"; then
+sed -i 's/console=tty3/console=tty1/g' "$fichier"
+fi
+if ! grep -q "console=tty1" "$fichier"; then
+sed -i '/^console=/ s/$/ console=tty1/' "$fichier"
+fi
+#loglevel=0
+if grep -q "loglevel=[0-9]\+" "$fichier"; then
+sed -i 's/loglevel=[0-9]\+/loglevel=0/g' "$fichier"
+fi
+if ! grep -q "loglevel=0" "$fichier"; then
+sed -i '/^console=/ s/$/ loglevel=0/' "$fichier"
+fi
+#logo.nologo
+if ! grep -q "^console=.*logo\.nologo" "$fichier"; then
+sed -i '/^console=/ s/$/ logo.nologo/' "$fichier"
+fi
+#vt.global_cursor_default=0
+if grep -q "vt\.global_cursor_default=[0-9]\+" "$fichier"; then
+sed -i 's/vt\.global_cursor_default=[0-9]\+/vt.global_cursor_default=0/' "$fichier"
+fi
+if ! grep -q "^console=.*vt\.global_cursor_default=0" "$fichier"; then
+sed -i '/^console=/ s/$/ vt.global_cursor_default=0/' "$fichier"
+fi
+
+
+#config.txt disable_splash=1
+fichier="/boot/firmware/config.txt"
+if grep -q "^disable_splash=[0-9]\+" "$fichier"; then
+sed -i 's/^disable_splash=[0-9]\+/disable_splash=1/' "$fichier"
+fi
+if ! grep -q "^disable_splash=1$" "$fichier"; then
+echo "disable_splash=1" | tee -a "$fichier" > /dev/null
+fi
+
+
