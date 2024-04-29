@@ -587,6 +587,10 @@ cd ..
 #itemdisp "Adjusting screen dpi..."
 #if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Adjusting screen dpi...";fi
 #
+dpis=$(kreadconfig --file "$TDEHOME/share/config/q4osrc" --group Screen --key force_screen_dpi)
+if [ -v dpi ] && [ "$dpi" -gt 110 ]; then
+kwriteconfig --file "$TDEHOME/share/config/q4osrc" --group Screen --key force_screen_dpi 110
+fi
 
 
 #-----osx mod---***#
