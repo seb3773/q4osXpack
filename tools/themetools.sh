@@ -10,6 +10,7 @@ kdicon="$script_directory/common/Q4OSsebicon.png"
 osarch=$(dpkg --print-architecture)
 USER_HOME=$(eval echo ~${SUDO_USER})
 USER_SU=$USER
+osx=$(kreadconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "osxmode")
 #------------------
 
 lowres=0
@@ -17,6 +18,7 @@ Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
 Yres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
 Ypos=$(echo "$Yres * 0.473" | bc)
 Ypos_rounded=$(awk 'BEGIN { printf "%.0f\n", '"$Ypos"' }')
+if [[ ! $osx -eq 1 ]]; then
 if (( $Xres < 1920 )); then
 lowres=1
 usz=180
@@ -28,6 +30,12 @@ usz=220
 rsz1="220x220^"
 rsz2="220x220"
 fact="0.2"
+fi
+else
+usz=150
+rsz1="150x150^"
+rsz2="150x150"
+fact="0.3"
 fi
 
 
