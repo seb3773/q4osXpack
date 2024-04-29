@@ -19,6 +19,8 @@ You can specify (with -c argument) an 'accent' color to the base theme (light/da
 It's somekind of a full theme with icons, pointers, windows decorations, widgets style, color schemes, sounds (notably usb connect/disconnect sounds), taskbar & tdemenu setup, konqueror & dolphin profiles,boot splash, login screen, gtk theme, ui behavior, etc... with GTK2/GTK3 styles homogenized.  
 I try to keep all differents parts of the theme as lightweight as possible as it is intended for old computers too as I explained :) And I want to keep in line with the trinity de / Q4os philosophy, so it will not 'bloat' your computer with useless things.
 
+**New : OSX theme (beta for now), try it !
+
 
 
 ## ▓▓ Qperf script:
