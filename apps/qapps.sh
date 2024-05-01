@@ -1296,7 +1296,7 @@ qprogress "$script" 100
 
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" close
 sudo rm -f "$abs_path"
-kdialog --title "■■ q4osXpack » qapps " --icon "$kdicon" --msgbox "⠀⠀⠀Installation Completed.⠀⠀⠀⠀⠀⠀"
+kdialog --title "q4osXpack » qapps " --icon "$kdicon" --msgbox "⠀⠀⠀Installation Completed.⠀⠀⠀⠀⠀⠀"
 else
 alldone
 fi
