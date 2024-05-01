@@ -230,7 +230,7 @@ do
 sleep 1
 session_count=$(dcop $kid konsole sessionCount)
 done
-kdialog --icon "$kdicon"  --msgbox "TLPUI will open now, you can just close the windows \n to accept standard settings or edit them"  --caption "qlaptop" --title "■■ q4osXpack"
+kdialog --icon "$kdicon"  --msgbox "TLPUI will open now, you can just close the windows \n to accept standard settings or edit them"  --caption "qlaptop" --title "q4osXpack"
 tlpui > /dev/null 2>&1
 cd ..
 #endif selected
@@ -316,7 +316,7 @@ echo
 qprogress "$script" 70
 
 if [[ $conffile -eq 1 ]]; then
-kdialog --icon "$kdicon"  --msgbox "Xfce4-power-manager settings panel will open now,\nso you can adjust your preferences.\nJust close the panel once finished."  --caption "qlaptop" --title "■■ q4osXpack"
+kdialog --icon "$kdicon"  --msgbox "Xfce4-power-manager settings panel will open now,\nso you can adjust your preferences.\nJust close the panel once finished."  --caption "qlaptop" --title "q4osXpack"
 fi
 sh -c xfce4-power-manager-settings > /dev/null 2>&1
 qprogress "$script" 80
@@ -380,13 +380,13 @@ echo
 if (grep "GRUB_CMDLINE_LINUX_DEFAULT" "/etc/default/grub")|grep -q "resume_offset="; then
 echo "**  resume function seems to be already activated, skipping this part."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing swap file..."
-kdialog --icon "$kdicon" --caption "qlaptop" --title "■■ q4osXpack" --error "resume function seems to be already activated, skipping swap file install"
+kdialog --icon "$kdicon" --caption "qlaptop" --title "q4osXpack" --error "resume function seems to be already activated, skipping swap file install"
 fi
 else 
 if grep -q "/swap" "/etc/fstab"; then
 echo "**  /swap already exist, skipping this part."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing swap file..."
-kdialog --icon "$kdicon" --caption "qlaptop" --title "■■ q4osXpack" --error "/swap already exist, skipping swap file install"
+kdialog --icon "$kdicon" --caption "qlaptop" --title "q4osXpack" --error "/swap already exist, skipping swap file install"
 fi
 #TO DO:
 #test if resume fonction exist,and in this case propose to adjust parameters for hibernation 
@@ -405,7 +405,7 @@ echo " > disk space available: $dskfree"
 if [ "$dskfree" -lt "$needed" ]; then
   echo "** sorry not enough disk space free (we must keep at least 1Gb free on the disk :p)"
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing swap file..."
-kdialog --icon "$kdicon" --caption "qlaptop" --title "■■ q4osXpack" --error "sorry not enough disk space free for swap file (we must keep at least 1Gb free on the disk)"
+kdialog --icon "$kdicon" --caption "qlaptop" --title "q4osXpack" --error "sorry not enough disk space free for swap file (we must keep at least 1Gb free on the disk)"
 fi
 else
  echo
@@ -465,7 +465,7 @@ qprogress "$script" 100
 
 #========== DONE. ==================================================================================================
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" close
-kdialog --icon "$kdicon"  --msgbox "Installation completed."  --caption "qlaptop" --title "■■ q4osXpack"
+kdialog --icon "$kdicon"  --msgbox "Installation completed."  --caption "qlaptop" --title "q4osXpack"
 else
 alldone
 fi
