@@ -2829,6 +2829,8 @@ fi
 
 
 echo "  \e[35m░▒▓█\033[0m copying konqueror services menus"
+mkdir -p /usr/local/bin
+tar -xzf localscripts.tar.gz -C /usr/local/bin/ --wildcards --strip-components=1 "$codlang"/*
 mkdir -p $USER_HOME/.trinity/share/apps/konqueror/servicemenus
 tar -xzf konqsvcmenus.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/servicemenus/
 tar -xzf konqsvcmenus.tar.gz -C $USER_HOME/.trinity/share/apps/d3lphin/servicemenus/
@@ -2838,8 +2840,9 @@ tar -xzf konqsvcmenus_osx.tar.gz -C $USER_HOME/.trinity/share/apps/d3lphin/servi
 else
 rm -f $USER_HOME/.trinity/share/apps/konqueror/servicemenus/addtodock.desktop
 rm -f $USER_HOME/.trinity/share/apps/d3lphin/servicemenus/addtodock.desktop
+rm -f /usr/local/bin/addtodock.sh
 fi
-tar -xzf localscripts.tar.gz -C /usr/local/bin/ --wildcards --strip-components=1 "$codlang"/*
+
 
 
 chown -R $USER_SU $USER_HOME/.trinity/share/apps/konqueror/
@@ -2913,7 +2916,11 @@ chown $USER_SU /etc/tqt3/qtrc
 
 echo "  \e[35m░▒▓█\033[0m copying sounds"
 #tar -xzf sounds.tar.gz -C /opt/trinity/share/sounds/
+if [ ! $osx -eq 1 ]; then
 7z x -so sounds.tar.7z | tar xf - -C /opt/trinity/share/sounds/
+else
+7z x -so sounds_osx.tar.7z | tar xf - -C /opt/trinity/share/sounds/
+fi
 tar -xzf knotify.eventsrc.tar.gz -C $USER_HOME/.trinity/share/config/
 chown $USER_SU $USER_HOME/.trinity/share/config/knotify.eventsrc
 #as I don't know yet to modify root apps sound scheme, I delete KDE_Error_x.ogg, because

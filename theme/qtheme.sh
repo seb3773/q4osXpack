@@ -3342,7 +3342,7 @@ echo
 
 
 if [[ $conffile -eq 1 ]]; then
-kdialog --icon "$kdicon" --title "■■ q4osXpack » qtheme " --yesno "Installation Completed.\nDo you want to reboot now ? (recommended)"
+kdialog --icon "$kdicon" --title "q4osXpack » qtheme " --yesno "Installation Completed.\nDo you want to reboot now ? (recommended)"
 if [[ $? -eq 0 ]]; then
 sudo /sbin/reboot
 fi
