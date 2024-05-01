@@ -249,7 +249,7 @@ fi
 #
 #
 
-kdialog --icon "$kdicon" --title "■■ q4osXpack » qtheme " --yesno "As you installed a new kernel, it is recommanded to reboot right now, before\ntrying to optimize further, and relaunch the script after rebooting.\n► Do you want to reboot now ? (recommended)"
+kdialog --icon "$kdicon" --title "q4osXpack » qtheme " --yesno "As you installed a new kernel, it is recommanded to reboot right now, before\ntrying to optimize further, and relaunch the script after rebooting.\n► Do you want to reboot now ? (recommended)"
 if [[ $? -eq 0 ]]; then
 sudo /sbin/reboot
 fi
@@ -1235,7 +1235,7 @@ qprogress "$script" 100
 
 #========== DONE. ==================================================================================================
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" close
-kdialog --icon "$kdicon" --title "■■ q4osXpack » qperf " --yesno "Installation Completed.\nDo you want to reboot now ? (recommended)"
+kdialog --icon "$kdicon" --title "q4osXpack » qperf " --yesno "Installation Completed.\nDo you want to reboot now ? (recommended)"
 if [[ $? -eq 0 ]]; then
 sudo /sbin/reboot
 fi
