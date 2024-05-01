@@ -474,7 +474,7 @@ return 1
 #############################################################################################################
 ###################################################" MAIN MENU ##############################################
 ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack ⏺</strong></font><br><br>"
-kdtitle="■■ q4osXpack "
+kdtitle="q4osXpack "
 kdcaption="theme tools"
 if [ "$EUID" -eq 0 ]
 then
