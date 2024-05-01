@@ -53,7 +53,7 @@ extraapps=(
 
 )
 
-kdtitle="■■ q4osXpack"
+kdtitle="q4osXpack"
 kdcaption="qapps"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 qapps1 () {
@@ -197,7 +197,7 @@ QPERF() {
 
 #__________________________________________________________________________________________________________________________________________________________________________________________
 ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack Perf optimizations ⏺</strong></font><br><br>"
-kdtitle="■■ q4osXpack"
+kdtitle="q4osXpack"
 kdcaption="qperf"
 instoptkern=0;instzram=0;disbluet=0;disprint=0;triminitram=0;raspoc=0;killlogs=0
 
@@ -331,7 +331,7 @@ perfs/qperf.sh > common/qperf.log 2>&1
 #===============================================================================================================================
 QLAPTOP() {
 ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack Laptop configuration ⏺</strong></font><br><br>"
-kdtitle="■■ q4osXpack"
+kdtitle="q4osXpack"
 kdcaption="qlaptop"
 insttlpui=0;insthiber=0
 
@@ -424,7 +424,7 @@ laptop/qlaptop.sh > common/qlaptop.log 2>&1
 QTHEME() {
 #__________________________________________________________________________________________________________________________________________________________________________________________
 ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack Theme ⏺</strong></font><br><br>"
-kdtitle="■■ q4osXpack"
+kdtitle="q4osXpack"
 kdcaption="qtheme"
 qtheme1() {
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -606,7 +606,7 @@ theme/qtheme.sh > common/qtheme.log 2>&1
 #############################################################################################################
 ###################################################" MAIN MENU ##############################################
 ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack ⏺</strong></font><br><br>"
-kdtitle="■■ q4osXpack "
+kdtitle="q4osXpack "
 kdcaption="main menu"
 if [ "$EUID" -eq 0 ]
 then
