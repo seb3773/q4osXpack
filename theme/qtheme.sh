@@ -1064,7 +1064,11 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key Tran
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Translucency --key TreatKeepAboveAsActive true
 rota
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveBorderDelay 50
+if [[ ! $osx -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveBorders 4
+else
+kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveBorders 0
+fi
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveBorderDistance 5
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key TilingMode Opaque
 kwriteconfig --file $TDEHOME/share/config/twinrc --group Windows --key ActiveMouseScreen false
@@ -1102,7 +1106,7 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key Com
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow2 "Activate and pass click"
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandWindow3 "Activate and pass click"
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandActiveTitlebar1 Raise
-kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandActiveTitlebar2 Lower
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandActiveTitlebar2 Raise
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandActiveTitlebar3 Operations menu
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandAll1 Move
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandAll2 "Toggle raise and lower"
@@ -1111,7 +1115,7 @@ kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key Com
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandAllReverseWheel false
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandAllWheel Nothing
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar1 "Activate and raise"
-kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar2 "Activate and lower"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar2 "Activate and raise"
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandInactiveTitlebar3 "Operations menu"
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandTitlebarReverseWheel false
 kwriteconfig --file $TDEHOME/share/config/twinrc --group MouseBindings --key CommandTitlebarWheel Nothing
@@ -1171,7 +1175,11 @@ sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key TranslucentMovingWindows false
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Translucency --key TreatKeepAboveAsActive true
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveBorderDelay 50
+if [[ ! $osx -eq 1 ]]; then
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveBorders 4
+else
+sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveBorders 0
+fi
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveMouseScreen false
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key ActiveBorderDistance 5
 sudo kwriteconfig --file /root/.trinity/share/config/twinrc --group Windows --key TilingMode Opaque
@@ -3206,6 +3214,15 @@ kwriteconfig --file $TDEHOME/share/config/kcontrolrc --group "Index" --key "View
 kwriteconfig --file $TDEHOME/share/config/kcontrolrc --group "Index" --key "IconSize" "Medium"
 #desktop images preview
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop Icons" --key "Preview" "svgthumbnail,imagethumbnail"
+
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop Icons" --key "AutoLineUpIcons" true
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "General" --key "Enabled" true
+#icons spacing
+if [[ ! $osx -eq 1 ]]; then
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop Icons" --key "IconSpacing" 16
+else
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop Icons" --key "IconSpacing" 24
+fi
 #usuals win commands
 cd /usr/local/bin/
 sudo rm calc charmap cmd ksysguard notepad paint snapshot stickynotes taskmgr taskschd > /dev/null 2>&1

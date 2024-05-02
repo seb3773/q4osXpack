@@ -2776,11 +2776,15 @@ sudo chown $USER_SU /opt/trinity/share/wallpapers/q4seb_hd_osx*
 fi
 
 echo "  \e[35m░▒▓█\033[0m copying sw center splash"
+if [ ! $osx -eq 1 ]; then
 if [ $1 -eq 1 ]
 then
 tar -xzf swcentre_splash_dark.tar.gz -C /usr/share/apps/q4os_system/q4os_swcentre/resource/
 else
 tar -xzf swcentre_splash.tar.gz -C /usr/share/apps/q4os_system/q4os_swcentre/resource/
+fi
+else
+tar -xzf swcentre_splash_osx.tar.gz -C /usr/share/apps/q4os_system/q4os_swcentre/resource/
 fi
 
 echo "  \e[35m░▒▓█\033[0m copying font"

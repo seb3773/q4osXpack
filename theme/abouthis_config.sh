@@ -40,6 +40,7 @@ memsize=$(echo "$mem_info" | awk -F ': *' '{print $2}')
 mem_speed=$(sudo dmidecode -t memory | grep "Speed:" | grep "Configured Memory Speed:")
 memspeed=$(echo "$mem_speed" | awk -F ': *' '{print $2}')
 memspeed=$(echo "$memspeed" | sed 's/[^0-9]*//g')
+memspeed=$(echo "$memspeed" | tr -d '\n')
 ramline="$memsize @ $memspeed MHz $memtype"
 new_value="\"memory\": \"              $ramline\","
 sed -i "s#\"memory\":.*#$new_value#" "$USER_HOME/.local/share/about-this-mac/overview-conf.json"
