@@ -551,8 +551,8 @@ itemdisp "Installing spotify"
 installSpoty () {
             if ! isinstalled "spotify-client/stable" "common/packages_list.tmp"; then
             echo -e "${YELLOW}"
-            curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
-            echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+            curl -fsSL https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/spotify.gpg
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/spotify.gpg] http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
             sudo apt-get update
             qprogress "$script" 35
             sudo apt-get install -y spotify-client
