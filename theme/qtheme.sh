@@ -728,12 +728,14 @@ sudo chown -R $USER: $TDEHOME/share/config/kooldockrc
 mkdir -p $TDEHOME/share/apps/kooldock
 sudo rm -rf $TDEHOME/share/apps/kooldock/*
 sudo tar -xzf theme/kooldock_menu.tar.gz -C $TDEHOME/share/apps/kooldock
+sudo tar -xzf theme/kooldock_osxbg.tar.gz -C /opt/trinity/share/apps/kooldock/backgrounds/osx/
 sudo chown -R $USER: $TDEHOME/share/apps/kooldock/menu
 #install lightpad dependencies
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing lightpad dependencies...";fi
+sudo apt install libgtk-3-0
 sudo apt install libgee-0.8-2
 sudo apt install libgnome-menu-3-0
-sudo apt install libgtk-3-0
+sudo apt install gnome-menus
 #sudo apt install libwnck-3-0
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing lightpad binary...";fi
 #copy lightpad binary
