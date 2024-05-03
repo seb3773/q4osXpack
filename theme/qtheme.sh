@@ -729,6 +729,13 @@ mkdir -p $TDEHOME/share/apps/kooldock
 sudo rm -rf $TDEHOME/share/apps/kooldock/*
 sudo tar -xzf theme/kooldock_menu.tar.gz -C $TDEHOME/share/apps/kooldock
 sudo chown -R $USER: $TDEHOME/share/apps/kooldock/menu
+#install lightpad dependencies
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing lightpad dependencies...";fi
+sudo apt install libgee-0.8-2
+sudo apt install libgnome-menu-3-0
+sudo apt install libgtk-3-0
+#sudo apt install libwnck-3-0
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing lightpad binary...";fi
 #copy lightpad binary
 if [ "$osarch" = "amd64" ]; then
 sudo tar -xzf theme/lightpad.tar.gz -C /usr/local/bin/
@@ -1653,8 +1660,17 @@ sudo sed -i "s/^URL\[\$e\]=.*/URL[\$e]=${vidfold//\//\\/}/" "$TDEHOME/share/apps
 fi
 
 qprogress "$script" 62
-#if $osx =1 install dolphin
-
+if [[ $osx -eq 1 ]]; then
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Dolphin...";fi
+itemdisp "Installing Dolphin..."
+if ! (cat common/packages_list.tmp | grep -q dolphin-trinity ); then
+echo -e "${YELLOW}"
+sudo apt install -y dolphin-trinity
+echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed."
+fi
+fi
 
 #~~~~~~~~~~~~~~~~~~~~~ if dolphin is installed
 if [[ -f "$TDEHOME/share/config/d3lphinrc" ]]; then
