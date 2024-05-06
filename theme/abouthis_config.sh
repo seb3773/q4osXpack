@@ -46,7 +46,9 @@ new_value="\"memory\": \"              $ramline\","
 sed -i "s#\"memory\":.*#$new_value#" "$USER_HOME/.local/share/about-this-mac/overview-conf.json"
 boot_device=$(df /boot | grep -Eo '/dev/[^ ]+')
 bootprt=$(echo "$boot_device" | awk -F'/dev/' '{print $2}')
-new_value="\"startup_disk\": \"    $bootprt\","
+df_output=$(df -h /dev/$bootprt | awk 'NR==2')
+totsize=$(echo $df_output | awk '{print $2}')
+new_value="\"startup_disk\": \"    $bootprt ($totsize)\","
 sed -i "s#\"startup_disk\":.*#$new_value#" "$USER_HOME/.local/share/about-this-mac/overview-conf.json"
 gpu_info=$(sudo lspci | grep -i --color 'vga\|3d\|2d' | grep -o 'VGA compatible controller:.*')
 gpu=$(echo "$gpu_info" | awk -F 'VGA compatible controller:' '{print $2}')

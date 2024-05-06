@@ -2574,6 +2574,8 @@ ln -s ../../status/symbolic/network-wired-offline-symbolic.svg actions/32/nm_no_
 ln -s folder-videos.svg places/scalable/folder_video.svg
 ln -s folder-documents.svg places/scalable/folder_doc_q4os_startmenu.svg
 ln -s folder-documents.svg places/scalable/folder_wordprocessing.svg
+ln -s folder.svg places/scalable/folder_man.svg
+ln -s folder-public.svg places/scalable/folder_home2.svg
 
 cd - > /dev/null 2>&1
 gtk-update-icon-cache /usr/share/icons/BigSur/
@@ -2840,6 +2842,7 @@ echo "  \e[35m░▒▓█\033[0m copying konqueror services menus"
 mkdir -p /usr/local/bin
 tar -xzf localscripts.tar.gz -C /usr/local/bin/ --wildcards --strip-components=1 "$codlang"/*
 mkdir -p $USER_HOME/.trinity/share/apps/konqueror/servicemenus
+mkdir -p $USER_HOME/.trinity/share/apps/d3lphin/servicemenus
 tar -xzf konqsvcmenus.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/servicemenus/
 tar -xzf konqsvcmenus.tar.gz -C $USER_HOME/.trinity/share/apps/d3lphin/servicemenus/
 if [ $osx -eq 1 ]; then
