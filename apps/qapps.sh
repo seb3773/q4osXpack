@@ -909,6 +909,48 @@ fi
 qprogress "$script" 55
 
 
+
+#---------------------------------------Rustdesk
+if [[ $conffile -eq 1 ]]; then
+instrdesk=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Rustdesk")
+else instrdesk=1;fi
+if [[ instrdesk -eq 1 ]]; then
+
+itemdisp "Installing Rustdesk"
+if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Rustdesk...";fi
+sudo wget https://github.com/rustdesk/rustdesk/releases/download/1.2.3-2/rustdesk-1.2.3-2-x86_64.deb
+sudo apt install -y ./rustdesk-1.2.3-2-x86_64.deb
+sudo rm -f ./rustdesk-1.2.3-2-x86_64.deb
+else
+echo
+echo -e "${RED}█ ${ORANGE}Install Rustdesk ? (teamviewer like)${NOCOLOR}"
+optionz=("Install Rustdesk" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install Rustdesk")
+            echo -e "  \e[35m░▒▓█\033[0m Installing Rustdesk..."
+sudo wget https://github.com/rustdesk/rustdesk/releases/download/1.2.3-2/rustdesk-1.2.3-2-x86_64.deb
+sudo apt install -y ./rustdesk-1.2.3-2-x86_64.deb
+sudo rm -f ./rustdesk-1.2.3-2-x86_64.deb
+            break
+            ;;
+        "Skip")
+            sep
+            echo
+            echo
+            echo
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+fi
+qprogress "$script" 56
+
+
 #---------------------------------------Free Office
 if [[ $conffile -eq 1 ]]; then
 instfreo=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Free Office")
@@ -924,7 +966,7 @@ function installFreeO() {
             sudo bash -c 'wget -qO- https://shop.softmaker.com/repo/linux-repo-public.key | gpg --dearmor > /etc/apt/keyrings/softmaker.gpg'
             sudo bash -c 'echo "deb [signed-by=/etc/apt/keyrings/softmaker.gpg] https://shop.softmaker.com/repo/apt stable non-free" > /etc/apt/sources.list.d/softmaker.list'
             sudo apt update
-            qprogress "$script" 56
+            qprogress "$script" 57
             sudo apt install -y softmaker-freeoffice-2021
             echo -e "${NOCOLOR}"
             else
