@@ -2573,6 +2573,7 @@ ln -s ../../status/symbolic/network-wired-offline-symbolic.svg actions/32/nm_no_
 
 ln -s folder-videos.svg places/scalable/folder_video.svg
 ln -s folder-documents.svg places/scalable/folder_doc_q4os_startmenu.svg
+ln -s folder-documents.svg places/scalable/folder_wordprocessing.svg
 
 cd - > /dev/null 2>&1
 gtk-update-icon-cache /usr/share/icons/BigSur/
