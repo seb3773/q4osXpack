@@ -255,7 +255,7 @@ echo
 else
 echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
 fi
-qprogress "$script" 12
+qprogress "$script" 11
 
 
 #---------------------------------------bleachbit
@@ -268,7 +268,7 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing bleachbit...
 itemdisp "Installing bleachbit..."
 installApp "bleachbit" "bleachbit/stable"
 fi
-qprogress "$script" 15
+qprogress "$script" 12
 
 
 #---------------------------------------vlc
@@ -281,7 +281,7 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing vlc...";fi
 itemdisp "Installing vlc..."
 installApp "vlc" "vlc/stable"
 fi
-qprogress "$script" 18
+qprogress "$script" 13
 
 
 #---------------------------------------console tools
@@ -295,7 +295,7 @@ itemdisp "Installing usefull console tools..."
 installApp "duf" "duf/stable" 0
 installApp "jdupes" "jdupes/stable"
 fi
-qprogress "$script" 19
+qprogress "$script" 14
 
 
 #---------classics tools, may be already installed with desktop version
@@ -313,7 +313,7 @@ echo -e "  \e[35m░▒▓█\033[0m Installing Gwenview..."
 installApp "gwenview-trinity" "gwenview-trinity" 0
 fi
 
-qprogress "$script" 20
+qprogress "$script" 15
 
 #---------------------------------------Kolourpaint
 if [[ $conffile -eq 1 ]]; then
@@ -325,7 +325,7 @@ echo -e "  \e[35m░▒▓█\033[0m Installing Kolourpaint..."
 installApp "kolourpaint-trinity" "kolourpaint-trinity" 0
 fi
 
-qprogress "$script" 21
+qprogress "$script" 16
 
 #---------------------------------------KCharSelect
 if [[ $conffile -eq 1 ]]; then
@@ -337,7 +337,7 @@ echo -e "  \e[35m░▒▓█\033[0m Installing KCharSelect..."
 installApp "kcharselect-trinity" "kcharselect-trinity" 0
 fi
 
-qprogress "$script" 22
+qprogress "$script" 18
 
 #---------------------------------------Ksnapshot
 if [[ $conffile -eq 1 ]]; then
@@ -349,7 +349,7 @@ echo -e " \e[35m░▒▓█\033[0m Installing Ksnapshot..."
 installApp "ksnapshot-trinity" "ksnapshot-trinity" 0
 fi
 
-qprogress "$script" 23
+qprogress "$script" 19 
 
 #---------------------------------------Knotes
 if [[ $conffile -eq 1 ]]; then
@@ -360,7 +360,7 @@ if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Knotes...";f
 echo -e " \e[35m░▒▓█\033[0m Installing Knotes..."
 installApp "knotes-trinity" "knotes-trinity" 0
 fi
-qprogress "$script" 24
+qprogress "$script" 21
 
 #---------------------------------------Kcron
 if [[ $conffile -eq 1 ]]; then
@@ -371,7 +371,7 @@ echo -e " \e[35m░▒▓█\033[0m Installing Kcron..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Kcron...";fi
 installApp "kcron-trinity" "kcron-trinity" 0
 fi
-qprogress "$script" 25
+qprogress "$script" 22
 
 #---------------------------------------kdirstat
 if [[ $conffile -eq 1 ]]; then
@@ -382,7 +382,7 @@ echo -e " \e[35m░▒▓█\033[0m Installing kdirstat..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing kdirstat...";fi
 installApp "kdirstat-trinity" "kdirstat-trinity" 0
 fi
-qprogress "$script" 26
+qprogress "$script" 23
 
 #---------------------------------------kpdf
 if [[ $conffile -eq 1 ]]; then
@@ -393,7 +393,7 @@ echo -e " \e[35m░▒▓█\033[0m Installing kpdf..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing kpdf...";fi
 installApp "kpdf-trinity" "kpdf-trinity"
 fi
-qprogress "$script" 27
+qprogress "$script" 25
 
 #---------------------------------------Strawberry
 if [[ $conffile -eq 1 ]]; then
@@ -408,7 +408,7 @@ tar -xzf theme/strawberry.conf.tar.gz -C $USER_HOME/.configtde/strawberry/
 echo
 fi
 
-qprogress "$script" 30
+qprogress "$script" 27
 
 
 #============== Install Apps (interactive) ======================================================================
@@ -449,7 +449,7 @@ do
 done
 fi
 fi
-qprogress "$script" 32
+qprogress "$script" 28
 
 
 #---------------------------------------Guvcview
@@ -487,7 +487,7 @@ done
 fi
 
 fi
-qprogress "$script" 33
+qprogress "$script" 30
 
 
 
@@ -534,7 +534,7 @@ done
 fi
 
 fi
-qprogress "$script" 34
+qprogress "$script" 32
 
 
 
@@ -590,7 +590,7 @@ echo
 
 fi
 fi
-qprogress "$script" 38
+qprogress "$script" 34
 
 
 
@@ -610,7 +610,7 @@ installEdge () {
             curl -fSsL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /usr/share/keyrings/microsoft-edge.gpg > /dev/null
             echo 'deb [signed-by=/usr/share/keyrings/microsoft-edge.gpg] https://packages.microsoft.com/repos/edge stable main' | sudo tee /etc/apt/sources.list.d/microsoft-edge.list
             sudo apt update
-            qprogress "$script" 40
+            qprogress "$script" 35
             sudo apt install microsoft-edge-stable
             echo -e "${NOCOLOR}"
             else
@@ -645,7 +645,7 @@ echo
 echo
 fi
 fi
-qprogress "$script" 42
+qprogress "$script" 36
 
 
 #---------------------------------------Gparted
@@ -683,7 +683,7 @@ do
 done
 fi
 fi
-qprogress "$script" 45
+qprogress "$script" 38
 
 
 
@@ -722,7 +722,7 @@ do
 done
 fi
 fi
-qprogress "$script" 47
+qprogress "$script" 40
 
 
 
@@ -769,7 +769,7 @@ echo
 echo
 echo
 fi 
-qprogress "$script" 50
+qprogress "$script" 45
 
 
 #---------------------------------------Web app manager
@@ -819,7 +819,7 @@ do
 done
 fi
 fi
-qprogress "$script" 52
+qprogress "$script" 48
 
 
 #---------------------------------------Pinta
@@ -868,7 +868,7 @@ do
 done
 fi
 fi
-qprogress "$script" 53
+qprogress "$script" 50
 
 
 
@@ -906,7 +906,7 @@ do
 done
 fi
 fi
-qprogress "$script" 55
+qprogress "$script" 52
 
 
 
@@ -948,7 +948,7 @@ sudo rm -f ./rustdesk-1.2.3-2-x86_64.deb
 done
 fi
 fi
-qprogress "$script" 56
+qprogress "$script" 54
 
 
 #---------------------------------------Free Office
@@ -966,7 +966,7 @@ function installFreeO() {
             sudo bash -c 'wget -qO- https://shop.softmaker.com/repo/linux-repo-public.key | gpg --dearmor > /etc/apt/keyrings/softmaker.gpg'
             sudo bash -c 'echo "deb [signed-by=/etc/apt/keyrings/softmaker.gpg] https://shop.softmaker.com/repo/apt stable non-free" > /etc/apt/sources.list.d/softmaker.list'
             sudo apt update
-            qprogress "$script" 57
+            qprogress "$script" 55
             sudo apt install -y softmaker-freeoffice-2021
             echo -e "${NOCOLOR}"
             else
@@ -1000,7 +1000,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 58
+qprogress "$script" 56
 
 
 #---------------------------------------OnlyOffice
@@ -1015,7 +1015,7 @@ function installOnlyO() {
             echo -e "  \e[35m░▒▓█\033[0m Installing OnlyOffice..."
             echo -e "${YELLOW}"
             sudo wget https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb
-            qprogress "$script" 60
+            qprogress "$script" 58
             sudo apt install -y ./onlyoffice-desktopeditors_amd64.deb
             sudo rm -f ./onlyoffice-desktopeditors_amd64.deb
             echo -e "${NOCOLOR}"
@@ -1049,7 +1049,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 65
+qprogress "$script" 60
 
 
 
@@ -1093,7 +1093,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 67
+qprogress "$script" 62
 
 
 
@@ -1113,7 +1113,7 @@ installVbox () {
             wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
             echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
             sudo apt update
-            qprogress "$script" 70
+            qprogress "$script" 65
             sudo apt install -y virtualbox-7.0
             sudo usermod -G vboxusers -a $USER
             echo -e "${NOCOLOR}"
@@ -1150,7 +1150,7 @@ echo
 
 fi
 fi
-qprogress "$script" 75
+qprogress "$script" 70
 
 
 
@@ -1169,7 +1169,7 @@ installQtscrcpy () {
             echo -e "${YELLOW}"
             cd apps
             sudo apt install -y libqt5multimedia5
-            qprogress "$script" 76
+            qprogress "$script" 72
             sudo 7z x -so qtscrcpy.tar.7z | sudo tar xf - -C $USER_HOME/
             sudo mkdir -p $USER_HOME/.local/bin
             sudo ln -s $USER_HOME/qtscrcpy/QtScrcpy $USER_HOME/.local/bin/QtScrcpy
@@ -1208,8 +1208,59 @@ echo
 echo
 fi
 fi
-qprogress "$script" 78
+qprogress "$script" 74
 
+
+#---------------------------------------WineHQ
+if [[ $conffile -eq 1 ]]; then
+instwinehq=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "WineHQ")
+else instwinehq=1;fi
+if [[ instwinehq -eq 1 ]]; then
+
+itemdisp "Installing WineHQ"
+installWineHQ () {
+            if ! isinstalled "winehq-stable/" "common/packages_list.tmp"; then
+            echo -e "${YELLOW}"
+            sudo dpkg --add-architecture i386
+            sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+            sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources
+            sudo apt update
+            sudo apt install -y --install-recommends winehq-stable
+            echo -e "${NOCOLOR}"
+            else
+            echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+            fi
+}
+
+if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing WineHQ...";fi
+    installWineHQ
+else
+echo
+echo -e "${RED}█ ${ORANGE}Install WineHQ ? ${NOCOLOR}"
+optionz=("Install WineHQ" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install WineHQ")
+            echo -e "  \e[35m░▒▓█\033[0m Installing WineHQ..."
+            installWineHQ
+            break
+            ;;
+        "Skip")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+sep
+echo
+echo
+echo
+fi
+
+qprogress "$script" 78
 
 
 #---------------------------------------Angry IP scanner
