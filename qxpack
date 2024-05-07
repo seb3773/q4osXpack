@@ -46,11 +46,12 @@ extraapps=(
 "Stacer" "Stacer                                                ••• [system tools/task manager]"
 "S4 Snapshot" "S4 Snapshot                                      ••• [backup/imaging tool]"
 "Remmina" "Remmina                                           ••• [rdp/vnc/ssh remote desktop client]"
+"Rustdesk" "Rustdesk                                           ••• [teamviewer like written in rust]]"
 "Bpytop" "Bpytop                                              ••• [cli task manager]"
 "Virtualbox 7" "Virtualbox 7                                      ••• [virtualization tool]"
 "Kdiskmark" "Kdiskmark                                         ••• [disk speed benchmark tool]"
 "Angry IP scanner" "Angry IP scanner                               ••• [ip scanner]"
-
+"WineHQ" "Wine HQ                                              ••• [run windows program]"
 )
 
 kdtitle="q4osXpack"
