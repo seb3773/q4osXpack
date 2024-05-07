@@ -1226,6 +1226,8 @@ installWineHQ () {
             sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources
             sudo apt update
             sudo apt install -y --install-recommends winehq-stable
+            #make sure wine can create icons in "$USER_HOME/.local/share/icons"
+            sudo chown -R $USER: "$USER_HOME/.local/share/icons"
             echo -e "${NOCOLOR}"
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
