@@ -211,13 +211,13 @@ itemdisp "Installing flashfetch"
 cd apps
 echo -e "${YELLOW}"
 if [ "$osarch" = "amd64" ]; then
-sudo 7z x -so flashfetch.tar.7z | sudo tar xf - -C /usr/bin/
+sudo tar -xf flashfetch.tar.xz -C /usr/bin/
 fi
 if [ "$osarch" = "i386" ]; then
-sudo 7z x -so flashfetch_32.tar.7z | sudo tar xf - -C /usr/bin/
+sudo tar -xf flashfetch_32.tar.xz -C /usr/bin/
 fi
 if [ "$osarch" = "armhf" ]; then
-sudo 7z x -so flashfetch_arm.tar.7z | sudo tar xf - -C /usr/bin/
+sudo tar -xf flashfetch_arm.tar.xz -C /usr/bin/
 fi
 echo "flashfetch binary copied in /usr/bin/"
 cd ..
@@ -822,6 +822,62 @@ fi
 qprogress "$script" 48
 
 
+
+
+
+#---------------------------------------Peazip
+if [[ $conffile -eq 1 ]]; then
+instpeaz=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Peazip")
+else instpeaz=1;fi
+if [[ $instpeaz -eq 1 ]]; then
+
+itemdisp "Installing Peazip"
+function installpeazip() {
+           if ! isinstalled "peazip/" "common/packages_list.tmp"; then
+            echo -e "  \e[35m░▒▓█\033[0m Installing Peazip..."
+            echo -e "${YELLOW}"
+            sudo wget https://github.com/peazip/PeaZip/releases/download/9.7.1/peazip_9.7.1.LINUX.GTK2-1_amd64.deb
+            sudo apt install -y ./peazip_9.7.1.LINUX.GTK2-1_amd64.deb
+            sudo rm -f ./peazip_9.7.1.LINUX.GTK2-1_amd64.deb
+            echo -e "${NOCOLOR}"
+            else
+            echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+            fi
+}
+
+if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
+if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Peazip...";fi
+installpeazip
+else
+echo
+echo -e "${RED}█ ${ORANGE}Install Peazip ?${NOCOLOR}"
+optionz=("Install Peazip" "Skip")
+select optz in "${optionz[@]}"
+do
+    case $optz in
+        "Install Peazip")
+            installpeazip
+            break
+            ;;
+        "Skip")
+            sep
+            echo
+            echo
+            echo
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+fi
+fi
+qprogress "$script" 48
+
+
+
+
+
+
 #---------------------------------------Pinta
 if [[ $conffile -eq 1 ]]; then
 instpint=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Pinta")
@@ -1170,7 +1226,8 @@ installQtscrcpy () {
             cd apps
             sudo apt install -y libqt5multimedia5
             qprogress "$script" 72
-            sudo 7z x -so qtscrcpy.tar.7z | sudo tar xf - -C $USER_HOME/
+            sudo tar -xf qtscrcpy.tar.xz -C $USER_HOME/
+            sudo chown -R $USER: "$USER_HOME/qtscrcpy"
             sudo mkdir -p $USER_HOME/.local/bin
             sudo ln -s $USER_HOME/qtscrcpy/QtScrcpy $USER_HOME/.local/bin/QtScrcpy
             sudo mv $USER_HOME/qtscrcpy/qtscrcpy.desktop /usr/share/applications/qtscrcpy.desktop
