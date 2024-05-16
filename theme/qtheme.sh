@@ -1694,6 +1694,8 @@ kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "Icons Mode" --key "
 kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "MainWindow Toolbar mainToolBar" --key IconSize 32
 kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "MainWindow Toolbar mainToolBar" --key IconText IconTextBottom
 kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "Previews Mode" --key "Font Family" "Segoe UI"
+kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "General" --key "Save View" "true"
+kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "General" --key "Split View" "false"
 #root
 sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "D3lphin Toolbar style" --key IconSize 32
 sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "Details Mode" --key "Font Family" "Segoe UI"
@@ -1704,6 +1706,8 @@ sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "Icons Mo
 sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "MainWindow Toolbar mainToolBar" --key IconSize 32
 sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc --group "MainWindow Toolbar mainToolBar" --key IconText IconTextBottom
 sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc  --group "Previews Mode" --key "Font Family" "Segoe UI"
+sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc  --group "General" --key "Save View" "true"
+sudo kwriteconfig --file /root/.trinity/share/config/d3lphinrc  --group "General" --key "Split View" "false"
 rota
 if [[ $osx -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/d3lphinrc --group "Details Mode" --key Font Family "San Francisco Display"
@@ -2641,6 +2645,7 @@ echo -e "${NOCOLOR}"
 else
 echo -e "${ORANGE}      ¤ Already installed."
 fi
+sudo rm -f "$USER_HOME/.local/share/applications/About this Mac.desktop"
 else
 echo -e "  \e[35m░▒▓█\033[0m installing about this mac..."
 if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "installing about this mac...";fi
@@ -3065,8 +3070,10 @@ echo -e "${ORANGE}      ¤ Already installed."
 fi
 if [[ $osx -eq 1 ]]; then
 sudo tar -xzf theme/lxicons_osx.tar.gz -C /usr/share/lxtask/icons/
-sudo chown -R $USER: /usr/share/lxtask/icons
+else
+sudo tar -xzf theme/lxicons.tar.gz -C /usr/share/lxtask/icons/
 fi
+sudo chown -R $USER: /usr/share/lxtask/icons
 sep
 echo
 echo
