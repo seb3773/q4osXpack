@@ -12,7 +12,7 @@ find "$directory" -type f -name "*.svg" -exec du -b {} + | awk '{s+=$1} END {pri
 }
 
 osarch=$(dpkg --print-architecture)
-optimize_svg_files "/usr/share"
+#optimize_svg_files "/usr/share"
 optimize_svg_files "/usr/lib"
 optimize_svg_files "/opt/trinity"
 
