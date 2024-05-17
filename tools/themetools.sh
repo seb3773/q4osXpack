@@ -174,6 +174,102 @@ done
 
 
 
+
+
+setcurcol () {
+kwriteconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$1
+kwriteconfig --file $USER_HOME/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$1
+kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+kwriteconfig --file $USER_HOME/.configtde/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+kwriteconfig --file $USER_HOME/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+sudo kwriteconfig --file /root/.config/kcminputrc --group Mouse --key cursorTheme Windows10$1
+sudo kwriteconfig --file /root/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+sudo kwriteconfig --file /root/.configtde/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+sudo kwriteconfig --file /root/.config/gtk-3.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+sudo kwriteconfig --file /root/.config/gtk-4.0/settings.ini --group Settings --key gtk-cursor-theme-name Windows10$1
+sudo kwriteconfig --file /root/.trinity/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$1
+sudo kwriteconfig --file /root/.trinitykde/share/config/kcminputrc --group Mouse --key cursorTheme Windows10$1
+sudo mkdir -p  /etc/X11/cursors
+sudo \cp /usr/share/icons/Windows10$1/cursor.theme /etc/X11/cursors/Windows10$1\_cursor.theme
+sudo ln -nfs /etc/X11/cursors/Windows10$1\_cursor.theme /etc/alternatives/x-cursor-theme
+sudo ln -nfs /etc/alternatives/x-cursor-theme /usr/share/icons/default/index.theme
+if [ "$1" = "Dark" ]
+then 
+sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Dark"' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Dark"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
+if [ -f "/root/xsettingsd.conf" ]; then
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Dark"' "$USER_HOME/.config/xsettingsd/xsettingsd.conf"
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Dark"' "/root/xsettingsd.conf"
+fi
+else
+sed -i '/gtk-cursor-theme-name="/c\gtk-cursor-theme-name="Windows10Light"' $USER_HOME/.gtkrc-2.0  > /dev/null 2>&1
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.configtde/xsettingsd/xsettingsd.conf"
+if [ -f "/root/xsettingsd.conf" ]; then
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "$USER_HOME/.config/xsettingsd/xsettingsd.conf"
+sudo sed -i '/Gtk\/CursorThemeName/c\Gtk\/CursorThemeName "Windows10Light"' "/root/xsettingsd.conf"
+fi
+fi
+
+kwriteconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "pointercolor" $1
+
+}
+
+
+
+POINTC () {
+logmsg="(you need to logout to see the effect)."
+while true; do
+
+actcur=$(kreadconfig --file $TDEHOME/share/config/kcminputrc --group Mouse --key cursorTheme)
+aw="";ad="";
+
+if [ "$actcur" = "Windows10Light" ]
+then
+aw="[current cursor theme]"
+else
+ if [ "$actcur" = "Windows10Dark" ]
+ then
+ ad="[current cursor theme]"
+ fi
+fi
+
+
+
+kdtext="$ktext
+<font style='color:#828282'>►</font>Choose a pointer color:<br>
+<font style='color:#828282'><em>(or hit cancel to return)</em></font><br>"
+choix=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 400 280) --menu "$kdtext" "White" "White $aw" "Dark" "Dark $ad")
+if [ $? -eq 1 ];then
+break
+else
+
+case $choix in
+"White") 
+setcurcol "Light"
+kdialog --title "$kdtitle" --caption "$kdcaption" --icon "$kdicon" --msgbox "Pointer color set to white $logmsg"⠀
+break
+;;
+"Dark") 
+setcurcol "Dark"
+kdialog --title "$kdtitle" --caption "$kdcaption" --icon "$kdicon" --msgbox "Pointer color set to dark $logmsg"⠀
+break
+;;
+esac
+fi
+
+done
+
+}
+
+
+
+
+
+
+
+
+
 LOGBK() {
 logbck
 kdialog --title "$kdtitle" --caption "$kdcaption" --icon "$kdicon" --msgbox "Current wallpaper applied to login background"⠀
@@ -499,6 +595,7 @@ userpic) USRPC ;;
 userlist) USRLST ;;
 clock) LOGINCLK ;;
 pointersz) POINTSZ ;;
+pointerclr) POINTC ;;
 *) ;;
 esac
 fi
