@@ -26,6 +26,7 @@ defaultapps=(
 "Ksnapshot" "Ksnapshot                                  ••• [screen snapshot]"
 "Knotes" "Knotes                                        ••• [sticky notes]"
 "Kcron" "Kcron                                          ••• [tasks scheduler]"
+"lxtask-mod" "Lxtask-mod                                 ••• [simple taskmanager]"
 "kdirstat" "kdirstat                                       ••• [dirs sizes statistics]"
 "kpdf" "kpdf                                            ••• [pdf viewer]"
 )
