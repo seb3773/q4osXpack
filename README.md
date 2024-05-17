@@ -14,7 +14,7 @@ This is a script that will modify your Q4OS Trinity installation to make it a bi
 This is my attempt to have the responsivness of Q4OS Trinity and the widely appreciated windows 10 look & feel (kind of) for customers who used to work with windows before.
 You can choose between a 'light' theme and a 'dark' one now.  
   
-You can specify (with -c argument) an 'accent' color to the base theme (light/dark) which is taskbar, menu and windows decoration color. Selected objects and other color parts will then be derived from this accent color.  
+You can specify an 'accent' color to the base theme (light/dark) which is taskbar, menu and windows decoration color. Selected objects and other color parts will then be derived from this accent color.  
   
 It's somekind of a full theme with icons, pointers, windows decorations, widgets style, color schemes, sounds (notably usb connect/disconnect sounds), taskbar & tdemenu setup, konqueror & dolphin profiles,boot splash, login screen, gtk theme, ui behavior, etc... with GTK2/GTK3 styles homogenized.  
 I try to keep all differents parts of the theme as lightweight as possible as it is intended for old computers too as I explained :) And I want to keep in line with the trinity de / Q4os philosophy, so it will not 'bloat' your computer with useless things.
