@@ -2796,7 +2796,7 @@ fi
 echo "  \e[35m░▒▓█\033[0m copying font"
 #tar -xzf Segoe_UI.tar.gz -C /usr/share/fonts/truetype/
 #tar -xzf consolas.tar.gz -C /usr/share/fonts/truetype/
-7z x -so Segoe_UI.tar.7z | tar xf - -C /usr/share/fonts/truetype/
+tar -xf Segoe_UI.tar.xz -C /usr/share/fonts/truetype/
 7z x -so consolas.tar.7z | tar xf - -C /usr/share/fonts/truetype/
 tar -xzf cascadia.tar.gz -C /usr/share/fonts/truetype/
 tar -xzf micross.tar.gz -C /usr/share/fonts/truetype/
