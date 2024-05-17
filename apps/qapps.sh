@@ -13,51 +13,23 @@ dcopRef=$(sudo kreadconfig --file "$abs_path" --group "Settings" --key "progress
 kdicon="$script_directory/../common/Q4OSsebicon.png" 
 helpdoc=0;installall=0
 else
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ conf file exist end
+echo
+echo "** No config file found."
+echo "   This script is not designed to be run standalone,please run qxpack script from the parent folder."
+echo
+exit
+fi
 
-helpdoc=0
-installall=0
-VALID_ARGS=$(getopt -o ha --long help,all -- "$@")
-if [[ $? -ne 0 ]]; then
-    exit 1;
-fi
-eval set -- "$VALID_ARGS"
-while [ : ]; do
-  case "$1" in
-    -h | --help)
-        helpdoc=1
-        shift
-        ;;
-    -a | --all)
-        installall=1
-        shift
-        ;;
-     --) shift; 
-        break 
-        ;;
-  esac
-done
-if [ $helpdoc -eq 1 ]; then
-script="Help Qapps"
-else
 script="   Qapps script   "
-fi
-source common/resizecons
-fi
+#source common/resizecons
 source common/begin
 source common/progress
 
-if [[ $conffile -eq 1 ]]; then
 begin "$script" "conf" "$dcopRef"
 qprogress () {
 dcop "$dcopRef" setProgress $2
 }
-else
-begin "$script"
-qprogress () {
-progress "$1" "$2"
-}
-fi
+
 
 USER_HOME=$(eval echo ~${SUDO_USER})
 
@@ -99,7 +71,7 @@ osarch=$(dpkg --print-architecture)
 
 itemdisp "Fetching latest version of the package list..."
 
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Fetching latest version of the package list..."
+dcop "$dcopRef" setLabel "Fetching latest version of the package list..."
 
 konsole --nomenubar --nohist --notabbar --noframe --noscrollbar --vt_sz 56x24 -e common/apt_update.sh "$dcopRef" "apps" -- &
 kid=konsole-$!
@@ -118,21 +90,6 @@ sleep 1
 session_count=$(dcop $kid konsole sessionCount)
 done
 
-else
-
-sudo apt update > /dev/null 2>&1
-aptup=1
-for (( i=5; i>0; i--)); do
-printf "\rRunning apt upgrade in $i seconds.  Hit any key to cancel..."
-read -s -n 1 -t 1 key
-if [ $? -eq 0 ];then aptup=0;break;fi;done
-if [[ $aptup -eq 1 ]];then echo;echo "processing..."
-sudo dpkg --configure -a
-sudo apt upgrade -y
-else echo;echo "canceled.";fi
-
-fi
-
 sep
 echo
 echo
@@ -141,7 +98,7 @@ echo
 qprogress "$script" 3
 
 #========== retrieve packages list ==============================================================================
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Retrieve installed packages list...";fi
+dcop "$dcopRef" setLabel "Retrieve installed packages list..."
 echo -e "    ${ORANGE}░▒▓█\033[0m Retrieve installed packages list...${NOCOLOR}"
 echo
 cd common
@@ -150,63 +107,66 @@ cd ..
 echo
 qprogress "$script" 4
 
-#============== Install Apps (automatic) ========================================================================
+#============== Install Apps (required) ========================================================================
 itemdisp "Installing GIT..."
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing GIT...";fi
+dcop "$dcopRef" setLabel "Installing GIT..."
 installApp "git" "git/stable"
 qprogress "$script" 5
 
 itemdisp "Installing 7zip..."
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing 7zip...";fi
+dcop "$dcopRef" setLabel "Installing 7zip..."
 installApp "7z" "p7zip-full/stable"
 qprogress "$script" 6
 
 
+appspart=$(sudo kreadconfig --file "$abs_path" --group "Settings" --key "mode")
+#appspart="Essential"
+#or
+#appspart="Extra"
+
+if [ "$appspart" == "Essential" ]; then
+
+## *****************************************************    Default apps ************************************************************************
+
 #---------------------------------------Ark
-if [[ $conffile -eq 1 ]]; then
 instark=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "Ark")
-else instark=1;fi
+
 
 if [[ $instark -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Ark...";fi
+dcop "$dcopRef" setLabel "Installing Ark..."
 itemdisp "Installing Ark..."
 installApp "ark" "ark/stable"
 fi
-qprogress "$script" 7
+qprogress "$script" 10
 
 
 #---------------------------------------Dolphin
-if [[ $conffile -eq 1 ]]; then
 instdolph=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "Dolphin")
-else instdolph=1;fi
+
 
 if [[ $instdolph -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Dolphin...";fi
+dcop "$dcopRef" setLabel "Installing Dolphin..."
 itemdisp "Installing Dolphin..."
 installApp "dolphin-trinity" "dolphin-trinity/"
 fi
-qprogress "$script" 8
+qprogress "$script" 15
 
 
 #---------------------------------------system-config-printer
-if [[ $conffile -eq 1 ]]; then
 instsysprint=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "system-config-printer")
-else instsysprint=1;fi
 
 if [[ $instsysprint -eq 1 ]]; then
 itemdisp "Installing system-config-printer..."
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing system-config-printer...";fi
+dcop "$dcopRef" setLabel "Installing system-config-printer..."
 installApp "system-config-printer" "system-config-printer/stable"
 fi
-qprogress "$script" 9
+qprogress "$script" 20
 
 #---------------------------------------flashfetch
-if [[ $conffile -eq 1 ]]; then
 instflashf=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "flashfetch")
-else instflashf=1;fi
 
 if [[ $instflashf -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Flashfetch...";fi
+dcop "$dcopRef" setLabel "Installing Flashfetch..."
 itemdisp "Installing flashfetch"
 cd apps
 echo -e "${YELLOW}"
@@ -228,12 +188,12 @@ echo
 echo
 echo
 fi
-qprogress "$script" 10
+qprogress "$script" 25
 
 
 #---------------------------------------lx-taskmod
 itemdisp "Installing lxtask-mod (simple lightweight taskmgr)"
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing lxtask-mod...";fi
+dcop "$dcopRef" setLabel "Installing lxtask-mod..."
 if ! isinstalled "lxtask-mod/now" "common/packages_list.tmp"; then
 cd apps
 echo -e "${YELLOW}"
@@ -255,300 +215,210 @@ echo
 else
 echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
 fi
-qprogress "$script" 11
+qprogress "$script" 30
 
 
 #---------------------------------------bleachbit
-if [[ $conffile -eq 1 ]]; then
 instbleach=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "bleachbit")
-else instbleach=1;fi
 
 if [[ $instbleach -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing bleachbit...";fi
+dcop "$dcopRef" setLabel "Installing bleachbit..."
 itemdisp "Installing bleachbit..."
 installApp "bleachbit" "bleachbit/stable"
 fi
-qprogress "$script" 12
+qprogress "$script" 35
 
 
 #---------------------------------------vlc
-if [[ $conffile -eq 1 ]]; then
 instvlc=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "vlc")
-else instvlc=1;fi
 
 if [[ $instvlc -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing vlc...";fi
+dcop "$dcopRef" setLabel "Installing vlc..."
 itemdisp "Installing vlc..."
 installApp "vlc" "vlc/stable"
 fi
-qprogress "$script" 13
+qprogress "$script" 40
 
 
 #---------------------------------------console tools
-if [[ $conffile -eq 1 ]]; then
 instclit=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "console tools")
-else instclit=1;fi
 
 if [[ $instclit -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing console tools...";fi
+dcop "$dcopRef" setLabel "Installing console tools..."
 itemdisp "Installing usefull console tools..."
 installApp "duf" "duf/stable" 0
 installApp "jdupes" "jdupes/stable"
 fi
-qprogress "$script" 14
+qprogress "$script" 45
 
-
-#---------classics tools, may be already installed with desktop version
-itemdisp "Installing Gwenview,Kolourpaint,KCharSelect,Ksnapshot,knotes,kcron, kdirstat, kpdf..."
-echo
 
 
 #---------------------------------------Gwenview
-if [[ $conffile -eq 1 ]]; then
 instgwen=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "Gwenview")
-else instgwen=1;fi
+
 if [[ $instgwen -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Gwenview...";fi
+dcop "$dcopRef" setLabel "Installing Gwenview..."
 echo -e "  \e[35m░▒▓█\033[0m Installing Gwenview..."
 installApp "gwenview-trinity" "gwenview-trinity" 0
 fi
 
-qprogress "$script" 15
+qprogress "$script" 50
 
 #---------------------------------------Kolourpaint
-if [[ $conffile -eq 1 ]]; then
 instkpaint=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "Kolourpaint")
-else instkpaint=1;fi
+
 if [[ $instkpaint -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Kolourpaint...";fi
+dcop "$dcopRef" setLabel "Installing Kolourpaint..."
 echo -e "  \e[35m░▒▓█\033[0m Installing Kolourpaint..."
 installApp "kolourpaint-trinity" "kolourpaint-trinity" 0
 fi
 
-qprogress "$script" 16
+qprogress "$script" 55
 
 #---------------------------------------KCharSelect
-if [[ $conffile -eq 1 ]]; then
 instkchar=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "KCharSelect")
-else instkchar=1;fi
+
 if [[ $instkchar -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing KCharSelect...";fi
+dcop "$dcopRef" setLabel "Installing KCharSelect..."
 echo -e "  \e[35m░▒▓█\033[0m Installing KCharSelect..."
 installApp "kcharselect-trinity" "kcharselect-trinity" 0
 fi
 
-qprogress "$script" 18
+qprogress "$script" 60
 
 #---------------------------------------Ksnapshot
-if [[ $conffile -eq 1 ]]; then
 instksnap=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "Ksnapshot")
-else instksnap=1;fi
+
 if [[ $instksnap -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Ksnapshot...";fi
+dcop "$dcopRef" setLabel "Installing Ksnapshot..."
 echo -e " \e[35m░▒▓█\033[0m Installing Ksnapshot..."
 installApp "ksnapshot-trinity" "ksnapshot-trinity" 0
 fi
 
-qprogress "$script" 19 
+qprogress "$script" 65
 
 #---------------------------------------Knotes
-if [[ $conffile -eq 1 ]]; then
 instknot=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "Knotes")
-else instknot=1;fi
+
 if [[ $instknot -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Knotes...";fi
+dcop "$dcopRef" setLabel "Installing Knotes..."
 echo -e " \e[35m░▒▓█\033[0m Installing Knotes..."
 installApp "knotes-trinity" "knotes-trinity" 0
 fi
-qprogress "$script" 21
+qprogress "$script" 70
 
 #---------------------------------------Kcron
-if [[ $conffile -eq 1 ]]; then
 instkcro=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "Kcron")
-else instkcro=1;fi
+
 if [[ $instkcro -eq 1 ]]; then
 echo -e " \e[35m░▒▓█\033[0m Installing Kcron..."
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Kcron...";fi
+dcop "$dcopRef" setLabel "Installing Kcron..."
 installApp "kcron-trinity" "kcron-trinity" 0
 fi
-qprogress "$script" 22
+qprogress "$script" 75
 
 #---------------------------------------kdirstat
-if [[ $conffile -eq 1 ]]; then
 instkdirs=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "kdirstat")
-else instkdirs=1;fi
+
 if [[ $instkdirs -eq 1 ]]; then
 echo -e " \e[35m░▒▓█\033[0m Installing kdirstat..."
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing kdirstat...";fi
+dcop "$dcopRef" setLabel "Installing kdirstat..."
 installApp "kdirstat-trinity" "kdirstat-trinity" 0
 fi
-qprogress "$script" 23
+qprogress "$script" 80
 
 #---------------------------------------kpdf
-if [[ $conffile -eq 1 ]]; then
 instkpd=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "kpdf")
-else instkpd=1;fi
+
 if [[ $instkpd -eq 1 ]]; then
 echo -e " \e[35m░▒▓█\033[0m Installing kpdf..."
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing kpdf...";fi
+dcop "$dcopRef" setLabel "Installing kpdf..."
 installApp "kpdf-trinity" "kpdf-trinity"
 fi
-qprogress "$script" 25
+qprogress "$script" 85
 
 #---------------------------------------Strawberry
-if [[ $conffile -eq 1 ]]; then
 inststraw=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "Strawberry")
-else inststraw=1;fi
+
 if [[ $inststraw -eq 1 ]]; then
 itemdisp "Installing Strawberry..."
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Strawberry...";fi
+dcop "$dcopRef" setLabel "Installing Strawberry..."
 installApp "strawberry" "strawberry/stable"
 mkdir -p $USER_HOME/.configtde/strawberry/
 tar -xzf theme/strawberry.conf.tar.gz -C $USER_HOME/.configtde/strawberry/
 echo
 fi
 
-qprogress "$script" 27
+qprogress "$script" 90
+
+
+## *****************************************************    End Default apps ************************************************************************
+
+
+
+else
+
+
+
 
 
 #============== Install Apps (interactive) ======================================================================
 
 
 #---------------------------------------qBittorent
-if [[ $conffile -eq 1 ]]; then
 instqbit=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "qBittorent")
-else instqbit=1;fi
+
 if [[ $instqbit -eq 1 ]]; then
 
 itemdisp "Installing qbittorent"
-#qbittorrent
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing qbittorrent...";fi
+dcop "$dcopRef" setLabel "Installing qbittorrent..."
 installApp "qbittorrent" "qbittorrent/stable"
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install qbittorrent ?${NOCOLOR}"
-optionz=("Install qbittorrent" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install qbittorrent")
-            echo -e "  \e[35m░▒▓█\033[0m Installing qbittorrent..."
-            installApp "qbittorrent" "qbittorrent/stable"
-            break
-            ;;
-        "Skip")
-            sep
-            echo
-            echo
-            echo
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
+qprogress "$script" 10
+
 fi
-fi
-qprogress "$script" 28
 
 
 #---------------------------------------Guvcview
-if [[ $conffile -eq 1 ]]; then
 instguc=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Guvcview")
-else instguc=1;fi
+
 if [[ $instguc -eq 1 ]]; then
 
 itemdisp "Installing guvcview"
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing guvcview...";fi
-    installApp "guvcview" "guvcview/stable"
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install guvcview ?${NOCOLOR}"
-optionz=("Install guvcview" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install guvcview")
-            echo -e "  \e[35m░▒▓█\033[0m Installing guvcview..."
-            installApp "guvcview" "guvcview/stable"
-            break
-            ;;
-        "Skip")
-            sep
-            echo
-            echo
-            echo
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
+dcop "$dcopRef" setLabel "Installing guvcview..."
+installApp "guvcview" "guvcview/stable"
 
 fi
-qprogress "$script" 30
+qprogress "$script" 15
 
 
 
-#SMPLayer/MPV
-confsm() {
-mkdir -p "$USER_HOME/.configtde/smplayer/"
-tar -xzf apps/smplayer.conf.tar.gz -C "$USER_HOME/.configtde/smplayer/"
-sudo chown -R $USER: "$USER_HOME/.configtde/smplayer/smplayer.ini"
-}
-
-if [[ $conffile -eq 1 ]]; then
+#---------------------------------------SMPLayer/MPV
 instsmp=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "SMPlayer")
-else instsmp=1;fi
+
 if [[ $instsmp -eq 1 ]]; then
 
 itemdisp "Installing SMPlayer/MPV"
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing SMPlayer/MPV...";fi
+dcop "$dcopRef" setLabel "Installing SMPlayer/MPV..."
     installApp "smplayer" "smplayer/"
-    confsm
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install SMPlayer/MPV ?${NOCOLOR}"
-optionz=("Install SMPlayer" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install SMPlayer")
-            echo -e "  \e[35m░▒▓█\033[0m Installing SMPlayer/MPV..."
-            installApp "smplayer" "smplayer/"
-            confsm
-            break
-            ;;
-        "Skip")
-            sep
-            echo
-            echo
-            echo
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
+mkdir -p "$USER_HOME/.configtde/smplayer/"
+tar -xzf apps/smplayer.conf.tar.gz -C "$USER_HOME/.configtde/smplayer/"
+sudo chown -R $USER: "$USER_HOME/.configtde/smplayer/smplayer.ini"
 
 fi
-qprogress "$script" 32
+qprogress "$script" 20
 
 
 
 #---------------------------------------Spotify
-if [[ $conffile -eq 1 ]]; then
 instspot=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Spotify")
-else instspot=1;fi
-if [[ $instspot -eq 1 ]]; then
 
+if [[ $instspot -eq 1 ]]; then
 
 if ( getconf LONG_BIT | grep -q 64 ); then
 itemdisp "Installing spotify"
-#spotify
-installSpoty () {
+dcop "$dcopRef" setLabel "Installing spotify..."
+
+
             if ! isinstalled "spotify-client/stable" "common/packages_list.tmp"; then
             echo -e "${YELLOW}"
             curl -fsSL https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/spotify.gpg
@@ -560,28 +430,7 @@ installSpoty () {
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
             fi
-}
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing spotify...";fi
-    installSpoty
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install spotify ?${NOCOLOR}"
-optionz=("Install spotify" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install spotify")
-            echo -e "  \e[35m░▒▓█\033[0m Installing spotify..."
-            installSpoty
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
+
 fi
 sep
 echo
@@ -589,21 +438,20 @@ echo
 echo
 
 fi
-fi
-qprogress "$script" 34
+
+qprogress "$script" 25
 
 
 
 #---------------------------------------Microsoft Edge Browser
-if [[ $conffile -eq 1 ]]; then
 instedge=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Microsoft Edge Browser")
-else instedge=1;fi
+
 if [[ $instedge -eq 1 ]]; then
 
 
 if ( getconf LONG_BIT | grep -q 64 ); then
 itemdisp "Installing Microsoft Edge Browser"
-installEdge () {
+dcop "$dcopRef" setLabel "Installing Microsoft Edge Browser..."
             if ! isinstalled "microsoft-edge-stable/stable" "common/packages_list.tmp"; then
             echo -e "${YELLOW}"
             sudo apt install software-properties-common apt-transport-https ca-certificates 
@@ -616,154 +464,58 @@ installEdge () {
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
             fi
-}
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Microsoft Edge Browser...";fi
-    installEdge
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install Edge Browser ?${NOCOLOR}"
-optionz=("Install Edge" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install Edge")
-            echo -e "  \e[35m░▒▓█\033[0m Installing Microsoft Edge Browser..."
-            installEdge
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
 fi
 sep
 echo
 echo
 echo
 fi
-fi
-qprogress "$script" 36
+
+qprogress "$script" 30
+
 
 
 #---------------------------------------Gparted
-if [[ $conffile -eq 1 ]]; then
 instgpart=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Gparted")
-else instgpart=1;fi
+
 if [[ $instgpart -eq 1 ]]; then
 
 itemdisp "Installing gparted"
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing gparted...";fi
-    installApp "gparted" "gparted/stable"
-else
-#gparted
-echo
-echo -e "${RED}█ ${ORANGE}Install gparted ? (partitions manager)${NOCOLOR}"
-optionz=("Install gparted" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install gparted")
-            echo -e "  \e[35m░▒▓█\033[0m Installing gparted..."
-            installApp "gparted" "gparted/stable"
-            break
-            ;;
-        "Skip")
-            sep
-            echo
-            echo
-            echo
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
+dcop "$dcopRef" setLabel "Installing gparted..."
+installApp "gparted" "gparted/stable"
+
 fi
-fi
-qprogress "$script" 38
+qprogress "$script" 35
+
 
 
 
 #---------------------------------------Stacer
-if [[ $conffile -eq 1 ]]; then
 inststac=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Stacer")
-else inststac=1;fi
+
 if [[ $inststac -eq 1 ]]; then
 
 itemdisp "Installing Stacer"
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Stacer...";fi
-    installApp "stacer" "stacer/stable"
-else
+dcop "$dcopRef" setLabel "Installing Stacer..."
+installApp "stacer" "stacer/stable"
 
-echo
-echo -e "${RED}█ ${ORANGE}Install Stacer ? (task/system manager)${NOCOLOR}"
-optionz=("Install Stacer" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install Stacer")
-            echo -e "  \e[35m░▒▓█\033[0m Installing Stacer..."
-            installApp "stacer" "stacer/stable"
-            break
-            ;;
-        "Skip")
-            sep
-            echo
-            echo
-            echo
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
 fi
 qprogress "$script" 40
 
 
 
 #---------------------------------------S4 Snapshot
-if [[ $conffile -eq 1 ]]; then
 instssnap=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "S4 Snapshot")
-else instssnap=1;fi
+
 if [[ $instssnap -eq 1 ]]; then
 
 itemdisp "Installing S4 Snapshot"
-#q4os-s4-snapshot
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing S4 Snapshot...";fi
+dcop "$dcopRef" setLabel "Installing S4 Snapshot..."
             echo -e "${YELLOW}"
             cd apps
             sudo qsinst setup_q4os-s4-snapshot_4.1-a1_amd64.qsi
             cd ..
             echo -e "${NOCOLOR}"
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install S4 Snapshot ? (create an bootable iso of a running system)${NOCOLOR}"
-optionz=("Install S4 Snapshot" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install S4 Snapshot")
-            echo -e "  \e[35m░▒▓█\033[0m Installing S4 Snapshot..."
-            echo -e "${YELLOW}"
-            cd apps
-            sudo qsinst setup_q4os-s4-snapshot_4.1-a1_amd64.qsi
-            cd ..
-            echo -e "${NOCOLOR}"
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
 sep
 echo
 echo
@@ -772,14 +524,15 @@ fi
 qprogress "$script" 45
 
 
+
+
 #---------------------------------------Web app manager
-if [[ $conffile -eq 1 ]]; then
 instwapp=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Web app manager")
-else instwapp=1;fi
+
 if [[ $instwapp -eq 1 ]]; then
 
 itemdisp "Installing Web app manager"
-function installwebappman() {
+dcop "$dcopRef" setLabel "Installing Web app manager..."
            if ! isinstalled "webapp-manager/" "common/packages_list.tmp"; then
             echo -e "  \e[35m░▒▓█\033[0m Installing Web app manager..."
             echo -e "${YELLOW}"
@@ -792,32 +545,7 @@ sudo rm -f /usr/share/applications/kde4/webapp-manager.desktop
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
             fi
-}
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Web app manager...";fi
-installwebappman
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install Web app manager ?${NOCOLOR}"
-optionz=("Install web app manager" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install web app manager")
-            installwebappman
-            break
-            ;;
-        "Skip")
-            sep
-            echo
-            echo
-            echo
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
+
 fi
 qprogress "$script" 48
 
@@ -826,13 +554,12 @@ qprogress "$script" 48
 
 
 #---------------------------------------Peazip
-if [[ $conffile -eq 1 ]]; then
 instpeaz=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Peazip")
-else instpeaz=1;fi
+
 if [[ $instpeaz -eq 1 ]]; then
 
 itemdisp "Installing Peazip"
-function installpeazip() {
+dcop "$dcopRef" setLabel "Installing Peazip..."
            if ! isinstalled "peazip/" "common/packages_list.tmp"; then
             echo -e "  \e[35m░▒▓█\033[0m Installing Peazip..."
             echo -e "${YELLOW}"
@@ -843,35 +570,9 @@ function installpeazip() {
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
             fi
-}
 
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Peazip...";fi
-installpeazip
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install Peazip ?${NOCOLOR}"
-optionz=("Install Peazip" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install Peazip")
-            installpeazip
-            break
-            ;;
-        "Skip")
-            sep
-            echo
-            echo
-            echo
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
 fi
-fi
-qprogress "$script" 48
+qprogress "$script" 52
 
 
 
@@ -879,14 +580,13 @@ qprogress "$script" 48
 
 
 #---------------------------------------Pinta
-if [[ $conffile -eq 1 ]]; then
 instpint=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Pinta")
-else instpint=1;fi
+
 if [[ $instpint -eq 1 ]]; then
 
-
 itemdisp "Installing Pinta"
-function installpinta() {
+dcop "$dcopRef" setLabel "Installing Pinta..."
+
            if ! isinstalled "pinta/" "common/packages_list.tmp"; then
             echo -e "  \e[35m░▒▓█\033[0m Installing Pinta..."
             echo -e "${YELLOW}"
@@ -897,124 +597,50 @@ cd ..
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
             fi
-}
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Pinta...";fi
-installpinta
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install Pinta (paint.net like app) ?${NOCOLOR}"
-optionz=("Install Pinta" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install Pinta")
-            installpinta
-            break
-            ;;
-        "Skip")
-            sep
-            echo
-            echo
-            echo
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
+
+
 fi
-fi
-qprogress "$script" 50
+qprogress "$script" 55
+
 
 
 
 #---------------------------------------Remmina
-if [[ $conffile -eq 1 ]]; then
 instremm=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Remmina")
-else instremm=1;fi
+
 if [[ $instremm -eq 1 ]]; then
 
 itemdisp "Installing remmina"
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Remmina...";fi
+dcop "$dcopRef" setLabel "Installing Remmina..."
     installApp "remmina" "remmina/stable"
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install remmina ? (rdp / vnc / ssh remote desktop client)${NOCOLOR}"
-optionz=("Install remmina" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install remmina")
-            echo -e "  \e[35m░▒▓█\033[0m Installing remmina..."
-            installApp "remmina" "remmina/stable"
-            break
-            ;;
-        "Skip")
-            sep
-            echo
-            echo
-            echo
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
+
 fi
-fi
-qprogress "$script" 52
+qprogress "$script" 58
 
 
 
 #---------------------------------------Rustdesk
-if [[ $conffile -eq 1 ]]; then
 instrdesk=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Rustdesk")
-else instrdesk=1;fi
+
 if [[ instrdesk -eq 1 ]]; then
 
 itemdisp "Installing Rustdesk"
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Rustdesk...";fi
+dcop "$dcopRef" setLabel "Installing Rustdesk..."
 sudo wget https://github.com/rustdesk/rustdesk/releases/download/1.2.3-2/rustdesk-1.2.3-2-x86_64.deb
 sudo apt install -y ./rustdesk-1.2.3-2-x86_64.deb
 sudo rm -f ./rustdesk-1.2.3-2-x86_64.deb
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install Rustdesk ? (teamviewer like)${NOCOLOR}"
-optionz=("Install Rustdesk" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install Rustdesk")
-            echo -e "  \e[35m░▒▓█\033[0m Installing Rustdesk..."
-sudo wget https://github.com/rustdesk/rustdesk/releases/download/1.2.3-2/rustdesk-1.2.3-2-x86_64.deb
-sudo apt install -y ./rustdesk-1.2.3-2-x86_64.deb
-sudo rm -f ./rustdesk-1.2.3-2-x86_64.deb
-            break
-            ;;
-        "Skip")
-            sep
-            echo
-            echo
-            echo
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
+
 fi
-fi
-qprogress "$script" 54
+qprogress "$script" 62
 
 
 #---------------------------------------Free Office
-if [[ $conffile -eq 1 ]]; then
 instfreo=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Free Office")
-else instfreo=1;fi
+
 if [[ $instfreo -eq 1 ]]; then
 
 itemdisp "Installing free office"
-function installFreeO() {
+dcop "$dcopRef" setLabel "Installing Free Office..."
            if ! isinstalled "softmaker-freeoffice-" "common/packages_list.tmp"; then
             echo -e "  \e[35m░▒▓█\033[0m Installing free office..."
             echo -e "${YELLOW}"
@@ -1028,45 +654,24 @@ function installFreeO() {
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
             fi
-}
-#softmaker-freeoffice-2021
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Free Office...";fi
-installFreeO
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install free office (a word/excel/ppoint clone) ?${NOCOLOR}"
-optionz=("Install free office" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install free office")
-            installFreeO
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
 sep
 echo
 echo
 echo
 fi
-qprogress "$script" 56
+qprogress "$script" 65
+
+
+
 
 
 #---------------------------------------OnlyOffice
-if [[ $conffile -eq 1 ]]; then
 instoof=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "OnlyOffice")
-else instoof=1;fi
+
 if [[ $instoof -eq 1 ]]; then
 
 itemdisp "Installing OnlyOffice"
-function installOnlyO() {
+dcop "$dcopRef" setLabel "Installing Only Office..."
            if ! isinstalled "onlyoffice-desktopeditors" "common/packages_list.tmp"; then
             echo -e "  \e[35m░▒▓█\033[0m Installing OnlyOffice..."
             echo -e "${YELLOW}"
@@ -1078,92 +683,44 @@ function installOnlyO() {
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
             fi
-}
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Only Office...";fi
-installOnlyO
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install OnlyOffice (another word/excel/ppoint clone) ?${NOCOLOR}"
-optionz=("Install OnlyOffice" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install OnlyOffice")
-            installOnlyO
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
 sep
 echo
 echo
 echo
+
 fi
-qprogress "$script" 60
+qprogress "$script" 70
+
 
 
 
 #---------------------------------------Bpytop
-if [[ $conffile -eq 1 ]]; then
 instbpy=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Bpytop")
-else instbpy=1;fi
+
 if [[ $instbpy -eq 1 ]]; then
 
-
 itemdisp "Installing bpytop"
-#bpytop
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing bpytop...";fi
+dcop "$dcopRef" setLabel "Installing bpytop..."
 installApp "bpytop" "bpytop/stable"
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install bpytop ? (CLI htop alternative)${NOCOLOR}"
-optionz=("Install bpytop" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install bpytop")
-            echo -e "  \e[35m░▒▓█\033[0m Installing bpytop"
-            installApp "bpytop" "bpytop/stable"
-            break
-            ;;
-        "Skip")
-            sep
-            echo
-            echo
-            echo
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
 sep
 echo
 echo
 echo
+
 fi
-qprogress "$script" 62
+qprogress "$script" 72
 
 
 
 #---------------------------------------Virtualbox 7
-if [[ $conffile -eq 1 ]]; then
 instvbo=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Virtualbox 7")
-else instvbo=1;fi
-if [[ $instvbo -eq 1 ]]; then
 
+if [[ $instvbo -eq 1 ]]; then
 
 if ( getconf LONG_BIT | grep -q 64 ); then
 itemdisp "Installing virtualbox 7"
-#spotify
-installVbox () {
+dcop "$dcopRef" setLabel "Installing Virtualbox 7..."
+
             if ! isinstalled "virtualbox-7.0/" "common/packages_list.tmp"; then
             echo -e "${YELLOW}"
             wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
@@ -1176,29 +733,6 @@ installVbox () {
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
             fi
-}
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Virtualbox 7...";fi
-    installVbox
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install virtualbox 7 ?${NOCOLOR}"
-optionz=("Install virtualbox" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install virtualbox")
-            echo -e "  \e[35m░▒▓█\033[0m Installing virtualbox 7..."
-            installVbox
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
 sep
 echo
 echo
@@ -1206,21 +740,20 @@ echo
 
 fi
 fi
-qprogress "$script" 70
+qprogress "$script" 75
 
 
 
 
 
 #---------------------------------------Qtscrcpy
-if [[ $conffile -eq 1 ]]; then
 instscrcpy=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Qtscrcpy")
-else instscrcpy=1;fi
+
 if [[ $instscrcpy -eq 1 ]]; then
 
 if ( getconf LONG_BIT | grep -q 64 ); then
 itemdisp "Installing Qtscrcpy"
-installQtscrcpy () {
+dcop "$dcopRef" setLabel "Installing Qtscrcpy..."
             if [ ! -e "$USER_HOME/qtscrcpy/QtScrcpy" ]; then
             echo -e "${YELLOW}"
             cd apps
@@ -1236,46 +769,24 @@ installQtscrcpy () {
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
             fi
-}
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Qtscrcpy...";fi
-    installQtscrcpy
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install Qtscrcpy ? (android phone screen mirroring+control)${NOCOLOR}"
-optionz=("Install Qtscrcpy" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install Qtscrcpy")
-            echo -e "  \e[35m░▒▓█\033[0m Installing Qtscrcpy..."
-            installQtscrcpy
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
 sep
 echo
 echo
 echo
 fi
 fi
-qprogress "$script" 74
+qprogress "$script" 80
+
+
 
 
 #---------------------------------------WineHQ
-if [[ $conffile -eq 1 ]]; then
 instwinehq=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "WineHQ")
-else instwinehq=1;fi
+
 if [[ instwinehq -eq 1 ]]; then
 
 itemdisp "Installing WineHQ"
-installWineHQ () {
+dcop "$dcopRef" setLabel "Installing WineHQ..."
             if ! isinstalled "winehq-stable/" "common/packages_list.tmp"; then
             echo -e "${YELLOW}"
             sudo dpkg --add-architecture i386
@@ -1289,48 +800,28 @@ installWineHQ () {
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
             fi
-}
-
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing WineHQ...";fi
-    installWineHQ
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install WineHQ ? ${NOCOLOR}"
-optionz=("Install WineHQ" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install WineHQ")
-            echo -e "  \e[35m░▒▓█\033[0m Installing WineHQ..."
-            installWineHQ
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
 sep
 echo
 echo
 echo
 fi
 
-qprogress "$script" 78
+qprogress "$script" 82
+
+
+
 
 
 #---------------------------------------Angry IP scanner
-if [[ $conffile -eq 1 ]]; then
 instipsc=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Angry IP scanner")
-else instipsc=1;fi
+
 if [[ $instipsc -eq 1 ]]; then
 
 if [ ! "$osarch" = "armhf" ]; then
+
 itemdisp "Installing Angry IP scanner"
-function installangryip() {
+dcop "$dcopRef" setLabel "Installing Angry IP scanner..."
+
            if ! isinstalled "ipscan/" "common/packages_list.tmp"; then
            echo -e "${YELLOW}"
 cd apps
@@ -1344,47 +835,26 @@ cd ..
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
             fi
-}
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Angry IP scanner...";fi
-installangryip
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install Angry IP scanner ?${NOCOLOR}"
-optionz=("Install angryip" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install angryip")
-            echo -e "  \e[35m░▒▓█\033[0m Installing Angry IP scanner..."
-            installangryip
-            break
-            ;;
-        "Skip")
-            sep
-            echo
-            echo
-            echo
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
+
+
 fi
+
 fi
-fi
-qprogress "$script" 80
+qprogress "$script" 85
+
+
+
 
 
 #---------------------------------------Kdiskmark
-if [[ $conffile -eq 1 ]]; then
 instkdiskm=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Kdiskmark")
-else instkdiskm=1;fi
+
 if [[ $instkdiskm -eq 1 ]]; then
 
 if ( getconf LONG_BIT | grep -q 64 ); then
+
 itemdisp "Installing Kdiskmark"
-installKdisk () {
+dcop "$dcopRef" setLabel "Installing Kdiskmark..."
             if ! isinstalled "kdiskmark/" "common/packages_list.tmp"; then
             echo -e "${YELLOW}"
             cd apps
@@ -1398,59 +868,40 @@ installKdisk () {
             else
             echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
             fi
-}
-if [ "$installall" -eq 1 ] || [[ "$conffile" -eq 1 ]]; then
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Installing Kdiskmark...";fi
-    installKdisk
-else
-echo
-echo -e "${RED}█ ${ORANGE}Install Kdiskmark ? (disks speed benchmark tool)${NOCOLOR}"
-optionz=("Install Kdiskmark" "Skip")
-select optz in "${optionz[@]}"
-do
-    case $optz in
-        "Install Kdiskmark")
-            echo -e "  \e[35m░▒▓█\033[0m Installing Kdiskmark..."
-            installKdisk
-            break
-            ;;
-        "Skip")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
-fi
 sep
 echo
 echo
 echo
 fi
 fi
-qprogress "$script" 85
+qprogress "$script" 90
 
+
+
+
+##---- end extra apps part
+fi
+##-----------------common part
 
 
 #---------------------------------------
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" setLabel "Cleaning files...";fi
+dcop "$dcopRef" setLabel "Cleaning files..."
 itemdisp "Cleaning files..."
 echo
 sudo rm -f common/packages_list.tmp
 sudo apt clean
-qprogress "$script" 86
+qprogress "$script" 95
 sudo apt autoremove -y
-qprogress "$script" 88
+qprogress "$script" 98
 sep
 echo
 echo
 echo
 qprogress "$script" 100
 
-if [[ $conffile -eq 1 ]]; then dcop "$dcopRef" close
+#alldone
+dcop "$dcopRef" close
 sudo rm -f "$abs_path"
 kdialog --title "q4osXpack » qapps " --icon "$kdicon" --msgbox "⠀⠀⠀Installation Completed.⠀⠀⠀⠀⠀⠀"
-else
-alldone
-fi
 
 exit 2
