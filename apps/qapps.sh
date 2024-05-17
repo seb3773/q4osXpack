@@ -192,6 +192,9 @@ qprogress "$script" 25
 
 
 #---------------------------------------lx-taskmod
+instlxt=$(sudo kreadconfig --file "$abs_path" --group "Default Apps" --key "lxtask-mod")
+if [[ $instlxt -eq 1 ]]; then
+
 itemdisp "Installing lxtask-mod (simple lightweight taskmgr)"
 dcop "$dcopRef" setLabel "Installing lxtask-mod..."
 if ! isinstalled "lxtask-mod/now" "common/packages_list.tmp"; then
@@ -214,6 +217,8 @@ echo
 echo
 else
 echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+
 fi
 qprogress "$script" 30
 
