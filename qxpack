@@ -41,6 +41,7 @@ extraapps=(
 "Web app manager" "Web app manager                           ••• [webapp manager]"
 "Free Office" "Free Office                                        ••• [office suite]"
 "OnlyOffice" "OnlyOffice                                         ••• [office suite]"
+"Peazip" "Peazip                                                  ••• [archives manager]"
 "Qtscrcpy" "Qtscrcpy                                            ••• [android phone manager]"
 "Gparted" "Gparted                                             ••• [partitions manager]"
 "Stacer" "Stacer                                                ••• [system tools/task manager]"
@@ -51,7 +52,7 @@ extraapps=(
 "Virtualbox 7" "Virtualbox 7                                      ••• [virtualization tool]"
 "Kdiskmark" "Kdiskmark                                         ••• [disk speed benchmark tool]"
 "Angry IP scanner" "Angry IP scanner                               ••• [ip scanner]"
-"WineHQ" "Wine HQ                                              ••• [run windows program]"
+"WineHQ" "Wine HQ                                              ••• [run windows programs]"
 )
 
 kdtitle="q4osXpack"
@@ -86,8 +87,8 @@ qapps2() {
 kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack Apps ⏺</strong></font><br><br>
 <font style='color:#1a7c17'><em><strong>Additional applications</strong></em></font><br><br>
 ─────────────────────<br>
-<font style='color:#828282'>►</font> <strong>Select</strong> the other apps you want to <strong>install</strong>:<br>
-<font style='color:#828282'><em>(or hit cancel to return to previous choice)</em></font><br>
+<font style='color:#828282'>►</font> <strong>Select</strong> the extra apps you want to <strong>install</strong>:<br>
+<font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>
 "
 kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 550 600) --checklist \"$kdtext\" "
 for ((i = 0; i < ${#extraapps[@]}; i+=2)); do
@@ -104,8 +105,7 @@ qapps3() {
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack Apps ⏺</strong></font><br><br>
 ═══════════════════════════<br>
-<em>$msgDef1</em><br><br>
-<em>$msgDef2</em><br>
+<em>$msgDef</em><br>
 ═══════════════════════════<br><br>
 <font style='color:#828282'>►</font> Proceed with these settings ?<br>
 <font style='color:#828282'><em>(or hit cancel to return)</em></font>
@@ -116,22 +116,14 @@ kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(
 
 ################################################################################################
 while true; do
-while true; do
 
+if [ $1 -eq 1 ]
+then
 Applist1=$(qapps1)
 if [ "$Applist1" = "Canceled." ]; then echo "Canceled by user.";return;fi
-
-Applist2=$(qapps2)
-if [ ! "$Applist2" = "Canceled." ]; then break;fi
-
-done
-
 IFS=$'\n'
 count1=$(echo "$Applist1" | wc -l)
 nbrdef=$((nbrDefault - count1))
-nbrextra=$(echo "$Applist2" | wc -l)
-
-
 app_names=()
 for ((i = 0; i < ${#defaultapps[@]}; i+=2)); do
 app_name="${defaultapps[i]}"
@@ -146,19 +138,29 @@ done
 not_selected_apps_str=$(printf "%s\n" "${not_selected_apps[@]}")
 
 if [ $nbrdef -eq 0 ]; then
-msgDef1="►install all defaults apps"
+msgDef="►install all essential apps"
 else
-msgDef1="►don't install $nbrdef of the defaults apps ($not_selected_apps_str)"
+#test if  $nbrdef = nbrDefault , dans ce cas --> nothing to install -> break
+msgDef="►don't install $nbrdef of the essential apps ($not_selected_apps_str)"
 fi
 
+
+
+else
+Applist2=$(qapps2)
+if [ "$Applist2" = "Canceled." ];  then echo "Canceled by user.";return;fi
+IFS=$'\n'
+nbrextra=$(echo "$Applist2" | wc -l)
 if [ $nbrextra -eq 0 ]; then
-msgDef2="►don't install any extra apps"
+msgDef2="►don't install any extra apps" #nothing to install -> break
 else
-msgDef2="►install $nbrextra other apps ($Applist2)"
+msgDef="►install $nbrextra extra apps ($Applist2)"
+fi
 fi
 
 
-setok=$(qapps3)
+
+setok=$(qapps3 $1)
 if [ $? -eq 0 ]; then
 break
 fi
@@ -174,18 +176,24 @@ sudo kwriteconfig --file "$script_directory/common/conf.qapps.tmp" --group "Info
 
 
 IFS=$'\n'
+if [ $1 -eq 1 ]
+then
+sudo kwriteconfig --file "$script_directory/common/conf.qapps.tmp" --group "Settings" --key "mode" "Essential"
 for app in $Applist1; do
 sudo kwriteconfig --file "$script_directory/common/conf.qapps.tmp" --group "Default Apps" --key "$app" 1
 done
-
+else
+sudo kwriteconfig --file "$script_directory/common/conf.qapps.tmp" --group "Settings" --key "mode" "Extra"
 for app in $Applist2; do
 sudo kwriteconfig --file "$script_directory/common/conf.qapps.tmp" --group "Extra Apps" --key "$app" 1
 done
+fi
 
 dcopRef=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 300) --progressbar "Initializing ..." 100)
 sudo kwriteconfig --file "$script_directory/common/conf.qapps.tmp" --group "Settings" --key "progressref" "$dcopRef"
 
 sudo chmod +x apps/qapps.sh
+
 apps/qapps.sh > common/qapps.log 2>&1
 
 }
@@ -617,10 +625,11 @@ fi
 
 while true; do
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack ⏺</strong></font><br><br>"
 kdtext="$ktext
 <font style='color:#828282'>►</font> Choose a script to launch:<br>
 <font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>"
-menuchoice=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 300 420) --menu "$kdtext" "qtheme" " ▬  Theme" "qperf" " ▬  Perf optimizations" "qapps" " ▬  Essential apps" "qlaptop" " ▬  Laptop configuration" "qthtools" " ═  Theme tools  ☺" "qsytools" " ═  System tools  ⌂" "qshcut"   " …  Create shortcuts  →" "qhelp" " …  Help  ○")
+menuchoice=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 350 480) --menu "$kdtext" "qtheme" " ▬  Theme" "qperf" " ▬  Perf optimizations" "qlaptop" " ▬  Laptop configuration" "qapps" " ▬  Essential apps" "qapps2" " ▬  Extra apps" "qthtools" " ═  Theme tools  ☺" "qsytools" " ═  System tools  ⌂" "qshcut"   " …  Create shortcuts  →" "qhelp" " …  Help  ○")
 
 if [ $? -eq 1 ];then
 break
@@ -628,7 +637,8 @@ else
 case "$menuchoice" in
 qtheme) QTHEME ;;
 qperf) QPERF ;;
-qapps) QAPPS ;;
+qapps) QAPPS 1;;
+qapps2) QAPPS 2;;
 qlaptop) QLAPTOP ;;
 qthtools) tools/themetools.sh ;;
 *) ;;
