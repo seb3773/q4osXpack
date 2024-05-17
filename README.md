@@ -36,9 +36,9 @@ You will have the option to create a swap file for hibernation, and it will then
 ## ░░ Qapps:
 Designed to install a set of apps I consider usefull for the usage I have. This reflect only my choices, so you maybe don't need it.  
   
--Apps installed by default: GIT, Ark (archive manager), Dolphin trinity, Baobab (disk usage), system-config-printer, lxtask-mod, flashfetch (fast cli system info), Stacer, Bleachbit, vlc, Kolourpaint,KCharSelect,Ksnapshot,knote. [some of them could be already installed, depending of your Q4os profile choice at install]  
+-Default apps: GIT, Ark (archive manager), Dolphin trinity, Baobab (disk usage), system-config-printer, lxtask-mod, flashfetch (fast cli system info), Stacer, Bleachbit, vlc, Kolourpaint,KCharSelect,Ksnapshot,knote. 
   
--Apps with choice to install: qbittorent, guvcview (webcam tool), spotify, gparted, S4 Snapshot, remmina (rdp / vnc / ssh remote desktop client), free office, bpytop (improved htop), virtualbox 7, QtScrcpy
+-Extra apps: qbittorent, guvcview (webcam tool), spotify, gparted, S4 Snapshot, remmina (rdp / vnc / ssh remote desktop client), free office, bpytop (improved htop), virtualbox 7, QtScrcpy
 (android phone screen mirroring & control).  
 * Note: some apps are not available for 32bits install.
 
