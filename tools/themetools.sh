@@ -583,7 +583,20 @@ while true; do
 kdtext="$ktext
 <font style='color:#828282'>►</font> Choose a script to launch:<br>
 <font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>"
-menuchoice=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 400 480) --menu "$kdtext" "userpic" "► select image for user picture" "loginbg" "► update login screen with current wallpaper" "randombg" "► apply random wallpaper for login & desktop" "userlist" "► display/hide users list at login screen" "clock" "► display/hide clock at login screen" "pointersz" "► change pointer size" "pointerclr" "► change pointer color (white/black)" "konsfont" "► choose Konsole font" "kmenued" "► launch Kmenu edit" "usage" "► normal/remote usage")
+kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 400 480) --menu \"$kdtext\" "
+kmenuitem=""
+kmenuitem+="\"userpic\" \"► select image for user picture\""
+kmenuitem+=" \"loginbg\" \"► update login screen with current wallpaper\""
+kmenuitem+=" \"randombg\" \"► apply random wallpaper for login & desktop\""
+kmenuitem+=" \"userlist\" \"► display/hide users list at login screen\""
+kmenuitem+=" \"clock\" \"► display/hide clock at login screen\""
+kmenuitem+=" \"pointersz\" \"► change pointer size\""
+kmenuitem+=" \"pointerclr\" \"► change pointer color (white/black)\""
+kmenuitem+=" \"konsfont\" \"► choose Konsole font\""
+kmenuitem+=" \"kmenued\" \"► launch Kmenu edit\""
+kmenuitem+=" \"usage\" \"► normal/remote usage\""
+kcmd+="$kmenuitem"
+menuchoice=$(eval $kcmd)
 
 if [ $? -eq 1 ];then
 break
