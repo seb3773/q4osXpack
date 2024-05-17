@@ -42,7 +42,7 @@ extraapps=(
 "Web app manager" "Web app manager                           ••• [webapp manager]"
 "Free Office" "Free Office                                        ••• [office suite]"
 "OnlyOffice" "OnlyOffice                                         ••• [office suite]"
-"Peazip" "Peazip                                                  ••• [archives manager]"
+"Peazip" "Peazip                                              ••• [archives manager]"
 "Qtscrcpy" "Qtscrcpy                                            ••• [android phone manager]"
 "Gparted" "Gparted                                             ••• [partitions manager]"
 "Stacer" "Stacer                                                ••• [system tools/task manager]"
@@ -53,7 +53,8 @@ extraapps=(
 "Virtualbox 7" "Virtualbox 7                                      ••• [virtualization tool]"
 "Kdiskmark" "Kdiskmark                                         ••• [disk speed benchmark tool]"
 "Angry IP scanner" "Angry IP scanner                               ••• [ip scanner]"
-"WineHQ" "Wine HQ                                              ••• [run windows programs]"
+"WineHQ" "Wine HQ                                           ••• [run windows programs]"
+"Kweather" "Kweather                                           ••• [weather applet for kicker]"
 )
 
 kdtitle="q4osXpack"
