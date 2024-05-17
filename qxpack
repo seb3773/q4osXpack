@@ -561,12 +561,21 @@ esac
 
 done
 
+if [ ! "$thememode" = "Mac OSX theme" ]; then
+
 if [ "$themecolor" = "Custom color accent" ]; then
 themeaccolor=$(qtheme3)
 setok=$(qtheme4)
 if [ $? -eq 0 ]; then
 break
 fi
+else
+setok=$(qtheme5)
+if [ $? -eq 0 ]; then
+break
+fi
+fi
+
 else
 setok=$(qtheme5)
 if [ $? -eq 0 ]; then
