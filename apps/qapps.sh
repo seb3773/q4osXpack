@@ -780,7 +780,7 @@ echo
 echo
 fi
 fi
-qprogress "$script" 80
+qprogress "$script" 78
 
 
 
@@ -811,7 +811,7 @@ echo
 echo
 fi
 
-qprogress "$script" 82
+qprogress "$script" 80
 
 
 
@@ -845,7 +845,7 @@ cd ..
 fi
 
 fi
-qprogress "$script" 85
+qprogress "$script" 82
 
 
 
@@ -879,7 +879,21 @@ echo
 echo
 fi
 fi
+qprogress "$script" 85
+
+
+
+#---------------------------------------kweather
+instkweath=$(sudo kreadconfig --file "$abs_path" --group "Extra Apps" --key "Kweather")
+
+if [[ $instkweath -eq 1 ]]; then
+dcop "$dcopRef" setLabel "Installing Kweather..."
+itemdisp "Installing Kweather..."
+installApp "kweather-trinity" "kweather-trinity/"
+fi
 qprogress "$script" 90
+
+
 
 
 
