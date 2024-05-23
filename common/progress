@@ -1,0 +1,41 @@
+#!/bin/bash
+progress () {
+blockdone="██";blockleft="░░";bar=""
+doneparts=$(expr $2 / 5)
+for ((i=1;i<=$doneparts;i++)); do bar+=$blockdone ; done ;
+left=$(expr 20 - $doneparts)
+for ((i=1;i<=$left;i++)) ; do bar+=$blockleft ; done ;
+bar+=" ";prog='Progress'
+if (($2<10)); then prog+="   "; fi
+if (($2<100)) && (($2>9)); then prog+="  "; fi
+if (($2==100)); then prog+=" "; fi
+prog+="$2% "
+echo -en "\033]0;$1 - $prog$bar\a"
+}
+
+rotta=1
+rotsp="/-\|"
+rota () {
+printf "\b${rotsp:rotta++%${#rotsp}:1}"
+}
+
+
+itemdisp ()
+{
+echo -e "=== $1"
+echo -e "${SEPL}"
+}
+
+
+sep ()
+{ echo -e "════════════════════════════════════════════════════════════════"
+         echo -e "════════════════════════════════════════════════════════════════"
+}
+
+alldone()
+{
+echo
+echo
+read -p "Press enter..."
+echo
+}

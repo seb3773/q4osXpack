@@ -1,0 +1,19 @@
+[Desktop Entry]
+Comment=theme/configure Q4OS Trinity
+Comment[fr]=theme/configure Q4OS Trinity
+Exec[$e]="XxXxXxXx/qxpack"
+GenericName=Q4OS XPack
+GenericName[fr]=Q4OS XPack
+Icon="XxXxXxXx/common/Q4OSsebicon.png"
+MimeType=
+Name=Q4OS XPack
+Name[fr]=Q4OS XPack
+Path[$e]="XxXxXxXx/"
+StartupNotify=true
+Terminal=true
+TerminalOptions=
+Type=Application
+X-DCOP-ServiceType=
+X-TDE-SubstituteUID=false
+X-TDE-Username=
+Categories=Utility;

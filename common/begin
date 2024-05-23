@@ -1,0 +1,56 @@
+#!/bin/bash
+SEPL=" ";for ((i = 0; i < 80; i++)); do  SEPL+="═";done;SEPL+=" ";vm=""
+osarch=$(dpkg --print-architecture)
+qver=$(get-q4os-version)
+if (echo $LANG | grep -q "fr") then codlang="fr"
+elif (echo $LANG | grep -q "de") then codlang="de"
+elif (echo $LANG | grep -q "ru") then codlang="ru"
+else codlang="en";fi
+USER_HOME=$(eval echo ~${SUDO_USER})
+
+begin () {
+echo
+echo "|++++++++++++++++++++++++++++++++++++++++++"
+echo
+echo "                           qXpack        --   by seb3773"
+echo 
+echo "|++++++++++++++++++++++++++++++++++++++++++"
+echo "                           designed for Q4OS Trinity"
+echo "|++++++++++++++++++++++++++++++++++++++++++"
+echo
+echo " ►Script: $1"
+echo
+echo "  ▒ Q4os version: $qver "
+echo "  ▒ Architecture: $osarch"
+echo "  ▒ TDE HOME DIRECTORY: $TDEHOME"
+echo "  ▒ USER HOME DIRECTORY: $USER_HOME"
+echo 
+
+isvm=$(systemd-detect-virt)
+if [ "$isvm" != "none" ]; then
+vm="Virtual machine detected"
+if [ "$isvm" = "oracle" ]; then
+vmsys="(VirtualBox)"
+fi
+fi
+
+if [ -z "$TDEHOME" ]
+then
+msg_err_root1="   \$TDEHOME is empty, cannot continue. This script is designed only for Q4OS Trinity Desktop."
+msg_err_root2="   If Trinity is installed, maybe this error is because you're launching this script with "
+msg_err_root3="   root rights. Please try to run it with normal user rights."
+echo $msg_err_root1
+echo $msg_err_root2
+echo $msg_err_root3
+kdialog --error "Error:
+$msg_err_root1
+$msg_err_root2
+$msg_err_root3
+"
+exit
+fi
+
+echo
+echo
+}
+
