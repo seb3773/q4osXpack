@@ -1,0 +1,12 @@
+#!/bin/bash
+before=$(lsusb)
+# echo $before
+read -p "Press enter..."
+after=$(lsusb)
+# echo $after
+changed_line=$(comm -23 <(echo "$before" | sort) <(echo "$after" | sort))
+# Extract idVendor & idProduct
+idVendor=$(echo "$changed_line" | awk '{print $6}' | cut -d ":" -f 1)
+idProduct=$(echo "$changed_line" | awk '{print $6}' | cut -d ":" -f 2)
+echo "idVendor: $idVendor"
+echo "idProduct: $idProduct"
