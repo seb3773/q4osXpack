@@ -6,13 +6,12 @@ script_path="$0"
 script_full_path=$(realpath "$script_path")
 script_directory=$(dirname "$script_full_path")
 cd "$script_directory"
-kdicon="$script_directory/common/Q4OSsebicon.png"
+kdicon="$(dirname "$script_directory")/common/Q4OSsebicon.png"
 osarch=$(dpkg --print-architecture)
 USER_HOME=$(eval echo ~${SUDO_USER})
 USER_SU=$USER
 osx=$(kreadconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "osxmode")
 #------------------
-echo $script_directory
 
 lowres=0
 Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
@@ -433,28 +432,6 @@ fi
 
 done
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 setcurcol () {
