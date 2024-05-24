@@ -31,33 +31,84 @@ defaultapps=(
 )
 nbrDefault=$(( ${#defaultapps[@]} / 2 ))
 
-extraapps=(
-"qBittorent" "qBittorent                                          ••• [torrents client]"
-"Guvcview" "Guvcview                                           ••• [webcam tool]"
-"Spotify" "Spotify                                               ••• [spotify client]"
-"SMPlayer" "SMPlayer/MPV                                   ••• [multimedia player]"
-"Pinta" "Pinta                                                   ••• [paint.net like]"
-"Microsoft Edge Browser" "Microsoft Edge Browser                   ••• [internet browser]"
-"Web app manager" "Web app manager                           ••• [webapp manager]"
-"Free Office" "Free Office                                        ••• [office suite]"
-"OnlyOffice" "OnlyOffice                                         ••• [office suite]"
-"Peazip" "Peazip                                                ••• [archives manager]"
-"Qtscrcpy" "Qtscrcpy                                            ••• [android phone manager]"
-"Gparted" "Gparted                                             ••• [partitions manager]"
-"Stacer" "Stacer                                                ••• [system tools/task manager]"
-"S4 Snapshot" "S4 Snapshot                                      ••• [backup/imaging tool]"
-"Remmina" "Remmina                                           ••• [rdp/vnc/ssh remote desktop client]"
-"Rustdesk" "Rustdesk                                           ••• [teamviewer like written in rust]]"
-"Bpytop" "Bpytop                                              ••• [cli task manager]"
-"Virtualbox 7" "Virtualbox 7                                      ••• [virtualization tool]"
-"Kdiskmark" "Kdiskmark                                         ••• [disk speed benchmark tool]"
-"Angry IP scanner" "Angry IP scanner                               ••• [ip scanner]"
-"Filezilla" "Filezilla                                              ••• [ftp client]"
-"Rclone" "Rclone                                               ••• [rsync for cloud - version 1.66 ]"
-"rclone-browser" "Rclone Browser                                 ••• [cloud file manager for rclone ]"
-"WineHQ" "Wine HQ                                           ••• [run windows programs]"
-"Kweather" "Kweather                                           ••• [weather applet for kicker]"
-)
+declare -a extraapps
+if [ "$osarch" = "amd64" ]; then
+extraapps+=("qBittorrent" "qBittorrent                                          ••• [torrents client]")
+fi
+
+extraapps+=("Guvcview" "Guvcview                                           ••• [webcam tool]")
+
+if [ "$osarch" = "amd64" ]; then
+extraapps+=("Spotify" "Spotify                                               ••• [spotify client]")
+fi
+
+extraapps+=("SMPlayer" "SMPlayer/MPV                                   ••• [multimedia player]")
+
+if [ ! "$osarch" = "armhf" ]; then
+extraapps+=("Pinta" "Pinta                                                   ••• [paint.net like]")
+fi
+
+if [ "$osarch" = "amd64" ]; then
+extraapps+=("Microsoft Edge Browser" "Microsoft Edge Browser                   ••• [internet browser]")
+fi
+
+extraapps+=("Web app manager" "Web app manager                           ••• [webapp manager]")
+
+if [ "$osarch" = "amd64" ]; then
+extraapps+=("Free Office" "Free Office                                        ••• [office suite]")
+fi
+
+if [ "$osarch" = "amd64" ]; then
+extraapps+=("OnlyOffice" "OnlyOffice                                         ••• [office suite]")
+fi
+
+extraapps+=("Peazip" "Peazip                                                ••• [archives manager]")
+
+if [ "$osarch" = "amd64" ]; then
+extraapps+=("Qtscrcpy" "Qtscrcpy                                            ••• [android phone manager]")
+fi
+
+extraapps+=("Gparted" "Gparted                                             ••• [partitions manager]")
+
+if [ ! "$osarch" = "armhf" ]; then
+extraapps+=("Stacer" "Stacer                                                ••• [system tools/task manager]")
+fi
+
+if [ "$osarch" = "amd64" ]; then
+extraapps+=("S4 Snapshot" "S4 Snapshot                                      ••• [backup/imaging tool]")
+fi
+
+if [ "$osarch" = "amd64" ]; then
+extraapps+=("Remmina" "Remmina                                           ••• [rdp/vnc/ssh remote desktop client]")
+fi
+
+if [ "$osarch" = "amd64" ]; then
+extraapps+=("Rustdesk" "Rustdesk                                           ••• [teamviewer like written in rust]")
+fi
+
+extraapps+=("Bpytop" "Bpytop                                              ••• [cli task manager]")
+
+if [ "$osarch" = "amd64" ]; then
+extraapps+=("Virtualbox 7" "Virtualbox 7                                      ••• [virtualization tool]")
+fi
+
+extraapps+=("Kdiskmark" "Kdiskmark                                         ••• [disk speed benchmark tool]")
+
+if [ ! "$osarch" = "armhf" ]; then
+extraapps+=("Angry IP scanner" "Angry IP scanner                               ••• [ip scanner]")
+fi
+
+extraapps+=("Filezilla" "Filezilla                                              ••• [ftp client]")
+
+extraapps+=("Rclone" "Rclone                                               ••• [rsync for cloud - version 1.66 ]")
+
+extraapps+=("rclone-browser" "Rclone Browser                                 ••• [cloud file manager for rclone ]")
+
+if [ ! "$osarch" = "armhf" ]; then
+extraapps+=("WineHQ" "Wine HQ                                           ••• [run windows programs]")
+fi
+
+extraapps+=("Kweather" "Kweather                                           ••• [weather applet for kicker]")
 
 kdtitle="q4osXpack"
 kdcaption="qapps"
