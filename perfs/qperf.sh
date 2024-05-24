@@ -9,27 +9,6 @@ centerk(){ ressc=$(xrandr | grep '*' | awk '{print $1}');screenw=$(echo $ressc |
 center_x=$(( ($screenw - $1) / 2 ));center_y=$(( ($screenh - $2) / 2 ));kgeo="${1}x${2}+$center_x+$center_y";echo "$kgeo";}
 osarch=$(dpkg --print-architecture)
 
-# #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ conf file exist ?
-# if [ -e "common/conf.qperf.tmp" ]; then
-# rel_path="common/conf.qperf.tmp"
-# abs_path=$(realpath "$rel_path")
-# conffile=1
-# 
-#
-
-
-# disprint=$(sudo kreadconfig --file "$abs_path" --group "Optimizations" --key "disable_print")
-
-# helpdoc=0
-# sudo rm -f "$abs_path"
-# else
-# echo
-# echo "** No config file found."
-# echo "   This script is not designed to be run standalone,please run qxpack script from the parent folder."
-# echo
-# exit
-# fi
-
 #__________________________________________________________________________________________________________________________________________________________________________________________
 ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack Perf optimizations ⏺</strong></font><br><br>"
 kdtitle="q4osXpack"
@@ -168,7 +147,7 @@ sudo chmod +x perfs/check_x86-64_psabi.sh perfs/perfgrub perfs/perfpiboot perfs/
 create_backup() {
 local backup_path="backups/$now/$1.tar.gz"
 sudo tar -zcvf "$backup_path" "$2" > /dev/null 2>&1
-rota
+rota "$dcopRef" "Backup..."
 }
 
 dcop "$dcopRef" setLabel "Backup..."
