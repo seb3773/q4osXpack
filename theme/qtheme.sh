@@ -3166,6 +3166,7 @@ kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar
 kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar locationToolBar" --key Index 0
 kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar locationToolBar" --key NewLine true
 kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar mainToolBar" --key IconSize 22
+rota "$dcopRef" "Configuring global shortcuts & default apps integration..."
 if [[ ! $osx -eq 1 ]]; then
 kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "MainWindow Toolbar mainToolBar" --key IconText IconTextBottom
 else
@@ -3190,6 +3191,7 @@ kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "slide show" --key 
 kwriteconfig --file $TDEHOME/share/config/gwenviewrc --group "slide show" --key loop true
 kwriteconfig --file "$USER_HOME/.local/share/applications/tde-gwenview.desktop" --group "Desktop Entry" --key "MimeType" "image/gif;image/x-xpm;image/x-xbm;image/jpeg;image/x-pcx;image/x-bmp;image/png;image/x-ico;image/x-portable-bitmap;image/x-portable-pixmap;image/x-portable-greymap;image/tiff;image/x-targa;image/svg+xml;image/jp2"
 #
+rota "$dcopRef" "Configuring global shortcuts & default apps integration..."
 kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/gif - 1" --key Application tde-gwenview.desktop
 kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/gif - 1" --key AllowAsDefault true
 kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/gif - 1" --key GenericServiceType Application
@@ -3238,6 +3240,7 @@ kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-gr
 kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-greymap - 1" --key AllowAsDefault true
 kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-greymap - 1" --key GenericServiceType Application
 kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/x-portable-greymap - 1" --key ServiceType "image/x-portable-greymap"
+rota "$dcopRef" "Configuring global shortcuts & default apps integration..."
 kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/tiff - 1" --key Application tde-gwenview.desktop
 kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/tiff - 1" --key AllowAsDefault true
 kwriteconfig --file $TDEHOME/share/config/profilerc --group "image/tiff - 1" --key GenericServiceType Application
@@ -3268,6 +3271,7 @@ kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop Icons" --k
 else
 kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop Icons" --key "IconSpacing" 24
 fi
+rota "$dcopRef" "Configuring global shortcuts & default apps integration..."
 #usuals win commands
 cd /usr/local/bin/
 sudo rm calc charmap cmd ksysguard notepad paint snapshot stickynotes taskmgr taskschd > /dev/null 2>&1
@@ -3288,6 +3292,9 @@ cd - > /dev/null 2>&1
 sudo \cp apps/ipconfig /usr/local/bin/ipconfig
 sudo tar -xzf theme/services.msc.tar.gz -C /usr/local/bin/
 sudo chmod +x /usr/local/bin/ipconfig
+
+rota "$dcopRef" "Configuring global shortcuts & default apps integration..."
+
 #konsolerc settings
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "RealTransparency" "true"
 if [[ ! $osx -eq 1 ]]; then
@@ -3304,6 +3311,8 @@ kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --ke
 else
 kwriteconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key "schema" "BlackOnWhite.schema"
 fi
+
+rota "$dcopRef" "Configuring global shortcuts & default apps integration..."
 #default root apps icon overlay
 sudo kwriteconfig --file "/opt/trinity/share/applications/tde/konsolesu.desktop" --group "Desktop Entry" --key Icon xconsole_root
 sudo kwriteconfig --file "/opt/trinity/share/applications/tde/konquerorsu.desktop" --group "Desktop Entry" --key Icon kfm_root
@@ -3335,6 +3344,7 @@ mkdir -p $USER_HOME/.configtde/strawberry/
 tar -xzf theme/strawberry.conf.tar.gz -C $USER_HOME/.configtde/strawberry/
 echo
 fi
+rota "$dcopRef" "Configuring global shortcuts & default apps integration..."
 if (cat common/packages_list.tmp | grep -q "smplayer/"); then
 echo -e "  ░▒▓█ SMPlayer installed - Applying theme..."
 dcop "$dcopRef" setLabel "SMPlayer installed - Applying theme..."
