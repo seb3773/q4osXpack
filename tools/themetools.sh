@@ -14,7 +14,6 @@ osx=$(kreadconfig --file $USER_HOME/.q4osXpack.conf --group "Settings" --key "os
 #------------------
 echo $script_directory
 
-
 lowres=0
 Xres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
 Yres=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
@@ -277,33 +276,6 @@ done
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 setkfont () {
 if [ "$1" = "Consolas" ]
 then
@@ -326,7 +298,6 @@ kdialog --title "$kdtitle" --caption "$kdcaption" --icon "$kdicon" --msgbox "Kon
 
 
 KONSF() {
-
 while true; do
 co="";ca="";sf=""
 curkfont=$(kreadconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont)
@@ -375,6 +346,115 @@ fi
 done
 
 }
+
+
+
+setprofremote() {
+dcop kdesktop KBackgroundIface setBackgroundEnabled 0
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop0" --key WallpaperMode NoWallpaper
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop0" --key MultiWallpaperMode NoMultiRandom
+sudo kwriteconfig --file /root/.trinity/share/config/kdesktoprc --group "Desktop0" --key WallpaperMode NoWallpaper
+sudo kwriteconfig --file /root/.trinity/share/config/kdesktoprc --group "Desktop0" --key MultiWallpaperMode NoMultiRandom
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Toolbar style" --key TransparentMoving "false"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group "General" --key "Transparent" "false"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group "Windows" --key "MoveMode" "Transparent"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group "Notification Messages" --key "UseTranslucency" false
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
+sudo kwriteconfig --file /root/.trinity/share/config/kdesktoprc --group FMSettings --key ShadowEnabled false
+if [[ $osx -eq 1 ]]; then
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "BorderColor" "#c0c0c0"
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "CenterImg" ""
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "DockOpacity" "100"
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "LeftImg" ""
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "RightImg" ""
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "Solid" "1"
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "Theme" ""
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "BigIconSize" "48"
+fi
+kdialog --title "$kdtitle" --caption "$kdcaption" --icon "$kdicon" --msgbox "Remote usage profile applied.
+(you need to logout to see the changes)"⠀
+}
+
+setprofnorm () {
+dcop kdesktop KBackgroundIface setBackgroundEnabled 1
+kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group "Desktop0" --key WallpaperMode Scaled
+sudo kwriteconfig --file /root/.trinity/share/config/kdesktoprc --group "Desktop0" --key WallpaperMode Scaled
+kwriteconfig --file $TDEHOME/share/config/kdeglobals --group "Toolbar style" --key TransparentMoving "true"
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group "General" --key "Transparent" "true"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group "Windows" --key "MoveMode" "Opaque"
+kwriteconfig --file $TDEHOME/share/config/twinrc --group "Notification Messages" --key "UseTranslucency" true
+######### random bug with desktop redrawing icons - need to find out why. too bad as the text with shadows looks much better
+#kwriteconfig --file $TDEHOME/share/config/kdesktoprc --group FMSettings --key ShadowEnabled true
+#sudo kwriteconfig --file /root/.trinity/share/config/kdesktoprc --group FMSettings --key ShadowEnabled true
+if [[ $osx -eq 1 ]]; then
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "BorderColor" "#bfbfbf"
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "CenterImg" "/opt/trinity/share/apps/kooldock/backgrounds/osx/background-center.png"
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "DockOpacity" "0"
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "LeftImg" "/opt/trinity/share/apps/kooldock/backgrounds/osx/background-left.png"
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "RightImg" "/opt/trinity/share/apps/kooldock/backgrounds/osx/background-right.png"
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "Solid" "0"
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "Theme" "osx"
+kwriteconfig --file $TDEHOME/share/config/kooldockrc --group "kooldock" --key "BigIconSize" "64"
+fi
+kdialog --title "$kdtitle" --caption "$kdcaption" --icon "$kdicon" --msgbox "Normal usage profile applied.
+(you need to logout to see the changes)"⠀
+}
+
+
+
+PROFCHOOSE () {
+while true; do
+co="";ca="";sf=""
+curkfont=$(kreadconfig --file $TDEHOME/share/config/konsolerc --group "Desktop Entry" --key defaultfont)
+
+
+
+kdtext="$ktext
+<font style='color:#828282'>►</font>Choose an usage profile:<br>
+<font style='color:#828282'><em>(or hit cancel to return)</em></font><br>"
+choix=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 550 280) --menu "$kdtext" "normal" "Normal(default)       [compositor on, transparency,...best appearance]" "remote" "Remote usage           [compositor off, no transp.,...best performance]")
+if [ $? -eq 1 ];then
+break
+else
+
+tdesudo -c ls /dev/null > /dev/null 2>&1 -d -i password --comment "Administrator rights needed"
+
+case $choix in
+"normal") 
+setprofnorm
+break
+;;
+"remote") 
+setprofremote
+break
+;;
+esac
+fi
+
+done
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 setcurcol () {
@@ -915,6 +995,7 @@ pointerclr) POINTC;;
 startsound) STSOUND;;
 konsfont) KONSF;;
 kmenued) kmenuedit;;
+usage) PROFCHOOSE;;
 *) ;;
 esac
 fi
