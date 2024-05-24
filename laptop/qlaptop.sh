@@ -100,9 +100,9 @@ sudo chmod +x laptop/tlpui_setup.sh
 qprogress "$script" 5
 #========== CREATE BACKUP FOLDER & backup files to be modified ==================================================
 create_backup() {
-    local backup_path="backups/$now/$1.tar.gz"
-    sudo tar -zcvf "$backup_path" "$2" > /dev/null 2>&1
-    rota
+local backup_path="backups/$now/$1.tar.gz"
+sudo tar -zcvf "$backup_path" "$2" > /dev/null 2>&1
+rota "$dcopRef" "Backup..."
 }
 
 
