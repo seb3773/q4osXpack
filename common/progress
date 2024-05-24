@@ -14,10 +14,13 @@ echo -en "\033]0;$1 - $prog$bar\a"
 }
 
 rotta=1
-rotsp="/-\|"
+#rotsp="/-\|"
+rotsp="⢎⡰⢎⡡⢎⡑⢎⠱⠎⡱⢊⡱⢌⡱⢆⡱"
+unit_length=2
+
 rota () {
 #printf "\b${rotsp:rotta++%${#rotsp}:1}"
-dcop "$1" setLabel "$2 ${rotsp:rotta++%${#rotsp}:1}"
+dcop "$1" setLabel "$2 ${rotsp:((rotta++%(${#rotsp}/unit_length))*unit_length):unit_length}"
 
 }
 
