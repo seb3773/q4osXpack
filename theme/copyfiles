@@ -2975,6 +2975,25 @@ if [ ! $osx -eq 1 ]; then
 tar -xzf tdmwin.tar.gz -C /opt/trinity/share/apps/tdm/themes/
 else
 tar -xzf tdmosx.tar.gz -C /opt/trinity/share/apps/tdm/themes/
+#adjust coordinates
+xbase=$(( (Xres - 200) / 2 ))
+xbase_plus_8=$(( xbase + 8 ))
+xbase_plus_5=$(( xbase + 5 ))
+xbase_plus_166=$(( xbase + 166 ))
+ybase=$(( (Yres / 2) + 5 ))
+ybase_plus_3=$(( ybase + 3 ))
+ybase_plus_60=$(( ybase + 60 ))
+ybase_plus_40=$(( ybase + 40 ))
+ybase_plus_63=$(( ybase + 63 ))
+sed -i "s/XXbaseXX/${xbase}/g" /opt/trinity/share/apps/tdm/themes/osx/osx.xml
+sed -i "s/XX2XX/${xbase_plus_8}/g" /opt/trinity/share/apps/tdm/themes/osx/osx.xml
+sed -i "s/XX3XX/${xbase_plus_5}/g" /opt/trinity/share/apps/tdm/themes/osx/osx.xml
+sed -i "s/XX4XX/${xbase_plus_166}/g" /opt/trinity/share/apps/tdm/themes/osx/osx.xml
+sed -i "s/YYbaseYY/${ybase}/g" /opt/trinity/share/apps/tdm/themes/osx/osx.xml
+sed -i "s/YY2YY/${ybase_plus_3}/g" /opt/trinity/share/apps/tdm/themes/osx/osx.xml
+sed -i "s/YY3YY/${ybase_plus_60}/g" /opt/trinity/share/apps/tdm/themes/osx/osx.xml
+sed -i "s/YY4YY/${ybase_plus_40}/g" /opt/trinity/share/apps/tdm/themes/osx/osx.xml
+sed -i "s/YY5YY/${ybase_plus_63}/g" /opt/trinity/share/apps/tdm/themes/osx/osx.xml
 fi
 if [ "${lowres:-0}" -eq 1 ]; then
 sudo tar -xzf tdmwin_lowres.tar.gz -C /opt/trinity/share/apps/tdm/themes/windows/
