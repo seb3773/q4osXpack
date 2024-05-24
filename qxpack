@@ -77,6 +77,7 @@ qapps) runqapps 1 ;;
 qapps2) runqapps 2 ;;
 qlaptop) runqlaptop;;
 qthtools) chmod +x tools/themetools.sh;tools/themetools.sh;;
+qsystools) chmod +x tools/systools.sh;tools/systools.sh;;
 #qsystools) chmod +x tools/systools.sh;tools/systools.sh;;
 #winapps) chmod +x apps/winapps.sh;apps/winapps.sh;;
 #qshcut) chmod +x common/createshcut.sh;common/createshcut.sh;;
