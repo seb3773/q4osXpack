@@ -32,9 +32,7 @@ defaultapps=(
 nbrDefault=$(( ${#defaultapps[@]} / 2 ))
 
 declare -a extraapps
-if [ "$osarch" = "amd64" ]; then
 extraapps+=("qBittorrent" "qBittorrent                                          ••• [torrents client]")
-fi
 
 extraapps+=("Guvcview" "Guvcview                                           ••• [webcam tool]")
 
@@ -62,7 +60,9 @@ if [ "$osarch" = "amd64" ]; then
 extraapps+=("OnlyOffice" "OnlyOffice                                         ••• [office suite]")
 fi
 
+if [ "$osarch" = "amd64" ]; then
 extraapps+=("Peazip" "Peazip                                                ••• [archives manager]")
+fi
 
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("Qtscrcpy" "Qtscrcpy                                            ••• [android phone manager]")
@@ -70,19 +70,15 @@ fi
 
 extraapps+=("Gparted" "Gparted                                             ••• [partitions manager]")
 
-if [ ! "$osarch" = "armhf" ]; then
 extraapps+=("Stacer" "Stacer                                                ••• [system tools/task manager]")
-fi
 
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("S4 Snapshot" "S4 Snapshot                                      ••• [backup/imaging tool]")
 fi
 
-if [ "$osarch" = "amd64" ]; then
 extraapps+=("Remmina" "Remmina                                           ••• [rdp/vnc/ssh remote desktop client]")
-fi
 
-if [ "$osarch" = "amd64" ]; then
+if [ ! "$osarch" = "armhf" ]; then
 extraapps+=("Rustdesk" "Rustdesk                                           ••• [teamviewer like written in rust]")
 fi
 
@@ -92,7 +88,9 @@ if [ "$osarch" = "amd64" ]; then
 extraapps+=("Virtualbox 7" "Virtualbox 7                                      ••• [virtualization tool]")
 fi
 
+if [ "$osarch" = "amd64" ]; then
 extraapps+=("Kdiskmark" "Kdiskmark                                         ••• [disk speed benchmark tool]")
+fi
 
 if [ ! "$osarch" = "armhf" ]; then
 extraapps+=("Angry IP scanner" "Angry IP scanner                               ••• [ip scanner]")
@@ -671,6 +669,7 @@ qprogress "$script" 40
 
 #---------------------------------------S4 Snapshot
 if echo $Applist2 | grep -q "S4 Snapshot"; then
+if ( getconf LONG_BIT | grep -q 64 ); then
 itemdisp "Installing S4 Snapshot"
 dcop "$dcopRef" setLabel "Installing S4 Snapshot..."
 echo -e "${YELLOW}"
@@ -682,6 +681,7 @@ sep
 echo
 echo
 echo
+fi
 fi 
 qprogress "$script" 45
 
@@ -784,6 +784,7 @@ qprogress "$script" 62
 
 #---------------------------------------Free Office
 if echo $Applist2 | grep -q "Free Office"; then
+if ( getconf LONG_BIT | grep -q 64 ); then
 itemdisp "Installing free office"
 dcop "$dcopRef" setLabel "Installing Free Office..."
 if ! isinstalled "softmaker-freeoffice-" "common/packages_list.tmp"; then
@@ -799,6 +800,7 @@ echo -e "${NOCOLOR}"
 else
 echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
 fi
+fi
 sep
 echo
 echo
@@ -812,6 +814,7 @@ qprogress "$script" 65
 
 #---------------------------------------OnlyOffice
 if echo $Applist2 | grep -q "OnlyOffice"; then
+if ( getconf LONG_BIT | grep -q 64 ); then
 itemdisp "Installing OnlyOffice"
 dcop "$dcopRef" setLabel "Installing Only Office..."
 if ! isinstalled "onlyoffice-desktopeditors" "common/packages_list.tmp"; then
@@ -824,6 +827,7 @@ sudo rm -f ./onlyoffice-desktopeditors_amd64.deb
 echo -e "${NOCOLOR}"
 else
 echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
 fi
 sep
 echo
