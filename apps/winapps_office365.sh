@@ -12,7 +12,7 @@ center_x=$(( ($screenw - $1) / 2 ));center_y=$(( ($screenh - $2) / 2 ));kgeo="${
 
 kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack winapps ⏺</strong></font><br><br>
 ═══════════════════════════<br>
-<em>Office 365 (Office 2019)</em><br>
+<em>Office 365 (Office 2019) {fr/en/de/ru}</em><br>
 ═══════════════════════════<br><br>
 <font style='color:#828282'>►</font> Proceed with the installation ?<br>
 <font style='color:#828282'><em>(or hit cancel to return)</em></font>
@@ -42,7 +42,7 @@ dcop "$dcopRef" setProgress $filenumber;((filenumber++))
 tee "${output_file}" --append < "Microsoft_Office_365_part_a${partn}" > /dev/null
 rm "Microsoft_Office_365_part_a${partn}"
 done
-for partn in {a..f}; do
+for partn in {a..i}; do
 wget "${base_url}/Microsoft_Office_365_part_b${partn}"
 dcop "$dcopRef" setProgress $filenumber;((filenumber++))
 tee "${output_file}" --append < "Microsoft_Office_365_part_b${partn}" > /dev/null
