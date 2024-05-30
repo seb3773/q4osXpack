@@ -16,9 +16,11 @@ fi
 
 winappslist+=("apps/winapps_office365.sh" "Office 365")
 
-winappslist+=("Notepad++" "Notepad++")
+winappslist+=("apps/winapps_notepadpp.sh" "Notepad++")
 
+if [ "$osarch" = "amd64" ]; then
 winappslist+=("apps/winapps_riot.sh" "Riot images optimizer")
+fi
 
 winappslist+=("apps/winapps_winrar.sh" "Winrar")
 
