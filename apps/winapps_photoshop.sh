@@ -132,7 +132,8 @@ dcop "$dcopRef" close
 kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack winapps ⏺</strong></font><br><br>
 ═══════════════════════════<br>
 <em>Photoshop CC 2020 installed.</em><br><br>
-Do you want to install CameraRaw ?<br>
+*you can remove \"$HOME/wine_photoshopcc_setup\" folder if you want.<br><br><br>
+Do you want to install CameraRaw now ?<br>
 </font>
 "
 kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --yesno "$kdtext"

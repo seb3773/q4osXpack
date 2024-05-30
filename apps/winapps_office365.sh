@@ -127,6 +127,7 @@ dcop "$dcopRef" close
 kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack winapps ⏺</strong></font><br><br>
 ═══════════════════════════<br>
 <em>Microsoft Office 365 installed.</em><br><br>
+*you can remove \"$HOME/wine_office365_setup\" folder if you want.<br>
 </font>
 "
 kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --msgbox "$kdtext"

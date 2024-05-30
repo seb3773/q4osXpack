@@ -32,9 +32,9 @@ kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack WinApps ⏺</strong></
 <font style='color:#828282'>►</font> Select a windows  app to install:<br>
 <font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>
 "
-kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 350 450) --checklist \"$kdtext\" "
+kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 350 450) --menu \"$kdtext\" "
 for ((i = 0; i < ${#winappslist[@]}; i+=2)); do
-    kcmd+="\"${winappslist[i]}\" \"${winappslist[i+1]}\" off "
+    kcmd+="\"${winappslist[i]}\" \"${winappslist[i+1]}\" "
 done
 eval "$kcmd --separate-output"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
