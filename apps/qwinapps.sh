@@ -18,7 +18,7 @@ winappslist+=("apps/winapps_office365.sh" "Office 365")
 
 winappslist+=("Notepad++" "Notepad++")
 
-winappslist+=("Riot" "Riot images optimizer")
+winappslist+=("apps/winapps_riot.sh" "Riot images optimizer")
 
 kdtitle="q4osXpack"
 kdcaption="qapps"

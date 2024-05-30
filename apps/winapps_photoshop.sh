@@ -83,41 +83,42 @@ dcop "$dcopRef" setLabel "Creating PhotoshopCC prefix..."
 mkdir -p "$HOME/PhotoshopCC"
 dcop "$dcopRef" setProgress 30
 dcop "$dcopRef" setLabel "winetricks: installing vcrun2019..."
-WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose vcrun2019  >> ./setup.log 2>&1
+WINEARCH=win64 WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose vcrun2019  >> ./setup.log 2>&1
 dcop "$dcopRef" setProgress 35
 dcop "$dcopRef" setLabel "winetricks: installing vcrun2012..."
-WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose vcrun2012 >> ./setup.log 2>&1
+WINEARCH=win64 WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose vcrun2012 >> ./setup.log 2>&1
 dcop "$dcopRef" setProgress 40
 dcop "$dcopRef" setLabel "winetricks: installing vcrun2013..."
-WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose vcrun2013 >> ./setup.log 2>&1
+WINEARCH=win64 WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose vcrun2013 >> ./setup.log 2>&1
 dcop "$dcopRef" setProgress 45
 dcop "$dcopRef" setLabel "winetricks: installing vcrun2010..."
-WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose vcrun2010 >> ./setup.log 2>&1
+WINEARCH=win64 WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose vcrun2010 >> ./setup.log 2>&1
 dcop "$dcopRef" setProgress 50
 dcop "$dcopRef" setLabel "winetricks: installing gdiplus..."
-WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose fontsmooth=rgb gdiplus >> ./setup.log 2>&1
+WINEARCH=win64 WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose fontsmooth=rgb gdiplus >> ./setup.log 2>&1
 dcop "$dcopRef" setProgress 55
 dcop "$dcopRef" setLabel "winetricks: installing msxml3 & msxml6..."
-WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose msxml3 msxml6 >> ./setup.log 2>&1
+WINEARCH=win64 WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose msxml3 msxml6 >> ./setup.log 2>&1
 dcop "$dcopRef" setProgress 60
 dcop "$dcopRef" setLabel "winetricks: installing atmlib..."
-WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose atmlib >> ./setup.log 2>&1
+WINEARCH=win64 WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose atmlib >> ./setup.log 2>&1
 dcop "$dcopRef" setProgress 65
 dcop "$dcopRef" setLabel "winetricks: installing corefonts..."
-WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose corefonts >> ./setup.log 2>&1
+WINEARCH=win64 WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose corefonts >> ./setup.log 2>&1
 dcop "$dcopRef" setProgress 70
 dcop "$dcopRef" setLabel "winetricks: installing dxvk..."
-WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose dxvk >> ./setup.log 2>&1
+WINEARCH=win64 WINEPREFIX="$HOME/PhotoshopCC" winetricks win10 --force --unattended --verbose dxvk >> ./setup.log 2>&1
 dcop "$dcopRef" setProgress 75
 echo
 
 dcop "$dcopRef" setLabel "Configuring prefixe..."
-WINEPREFIX="$HOME/PhotoshopCC" winecfg /v win7 >> ./setup.log 2>&1
+WINEARCH=win64 WINEPREFIX="$HOME/PhotoshopCC" winecfg /v win7 >> ./setup.log 2>&1
 while pgrep wine > /dev/null; do sleep 1; done
 sleep 2
 dcop "$dcopRef" setProgress 80
 dcop "$dcopRef" setLabel "Extracting archive, please wait..."
 tar -xf "$HOME/wine_photoshopcc_setup/files/PhotoshopCC_folder.tar.xz" -C "$HOME/PhotoshopCC"
+dcop "$dcopRef" setLabel "Creating menu entries..."
 dcop "$dcopRef" setProgress 95
 sudo cp -f "$HOME/wine_photoshopcc_setup/files/photoshop-cc.png" /usr/share/icons/hicolor/128x128/apps
 sudo cp -f "$HOME/wine_photoshopcc_setup/files/photoshop.desktop" "$HOME/.local/share/applications/"
@@ -131,7 +132,7 @@ dcop "$dcopRef" close
 kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack winapps ⏺</strong></font><br><br>
 ═══════════════════════════<br>
 <em>Photoshop CC 2020 installed.</em><br><br>
-Do you wan to install CameraRaw ?<br>
+Do you want to install CameraRaw ?<br>
 </font>
 "
 kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 500 350) --yesno "$kdtext"
