@@ -7,7 +7,7 @@ I don't think it will work 'as is' on another distribution using Trinity, but yo
   for a 'standard user' (and more) usage.  
 
 
-There are 6 main scripts:  
+Here are the main parts:  
   
 ## ██ Qtheme script:
 This is a script that will modify your Q4OS Trinity installation to make it a bit like Windows 10. Not the real thing of course, I had to 'adapt' some things because I doesn't know how to mimic some parts with TDE Trinity, but it's the closest I can do now. I did it in the first place because I wanted to 'recycle' old computers at my work who weren't... let's say windows 10 capables :p And don't even think of windows 11...
@@ -39,7 +39,7 @@ Designed to install a set of apps I consider usefull for the usage I have. This 
 -Default apps: GIT, 7zip, Dolphin, Ark, system-config-printer, flashfetch, bleachbit, vlc, Strawberry, some console tools, Gwenview, Kolourpaint, KCharSelect, Ksnapshot, Knotes, Kcron, lxtask-mod, kdirstat, kpdf. 
   
 -Extra apps: qBittorent, Guvcview, Spotify, SMPlayer/MPV, Pinta, Microsoft Edge Browser, Web app manager, Free Office, OnlyOffice, Peazip, Qtscrcpy, Gparted, Stacer, S4 Snapshot, Remmina, Rustdesk, Bpytop, Virtualbox 7, Kdiskmark, Angry IP scanner, WineHQ, Kweather applet.
-* Note: some apps are not available for 32bits install.
+* Note: some apps are not available for 32bits/Raspberry installations.
 
 
 ## ▓▓ Qtools theme script:
@@ -47,7 +47,11 @@ This is a set of tools to customize the theme you previously installed with qthe
 
 ## ▓▓ Qtools system script:
 A set of usefull system tools for tuning/cleaning your installation.
+    
+## ▓▓ Winapps script:
+Some windows apps I'm using sometimes, with no adequate linux equivalent for me (please note the "FOR ME"; I know there are some kind of linux alternatives for all of these programs. But ! Sometimes I need, for example, MS Office to open a particular document, not compatible with linux alternatives, or Photoshop, because I can't get used to Gimp, and I'm a very very long time user of photoshop... Once again, these are personnal choices, you can just ignore them if it's useless for you.)  
   
+
 
 ______________________________________________________________________________________________________________________________________
 ¤¤ Please note that these scripts were initially designed for my own usage, and only for Q4OS, never thought of sharing them at the first place, but I thought it may be of interest for some other people... Be aware that they reflects my choices, so maybe not yours. Please take a look a the sources of the scripts before trying them, you're welcome to modify or improve them for you :)    ¤¤¤
