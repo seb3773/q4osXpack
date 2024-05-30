@@ -20,6 +20,10 @@ winappslist+=("Notepad++" "Notepad++")
 
 winappslist+=("apps/winapps_riot.sh" "Riot images optimizer")
 
+winappslist+=("apps/winapps_winrar.sh" "Winrar")
+
+winappslist+=("apps/winapps_mp3tag.sh" "Mp3Tag")
+
 kdtitle="q4osXpack"
 kdcaption="qapps"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
