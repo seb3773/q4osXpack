@@ -51,8 +51,8 @@ A set of usefull system tools for tuning/cleaning your installation.
 ## ▓▓ Winapps script:
 Some windows apps I'm using sometimes, with no adequate linux equivalent for me (please note the "FOR ME"; I know there are some kind of linux alternatives for all of these programs. But ! Sometimes I need, for example, MS Office to open a particular document, not compatible with linux alternatives, or Photoshop, because I can't get used to Gimp, and I'm a very very long time user of photoshop... Once again, these are personnal choices, you can just ignore them if it's useless for you.)  
   
-
-
+  
+  
 ______________________________________________________________________________________________________________________________________
 ¤¤ Please note that these scripts were initially designed for my own usage, and only for Q4OS, never thought of sharing them at the first place, but I thought it may be of interest for some other people... Be aware that they reflects my choices, so maybe not yours. Please take a look a the sources of the scripts before trying them, you're welcome to modify or improve them for you :)    ¤¤¤
 ¤¤ Nearly everything was coded on an old laptop, a celeron N3060 with 4gb of non upgradable ram, so it's a good system to see what impacts or not performances. It's nearly unusable on windows 10, even with considerable tweaking, but works very good with Q4os, even without tweaking by the way :) So thanks again to the Q4OS team for this gem :) ¤¤
