@@ -65,7 +65,11 @@ ktext="<font style='color:#ac6009'><strong>⏺ q4osXpack ⏺</strong></font><br>
 kdtext="$ktext
 <font style='color:#828282'>►</font> Choose a script to launch:<br>
 <font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>"
+if [ ! "$osarch" = "armhf" ]; then
 menuchoice=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 350 480) --menu "$kdtext" "qtheme" " ▬  Theme" "qperf" " ▬  Perf optimizations" "qlaptop" " ▬  Laptop configuration" "qapps" " ▬  Essential apps" "qapps2" " ▬  Extra apps" "qthtools" " ═  Theme tools  ☺" "qsystools" " ═  System tools  §" "winapps" " ─  Windows apps ¤"  "qshcut" " …  Create shortcuts  »" "qhelp" " …  Help ๏")
+else
+menuchoice=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 350 480) --menu "$kdtext" "qtheme" " ▬  Theme" "qperf" " ▬  Perf optimizations" "qlaptop" " ▬  Laptop configuration" "qapps" " ▬  Essential apps" "qapps2" " ▬  Extra apps" "qthtools" " ═  Theme tools  ☺" "qsystools" " ═  System tools  §" "qshcut" " …  Create shortcuts  »" "qhelp" " …  Help ๏")
+fi
 
 if [ $? -eq 1 ];then
 break
@@ -78,6 +82,7 @@ qapps2) runqapps 2 ;;
 qlaptop) runqlaptop;;
 qthtools) chmod +x tools/themetools.sh;tools/themetools.sh;;
 qsystools) chmod +x tools/systools.sh;tools/systools.sh;;
+winapps) chmod +x apps/qwinapps.sh;apps/qwinapps.sh;;
 #qsystools) chmod +x tools/systools.sh;tools/systools.sh;;
 #winapps) chmod +x apps/winapps.sh;apps/winapps.sh;;
 #qshcut) chmod +x common/createshcut.sh;common/createshcut.sh;;
