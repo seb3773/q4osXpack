@@ -629,6 +629,7 @@ qprogress "$script" 14
 #========== Start menu configuration ============================================================================
 itemdisp "Configuring start menu..."
 dcop "$dcopRef" setLabel "Configuring start menu..."
+kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key Position 3
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key CustomSize 40
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key BourbonMenu false
 kwriteconfig --file $TDEHOME/share/config/kickerrc --group General --key LegacyKMenu true
