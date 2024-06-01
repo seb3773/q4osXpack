@@ -123,7 +123,7 @@ unselecting them will not uninstall them.</em><br>
 <font style='color:#828282'>►</font> <strong>Unselect</strong> the apps you <strong>don't want to install</strong>:<br>
 <font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>
 "
-kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 550 600) --checklist \"$kdtext\" "
+kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 550 650) --checklist \"$kdtext\" "
 for ((i = 0; i < ${#defaultapps[@]}; i+=2)); do
     kcmd+="\"${defaultapps[i]}\" \"${defaultapps[i+1]}\" on "
 done
@@ -143,7 +143,7 @@ kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack Apps ⏺</strong></fon
 <font style='color:#828282'>►</font> <strong>Select</strong> the extra apps you want to <strong>install</strong>:<br>
 <font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>
 "
-kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 550 600) --checklist \"$kdtext\" "
+kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 550 650) --checklist \"$kdtext\" "
 for ((i = 0; i < ${#extraapps[@]}; i+=2)); do
     kcmd+="\"${extraapps[i]}\" \"${extraapps[i+1]}\" off "
 done
