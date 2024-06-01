@@ -33,7 +33,7 @@ while true; do
 kdtext="$ktext
 <font style='color:#828282'>►</font> Choose a script to launch:<br>
 <font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>"
-kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 500 480) --menu \"$kdtext\" "
+kcmd="kdialog --icon \"$kdicon\" --title \"$kdtitle\" --caption \"$kdcaption\" --geometry $(centerk 520 500) --menu \"$kdtext\" "
 kmenuitem=""
 kmenuitem+="\"Cleaning\" \"» Cleaning      [ script to clean system ]\""
 kmenuitem+=" \"KernelRmv\" \"» Kernel remove      [ remove unused kernels ]\""
@@ -41,11 +41,16 @@ kmenuitem+=" \"TrimSSD\" \"» Trim SSD      [ erase data blocks no longer in use
 kmenuitem+=" \"Rmvlocal\" \"» Remove localisations      [ remove unused localisation files ]\""
 kmenuitem+=" \"Rmvicons\" \"» Remove icons      [ remove unused icons ]\""
 kmenuitem+=" \"Rmvfonts\" \"» Remove fonts      [ remove some non western fonts ]\""
+if [ ! "$osarch" = "armhf" ]; then
 kmenuitem+=" \"BootM\" \"» Boot Menu      [ enable/disable boot menu ]\""
 kmenuitem+=" \"Btimeout\" \"» Boot Menu timeout      [ set boot menu timeout ]\""
 kmenuitem+=" \"Boses\" \"» Boot menu other OS      [ Enable/disable other OS choice ]\""
 kmenuitem+=" \"Buefi\" \"» Boot menu UEFI      [ Enable/disable UEFI option ]\""
+fi
 kmenuitem+=" \"Bcmdl\" \"» Boot command line      [ Modify boot command line ]\""
+if [ ! "$osarch" = "armhf" ]; then
+kmenuitem+=" \"Grubzil\" \"» Clonezilla grub entry      [ Add Clonezilla live to grub menu ]\""
+fi
 kcmd+="$kmenuitem"
 menuchoice=$(eval $kcmd)
 
