@@ -57,7 +57,7 @@ ________________________________________________________________________________
   
 ¤¤ Nearly everything was coded on an old laptop, a celeron N3060 with 4gb of non upgradable ram, so it's a good system to see what impacts or not performances. It's nearly unusable on windows 10, even with considerable tweaking, but works very good with Q4os, even without tweaking by the way :) So thanks again to the Q4OS team for this gem :) ¤¤  
   
-One last note: This is a "work in progress", especially the tools part. It's ready for usage (I work with this theme on my laptop/desktop computer every day :p ) but I'm still improving it (tuning some icons or some other ui parts/behaviors...), so don't hesitate to always retrieve the last version :)  
+One last note: This is a "work in progress", especially the system tools part. It's ready for usage (I work with this themes & perfs optimisations on my laptop and desktop computers every day :p ) but I'm still improving it (tuning some icons or some other ui parts/behaviors, correcting some bugs :p ...), so don't hesitate to always retrieve the last version :)  
 ______________________________________________________________________________________________________________________________________
 
 ## Installation:
