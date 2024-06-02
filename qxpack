@@ -12,7 +12,7 @@ osarch=$(dpkg --print-architecture)
 
 #QLAPTOP
 runqlaptop() {
-m -f "$script_directory/logs/qlaptop.log"
+rm -f "$script_directory/logs/qlaptop.log"
 touch "$script_directory/logs/qlaptop.log"
 chmod 666 "$script_directory/logs/qlaptop.log"
 chmod +x laptop/qlaptop.sh
