@@ -1,5 +1,5 @@
 #!/bin/bash
-centerk(){ ressc=$(xrandr | grep '*' | awk '{print $1}');screenw=$(echo $ressc | cut -d 'x' -f 1);screenh=$(echo $ressc | cut -d 'x' -f 2)
+centerk(){ ressc=$(xrandr | grep '*' | head -n 1 | awk '{print $1}');screenw=$(echo $ressc | cut -d 'x' -f 1);screenh=$(echo $ressc | cut -d 'x' -f 2)
 center_x=$(( ($screenw - $1) / 2 ));center_y=$(( ($screenh - $2) / 2 ));kgeo="${1}x${2}+$center_x+$center_y";echo "$kgeo";}
 #----------------------------------------
 script_path="$0"
@@ -49,7 +49,7 @@ kmenuitem+=" \"Buefi\" \"» Boot menu UEFI      [ Enable/disable UEFI option ]\"
 fi
 kmenuitem+=" \"Bcmdl\" \"» Boot command line      [ Modify boot command line ]\""
 if [ ! "$osarch" = "armhf" ]; then
-kmenuitem+=" \"Grubzil\" \"» Clonezilla grub entry      [ Add Clonezilla live to grub menu ]\""
+kmenuitem+=" \"Recovtools\" \"» Install recovery tools      [ Install recovery tools  for system rescue ]\""
 fi
 kcmd+="$kmenuitem"
 menuchoice=$(eval $kcmd)
