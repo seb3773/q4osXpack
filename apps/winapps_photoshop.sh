@@ -7,7 +7,7 @@ cd ..
 kdicon="$script_directory/../common/Q4OSsebicon.png"
 kdtitle="q4osXpack"
 kdcaption="winapps - Photoshop CC"
-centerk(){ ressc=$(xrandr | grep '*' | awk '{print $1}');screenw=$(echo $ressc | cut -d 'x' -f 1);screenh=$(echo $ressc | cut -d 'x' -f 2)
+centerk(){ ressc=$(xrandr | grep '*' | head -n 1 | awk '{print $1}');screenw=$(echo $ressc | cut -d 'x' -f 1);screenh=$(echo $ressc | cut -d 'x' -f 2)
 center_x=$(( ($screenw - $1) / 2 ));center_y=$(( ($screenh - $2) / 2 ));kgeo="${1}x${2}+$center_x+$center_y";echo "$kgeo";}
 
 kdtext="<font style='color:#ac6009'><strong>⏺ q4osXpack winapps ⏺</strong></font><br><br>
