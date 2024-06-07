@@ -5,7 +5,7 @@ script_directory=$(dirname "$script_full_path")
 cd "$script_directory"
 cd ..
 kdicon="$script_directory/../common/Q4OSsebicon.png"
-centerk(){ ressc=$(xrandr | grep '*' | awk '{print $1}');screenw=$(echo $ressc | cut -d 'x' -f 1);screenh=$(echo $ressc | cut -d 'x' -f 2)
+centerk(){ ressc=$(xrandr | grep '*' | head -n 1 | awk '{print $1}');screenw=$(echo $ressc | cut -d 'x' -f 1);screenh=$(echo $ressc | cut -d 'x' -f 2)
 center_x=$(( ($screenw - $1) / 2 ));center_y=$(( ($screenh - $2) / 2 ));kgeo="${1}x${2}+$center_x+$center_y";echo "$kgeo";}
 osarch=$(dpkg --print-architecture)
 helpdoc=0;installall=0
