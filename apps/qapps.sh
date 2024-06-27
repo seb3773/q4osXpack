@@ -32,13 +32,24 @@ defaultapps=(
 nbrDefault=$(( ${#defaultapps[@]} / 2 ))
 
 declare -a extraapps
-extraapps+=("qBittorrent" "qBittorrent                                          ••• [torrents client]")
+extraapps+=("qBittorrent" "qBittorrent                                         ••• [torrents client]")
 
-extraapps+=("Guvcview" "Guvcview                                           ••• [webcam tool]")
+extraapps+=("Guvcview" "Guvcview                                            ••• [webcam tool]")
 
 if [ "$osarch" = "amd64" ]; then
-extraapps+=("Spotify" "Spotify                                               ••• [spotify client]")
+extraapps+=("Spotify" "Spotify                                                ••• [spotify app")
 fi
+
+extraapps+=("spotify-qt" "spotify-qt                                           ••• [lightweight spotify app")
+extraapps+=("spotify-tui" "spotify-tui                                          ••• [lightweight spotify CLI app")
+extraapps+=("ncspot" "ncspot                                                ••• [lightweight spotify CLI ncurse app]")
+extraapps+=("spotifyd" "spotifyd                                              ••• [spotify daemon]")
+
+if [ "$osarch" = "amd64" ]; then
+extraapps+=("deezer" "Deezer                                                ••• [deezer app]")
+fi
+extraapps+=("musikcube" "musikcube                                          ••• [lightweight musicplayer CLI app]")
+
 
 extraapps+=("SMPlayer" "SMPlayer/MPV                                   ••• [multimedia player]")
 
@@ -47,17 +58,17 @@ extraapps+=("Pinta" "Pinta                                                   •
 fi
 
 if [ "$osarch" = "amd64" ]; then
-extraapps+=("Microsoft Edge Browser" "Microsoft Edge Browser                   ••• [internet browser]")
+extraapps+=("Microsoft Edge Browser" "Microsoft Edge Browser                    ••• [internet browser]")
 fi
 
-extraapps+=("Web app manager" "Web app manager                           ••• [webapp manager]")
+extraapps+=("Web app manager" "Web app manager                            ••• [webapp manager]")
 
 if [ "$osarch" = "amd64" ]; then
-extraapps+=("Free Office" "Free Office                                        ••• [office suite]")
+extraapps+=("Free Office" "Free Office                                         ••• [office suite]")
 fi
 
 if [ "$osarch" = "amd64" ]; then
-extraapps+=("OnlyOffice" "OnlyOffice                                         ••• [office suite]")
+extraapps+=("OnlyOffice" "OnlyOffice                                          ••• [office suite]")
 fi
 
 if [ "$osarch" = "amd64" ]; then
@@ -106,7 +117,7 @@ if [ ! "$osarch" = "armhf" ]; then
 extraapps+=("WineHQ" "Wine HQ                                           ••• [run windows programs]")
 fi
 
-extraapps+=("Kweather" "Kweather                                           ••• [weather applet for kicker]")
+extraapps+=("Kweather" "Kweather                                          ••• [weather applet for kicker]")
 
 kdtitle="q4osXpack"
 kdcaption="qapps"
@@ -611,7 +622,124 @@ echo
 
 fi
 
+qprogress "$script" 22
+
+
+
+
+#---------------------------------------spotify-qt
+if echo $Applist2 | grep -q "spotify-qt"; then
+itemdisp "Installing spotify-qt"
+dcop "$dcopRef" setLabel "Installing spotify-qt..."
+if ! isinstalled "spotify-qt/" "common/packages_list.tmp"; then
+if [ "$osarch" = "amd64" ]; then debfile="spotify-qt-v3.11.deb";fi
+if [ "$osarch" = "i386" ]; then debfile="spotify-qt-v3.11_i386.deb";fi
+if [ "$osarch" = "armhf" ]; then debfile="spotify-qt-v3.11_armhf.deb";fi
+sudo wget "https://github.com/seb3773/spotify-qt-packages/raw/main/$debfile"
+qprogress "$script" 23
+sudo apt install -y "./$debfile"
+sudo rm -f "./$debfile"
+else
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+sep
+echo
+echo
+echo
+fi
+qprogress "$script" 24
+
+#---------------------------------------spotify-tui
+if echo $Applist2 | grep -q "spotify-tui"; then
+itemdisp "Installing spotify-tui"
+dcop "$dcopRef" setLabel "Installing spotify-tui..."
+if ! isinstalled "spotify-tui/" "common/packages_list.tmp"; then
+if [ "$osarch" = "amd64" ]; then debfile="spotify-tui-0.25.0.deb";fi
+if [ "$osarch" = "i386" ]; then debfile="spotify-tui-0.25.0_i386.deb";fi
+if [ "$osarch" = "armhf" ]; then debfile="spotify-tui-0.25.0_armhf.deb";fi
+sudo wget "https://github.com/seb3773/spotify-tui-packages/raw/main/$debfile"
 qprogress "$script" 25
+sudo apt install -y "./$debfile"
+sudo rm -f "./$debfile"
+else
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+sep
+echo
+echo
+echo
+fi
+qprogress "$script" 26
+
+
+#---------------------------------------ncspot
+if echo $Applist2 | grep -q "ncspot"; then
+itemdisp "Installing ncspot"
+dcop "$dcopRef" setLabel "Installing ncspot..."
+if ! isinstalled "ncspot/" "common/packages_list.tmp"; then
+if [ "$osarch" = "amd64" ]; then debfile="ncspot-1.1.1.deb";fi
+if [ "$osarch" = "i386" ]; then debfile="ncspot-1.1.1_i386.deb";fi
+if [ "$osarch" = "armhf" ]; then debfile="ncspot-1.1.1_armhf.deb";fi
+sudo wget "https://github.com/seb3773/ncspot-packages/raw/main/$debfile"
+qprogress "$script" 27
+sudo apt install -y "./$debfile"
+sudo rm -f "./$debfile"
+else
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+sep
+echo
+echo
+echo
+fi
+qprogress "$script" 28
+
+
+
+#---------------------------------------spotifyd
+if echo $Applist2 | grep -q "spotifyd"; then
+itemdisp "Installing spotifyd"
+dcop "$dcopRef" setLabel "Installing spotifyd..."
+if ! isinstalled "spotifyd/" "common/packages_list.tmp"; then
+if [ "$osarch" = "amd64" ]; then debfile="spotifyd-0.3.5.deb";fi
+if [ "$osarch" = "i386" ]; then debfile="spotifyd-0.3.5_i386.deb";fi
+if [ "$osarch" = "armhf" ]; then debfile="spotifyd-0.3.5_armhf.deb";fi
+sudo wget "https://github.com/seb3773/spotifyd-packages/raw/main/$debfile"
+qprogress "$script" 29
+sudo apt install -y "./$debfile"
+sudo rm -f "./$debfile"
+else
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+sep
+echo
+echo
+echo
+fi
+qprogress "$script" 30
+
+# 
+#---------------------------------------deezer
+if echo $Applist2 | grep -q "deezer"; then
+itemdisp "Installing deezer"
+dcop "$dcopRef" setLabel "Installing deezer..."
+if ! isinstalled "deezer-desktop/" "common/packages_list.tmp"; then
+debfile="deezer-desktop_6.0.150_amd64.deb"
+sudo wget "https://github.com/aunetx/deezer-linux/releases/download/v6.0.150-1/$debfile"
+qprogress "$script" 31
+sudo apt install -y "./$debfile"
+sudo rm -f "./$debfile"
+else
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+sep
+echo
+echo
+echo
+fi
+qprogress "$script" 32
+
+
 
 
 
@@ -639,8 +767,33 @@ echo
 echo
 echo
 fi
+qprogress "$script" 38
 
-qprogress "$script" 30
+
+#---------------------------------------musikcube
+if echo $Applist2 | grep -q "musikcube"; then
+itemdisp "Installing musikcube"
+dcop "$dcopRef" setLabel "Installing musikcube..."
+if ! isinstalled " musikcube/" "common/packages_list.tmp"; then
+if [ "$osarch" = "amd64" ]; then debfile="musikcube_3.0.2_linux_x86_64.deb";fi
+if [ "$osarch" = "i386" ]; then debfile="musikcube_3.0.2_linux_x86.deb";fi
+if [ "$osarch" = "armhf" ]; then debfile="musikcube_3.0.2_linux_rpi_armv8.deb";fi
+sudo wget "https://github.com/clangen/musikcube/releases/download/3.0.2/$debfile"
+qprogress "$script" 39
+sudo apt install -y "./$debfile"
+sudo rm -f "./$debfile"
+else
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+sep
+echo
+echo
+echo
+fi
+qprogress "$script" 40
+
+
+
 
 
 
@@ -649,9 +802,8 @@ if echo $Applist2 | grep -q "Gparted"; then
 itemdisp "Installing gparted"
 dcop "$dcopRef" setLabel "Installing gparted..."
 installApp "gparted" "gparted/stable"
-
 fi
-qprogress "$script" 35
+qprogress "$script" 42
 
 
 
@@ -663,7 +815,7 @@ dcop "$dcopRef" setLabel "Installing Stacer..."
 installApp "stacer" "stacer/stable"
 
 fi
-qprogress "$script" 40
+qprogress "$script" 45
 
 
 
@@ -683,7 +835,7 @@ echo
 echo
 fi
 fi 
-qprogress "$script" 45
+qprogress "$script" 48
 
 
 
@@ -707,7 +859,7 @@ echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
 fi
 
 fi
-qprogress "$script" 48
+qprogress "$script" 50
 
 
 
