@@ -35,9 +35,9 @@ You will have the option to create a swap file for hibernation, and it will then
 ## ░░ Qapps:
 Designed to install a set of apps I consider usefull for the usage I have. This reflect only my choices, so you maybe don't need it.  
   
--Default apps: GIT, 7zip, Dolphin, Ark, system-config-printer, flashfetch, bleachbit, vlc, Strawberry, some console tools, Gwenview, Kolourpaint, KCharSelect, Ksnapshot, Knotes, Kcron, lxtask-mod, kdirstat, kpdf. 
+-Default apps (most of them are recommended for the win10/osx themes): GIT, 7zip, Dolphin, Ark, system-config-printer, flashfetch, bleachbit, vlc, Strawberry, some console tools, Gwenview, Kolourpaint, KCharSelect, Ksnapshot, Knotes, Kcron, lxtask-mod, kdirstat, kpdf. 
   
--Extra apps: qBittorent, Guvcview, Spotify, SMPlayer/MPV, Pinta, Microsoft Edge Browser, Web app manager, Free Office, OnlyOffice, Peazip, Qtscrcpy, Gparted, Stacer, S4 Snapshot, Remmina, Rustdesk, Bpytop, Virtualbox 7, Kdiskmark, Angry IP scanner, WineHQ, Kweather applet.
+-Extra apps: qBittorent, Guvcview, Spotify, spotify-qt, spotify-tui, ncspot, spotify-player, spotifyd, Deezer, musikcube, SMPlayer/MPV, media-downloder, DownOnSpot, Pinta, Microsoft Edge Browser, Web app manager, Free Office, OnlyOffice, Peazip, Qtscrcpy, Gparted, Stacer, S4 Snapshot, Remmina, Rustdesk, Bpytop, Virtualbox 7, Kdiskmark, Angry IP scanner, Filezilla, Rclone, Rclone browser, WineHQ, Kweather applet.
 * Note: some apps are not available for 32bits/Raspberry installations.
 
 
@@ -76,7 +76,7 @@ And then launch the main menu:
 
 ______________________________________________________________________________________________________________________________________
 
-Some screenshots (a bit outdated, new ones coming soon):
+Some screenshots (*very* outdated, new ones coming soon):
 Dark theme
 ![Alt text](/screenshots/q4os_seb_screenshot_dark1.jpg?raw=true "dark theme")
 ![Alt text](/screenshots/q4os_seb_screenshot_dark2.jpg?raw=true "dark theme")
