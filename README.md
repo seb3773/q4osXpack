@@ -1,23 +1,23 @@
 # q4osXpack
 
-A set of scripts to reconfigure a bit Q4OS Trinity to fit my needs. (theming, performances, laptop configuration,'defaults' applications selected by me, and tools to customize parts of the theme & some tuning scripts).  
+A set of scripts to reconfigure a bit Q4OS Trinity to fit my needs. (theming, performances, laptop configuration,'defaults' & extra applications selected by me, and tools to customize some parts of the themes & some tuning scripts).  
 This was designed for Q4OS Aquarius 64bits/32bits and Raspberry version (Please note some options/apps can be a little bit differents depending on architecture).
 I don't think it will work 'as is' on another distribution using Trinity, but you can try :p (and better, if you want to fork the project and made it compatible with trinity on other distribs, you're welcome and I can help you to adapt the scripts if needed).    
-* Note that classic desktop usage is targeted if you use the "qperf" script, so don't even try it on a server type machine, as it could disable some essentials services/logs for this purpose. But it's perfectly fine for a 'standard user' (and more) usage.  
+* Note if you use the "qperf" script that classic desktop usage is targeted , so don't even try it on a server type machine, as it could disable some essentials services/logs that you need for this purpose. But it's perfectly fine for a 'standard user' (and more) usage.  
   
   
 Here are the main parts:  
   
 ## ██ Qtheme script:
-This is a script that will modify your Q4OS Trinity installation to make it a bit like Windows 10. Not the real thing of course, I had to 'adapt' some things because I doesn't know how to mimic some parts with TDE Trinity, but it's the closest I can do now. I did it in the first place because I wanted to 'recycle' old computers at my work who weren't... let's say windows 10 capables :p And don't even think of windows 11...
-This is my attempt to have the responsivness of Q4OS Trinity and the widely appreciated windows 10 look & feel (kind of) for customers who used to work with windows before.
-You can choose between a 'light' theme and a 'dark' one now.  
+This is a script that will modify your Q4OS Trinity installation to make it a bit like Windows 10. Not the real thing of course, I had to 'adapt' some things because I doesn't know how to mimic some parts with TDE Trinity, but it's the closest I can do now. I did it in the first place because I wanted to 'recycle' old computers at my work who weren't... let's say windows 10 capables :p And don't even think of windows 11...  
+So, this is my attempt to have the wonderfull responsivness of Q4OS Trinity and the widely appreciated windows 10 look & feel (kind of, but it's really close I think) for customers who used to work with windows before.
+You can choose between a 'light' theme and a 'dark' one.  
   
 You can specify an 'accent' color to the base theme (light/dark) which is taskbar, menu and windows decoration color. Selected objects and other color parts will then be derived from this accent color.  
   
-It's somekind of a full theme with icons, pointers, windows decorations, widgets style, color schemes, sounds (notably usb connect/disconnect sounds), taskbar & tdemenu setup, konqueror & dolphin profiles,boot splash, login screen, gtk theme, ui behavior, etc... with GTK2/GTK3 styles homogenized.  
-I try to keep all differents parts of the theme as lightweight as possible as it is intended for old computers too as I explained :) And I want to keep in line with the trinity de / Q4os philosophy, so it will not 'bloat' your computer with useless things.
-
+It's somekind of a full theme with icons, pointers, windows decorations, widgets style, color schemes, sounds (notably usb connect/disconnect sounds; and pre-login sound 'ala windows11' or osx), taskbar & tdemenu setup, konqueror & dolphin & some other apps profiles and theming accordingly, boot splash, login screen, gtk theme, ui behaviors, actions center (like window10 notifications center), etc... all with GTK2/GTK3 styles homogenized.  
+I try to keep all differents parts of the theme as lightweight as possible as it is intended for old computers too as I explained :) And I want to keep in line with the trinity de / Q4os philosophy, so it will not 'bloat' your computer with useless things.  
+  
 **New : OSX theme (beta for now), try it !
 
 
