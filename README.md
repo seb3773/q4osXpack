@@ -34,13 +34,16 @@ You will have the option to create a swap file for hibernation, and it will then
 
 ## ░░ Qapps:
 Designed to install a set of apps I consider usefull for the usage I have. This reflect only my choices, so you maybe don't need it.  
+Some apps are installed from official debian repos, some from .deb files included in q4osXpack apps/ folder or downloaded from my other repositories (packages I builded myself because they weren't in debian repos); and some others are from repos that will be added to your apt sources (of course they are trustables).  
   
--Default apps (most of them are recommended for the win10/osx themes): GIT, 7zip, Dolphin, Ark, system-config-printer, flashfetch, bleachbit, vlc, Strawberry, some console tools, Gwenview, Kolourpaint, KCharSelect, Ksnapshot, Knotes, Kcron, lxtask-mod, kdirstat, kpdf. 
+-Default apps (most of them are recommended for the win10/osx themes):  
+GIT, 7zip, Dolphin, Ark, system-config-printer, flashfetch, bleachbit, vlc, Strawberry, some console tools, Gwenview, Kolourpaint, KCharSelect, Ksnapshot, Knotes, Kcron, lxtask-mod, kdirstat, kpdf. 
   
--Extra apps: qBittorent, Guvcview, Spotify, spotify-qt, spotify-tui, ncspot, spotify-player, spotifyd, Deezer, musikcube, SMPlayer/MPV, media-downloder, DownOnSpot, Pinta, Microsoft Edge Browser, Web app manager, Free Office, OnlyOffice, Peazip, Qtscrcpy, Gparted, Stacer, S4 Snapshot, Remmina, Rustdesk, Bpytop, Virtualbox 7, Kdiskmark, Angry IP scanner, Filezilla, Rclone, Rclone browser, WineHQ, Kweather applet.
+-Extra apps:  
+qBittorent, Guvcview, Spotify, spotify-qt, spotify-tui, ncspot, spotify-player, spotifyd, Deezer, musikcube, SMPlayer/MPV, media-downloder, DownOnSpot, Pinta, Microsoft Edge Browser, Web app manager, Free Office, OnlyOffice, Peazip, Qtscrcpy, Gparted, Stacer, S4 Snapshot, Remmina, Rustdesk, Bpytop, Virtualbox 7, Kdiskmark, Angry IP scanner, Filezilla, Rclone, Rclone browser, WineHQ, Kweather applet.
 * Note: some apps are not available for 32bits/Raspberry installations.
-
-
+  
+  
 ## ▓▓ Qtools theme script:
 This is a set of tools to customize the theme you previously installed with qtheme script.
 
