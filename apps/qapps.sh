@@ -55,6 +55,7 @@ extraapps+=("musikcube" "musikcube                                          •�
 extraapps+=("SMPlayer" "SMPlayer/MPV                                   ••• [multimedia player]")
 
 extraapps+=("media-downloader" "media-downloader                            ••• [various medias downloader]")
+extraapps+=("down_on_spot" "DownOnSpot                                     ••• [spotify music downloader (CLI) ]")
 
 if [ ! "$osarch" = "armhf" ]; then
 extraapps+=("Pinta" "Pinta                                                   ••• [paint.net like]")
@@ -96,7 +97,7 @@ if [ ! "$osarch" = "armhf" ]; then
 extraapps+=("Rustdesk" "Rustdesk                                            ••• [teamviewer like written in rust]")
 fi
 
-extraapps+=("Bpytop" "Bpytop                                              ••• [CLI task manager]")
+extraapps+=("Bpytop" "Bpytop                                              ••• [task manager (CLI) ]")
 
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("Virtualbox 7" "Virtualbox 7                                       ••• [virtualization tool]")
@@ -793,6 +794,31 @@ qprogress "$script" 38
 
 
 
+#---------------------------------------down_on_spot
+if echo $Applist2 | grep -q "down_on_spot"; then
+itemdisp "Installing DownOnSpot"
+dcop "$dcopRef" setLabel "Installing DownOnSpot..."
+if ! isinstalled "downonspot/" "common/packages_list.tmp"; then
+if [ "$osarch" = "amd64" ]; then debfile="down_on_spot-0.3.0.deb";fi
+if [ "$osarch" = "i386" ]; then debfile="down_on_spot-0.3.0_i386.deb";fi
+if [ "$osarch" = "armhf" ]; then debfile="down_on_spot-0.3.0_armhf.deb";fi
+sudo wget "https://github.com/seb3773/down_on_spot-packages/raw/main/$debfile"
+qprogress "$script" 39
+sudo apt install -y "./$debfile"
+sudo rm -f "./$debfile"
+else
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+sep
+echo
+echo
+echo
+fi
+qprogress "$script" 40
+
+
+
+
 
 
 #---------------------------------------Microsoft Edge Browser
@@ -807,7 +833,7 @@ sudo apt install software-properties-common apt-transport-https ca-certificates
 curl -fSsL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /usr/share/keyrings/microsoft-edge.gpg > /dev/null
 echo 'deb [signed-by=/usr/share/keyrings/microsoft-edge.gpg] https://packages.microsoft.com/repos/edge stable main' | sudo tee /etc/apt/sources.list.d/microsoft-edge.list
 sudo apt update
-qprogress "$script" 40
+qprogress "$script" 41
 sudo apt install microsoft-edge-stable
 echo -e "${NOCOLOR}"
 else
