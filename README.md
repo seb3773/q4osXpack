@@ -1,6 +1,6 @@
 # q4osXpack
 
-A set of scripts to reconfigure a bit Q4OS Trinity to fit my needs. (theming, performances, laptop configuration,'defaults' & extra applications selected by me, and tools to customize some parts of the themes & some tuning scripts).  
+A set of scripts to reconfigure a bit Q4OS Trinity to fit my needs. (theming, performances, laptop configuration,'defaults' & extra applications selected by me, and tools to customize some parts of the themes & some tools/tuning scripts).  
 This was designed for Q4OS Aquarius 64bits/32bits and Raspberry version (Please note some options/apps can be a little bit differents depending on architecture).
 I don't think it will work 'as is' on another distribution using Trinity, but you can try :p (and better, if you want to fork the project and made it compatible with trinity on other distribs, you're welcome and I can help you to adapt the scripts if needed).    
 * Note if you use the "qperf" script that classic desktop usage is targeted , so don't even try it on a server type machine, as it could disable some essentials services/logs that you need for this purpose. But it's perfectly fine for a 'standard user' (and more) usage.  
