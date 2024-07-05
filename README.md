@@ -16,7 +16,7 @@ You can choose between a 'light' theme and a 'dark' one.
   
 You can specify an 'accent' color to the base theme (light/dark) which is taskbar, menu and windows decoration color. Selected objects and other color parts will then be derived from this accent color.  
   
-It's somekind of a full 'theme pack' with icons, pointers, windows decorations, widgets style, color schemes, sounds (notably usb connect/disconnect sounds; and pre-login sound 'ala windows11' or osx), taskbar & tdemenu setup, konqueror & dolphin & some other apps profiles and theming accordingly, boot splash, login screen, gtk theme, ui behaviors, actions center (like window10 notifications center), etc... all with GTK2/GTK3 styles homogenized.  
+It's somekind of a full 'theme pack' with icons, pointers, windows decorations, widgets style, color schemes, sounds (notably usb connect/disconnect sounds; and pre-login sound 'ala windows11' or osx), taskbar & tdemenu setup, konqueror & dolphin & some other apps profiles and theming accordingly, boot splash, login screen, gtk theme, ui behaviors, actions center (like window10 notifications center), grub theme, etc... all with GTK2/GTK3 styles homogenized.  
 I try to keep all differents parts of the theme as lightweight as possible as it is intended for old computers too as I explained :) And I want to keep in line with the trinity de / Q4os philosophy, so it will not 'bloat' your computer with useless things.  
   
 **New : OSX theme (beta for now), try it !
