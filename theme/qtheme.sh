@@ -3140,6 +3140,12 @@ cd /usr/local/bin/
 sudo chmod +x themeinst.sh
 themeinst.sh install
 cd - > /dev/null 2>&1
+itemdisp "Installing bingwallpaper script..."
+dcop "$dcopRef" setLabel "Installing bingwallpaper script..."
+sudo \cp apps/bingwallpaper.sh /usr/local/bin/bingwallpaper.sh
+cd /usr/local/bin/
+sudo chmod +x bingwallpaper.sh
+cd - > /dev/null 2>&1
 sep
 echo
 echo
