@@ -748,7 +748,6 @@ qprogress "$script" 32
 if echo $Applist2 | grep -q "media-downloader"; then
 itemdisp "Installing media-downloader"
 dcop "$dcopRef" setLabel "Installing media-downloader..."
-
 if ! isinstalled "media-downloader/" "common/packages_list.tmp"; then
 echo -e "${YELLOW}"
 echo 'deb http://download.opensuse.org/repositories/home:/obs_mhogomchungu/Debian_12/ /' | sudo tee /etc/apt/sources.list.d/home:obs_mhogomchungu.list
@@ -757,6 +756,17 @@ sudo apt update
 qprogress "$script" 34
 sudo apt install media-downloader
 echo -e "${NOCOLOR}"
+
+#install aria2 for media-downloader
+if ! isinstalled "aria2/" "common/packages_list.tmp"; then
+echo -e "${YELLOW}"
+itemdisp "Installing aria2 for media-downloader"
+dcop "$dcopRef" setLabel "Installing aria2 for media-downloader..."
+qprogress "$script" 35
+sudo apt install aria2
+echo -e "${NOCOLOR}"
+fi
+
 else
 echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
 fi
@@ -766,7 +776,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 35
+qprogress "$script" 36
 
 
 # 
@@ -779,7 +789,7 @@ if [ "$osarch" = "amd64" ]; then debfile="spotify_player-0.18.2.deb";fi
 if [ "$osarch" = "i386" ]; then debfile="spotify_player-0.18.2_i386.deb";fi
 if [ "$osarch" = "armhf" ]; then debfile="spotify_player-0.18.2_armhf.deb";fi
 sudo wget "https://github.com/seb3773/spotify-player_packages/raw/main/$debfile"
-qprogress "$script" 36
+qprogress "$script" 37
 sudo apt install -y "./$debfile"
 sudo rm -f "./$debfile"
 else
