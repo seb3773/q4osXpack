@@ -11,21 +11,21 @@ osarch=$(dpkg --print-architecture)
 helpdoc=0;installall=0
 
 defaultapps=(
-"Dolphin" "Dolphin                                      ••• [file manager]"
-"Ark" "Ark                                              ••• [archives manager]"
+"Dolphin" "Dolphin                                        ••• [file manager]"
+"Ark" "Ark                                               ••• [archives manager]"
 "system-config-printer" "system-config-printer                ••• [printer manager]"
 "flashfetch" "flashfetch                                    ••• [cli system info]"
 "bleachbit" "bleachbit                                     ••• [cleaner]"
 "vlc" "vlc                                                ••• [multimedia player]"
 "Strawberry" "Strawberry                                  ••• [music player]"
-"console tools" "console tools                              ••• [usefull cli tools]"
+"console tools" "console tools                              ••• [usefull CLI tools]"
 "Gwenview" "Gwenview                                   ••• [image viewer]"
-"Kolourpaint" "Kolourpaint                                ••• [drawing app ala ms paint]"
+"Kolourpaint" "Kolourpaint                                 ••• [drawing app ala ms paint]"
 "KCharSelect" "KCharSelect                                ••• [char selector]"
 "Ksnapshot" "Ksnapshot                                  ••• [screen snapshot]"
 "Knotes" "Knotes                                        ••• [sticky notes]"
 "Kcron" "Kcron                                          ••• [tasks scheduler]"
-"lxtask-mod" "Lxtask-mod                                 ••• [simple taskmanager]"
+"lxtask-mod" "Lxtask-mod                                ••• [lightweight  taskmanager]"
 "kdirstat" "kdirstat                                       ••• [dirs sizes statistics]"
 "kpdf" "kpdf                                            ••• [pdf viewer]"
 )
@@ -37,21 +37,24 @@ extraapps+=("qBittorrent" "qBittorrent                                         �
 extraapps+=("Guvcview" "Guvcview                                            ••• [webcam tool]")
 
 if [ "$osarch" = "amd64" ]; then
-extraapps+=("Spotify" "Spotify                                                ••• [spotify app")
+extraapps+=("Spotify" "Spotify                                                ••• [spotify official app]")
 fi
 
-extraapps+=("spotify-qt" "spotify-qt                                           ••• [lightweight spotify app")
-extraapps+=("spotify-tui" "spotify-tui                                          ••• [lightweight spotify CLI app")
+extraapps+=("spotify-qt" "spotify-qt                                           ••• [lightweight spotify app]")
+extraapps+=("spotify-tui" "spotify-tui                                          ••• [lightweight spotify CLI app]")
 extraapps+=("ncspot" "ncspot                                                ••• [lightweight spotify CLI ncurse app]")
+extraapps+=("spotify-player" "spotify-player                                     ••• [lightweight spotify CLI app]")
 extraapps+=("spotifyd" "spotifyd                                              ••• [spotify daemon]")
 
 if [ "$osarch" = "amd64" ]; then
-extraapps+=("deezer" "Deezer                                                ••• [deezer app]")
+extraapps+=("deezer" "Deezer                                                ••• [deezer (unofficial) app]")
 fi
 extraapps+=("musikcube" "musikcube                                          ••• [lightweight musicplayer CLI app]")
 
 
 extraapps+=("SMPlayer" "SMPlayer/MPV                                   ••• [multimedia player]")
+
+extraapps+=("media-downloader" "media-downloader                            ••• [various medias downloader]")
 
 if [ ! "$osarch" = "armhf" ]; then
 extraapps+=("Pinta" "Pinta                                                   ••• [paint.net like]")
@@ -90,17 +93,17 @@ fi
 extraapps+=("Remmina" "Remmina                                           ••• [rdp/vnc/ssh remote desktop client]")
 
 if [ ! "$osarch" = "armhf" ]; then
-extraapps+=("Rustdesk" "Rustdesk                                           ••• [teamviewer like written in rust]")
+extraapps+=("Rustdesk" "Rustdesk                                            ••• [teamviewer like written in rust]")
 fi
 
-extraapps+=("Bpytop" "Bpytop                                              ••• [cli task manager]")
+extraapps+=("Bpytop" "Bpytop                                              ••• [CLI task manager]")
 
 if [ "$osarch" = "amd64" ]; then
-extraapps+=("Virtualbox 7" "Virtualbox 7                                      ••• [virtualization tool]")
+extraapps+=("Virtualbox 7" "Virtualbox 7                                       ••• [virtualization tool]")
 fi
 
 if [ "$osarch" = "amd64" ]; then
-extraapps+=("Kdiskmark" "Kdiskmark                                         ••• [disk speed benchmark tool]")
+extraapps+=("Kdiskmark" "Kdiskmark                                          ••• [disk speed benchmark tool]")
 fi
 
 if [ ! "$osarch" = "armhf" ]; then
@@ -109,7 +112,7 @@ fi
 
 extraapps+=("Filezilla" "Filezilla                                              ••• [ftp client]")
 
-extraapps+=("Rclone" "Rclone                                               ••• [rsync for cloud - version 1.66 ]")
+extraapps+=("Rclone" "Rclone                                               ••• [rsync for cloud - version 1.66 (CLI) ]")
 
 extraapps+=("rclone-browser" "Rclone Browser                                 ••• [cloud file manager for rclone ]")
 
@@ -739,6 +742,55 @@ echo
 fi
 qprogress "$script" 32
 
+# 
+#---------------------------------------media-downloader/
+if echo $Applist2 | grep -q "media-downloader"; then
+itemdisp "Installing media-downloader"
+dcop "$dcopRef" setLabel "Installing media-downloader..."
+
+if ! isinstalled "media-downloader/" "common/packages_list.tmp"; then
+echo -e "${YELLOW}"
+echo 'deb http://download.opensuse.org/repositories/home:/obs_mhogomchungu/Debian_12/ /' | sudo tee /etc/apt/sources.list.d/home:obs_mhogomchungu.list
+curl -fsSL https://download.opensuse.org/repositories/home:obs_mhogomchungu/Debian_12/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_obs_mhogomchungu.gpg > /dev/null
+sudo apt update
+qprogress "$script" 34
+sudo apt install media-downloader
+echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+
+sep
+echo
+echo
+echo
+fi
+qprogress "$script" 35
+
+
+# 
+#---------------------------------------spotify-player
+if echo $Applist2 | grep -q "spotify-player"; then
+itemdisp "Installing spotify-player"
+dcop "$dcopRef" setLabel "Installing spotify-player..."
+if ! isinstalled "spotify-player/" "common/packages_list.tmp"; then
+if [ "$osarch" = "amd64" ]; then debfile="spotify_player-0.18.2.deb";fi
+if [ "$osarch" = "i386" ]; then debfile="spotify_player-0.18.2_i386.deb";fi
+if [ "$osarch" = "armhf" ]; then debfile="spotify_player-0.18.2_armhf.deb";fi
+sudo wget "https://github.com/seb3773/spotify-player_packages/raw/main/$debfile"
+qprogress "$script" 36
+sudo apt install -y "./$debfile"
+sudo rm -f "./$debfile"
+else
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+sep
+echo
+echo
+echo
+fi
+qprogress "$script" 38
+
 
 
 
@@ -755,7 +807,7 @@ sudo apt install software-properties-common apt-transport-https ca-certificates
 curl -fSsL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /usr/share/keyrings/microsoft-edge.gpg > /dev/null
 echo 'deb [signed-by=/usr/share/keyrings/microsoft-edge.gpg] https://packages.microsoft.com/repos/edge stable main' | sudo tee /etc/apt/sources.list.d/microsoft-edge.list
 sudo apt update
-qprogress "$script" 35
+qprogress "$script" 40
 sudo apt install microsoft-edge-stable
 echo -e "${NOCOLOR}"
 else
@@ -767,7 +819,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 38
+qprogress "$script" 42
 
 
 #---------------------------------------musikcube
@@ -779,7 +831,7 @@ if [ "$osarch" = "amd64" ]; then debfile="musikcube_3.0.2_linux_x86_64.deb";fi
 if [ "$osarch" = "i386" ]; then debfile="musikcube_3.0.2_linux_x86.deb";fi
 if [ "$osarch" = "armhf" ]; then debfile="musikcube_3.0.2_linux_rpi_armv8.deb";fi
 sudo wget "https://github.com/clangen/musikcube/releases/download/3.0.2/$debfile"
-qprogress "$script" 39
+qprogress "$script" 43
 sudo apt install -y "./$debfile"
 sudo rm -f "./$debfile"
 else
@@ -790,7 +842,7 @@ echo
 echo
 echo
 fi
-qprogress "$script" 40
+qprogress "$script" 44
 
 
 
@@ -803,7 +855,7 @@ itemdisp "Installing gparted"
 dcop "$dcopRef" setLabel "Installing gparted..."
 installApp "gparted" "gparted/stable"
 fi
-qprogress "$script" 42
+qprogress "$script" 45
 
 
 
@@ -815,7 +867,7 @@ dcop "$dcopRef" setLabel "Installing Stacer..."
 installApp "stacer" "stacer/stable"
 
 fi
-qprogress "$script" 45
+qprogress "$script" 46
 
 
 
