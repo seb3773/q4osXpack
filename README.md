@@ -41,7 +41,7 @@ Some apps are installed from official debian repos, some from .deb files include
 GIT, 7zip, Dolphin, Ark, system-config-printer, flashfetch, bleachbit, vlc, Strawberry, some console tools, Gwenview, Kolourpaint, KCharSelect, Ksnapshot, Knotes, Kcron, lxtask-mod, kdirstat, kpdf. 
   
 -Extra apps:  
-qBittorent, Guvcview, Spotify, spotify-qt, spotify-tui, ncspot, spotify-player, spotifyd, Deezer, musikcube, SMPlayer/MPV, media-downloder, DownOnSpot, Pinta, Microsoft Edge Browser, Web app manager, Free Office, OnlyOffice, Peazip, Qtscrcpy, Gparted, Stacer, S4 Snapshot, Remmina, Rustdesk, Bpytop, Virtualbox 7, Kdiskmark, Angry IP scanner, Filezilla, Rclone, Rclone browser, WineHQ, Kweather applet.
+qBittorent, Guvcview, Spotify, spotify-qt, spotify-tui, ncspot, spotify-player, spotifyd, Deezer, musikcube, SMPlayer/MPV, media-downloder, DownOnSpot, Pinta, Microsoft Edge Browser, Web app manager, Free Office, OnlyOffice, Peazip, Qtscrcpy, Gparted, Stacer, S4 Snapshot, Remmina, Rustdesk, Bpytop, Bottom, Virtualbox 7, Kdiskmark, Angry IP scanner, Filezilla, Rclone, Rclone browser, WineHQ, Kweather applet.
 * Note: some apps are not available for 32bits/Raspberry installations.
   
   
