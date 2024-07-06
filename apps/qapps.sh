@@ -33,94 +33,67 @@ nbrDefault=$(( ${#defaultapps[@]} / 2 ))
 
 declare -a extraapps
 extraapps+=("qBittorrent" "qBittorrent                                         ••• [torrents client]")
-
 extraapps+=("Guvcview" "Guvcview                                            ••• [webcam tool]")
-
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("Spotify" "Spotify                                                ••• [spotify official app]")
 fi
-
 extraapps+=("spotify-qt" "spotify-qt                                           ••• [lightweight spotify app]")
 extraapps+=("spotify-tui" "spotify-tui                                          ••• [lightweight spotify CLI app]")
 extraapps+=("ncspot" "ncspot                                                ••• [lightweight spotify CLI ncurse app]")
 extraapps+=("spotify-player" "spotify-player                                     ••• [lightweight spotify CLI app]")
 extraapps+=("spotifyd" "spotifyd                                              ••• [spotify daemon]")
-
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("deezer" "Deezer                                                ••• [deezer (unofficial) app]")
 fi
 extraapps+=("musikcube" "musikcube                                          ••• [lightweight musicplayer CLI app]")
-
-
 extraapps+=("SMPlayer" "SMPlayer/MPV                                   ••• [multimedia player]")
-
 extraapps+=("media-downloader" "media-downloader                            ••• [various medias downloader]")
 extraapps+=("down_on_spot" "DownOnSpot                                     ••• [spotify music downloader (CLI) ]")
-
 if [ ! "$osarch" = "armhf" ]; then
 extraapps+=("Pinta" "Pinta                                                   ••• [paint.net like]")
 fi
-
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("Microsoft Edge Browser" "Microsoft Edge Browser                    ••• [internet browser]")
 fi
-
 extraapps+=("Web app manager" "Web app manager                            ••• [webapp manager]")
-
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("Free Office" "Free Office                                         ••• [office suite]")
 fi
-
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("OnlyOffice" "OnlyOffice                                          ••• [office suite]")
 fi
-
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("Peazip" "Peazip                                                ••• [archives manager]")
 fi
-
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("Qtscrcpy" "Qtscrcpy                                            ••• [android phone manager]")
 fi
-
 extraapps+=("Gparted" "Gparted                                             ••• [partitions manager]")
-
 extraapps+=("Stacer" "Stacer                                                ••• [system tools/task manager]")
-
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("S4 Snapshot" "S4 Snapshot                                      ••• [backup/imaging tool]")
 fi
-
 extraapps+=("Remmina" "Remmina                                           ••• [rdp/vnc/ssh remote desktop client]")
-
 if [ ! "$osarch" = "armhf" ]; then
 extraapps+=("Rustdesk" "Rustdesk                                            ••• [teamviewer like written in rust]")
 fi
-
 extraapps+=("Bpytop" "Bpytop                                              ••• [task manager (CLI) ]")
-
+extraapps+=("Bottom" "Bottom                                              ••• [task manager in rust (CLI) ]")
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("Virtualbox 7" "Virtualbox 7                                       ••• [virtualization tool]")
 fi
-
 if [ "$osarch" = "amd64" ]; then
 extraapps+=("Kdiskmark" "Kdiskmark                                          ••• [disk speed benchmark tool]")
 fi
-
 if [ ! "$osarch" = "armhf" ]; then
 extraapps+=("Angry IP scanner" "Angry IP scanner                               ••• [ip scanner]")
 fi
-
 extraapps+=("Filezilla" "Filezilla                                              ••• [ftp client]")
-
 extraapps+=("Rclone" "Rclone                                               ••• [rsync for cloud - version 1.66 (CLI) ]")
-
 extraapps+=("rclone-browser" "Rclone Browser                                 ••• [cloud file manager for rclone ]")
-
 if [ ! "$osarch" = "armhf" ]; then
 extraapps+=("WineHQ" "Wine HQ                                           ••• [run windows programs]")
 fi
-
 extraapps+=("Kweather" "Kweather                                          ••• [weather applet for kicker]")
 
 kdtitle="q4osXpack"
@@ -1094,6 +1067,31 @@ fi
 qprogress "$script" 72
 
 
+#---------------------------------------Bottom
+if echo $Applist2 | grep -q "Bottom"; then
+itemdisp "Installing Bottom"
+dcop "$dcopRef" setLabel "Installing Bottom..."
+if ! isinstalled "bottom/" "common/packages_list.tmp"; then
+echo -e "  \e[35m░▒▓█ Installing Bottom..."
+echo -e "${YELLOW}"
+DebSource="https://github.com/ClementTsang/bottom/releases/download/0.9.6/"
+if [ "$osarch" = "amd64" ]; then debfile="bottom_0.9.6_amd64.deb";fi
+if [ "$osarch" = "i386" ]; then 
+debfile="bottom_0.9.6_i386.deb"
+DebSource="https://github.com/seb3773/q4osXpack_packages_archive/raw/main/"
+fi
+if [ "$osarch" = "armhf" ]; then debfile="bottom_0.9.6_armhf.deb";fi
+sudo wget "$DebSource$debfile"
+qprogress "$script" 73
+sudo apt install -y "./$debfile"
+sudo rm -f "./$debfile"
+echo -e "${NOCOLOR}"
+else
+echo -e "${ORANGE}      ¤ Already installed.${NOCOLOR}"
+fi
+fi
+qprogress "$script" 74
+
 
 #---------------------------------------Virtualbox 7
 if echo $Applist2 | grep -q "Virtualbox 7"; then
@@ -1106,7 +1104,7 @@ echo -e "${YELLOW}"
 wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
 sudo apt update
-qprogress "$script" 65
+qprogress "$script" 75
 sudo apt install -y virtualbox-7.0
 sudo usermod -G vboxusers -a $USER
 echo -e "${NOCOLOR}"
@@ -1120,7 +1118,7 @@ echo
 
 fi
 fi
-qprogress "$script" 75
+qprogress "$script" 76
 
 
 
@@ -1135,7 +1133,7 @@ if [ ! -e "$USER_HOME/qtscrcpy/QtScrcpy" ]; then
 echo -e "${YELLOW}"
 cd apps
 sudo apt install -y libqt5multimedia5
-qprogress "$script" 72
+qprogress "$script" 77
 sudo tar -xf qtscrcpy.tar.xz -C $USER_HOME/
 sudo chown -R $USER: "$USER_HOME/qtscrcpy"
 sudo mkdir -p $USER_HOME/.local/bin
