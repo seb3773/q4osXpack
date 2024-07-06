@@ -396,6 +396,17 @@ sep
 echo
 echo
 echo
+qprogress "$script" 19
+
+#========== Removing firewall ===================================================================================
+itemdisp "Removing apparmor..."
+dcop "$dcopRef" setLabel "Removing ufw..."
+echo
+sudo apt-get remove -y ufw --purge
+sep
+echo
+echo
+echo
 qprogress "$script" 20
 
 
@@ -923,6 +934,17 @@ echo
 echo
 qprogress "$script" 88
 
+#========== disabling pc speaker =====================================================================================
+itemdisp "Disabling pc speaker module"
+dcop "$dcopRef" setLabel "Disabling pc speaker module"
+cd perfs
+sudo tar -xzf nopcspkr.conf.tar.gz -C /etc/modprobe.d/
+cd ..
+sep
+echo
+echo
+echo
+qprogress "$script" 89
 
 
 #========== installing ananicy  =====================================================================================
