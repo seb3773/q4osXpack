@@ -921,24 +921,30 @@ echo
 fi
 qprogress "$script" 87
 
-
+###modprobe blacklists
 #========== disabling iwl-debug-yoyo.bin =====================================================================================
 itemdisp "Disabling iwl-debug-yoyo.bin"
 dcop "$dcopRef" setLabel "Disabling iwl-debug-yoyo.bin..."
 cd perfs
-sudo tar -xzf iwlwifi.conf.tar.gz -C /etc/modprobe.d/
-cd ..
+sudo tar -xzf blacklistconf.tar.gz -C /etc/modprobe.d/ iwlwifi.conf
 sep
 echo
 echo
 echo
 qprogress "$script" 88
-
 #========== disabling pc speaker =====================================================================================
 itemdisp "Disabling pc speaker module"
 dcop "$dcopRef" setLabel "Disabling pc speaker module"
-cd perfs
-sudo tar -xzf nopcspkr.conf.tar.gz -C /etc/modprobe.d/
+sudo tar -xzf blacklistconf.tar.gz -C /etc/modprobe.d/ nopcspkr.conf
+sep
+echo
+echo
+echo
+qprogress "$script" 89
+#========== disabling usbmouse & usbkbd (replaced by usbhud)=====================================================================================
+itemdisp "Disabling usbmouse/usbkbd modules (in favor of hid)"
+dcop "$dcopRef" setLabel "Disabling usbmouse/usbkbd module  (in favor of hid)"
+sudo tar -xzf blacklistconf.tar.gz -C /etc/modprobe.d/ usbmouse+kbd.conf
 cd ..
 sep
 echo
