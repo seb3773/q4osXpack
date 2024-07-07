@@ -899,8 +899,6 @@ fi
 qprogress "$script" 85
 
 
-
-
 #========== trim initramfs for faster boot =========================================================================
 # faster boot, drawbacks: system will not be 'portable' with this setting as initramfs is build with only the needed
 # modules for this computer.However, this is perfectly suitable for desktop usage.
@@ -1158,20 +1156,30 @@ fi
 qprogress "$script" 95
 
 
-
-itemdisp "Optimizing svg images..."
-dcop "$dcopRef" setLabel "Optimizing svg images..."
+##Stripping nonstripped binaries...
+itemdisp "Stripping nonstripped binaries..."
+dcop "$dcopRef" setLabel "Stripping nonstripped binaries..."
 echo
-cd perfs
-sudo ./cleansvg.sh
-cd ..
+echo -e "  ░▒▓█ Installing rmlint..."
+echo -e "${YELLOW}"
+sudo apt install -y rmlint
+echo -e "${NOCOLOR}"
+sudo rmlint -g -T "ns" /lib/ -O sh:./rmlint_lib.sh
+sudo ./rmlint_lib.sh -d
+sudo rm -f ./rmlint.json
+qprogress "$script" 96
+sudo rmlint -g -T "ns" /usr/local/bin/ -O sh:./rmlint_localbin.sh
+sudo ./rmlint_localbin.sh -d
+sudo rm -f ./rmlint.json
+qprogress "$script" 97
+sudo rmlint -g -T "ns" /usr/bin/ -O sh:./rmlint_usrbin.sh
+sudo ./rmlint_usrbin.sh -d
+sudo rm -f ./rmlint.json
 sep
 echo
 echo
 echo
 qprogress "$script" 98
-
-
 
 
 #========== cleaning ===============================================================================================
