@@ -2641,7 +2641,7 @@ sudo tar -xzvf theme/actioncenter_assets.tar.gz -C /opt/trinity/share/apps/actio
 sudo convert -size 34x34 xc:"$accent" /opt/trinity/share/apps/actioncenter_applet/$iconbase -composite /opt/trinity/share/apps/actioncenter_applet/actioncenter.png
 sudo rm -f /opt/trinity/share/apps/actioncenter_applet/$iconbase
 #lib
-sudo tar -xzf theme/actioncenter_assets.tar.gz -C /opt/trinity/share/apps/
+#sudo tar -xzf theme/actioncenter_assets.tar.gz -C /opt/trinity/share/apps/
 if [ "$osarch" = "amd64" ]; then
 sudo tar -xzf theme/actioncenter_libs.tar.gz -C /opt/trinity/lib/trinity/
 fi
@@ -3299,6 +3299,9 @@ cd - > /dev/null 2>&1
 sudo \cp apps/ipconfig /usr/local/bin/ipconfig
 sudo tar -xzf theme/services.msc.tar.gz -C /usr/local/bin/
 sudo chmod +x /usr/local/bin/ipconfig
+#nanorc config
+sudo tar -xzf theme/nanorc.tar.gz -C /etc/
+
 
 rota "$dcopRef" "Configuring global shortcuts & default apps integration..."
 
