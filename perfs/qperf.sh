@@ -24,9 +24,9 @@ Here are a few additional optimizations that you may toggle,<br>alongside the ot
 <font style='color:#828282'>►</font> Select the options you want to apply:<br>
 <font style='color:#828282'><em>(or hit cancel to quit)</em></font><br>"
 if [ ! "$osarch" = "armhf" ]; then
-Sperf=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 450 550) --checklist "$kdtext" "optimized_kernel" "Install optimized kernel" off "install_zram" "Install zram" on "disable_bluetooth" "Disable bluetooth services" off "disable_print" "Disable print services" off "initramfs_trim" "initramfs Trimming" on "disable_logs" "disable logs" on --separate-output )
+Sperf=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 450 550) --checklist "$kdtext" "optimized_kernel" "Install optimized kernel" off "install_zram" "Install zram" on "disable_bluetooth" "Disable bluetooth services" off "disable_print" "Disable print services" off "remove_scan" "Remove scanner utils" off "initramfs_trim" "initramfs Trimming" on "disable_logs" "disable logs" on --separate-output )
 else
-Sperf=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 450 550) --checklist "$kdtext" "install_zram" "Install zram" on "disable_bluetooth" "Disable bluetooth services" off "disable_print" "Disable print services" off "initramfs_trim" "initramfs Trimming" on "rasp_oc" "Raspberry overclocking" off "disable_logs" "disable logs" on --separate-output )
+Sperf=$(kdialog --icon "$kdicon" --title "$kdtitle" --caption "$kdcaption" --geometry $(centerk 450 550) --checklist "$kdtext" "install_zram" "Install zram" on "disable_bluetooth" "Disable bluetooth services" off "disable_print" "Disable print services" off "remove_scan" "Remove scanner utils" off "initramfs_trim" "initramfs Trimming" on "rasp_oc" "Raspberry overclocking" off "disable_logs" "disable logs" on --separate-output )
 fi
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if [ $? -eq 1 ];then
@@ -786,6 +786,7 @@ sudo systemctl mask avahi-daemon
 sudo systemctl stop avahi-utils
 sudo systemctl disable avahi-utils
 sudo systemctl mask avahi-utils
+sudo apt-get purge -y cups cups-browsed avahi-daemon avahi-utils
 qprogress "$script" 74
 fi
 echo
@@ -794,6 +795,18 @@ echo
 echo
 echo
 qprogress "$script" 75
+
+if echo $PerfOpt1 | grep -q "remove_scan"; then
+echo -e "  ░▒▓█ Removing scanner utils..."
+dcop "$dcopRef" setLabel "Removing scanner utils..."
+sudo apt-get purge -y sane-utils
+fi
+echo
+sep
+echo
+echo
+echo
+qprogress "$script" 76
 
 #============================================================================================
 
@@ -808,7 +821,7 @@ sep
 echo
 echo
 echo
-qprogress "$script" 78
+qprogress "$script" 77
 
 
 if [ ! "$osarch" = "armhf" ]; then
