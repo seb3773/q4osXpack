@@ -1078,7 +1078,7 @@ DebSource="https://github.com/ClementTsang/bottom/releases/download/0.9.6/"
 if [ "$osarch" = "amd64" ]; then debfile="bottom_0.9.6_amd64.deb";fi
 if [ "$osarch" = "i386" ]; then 
 debfile="bottom_0.9.6_i386.deb"
-DebSource="https://github.com/seb3773/q4osXpack_packages_archive/raw/main/"
+DebSource="https://github.com/seb3773/packages_repo/raw/main/"
 fi
 if [ "$osarch" = "armhf" ]; then debfile="bottom_0.9.6_armhf.deb";fi
 sudo wget "$DebSource$debfile"
