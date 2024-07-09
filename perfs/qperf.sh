@@ -1187,7 +1187,8 @@ sudo rm -f ./rmlint.json
 qprogress "$script" 97
 sudo rmlint -g -T "ns" /usr/bin/ -O sh:./rmlint_usrbin.sh
 sudo ./rmlint_usrbin.sh -d
-sudo rm -f ./rmlint.json
+#sudo rm -f ./rmlint.json
+sudo rm -f ./rmlint*
 sep
 echo
 echo
