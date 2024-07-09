@@ -603,9 +603,9 @@ echo
 if ! grep -q "/var/tmp" "/etc/fstab"; then
 echo "tmpfs                                     /var/tmp       tmpfs   defaults,noatime,mode=1777 0 0" | sudo tee -a /etc/fstab
 fi
-if ! grep -q "/var/spool" "/etc/fstab"; then
-  echo "tmpfs                                     /var/spool       tmpfs   defaults,noatime,mode=1777 0 0" | sudo tee -a /etc/fstab
-fi
+# if ! grep -q "/var/spool" "/etc/fstab"; then
+#   echo "tmpfs                                     /var/spool       tmpfs   defaults,noatime,mode=1777 0 0" | sudo tee -a /etc/fstab
+# fi
 sep
 echo
 echo
