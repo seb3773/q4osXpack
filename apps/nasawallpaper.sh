@@ -89,7 +89,7 @@ echo -e "${col_lot}  > updating cronjob run interval${col_r}"
 (crontab -l 2>/dev/null | grep -v nasawallpaper_entry; echo "0 */$new_checkint * * * USR=$USER $scfold/nasawallpaper.sh -cron #nasawallpaper_entry") | crontab
 fi
 echo -e "${col_lot}  > updating script source ${col_r}"
-sed -i "s/^checkint=.*/checkint=$new_checkint/" "$scfold/nasawallpaper.sh"
+sudo sed -i "s/^checkint=.*/checkint=$new_checkint/" "$scfold/nasawallpaper.sh"
 if pgrep -f "nasawallpaper.sh -d";then
 echo -e "${col_lot}  > restarting daemon${col_r}"
 kill $(pgrep -f "nasawallpaper.sh -d")
@@ -111,7 +111,7 @@ if [[ -f "$selected_path/writetest" ]]; then
 rm "$selected_path/writetest"
 echo -e "${col_lgt}New nasa wallpapers folder:  $selected_path ${col_r}"
 echo -e "${col_lot} > updating script source ${col_r}"
-sed -i "s|^wpath=.*|wpath=\"$selected_path\"|" "$scfold/nasawallpaper.sh"
+sudo sed -i "s|^wpath=.*|wpath=\"$selected_path\"|" "$scfold/nasawallpaper.sh"
 if pgrep -f "nasawallpaper.sh -d";then
 echo -e "${col_lot} > restarting daemon${col_r}"
 kill $(pgrep -f "nasawallpaper.sh -d")

@@ -95,7 +95,7 @@ echo -e "${col_lot}  > updating cronjob run interval${col_r}"
 (crontab -l 2>/dev/null | grep -v bingwallpaper_entry; echo "0 */$new_checkint * * * USR=$USER $scfold/bingwallpaper.sh -cron #bingwallpaper_entry") | crontab
 fi
 echo -e "${col_lot}  > updating script source ${col_r}"
-sed -i "s/^checkint=.*/checkint=$new_checkint/" "$scfold/bingwallpaper.sh"
+sudo sed -i "s/^checkint=.*/checkint=$new_checkint/" "$scfold/bingwallpaper.sh"
 if pgrep -f "bingwallpaper.sh -d";then
 echo -e "${col_lot}  > restarting daemon${col_r}"
 kill $(pgrep -f "bingwallpaper.sh -d")
@@ -117,7 +117,7 @@ if [[ -f "$selected_path/writetest" ]]; then
 rm "$selected_path/writetest"
 echo -e "${col_lgt}New bing wallpapers folder:  $selected_path ${col_r}"
 echo -e "${col_lot} > updating script source ${col_r}"
-sed -i "s|^wpath=.*|wpath=\"$selected_path\"|" "$scfold/bingwallpaper.sh"
+sudo sed -i "s|^wpath=.*|wpath=\"$selected_path\"|" "$scfold/bingwallpaper.sh"
 if pgrep -f "bingwallpaper.sh -d";then
 echo -e "${col_lot} > restarting daemon${col_r}"
 kill $(pgrep -f "bingwallpaper.sh -d")
@@ -140,7 +140,7 @@ elif [[ "$selected_size" =~ ^[0-4]+$ ]] && [ "$selected_size" -ge 1 ] && [ "$sel
 case $selected_size in 1) size="1920x1200" ;; 2) size="1920x1080" ;;
 3) size="1366x768" ;; 4) size="800x600" ;; esac;size="\"$size\"";echo -e "${col_lgt}New selected image size: $size ${col_r}"
 echo -e "${col_lot}  > updating script source ${col_r}"
-sed -i "s/^size=.*/size=$size/" "$scfold/bingwallpaper.sh"
+sudo sed -i "s/^size=.*/size=$size/" "$scfold/bingwallpaper.sh"
 if pgrep -f "bingwallpaper.sh -d";then
 echo -e "${col_lot}  > restarting daemon${col_r}"
 kill $(pgrep -f "bingwallpaper.sh -d")
