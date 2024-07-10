@@ -3146,6 +3146,12 @@ sudo \cp apps/bingwallpaper.sh /usr/local/bin/bingwallpaper.sh
 cd /usr/local/bin/
 sudo chmod +x bingwallpaper.sh
 cd - > /dev/null 2>&1
+itemdisp "Installing nasawallpaper script..."
+dcop "$dcopRef" setLabel "Installing nasawallpaper script..."
+sudo \cp apps/nasawallpaper.sh /usr/local/bin/nasawallpaper.sh
+cd /usr/local/bin/
+sudo chmod +x nasawallpaper.sh
+cd - > /dev/null 2>&1
 sep
 echo
 echo
