@@ -2844,15 +2844,17 @@ tar -xzf localscripts.tar.gz -C /usr/local/bin/ --wildcards --strip-components=1
 mkdir -p $USER_HOME/.trinity/share/apps/konqueror/servicemenus
 mkdir -p $USER_HOME/.trinity/share/apps/d3lphin/servicemenus
 tar -xzf konqsvcmenus.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/servicemenus/
-tar -xzf konqsvcmenus.tar.gz -C $USER_HOME/.trinity/share/apps/d3lphin/servicemenus/
 if [ $osx -eq 1 ]; then
 tar -xzf konqsvcmenus_osx.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/servicemenus/
-tar -xzf konqsvcmenus_osx.tar.gz -C $USER_HOME/.trinity/share/apps/d3lphin/servicemenus/
 else
 rm -f $USER_HOME/.trinity/share/apps/konqueror/servicemenus/addtodock.desktop
 rm -f $USER_HOME/.trinity/share/apps/d3lphin/servicemenus/addtodock.desktop
 rm -f /usr/local/bin/addtodock.sh
 fi
+for FILE in "$USER_HOME/.trinity/share/apps/konqueror/servicemenus"/*; do
+FILE_NAME=$(basename "$FILE")
+ln -s "$FILE" "$USER_HOME/.trinity/share/apps/d3lphin/servicemenus/$FILE_NAME"
+done
 
 
 
