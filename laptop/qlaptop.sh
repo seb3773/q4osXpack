@@ -358,11 +358,11 @@ instswp() {
             sudo sed -i 's/echo/#ech~o/g' /boot/grub/grub.cfg
             qprogress "$script" 85
             sudo update-initramfs -k all -u
-            echo -e "  \e[35m░▒▓█\033[0m Activate hibernation & set to hibernate if sleep > 1h30..."
+            echo -e "  \e[35m░▒▓█\033[0m Activate hibernation & set to hibernate if sleep > 2h ..."
             if ! grep -q "HibernateDelaySec=" "/etc/systemd/sleep.conf"; then
             echo "HibernateDelaySec=5400" | sudo tee -a /etc/systemd/sleep.conf
             fi
-            sudo sed -i '/HibernateDelaySec=/c\HibernateDelaySec=5400' /etc/systemd/sleep.conf
+            sudo sed -i '/HibernateDelaySec=/c\HibernateDelaySec=7200' /etc/systemd/sleep.conf
             sudo sed -i '/ExecStart=/c\ExecStart=/lib/systemd/systemd-sleep suspend-then-hibernate' /lib/systemd/system/systemd-suspend.service
             echo -e "  \e[35m░▒▓█\033[0m Adjust xfce4-power-manager settings to hibernate if critical battery level..."
             #adjust xfce4-power-manager settings
