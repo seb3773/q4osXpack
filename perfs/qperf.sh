@@ -615,11 +615,10 @@ qprogress "$script" 42
 
 
 #========== ext4 commit interval
-itemdisp "change commit interval for ext4 partitions"
-dcop "$dcopRef" setLabel "change commit interval for ext4 partitions..."
+itemdisp "tuning mount options for ext4 partitions"
+dcop "$dcopRef" setLabel "tuning mount options for ext4 partitions..."
 echo
-sudo sed -i '/ext4/s/\(defaults,noatime,discard\)\(.*\)\(commit=[0-9]\+\)\(.*\)/\1\2commit=60\4/' "/etc/fstab"
-if ! grep -q 'ext4.*commit=' "/etc/fstab"; then sudo sed -i '/ext4/s/\(defaults,noatime,discard\)\(.*\)/\1,commit=60\2/' "/etc/fstab"; fi
+sed -i '/\sext4\s/ s/\(\S\+\s\+\S\+\s\+ext4\s\+\)\S\+\(.*\)/\1defaults,noatime,commit=120 0 1/' /etc/fstab
 sep
 echo
 echo
