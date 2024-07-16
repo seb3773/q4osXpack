@@ -1388,19 +1388,19 @@ if [[ $dark -eq 1 ]]; then
 #because without that, the configuration (especially the exclude part) is destroyed by trinity if we want to adjust something
 #from the cli configuration panel. We don't want that. But by doing this, the configuration panel can't be used to ajust these settings...
  if [ "$osarch" = "armhf" ]; then
- sudo tar -xzf theme/compton-tde.conf-dark_pi.tar.gz -C $USER_HOME/
- sudo tar -xzf theme/compton-tde.conf-dark_pi.tar.gz -C /root
+sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfpidark/*"
+sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconfpidark/*"
  else
- sudo tar -xzf theme/compton-tde.conf-dark.tar.gz -C $USER_HOME/
- sudo tar -xzf theme/compton-tde.conf-dark.tar.gz -C /root
+sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfdark/*"
+sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconfdark/*"
  fi
 else
  if [ "$osarch" = "armhf" ]; then
- sudo tar -xzf theme/compton-tde.conf_pi.tar.gz -C $USER_HOME/
- sudo tar -xzf theme/compton-tde.conf_pi.tar.gz -C /root
+sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfpi/*"
+sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconfpi/*"
  else
- sudo tar -xzf theme/compton-tde.conf.tar.gz -C $USER_HOME/
- sudo tar -xzf theme/compton-tde.conf.tar.gz -C /root
+sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconf/*"
+sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconf/*"
  fi
 fi
 
