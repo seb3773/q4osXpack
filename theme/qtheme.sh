@@ -1001,16 +1001,16 @@ if [[ ! $osx -eq 1 ]]; then
 if [[ $dark -eq 1 ]]; then
 sudo theme/createdeko "$accent" "$accent2" "WinTenBasedark"
 #sudo tar -xzf theme/WinTen-seb-theme-dark.tar.gz -C /opt/trinity/share/apps/deKorator/themes
-sudo tar -xzf theme/twindeKoratorrc-dark.tar.gz -C $USER_HOME/.trinity/share/config/
+sudo tar -xzvf twindeKoratorrc.tar.gz --strip-components=2 -C "$USER_HOME/.trinity/share/config/" --wildcards --strip-components=1 "dark/*"
 else
 sudo theme/createdeko "$accent" "$accent2" "WinTenBaselight"
 #sudo tar -xzf theme/WinTen-seb-theme.tar.gz -C /opt/trinity/share/apps/deKorator/themes
-sudo tar -xzf theme/twindeKoratorrc.tar.gz -C $USER_HOME/.trinity/share/config/
+sudo tar -xzvf twindeKoratorrc.tar.gz --strip-components=2 -C "$USER_HOME/.trinity/share/config/" --wildcards --strip-components=1 "classic/*"
 fi
 
 else
 sudo tar -xzf theme/twindekoOSX.tar.gz -C /opt/trinity/share/apps/deKorator/themes/
-sudo tar -xzf theme/twindeKoratorrc_osx.tar.gz -C $USER_HOME/.trinity/share/config/
+sudo tar -xzvf twindeKoratorrc.tar.gz --strip-components=2 -C "$USER_HOME/.trinity/share/config/" --wildcards --strip-components=1 "osx/*"
 fi
 
 sudo chown -R $USER: $USER_HOME/.trinity/share/config/twindeKoratorrc
