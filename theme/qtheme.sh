@@ -757,13 +757,13 @@ sudo apt install gnome-menus
 dcop "$dcopRef" setLabel "Installing lightpad binary..."
 #copy lightpad binary
 if [ "$osarch" = "amd64" ]; then
-sudo tar -xzvf theme/lightpad.tar.gz --strip-components=2 -C "/usr/local/bin/" --wildcards --strip-components=1 "64/*"
+sudo tar -xzvf theme/lightpad.tar.gz -C "/usr/local/bin/" --wildcards --strip-components=1 "64/*"
 fi
 if [ "$osarch" = "i386" ]; then
-sudo tar -xzvf theme/lightpad.tar.gz --strip-components=2 -C "/usr/local/bin/" --wildcards --strip-components=1 "32/*"
+sudo tar -xzvf theme/lightpad.tar.gz -C "/usr/local/bin/" --wildcards --strip-components=1 "32/*"
 fi
 if [ "$osarch" = "armhf" ]; then
-sudo tar -xzvf theme/lightpad.tar.gz --strip-components=2 -C "/usr/local/bin/" --wildcards --strip-components=1 "armhf/*"
+sudo tar -xzvf theme/lightpad.tar.gz -C "/usr/local/bin/" --wildcards --strip-components=1 "armhf/*"
 fi
 sudo chmod +x /usr/local/bin/lightpad
 sudo chown -R $USER: /usr/local/bin/lightpad
@@ -1001,16 +1001,16 @@ if [[ ! $osx -eq 1 ]]; then
 if [[ $dark -eq 1 ]]; then
 sudo theme/createdeko "$accent" "$accent2" "WinTenBasedark"
 #sudo tar -xzf theme/WinTen-seb-theme-dark.tar.gz -C /opt/trinity/share/apps/deKorator/themes
-sudo tar -xzvf twindeKoratorrc.tar.gz --strip-components=2 -C "$USER_HOME/.trinity/share/config/" --wildcards --strip-components=1 "dark/*"
+sudo tar -xzvf theme/twindeKoratorrc.tar.gz -C "$USER_HOME/.trinity/share/config/" --wildcards --strip-components=1 "dark/*"
 else
 sudo theme/createdeko "$accent" "$accent2" "WinTenBaselight"
 #sudo tar -xzf theme/WinTen-seb-theme.tar.gz -C /opt/trinity/share/apps/deKorator/themes
-sudo tar -xzvf twindeKoratorrc.tar.gz --strip-components=2 -C "$USER_HOME/.trinity/share/config/" --wildcards --strip-components=1 "classic/*"
+sudo tar -xzvf theme/twindeKoratorrc.tar.gz -C "$USER_HOME/.trinity/share/config/" --wildcards --strip-components=1 "classic/*"
 fi
 
 else
 sudo tar -xzf theme/twindekoOSX.tar.gz -C /opt/trinity/share/apps/deKorator/themes/
-sudo tar -xzvf twindeKoratorrc.tar.gz --strip-components=2 -C "$USER_HOME/.trinity/share/config/" --wildcards --strip-components=1 "osx/*"
+sudo tar -xzvf theme/twindeKoratorrc.tar.gz -C "$USER_HOME/.trinity/share/config/" --wildcards --strip-components=1 "osx/*"
 fi
 
 sudo chown -R $USER: $USER_HOME/.trinity/share/config/twindeKoratorrc
@@ -1388,19 +1388,19 @@ if [[ $dark -eq 1 ]]; then
 #because without that, the configuration (especially the exclude part) is destroyed by trinity if we want to adjust something
 #from the cli configuration panel. We don't want that. But by doing this, the configuration panel can't be used to ajust these settings...
  if [ "$osarch" = "armhf" ]; then
-sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfpidark/*"
-sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconfpidark/*"
+sudo tar -xzvf theme/comptonconf.tar.gz -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfpidark/*"
+sudo tar -xzvf theme/comptonconf.tar.gz -C "/root/" --wildcards --strip-components=1 "comptonconfpidark/*"
  else
-sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfdark/*"
-sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconfdark/*"
+sudo tar -xzvf theme/comptonconf.tar.gz -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfdark/*"
+sudo tar -xzvf theme/comptonconf.tar.gz -C "/root/" --wildcards --strip-components=1 "comptonconfdark/*"
  fi
 else
  if [ "$osarch" = "armhf" ]; then
-sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfpi/*"
-sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconfpi/*"
+sudo tar -xzvf theme/comptonconf.tar.gz -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfpi/*"
+sudo tar -xzvf theme/comptonconf.tar.gz -C "/root/" --wildcards --strip-components=1 "comptonconfpi/*"
  else
-sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconf/*"
-sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconf/*"
+sudo tar -xzvf theme/comptonconf.tar.gz -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconf/*"
+sudo tar -xzvf theme/comptonconf.tar.gz -C "/root/" --wildcards --strip-components=1 "comptonconf/*"
  fi
 fi
 
@@ -2643,13 +2643,13 @@ sudo rm -f /opt/trinity/share/apps/actioncenter_applet/$iconbase
 #lib
 #sudo tar -xzf theme/actioncenter_assets.tar.gz -C /opt/trinity/share/apps/
 if [ "$osarch" = "amd64" ]; then
-sudo tar -xzvf theme/actioncenter_libs.tar.gz --strip-components=2 -C "/opt/trinity/lib/trinity/" --wildcards --strip-components=1 "64/*"
+sudo tar -xzvf theme/actioncenter_libs.tar.gz -C "/opt/trinity/lib/trinity/" --wildcards --strip-components=1 "64/*"
 fi
 if [ "$osarch" = "i386" ]; then
-sudo tar -xzvf theme/actioncenter_libs.tar.gz --strip-components=2 -C "/opt/trinity/lib/trinity/" --wildcards --strip-components=1 "32/*"
+sudo tar -xzvf theme/actioncenter_libs.tar.gz -C "/opt/trinity/lib/trinity/" --wildcards --strip-components=1 "32/*"
 fi
 if [ "$osarch" = "armhf" ]; then
-sudo tar -xzvf theme/actioncenter_libs.tar.gz --strip-components=2 -C "/opt/trinity/lib/trinity/" --wildcards --strip-components=1 "armhf/*"
+sudo tar -xzvf theme/actioncenter_libs.tar.gz -C "/opt/trinity/lib/trinity/" --wildcards --strip-components=1 "armhf/*"
 fi
 
 qprogress "$script" 86
