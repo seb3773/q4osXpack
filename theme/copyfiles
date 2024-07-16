@@ -2784,12 +2784,12 @@ echo "  ░▒▓█ copying sw center splash"
 if [ ! $osx -eq 1 ]; then
 if [ $1 -eq 1 ]
 then
-tar -xzf swcentre_splash_dark.tar.gz -C /usr/share/apps/q4os_system/q4os_swcentre/resource/
+tar -xzvf swcentre_splash.tar.gz --strip-components=2 -C "/usr/share/apps/q4os_system/q4os_swcentre/resource/" --wildcards --strip-components=1 "dark/*"
 else
-tar -xzf swcentre_splash.tar.gz -C /usr/share/apps/q4os_system/q4os_swcentre/resource/
+tar -xzvf swcentre_splash.tar.gz --strip-components=2 -C "/usr/share/apps/q4os_system/q4os_swcentre/resource/" --wildcards --strip-components=1 "classic/*"
 fi
 else
-tar -xzf swcentre_splash_osx.tar.gz -C /usr/share/apps/q4os_system/q4os_swcentre/resource/
+tar -xzvf swcentre_splash.tar.gz --strip-components=2 -C "/usr/share/apps/q4os_system/q4os_swcentre/resource/" --wildcards --strip-components=1 "osx/*"
 fi
 
 echo "  ░▒▓█ copying font"
@@ -2820,23 +2820,16 @@ echo "  ░▒▓█ copying konqueror profiles & entries"
 mv $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/.version .version  > /dev/null 2>&1
 rm -f $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/*
 mv .version $USER_HOME/.trinity/share/apps/konqsidebartng/filemanagement/entries/.version  > /dev/null 2>&1
+tar -xzf konq_iconview.tar.gz -C $USER_HOME/.trinity/share/apps/konqiconview/
+sudo tar -xzf konq_iconview.tar.gz -C /root/.trinity/share/apps/konqiconview/
 
 if [ ! $osx -eq 1 ]; then
-
 tar -xzf konqueror.profiles.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/
-tar -xzf konq_iconview.tar.gz -C $USER_HOME/.trinity/share/apps/konqiconview/
 sudo tar -xzf konqueror.profiles.tar.gz -C /root/.trinity/share/apps/konqueror/
-sudo tar -xzf konq_iconview.tar.gz -C /root/.trinity/share/apps/konqiconview/
-
 else
-
 tar -xzf konqueror.profiles.osx.tar.gz -C $USER_HOME/.trinity/share/apps/konqueror/
-tar -xzf konq_iconview.tar.gz -C $USER_HOME/.trinity/share/apps/konqiconview/
 sudo tar -xzf konqueror.profiles.osx.tar.gz -C /root/.trinity/share/apps/konqueror/
-sudo tar -xzf konq_iconview.tar.gz -C /root/.trinity/share/apps/konqiconview/
-
 fi
-
 
 echo "  ░▒▓█ copying konqueror services menus"
 mkdir -p /usr/local/bin
@@ -2855,7 +2848,6 @@ for FILE in "$USER_HOME/.trinity/share/apps/konqueror/servicemenus"/*; do
 FILE_NAME=$(basename "$FILE")
 ln -s "$FILE" "$USER_HOME/.trinity/share/apps/d3lphin/servicemenus/$FILE_NAME"
 done
-
 
 
 chown -R $USER_SU $USER_HOME/.trinity/share/apps/konqueror/
