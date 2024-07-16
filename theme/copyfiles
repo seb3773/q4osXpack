@@ -2937,13 +2937,13 @@ rm -f /opt/trinity/share/sounds/KDE_Error_3.ogg
 tar -xzf 90-usb.rules.tar.gz -C /etc/udev/rules.d/
 #binary
 if [ "$osarch" = "amd64" ]; then
-tar -xzf usb_insert.tar.gz -C /usr/bin/
+tar -xzvf usb_insert.tar.gz --strip-components=2 -C "/usr/bin/" --wildcards --strip-components=1 "64/*"
 fi
 if [ "$osarch" = "i386" ]; then
-tar -xzf usb_insert_i386.tar.gz -C /usr/bin/
+tar -xzvf usb_insert.tar.gz --strip-components=2 -C "/usr/bin/" --wildcards --strip-components=1 "32/*"
 fi
 if [ "$osarch" = "armhf" ]; then
-tar -xzf usb_insert_armhf.tar.gz -C /usr/bin/
+tar -xzvf usb_insert.tar.gz --strip-components=2 -C "/usr/bin/" --wildcards --strip-components=1 "armhf/*"
 fi
 udevadm control --reload-rules
 
