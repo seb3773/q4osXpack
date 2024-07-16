@@ -2643,13 +2643,13 @@ sudo rm -f /opt/trinity/share/apps/actioncenter_applet/$iconbase
 #lib
 #sudo tar -xzf theme/actioncenter_assets.tar.gz -C /opt/trinity/share/apps/
 if [ "$osarch" = "amd64" ]; then
-sudo tar -xzf theme/actioncenter_libs.tar.gz -C /opt/trinity/lib/trinity/
+sudo tar -xzvf theme/actioncenter_libs.tar.gz --strip-components=2 -C "/opt/trinity/lib/trinity/" --wildcards --strip-components=1 "64/*"
 fi
 if [ "$osarch" = "i386" ]; then
-sudo tar -xzf theme/actioncenter_libs_32.tar.gz -C /opt/trinity/lib/trinity/
+sudo tar -xzvf theme/actioncenter_libs.tar.gz --strip-components=2 -C "/opt/trinity/lib/trinity/" --wildcards --strip-components=1 "32/*"
 fi
 if [ "$osarch" = "armhf" ]; then
-sudo tar -xzf theme/actioncenter_libs_armhf.tar.gz -C /opt/trinity/lib/trinity/
+sudo tar -xzvf theme/actioncenter_libs.tar.gz --strip-components=2 -C "/opt/trinity/lib/trinity/" --wildcards --strip-components=1 "armhf/*"
 fi
 
 qprogress "$script" 86
