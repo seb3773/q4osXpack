@@ -2846,7 +2846,7 @@ rm -f /usr/local/bin/addtodock.sh
 fi
 for FILE in "$USER_HOME/.trinity/share/apps/konqueror/servicemenus"/*; do
 FILE_NAME=$(basename "$FILE")
-ln -s "$FILE" "$USER_HOME/.trinity/share/apps/d3lphin/servicemenus/$FILE_NAME"
+ln -s "$FILE" "$USER_HOME/.trinity/share/apps/d3lphin/servicemenus/$FILE_NAME" > /dev/null 2>&1
 done
 
 
