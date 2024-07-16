@@ -757,13 +757,13 @@ sudo apt install gnome-menus
 dcop "$dcopRef" setLabel "Installing lightpad binary..."
 #copy lightpad binary
 if [ "$osarch" = "amd64" ]; then
-sudo tar -xzf theme/lightpad.tar.gz -C /usr/local/bin/
+sudo tar -xzvf theme/lightpad.tar.gz --strip-components=2 -C "/usr/local/bin/" --wildcards --strip-components=1 "64/*"
 fi
 if [ "$osarch" = "i386" ]; then
-sudo tar -xzf theme/lightpad_32.tar.gz -C /usr/local/bin/
+sudo tar -xzvf theme/lightpad.tar.gz --strip-components=2 -C "/usr/local/bin/" --wildcards --strip-components=1 "32/*"
 fi
 if [ "$osarch" = "armhf" ]; then
-sudo tar -xzf theme/lightpad_armhf.tar.gz -C /usr/local/bin/
+sudo tar -xzvf theme/lightpad.tar.gz --strip-components=2 -C "/usr/local/bin/" --wildcards --strip-components=1 "armhf/*"
 fi
 sudo chmod +x /usr/local/bin/lightpad
 sudo chown -R $USER: /usr/local/bin/lightpad
@@ -1388,19 +1388,19 @@ if [[ $dark -eq 1 ]]; then
 #because without that, the configuration (especially the exclude part) is destroyed by trinity if we want to adjust something
 #from the cli configuration panel. We don't want that. But by doing this, the configuration panel can't be used to ajust these settings...
  if [ "$osarch" = "armhf" ]; then
-sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfpidark/*"
-sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconfpidark/*"
+sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfpidark/*"
+sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconfpidark/*"
  else
-sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfdark/*"
-sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconfdark/*"
+sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfdark/*"
+sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconfdark/*"
  fi
 else
  if [ "$osarch" = "armhf" ]; then
-sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfpi/*"
-sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconfpi/*"
+sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconfpi/*"
+sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconfpi/*"
  else
-sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconf/*"
-sudo tar -xzvf comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconf/*"
+sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "$USER_HOME/" --wildcards --strip-components=1 "comptonconf/*"
+sudo tar -xzvf theme/comptonconf.tar.gz --strip-components=2 -C "/root/" --wildcards --strip-components=1 "comptonconf/*"
  fi
 fi
 
