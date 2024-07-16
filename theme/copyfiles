@@ -2881,18 +2881,16 @@ if [ ! $osx -eq 1 ]; then
 
 if [ $1 -eq 1 ]
 then
-tar -xzf qtcurve_stylerc_dark.tar.gz -C $USER_HOME/.configtde/qtcurve/
-tar -xzf qtcurve_stylerc_dark.tar.gz -C /root/.config/qtcurve/
+tar -xzvf qtcurve_stylerc.tar.gz --strip-components=2 -C "$USER_HOME/.configtde/qtcurve/" --wildcards --strip-components=1 "dark/*"
+tar -xzvf qtcurve_stylerc.tar.gz --strip-components=2 -C "/root/.config/qtcurve/" --wildcards --strip-components=1 "dark/*"
 else
-tar -xzf qtcurve_stylerc.tar.gz -C $USER_HOME/.configtde/qtcurve/
-tar -xzf qtcurve_stylerc.tar.gz -C /root/.config/qtcurve/
+tar -xzvf qtcurve_stylerc.tar.gz --strip-components=2 -C "$USER_HOME/.configtde/qtcurve/" --wildcards --strip-components=1 "classic/*"
+tar -xzvf qtcurve_stylerc.tar.gz --strip-components=2 -C "/root/.config/qtcurve/" --wildcards --strip-components=1 "classic/*"
 fi
 
 else
-
-tar -xzf qtcurve_osx_stylerc.tar.gz -C $USER_HOME/.configtde/qtcurve/
-tar -xzf qtcurve_osx_stylerc.tar.gz -C /root/.config/qtcurve/
-
+tar -xzvf qtcurve_stylerc.tar.gz --strip-components=2 -C "$USER_HOME/.configtde/qtcurve/" --wildcards --strip-components=1 "osx/*"
+tar -xzvf qtcurve_stylerc.tar.gz --strip-components=2 -C "/root/.config/qtcurve/" --wildcards --strip-components=1 "osx/*"
 fi
 
 chown $USER_SU $USER_HOME/.configtde/qtcurve/stylerc
