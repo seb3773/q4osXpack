@@ -2784,12 +2784,12 @@ echo "  ░▒▓█ copying sw center splash"
 if [ ! $osx -eq 1 ]; then
 if [ $1 -eq 1 ]
 then
-tar -xzvf swcentre_splash.tar.gz --strip-components=2 -C "/usr/share/apps/q4os_system/q4os_swcentre/resource/" --wildcards --strip-components=1 "dark/*"
+tar -xzvf swcentre_splash.tar.gz -C "/usr/share/apps/q4os_system/q4os_swcentre/resource/" --wildcards --strip-components=1 "dark/*"
 else
-tar -xzvf swcentre_splash.tar.gz --strip-components=2 -C "/usr/share/apps/q4os_system/q4os_swcentre/resource/" --wildcards --strip-components=1 "classic/*"
+tar -xzvf swcentre_splash.tar.gz -C "/usr/share/apps/q4os_system/q4os_swcentre/resource/" --wildcards --strip-components=1 "classic/*"
 fi
 else
-tar -xzvf swcentre_splash.tar.gz --strip-components=2 -C "/usr/share/apps/q4os_system/q4os_swcentre/resource/" --wildcards --strip-components=1 "osx/*"
+tar -xzvf swcentre_splash.tar.gz -C "/usr/share/apps/q4os_system/q4os_swcentre/resource/" --wildcards --strip-components=1 "osx/*"
 fi
 
 echo "  ░▒▓█ copying font"
@@ -2865,11 +2865,11 @@ mkdir -p $USER_HOME/.trinity/share/apps/tdedisplay/color-schemes/
 sudo mkdir -p /root/.trinity/share/apps/tdedisplay/color-schemes/
 if [ $1 -eq 1 ]
 then
-tar -xzf color-scheme-dark.tar.gz -C $USER_HOME/.trinity/share/apps/tdedisplay/color-schemes/
-tar -xzf color-scheme-dark.tar.gz -C /root/.trinity/share/apps/tdedisplay/color-schemes/
+tar -xzvf color-scheme.tar.gz -C "$USER_HOME/.trinity/share/apps/tdedisplay/color-schemes/" --wildcards --strip-components=1 "dark/*"
+tar -xzvf color-scheme.tar.gz -C "/root/.trinity/share/apps/tdedisplay/color-schemes/" --wildcards --strip-components=1 "dark/*"
 else
-tar -xzf color-scheme.tar.gz -C $USER_HOME/.trinity/share/apps/tdedisplay/color-schemes/
-tar -xzf color-scheme.tar.gz -C /root/.trinity/share/apps/tdedisplay/color-schemes/
+tar -xzvf color-scheme.tar.gz -C "$USER_HOME/.trinity/share/apps/tdedisplay/color-schemes/" --wildcards --strip-components=1 "classic/*"
+tar -xzvf color-scheme.tar.gz -C "/root/.trinity/share/apps/tdedisplay/color-schemes/" --wildcards --strip-components=1 "classic/*"
 fi
 
 chown -R $USER_SU $USER_HOME/.trinity/share/apps/tdedisplay/color-schemes/
@@ -2881,16 +2881,16 @@ if [ ! $osx -eq 1 ]; then
 
 if [ $1 -eq 1 ]
 then
-tar -xzvf qtcurve_stylerc.tar.gz --strip-components=2 -C "$USER_HOME/.configtde/qtcurve/" --wildcards --strip-components=1 "dark/*"
-tar -xzvf qtcurve_stylerc.tar.gz --strip-components=2 -C "/root/.config/qtcurve/" --wildcards --strip-components=1 "dark/*"
+tar -xzvf qtcurve_stylerc.tar.gz -C "$USER_HOME/.configtde/qtcurve/" --wildcards --strip-components=1 "dark/*"
+tar -xzvf qtcurve_stylerc.tar.gz -C "/root/.config/qtcurve/" --wildcards --strip-components=1 "dark/*"
 else
-tar -xzvf qtcurve_stylerc.tar.gz --strip-components=2 -C "$USER_HOME/.configtde/qtcurve/" --wildcards --strip-components=1 "classic/*"
-tar -xzvf qtcurve_stylerc.tar.gz --strip-components=2 -C "/root/.config/qtcurve/" --wildcards --strip-components=1 "classic/*"
+tar -xzvf qtcurve_stylerc.tar.gz -C "$USER_HOME/.configtde/qtcurve/" --wildcards --strip-components=1 "classic/*"
+tar -xzvf qtcurve_stylerc.tar.gz -C "/root/.config/qtcurve/" --wildcards --strip-components=1 "classic/*"
 fi
 
 else
-tar -xzvf qtcurve_stylerc.tar.gz --strip-components=2 -C "$USER_HOME/.configtde/qtcurve/" --wildcards --strip-components=1 "osx/*"
-tar -xzvf qtcurve_stylerc.tar.gz --strip-components=2 -C "/root/.config/qtcurve/" --wildcards --strip-components=1 "osx/*"
+tar -xzvf qtcurve_stylerc.tar.gz -C "$USER_HOME/.configtde/qtcurve/" --wildcards --strip-components=1 "osx/*"
+tar -xzvf qtcurve_stylerc.tar.gz -C "/root/.config/qtcurve/" --wildcards --strip-components=1 "osx/*"
 fi
 
 chown $USER_SU $USER_HOME/.configtde/qtcurve/stylerc
@@ -2935,13 +2935,13 @@ rm -f /opt/trinity/share/sounds/KDE_Error_3.ogg
 tar -xzf 90-usb.rules.tar.gz -C /etc/udev/rules.d/
 #binary
 if [ "$osarch" = "amd64" ]; then
-tar -xzvf usb_insert.tar.gz --strip-components=2 -C "/usr/bin/" --wildcards --strip-components=1 "64/*"
+tar -xzvf usb_insert.tar.gz -C "/usr/bin/" --wildcards --strip-components=1 "64/*"
 fi
 if [ "$osarch" = "i386" ]; then
-tar -xzvf usb_insert.tar.gz --strip-components=2 -C "/usr/bin/" --wildcards --strip-components=1 "32/*"
+tar -xzvf usb_insert.tar.gz -C "/usr/bin/" --wildcards --strip-components=1 "32/*"
 fi
 if [ "$osarch" = "armhf" ]; then
-tar -xzvf usb_insert.tar.gz --strip-components=2 -C "/usr/bin/" --wildcards --strip-components=1 "armhf/*"
+tar -xzvf usb_insert.tar.gz -C "/usr/bin/" --wildcards --strip-components=1 "armhf/*"
 fi
 udevadm control --reload-rules
 
