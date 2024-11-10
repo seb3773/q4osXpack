@@ -1,0 +1,24 @@
+#***q4os*setup*config*header*do*not*delete*it***#
+
+PK_NAME="sebxpack-trinity"
+APPNAME_DESC="Seb themes"
+PK_VERS="0.1"
+
+Q4VER_MIN="5.0"
+# Q4VER_MAX="5.9999"
+
+APPLNK_ENTRY="1"
+MENU_ENTRY="1"
+DESKTOP_ENTRY="1"
+REG_ENTRY="1"
+UNINSTALL_ENTRY="1"
+APP_ICON="preferences-desktop-theme"
+APP_LINK="bash /opt/program_files/$PK_NAME/theme/qtheme.sh"
+# UNINST_ADPCKS=""
+
+# INCLUDE_DEB="0"
+# PK_ARCH="all"
+
+# TEMPLATES_DIR_0="$TEMPLATESDIR0"
+# TEMPLATES_DIR="."
+# OUT_DIR="."

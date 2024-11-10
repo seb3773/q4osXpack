@@ -1,0 +1,28 @@
+Source: sebxpack-trinity-src
+Section: system
+Priority: optional
+Maintainer: Localhost <email@localhost>
+Build-Depends: debhelper (>= 9~)
+Standards-Version: 3.8.4
+
+Package: sebxpack-trinity
+Architecture: all
+Depends: q4os-desktop (>= 5.0), q4os-desktop-trinity,
+ twin-style-dekorator-trinity,
+ kooldock-trinity,
+ tde-style-qtcurve-trinity,
+ tdmtheme-trinity,
+ xdotool, xsel,
+ ${shlibs:Depends}, ${misc:Depends}
+Recommends:
+ dolphin-trinity, gwenview-trinity,
+ tde-guidance-trinity,
+ p7zip-full,
+ gtk2-engines-murrine, gtk2-engines-pixbuf,
+ kde-style-qtcurve-qt5,
+ imagemagick,
+ plymouth, plymouth-themes
+Conflicts:
+Replaces:
+Breaks:
+Description: A set of themes for Q4OS Trinity.
