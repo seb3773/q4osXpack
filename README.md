@@ -66,7 +66,10 @@ ________________________________________________________________________________
 
 ## Installation:
 
-Clone the repository:
+--> Simply run dpkg-buildpackage -b -uc -us -tc to compile .deb and .qsi package (thanks Q4OSTEAM !)
+
+
+Or clone the repository:
 git clone https://github.com/seb3773/q4osXpack
 
 Then go to the new folder:
