@@ -1370,6 +1370,7 @@ else
 kwriteconfig --file $USER_HOME/.configtde/gtk-3.0/settings.ini --group Settings --key gtk-theme-name Q4OSMAC
 kwriteconfig --file $USER_HOME/.config/gtk-3.0/settings.ini --group Settings --key gtk-theme-name Q4OSMAC
 fi
+sudo rm -f "/root/.config/gtk-3.0/colors.css"
 
 qprogress "$script" 51
 
