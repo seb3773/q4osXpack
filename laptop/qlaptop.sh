@@ -169,17 +169,19 @@ itemdisp "Configuring touchpad..."
 echo
 echo -e "  \e[35m░▒▓█\033[0m Enabling two fingers scrolling & disabling middle click..."
 if ! grep 'Option "ScrollMethod"' /etc/X11/xorg.conf.d/60-libinput.conf|grep -q 'two finger'; then
-if ! grep -q 'Option "TapButton3"' /etc/X11/xorg.conf.d/60-libinput.conf; then
-sudo sed -i '/Option "ScrollMethod"/c\        Option "ScrollMethod" "two-finger"\n        Option "TapButton3" "2"' /etc/X11/xorg.conf.d/60-libinput.conf
+
+if ! grep -q 'Option "ButtonMapping"' /etc/X11/xorg.conf.d/60-libinput.conf; then
+sudo sed -i '/Option "ScrollMethod"/c\        Option "ScrollMethod" "two-finger"\n        Option "ButtonMapping" "1 1 3 4 5 6 7"' /etc/X11/xorg.conf.d/60-libinput.conf
 else
 sudo sed -i '/Option "ScrollMethod"/c\        Option "ScrollMethod" "two-finger"' /etc/X11/xorg.conf.d/60-libinput.conf
-sudo sed -i '/Option "TapButton3"/c\        Option "TapButton3" "2"' /etc/X11/xorg.conf.d/60-libinput.conf
+sudo sed -i '/Option "ButtonMapping"/c\        Option "ButtonMapping" "1 1 3 4 5 6 7"' /etc/X11/xorg.conf.d/60-libinput.conf
 fi
+
 else
-if ! grep 'Option "TapButton3"' /etc/X11/xorg.conf.d/60-libinput.conf; then
-sudo sed -i '/Option "ScrollMethod"/c\        Option "ScrollMethod" "two-finger"\n        Option "TapButton3" "2"' /etc/X11/xorg.conf.d/60-libinput.conf
+if ! grep 'Option "ButtonMapping"' /etc/X11/xorg.conf.d/60-libinput.conf; then
+sudo sed -i '/Option "ScrollMethod"/c\        Option "ScrollMethod" "two-finger"\n        Option "ButtonMapping" "1 1 3 4 5 6 7"' /etc/X11/xorg.conf.d/60-libinput.conf
 else
-sudo sed -i '/Option "TapButton3"/c\        Option "TapButton3" "2"' /etc/X11/xorg.conf.d/60-libinput.conf
+sudo sed -i '/Option "ButtonMapping"/c\        Option "ButtonMapping" "1 1 3 4 5 6 7"' /etc/X11/xorg.conf.d/60-libinput.conf
 fi
 fi
 sep
